@@ -3,3 +3,8 @@
 ################################################################################
 
 /dotnet RESTful/.vs
+/.vs
+/Discord_win/.vs/Discord_win/v15
+/Discord_win/ConsoleApp1/bin/Debug/netcoreapp2.2
+/Discord_win/ConsoleApp1/obj
+/Discord_win/WPF/obj
