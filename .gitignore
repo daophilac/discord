@@ -2,5 +2,4 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/dotnet RESTful/.vs/config
-/ConsoleApp1
+/dotnet RESTful/.vs
