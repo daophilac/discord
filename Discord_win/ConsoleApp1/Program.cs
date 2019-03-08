@@ -21,7 +21,7 @@ namespace ConsoleApp1 {
             message = await client.GetAsync("http://localhost:33357/api/user/1");
             if (message.IsSuccessStatusCode) {
                 User u = await message.Content.ReadAsAsync<User>();
-                Console.WriteLine(message.Content.ToString());
+                Console.WriteLine(u.Email);
             }
             
         }
@@ -30,6 +30,7 @@ namespace ConsoleApp1 {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             Console.WriteLine("Hello World!");
+            GetMessage();
             Console.ReadLine();
         }
     }
