@@ -18,10 +18,18 @@ namespace API.Models {
         }
 
         public DbSet<User> User { get; set; }
-        //public object User { get; internal set; }
+        public DbSet<Server> Server { get; set; }
+        public DbSet<Channel> Channel { get; set; }
+        public DbSet<Role> Role { get; set; }
+        public DbSet<Permission> Permission { get; set; }
+        public DbSet<UserServer> UserServer { get; set; }
+        public DbSet<ChannelRolePermission> ChannelRolePermission { get; set; }
+        public DbSet<Message> Message { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Entity<Role>().HasRequired<Server>(s => s.Server).WithMany().WillCascadeOnDelete(false);
+            modelBuilder.Entity<UserServer>().HasRequired<Server>(s => s.Server).WithMany().WillCascadeOnDelete(false);
         }
     }
 }
