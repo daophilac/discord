@@ -8,6 +8,7 @@ namespace API.Models {
     public class Channel {
         [Key]
         public int ChannelID { get; set; }
+        public string Name { get; set; }
         public int ServerID { get; set; }
 
         public ICollection<Message> Messages { get; set; }

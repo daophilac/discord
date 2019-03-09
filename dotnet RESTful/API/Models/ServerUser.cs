@@ -6,17 +6,18 @@ using System.Linq;
 using System.Web;
 
 namespace API.Models {
-    public class UserServer {
+    public class ServerUser {
         [Key]
         [Column(Order = 1)]
-        public int UserID { get; set; }
+        public int ServerID { get; set; }
         [Key]
         [Column(Order = 2)]
-        public int ServerID { get; set; }
+        public int UserID { get; set; }
 
-        [ForeignKey("UserID")]
-        public User User { get; set; }
+
         [ForeignKey("ServerID")]
         public Server Server { get; set; }
+        [ForeignKey("UserID")]
+        public User User { get; set; }
     }
 }
