@@ -8,7 +8,17 @@
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="MainPage">
 
-    <Grid Background="White">
-        
+    <Grid>
+        <Canvas x:Name="CanvasServer" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="80" Background="{DynamicResource CanvasServer_Background}"/>
+        <Canvas x:Name="CanvasChannel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="240" Margin="80,0,0,0" Background="{DynamicResource CanvasChannel_Background}"/>
+        <Canvas x:Name="CanvasRole" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="240" Background="{DynamicResource CanvasRole_Background}"/>
+        <Canvas x:Name="CanvasChat" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="720" Margin="320,0,0,0" Background="{DynamicResource CanvasChat_Background}">
+            <Canvas x:Name="CanvasMessage" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="640" Height="40" Canvas.Left="40" Canvas.Top="670">
+                <TextBox x:Name="TextBoxMessage" Height="40" TextWrapping="Wrap" Text="TextBox" Width="640" VerticalContentAlignment="Center" Background="{DynamicResource TextBoxMessage_Background}" Foreground="{DynamicResource TextBoxMessage_Foreground}" FontSize="14"/>
+
+            </Canvas>
+
+        </Canvas>
+
     </Grid>
 </Page>

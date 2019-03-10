@@ -20,6 +20,12 @@ namespace Discord_win {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+            Begin();
+        }
+        public void Begin() {
+            Program.mainWindow = this;
+            Program.Initialize();
+            this.MainFrame.Navigate(Program.loginPage);
         }
     }
 }

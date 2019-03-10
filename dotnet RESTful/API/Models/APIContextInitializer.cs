@@ -9,10 +9,10 @@ namespace API.Models {
         protected override void Seed(APIContext context) {
             // 1. User
             var users = new List<User> {
-                new User{Email="daophilac@gmail.com",UserName="peanut",FirstName="Đào Phi",LastName="Lạc",Gender=Gender.Male,Image=null},
-                new User{Email="daophilac1@gmail.com",UserName="peanut",FirstName="Đào Phi",LastName="Lạc",Gender=Gender.Male,Image=null},
-                new User{Email="lucknight@gmail.com",UserName="lucknight",FirstName="luck",LastName="night",Gender=Gender.Male,Image=null},
-                new User{Email="eddie@gmail.com",UserName="eddie",FirstName="ed",LastName="die",Gender=Gender.Male,Image=null}
+                new User{Email="daophilac@gmail.com",Password="123",UserName="peanut",FirstName="Đào Phi",LastName="Lạc",Gender=Gender.Male,Image=null},
+                new User{Email="daophilac1@gmail.com",Password="123",UserName="peanut",FirstName="Đào Phi",LastName="Lạc",Gender=Gender.Male,Image=null},
+                new User{Email="lucknight@gmail.com",Password="123",UserName="lucknight",FirstName="luck",LastName="night",Gender=Gender.Male,Image=null},
+                new User{Email="eddie@gmail.com",Password="123",UserName="eddie",FirstName="ed",LastName="die",Gender=Gender.Male,Image=null}
             };
             users.ForEach(u => context.User.Add(u));
             context.SaveChanges();

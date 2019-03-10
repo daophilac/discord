@@ -28,8 +28,9 @@ namespace API.Models {
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            modelBuilder.Entity<Role>().HasRequired<Server>(s => s.Server).WithMany().WillCascadeOnDelete(false);
-            modelBuilder.Entity<ServerUser>().HasRequired<Server>(s => s.Server).WithMany().WillCascadeOnDelete(false);
+            modelBuilder.Entity<Server>().HasRequired<User>(s => s.User).WithMany().WillCascadeOnDelete(false);
+            modelBuilder.Entity<Role>().HasRequired<Server>(r => r.Server).WithMany().WillCascadeOnDelete(false);
+            modelBuilder.Entity<ServerUser>().HasRequired<Server>(su => su.Server).WithMany().WillCascadeOnDelete(false);
         }
     }
 }

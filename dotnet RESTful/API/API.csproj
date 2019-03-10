@@ -175,6 +175,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903101745386_APIContext.cs" />
+    <Compile Include="Migrations\201903101745386_APIContext.Designer.cs">
+      <DependentUpon>201903101745386_APIContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\APIContext.cs" />
     <Compile Include="Models\APIContextInitializer.cs" />
     <Compile Include="Models\Channel.cs" />
@@ -272,6 +277,11 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201903101745386_APIContext.resx">
+      <DependentUpon>201903101745386_APIContext.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

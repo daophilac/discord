@@ -8,11 +8,15 @@ using System.Web;
 namespace API.Models {
     public class Message {
         [Key]
+        public int MessageID { get; set; }
         public int ChannelID { get; set; }
         public int UserID { get; set; }
         public string Content { get; set; }
         public DateTime Time { get; set; }
 
+
+        [ForeignKey("ChannelID")]
+        public Channel Channel { get; set; }
         [ForeignKey("UserID")]
         public User User { get; set; }
     }

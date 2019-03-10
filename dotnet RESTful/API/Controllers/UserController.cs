@@ -15,8 +15,18 @@ namespace API.Controllers
     public class UserController : ApiController
     {
         private APIContext db = new APIContext();
+        [HttpGet]
+        [Route("api/user/login/{email}/{password}")]
+        public IHttpActionResult Login(string email, string password) {
+            var user = from u in db.User where u.Email == email && u.Password == password select u;
+            if (user == null) {
+                return NotFound();
+            }
+            return Ok(user.First());
+        }
 
         // GET: api/User
+        [Route("api/user/all")]
         public IQueryable<User> GetUsers()
         {
             return db.User;
@@ -24,11 +34,9 @@ namespace API.Controllers
 
         // GET: api/User/5
         [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(int id)
-        {
+        public IHttpActionResult GetUser(int id) {
             User user = db.User.Find(id);
-            if (user == null)
-            {
+            if (user == null) {
                 return NotFound();
             }
 
