@@ -9,6 +9,7 @@
       Title="MainPage">
 
     <Grid>
+        
         <Canvas x:Name="CanvasServer" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="80" Background="{DynamicResource CanvasServer_Background}"/>
         <Canvas x:Name="CanvasChannel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="240" Margin="80,0,0,0" Background="{DynamicResource CanvasChannel_Background}"/>
         <Canvas x:Name="CanvasRole" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="240" Background="{DynamicResource CanvasRole_Background}"/>

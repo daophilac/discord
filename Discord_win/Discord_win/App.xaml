@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="Resources/Interface_dark.xaml" />
                 <ResourceDictionary Source="Resources/Route.xaml" />
                 <ResourceDictionary Source="Resources/Notification.xaml" />
+                <ResourceDictionary Source="Resources/ConstraintLayout.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
