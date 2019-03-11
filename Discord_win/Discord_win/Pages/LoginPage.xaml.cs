@@ -27,5 +27,11 @@ namespace Discord_win.Pages {
         private void ButtonLogin_Click(object sender, RoutedEventArgs e) {
             Login();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            //Program.mainWindow.MainFrame.
+            MainWindow a = Program.mainWindow;
+           // Program.mainWindow.MainGrid.
+        }
     }
 }

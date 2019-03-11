@@ -26,10 +26,17 @@ namespace Discord_win {
             Program.mainWindow = this;
             Program.Initialize();
             this.MainFrame.Navigate(Program.loginPage);
+
+            //Program.programStarting = false;
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e) {
             Program.mainPage.ChangeSize();
+        }
+
+        private void Window_ContentRendered(object sender, EventArgs e) {
+            this.SizeChanged += this.Window_SizeChanged;
+            
         }
     }
 }

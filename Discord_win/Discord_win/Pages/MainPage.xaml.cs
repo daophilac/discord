@@ -39,17 +39,13 @@ namespace Discord_win.Pages {
             this.CanvasMessageTotalPaddingLeftRight = (int)Application.Current.FindResource("CanvasMessageTotalPaddingLeftRight");
         }
         public void ChangeSize() {
-            this.Width = Program.mainWindow.ActualWidth;
-            this.Height = Program.mainWindow.ActualHeight;
-            this.CanvasChat.Width = this.ActualWidth - (this.CanvasServerWidth + this.CanvasChannelWidth + this.CanvasRoleWidth);
-            this.CanvasMessage.Width = this.CanvasChat.ActualWidth - this.CanvasMessageTotalPaddingLeftRight;
-            this.TextBoxMessage.Width = this.CanvasMessage.ActualWidth;
-        }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e) {
-            this.CanvasChat.Width = this.ActualWidth - (this.CanvasServerWidth + this.CanvasChannelWidth + this.CanvasRoleWidth);
-            this.CanvasMessage.Width = this.CanvasChat.ActualWidth - this.CanvasMessageTotalPaddingLeftRight;
-            this.TextBoxMessage.Width = this.CanvasMessage.ActualWidth;
+            Program.mainWindow.MainFrame.Width = Program.mainWindow.MainGrid.ActualWidth;
+            Program.mainWindow.MainFrame.Height = Program.mainWindow.MainGrid.ActualHeight;
+            this.Width = Program.mainWindow.MainGrid.ActualWidth;
+            this.Height = Program.mainWindow.MainGrid.ActualHeight;
+            this.CanvasChat.Width = this.Width - (this.CanvasServerWidth + this.CanvasChannelWidth + this.CanvasRoleWidth);
+            this.CanvasMessage.Width = this.CanvasChat.Width - this.CanvasMessageTotalPaddingLeftRight;
+            this.TextBoxMessage.Width = this.CanvasMessage.Width;
         }
     }
 }

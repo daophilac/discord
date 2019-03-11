@@ -49,7 +49,6 @@ namespace Discord_win {
             //
             loginPage = new LoginPage();
             mainPage = new MainPage();
-            //mainPage.ShowsNavigationUI = false;
 
             //
             NotificationInvalidEmailOrPassword = Application.Current.FindResource("NotificationInvalidEmailOrPassword").ToString();

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Discord_win"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280" MinWidth="1280" MinHeight="720" SizeChanged="Window_SizeChanged">
-    <Grid>
-        <Frame x:Name="MainFrame" x:FieldModifier="public" Content="Frame" Height="720" Width="1280" NavigationUIVisibility="Hidden"/>
+        Title="MainWindow" SizeToContent="WidthAndHeight" MinWidth="1280" MinHeight="720" ContentRendered="Window_ContentRendered">
+    <Grid x:Name="MainGrid">
+        <Frame x:Name="MainFrame" Content="Frame" Height="720" Width="1280" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
