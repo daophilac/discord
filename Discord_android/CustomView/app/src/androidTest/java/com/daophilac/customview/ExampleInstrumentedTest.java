@@ -1,4 +1,4 @@
-package com.example.customview;
+package com.daophilac.customview;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

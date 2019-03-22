@@ -1,4 +1,4 @@
-package com.example.customview;
+package com.daophilac.customview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

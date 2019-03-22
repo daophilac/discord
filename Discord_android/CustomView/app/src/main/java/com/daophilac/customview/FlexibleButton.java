@@ -1,4 +1,4 @@
-package com.example.customview;
+package com.daophilac.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -55,8 +55,6 @@ public class FlexibleButton extends View {
     private int textPaddingTop;
     private int textPaddingRight;
     private int textPaddingBottom;
-    private int noTextWidth;
-    private int noTextHeight;
     private int shape;
     private int drawableScaleMode;
 
@@ -115,24 +113,7 @@ public class FlexibleButton extends View {
         this.textPaint.setTextSize(this.textSize);
         this.textPaint.setColor(typedArray.getColor(R.styleable.FlexibleButton_text_color, Default.TEXT_COLOR));
 
-        //this.width = getWidth();//?????????????????????
-        //this.height = getHeight();//???????????????????
-//        this.paddingLeft = getPaddingLeft();
-//        this.paddingTop = getPaddingTop();
-//        this.paddingRight = getPaddingRight();
-//        this.paddingBottom = getPaddingBottom();
-//        this.rect = new Rect();
-//        this.rect.left = this.paddingLeft;
-//        this.rect.top = this.paddingTop;
-//        this.rect.right = this.width - this.paddingRight;
-//        this.rect.bottom = this.height - this.paddingBottom;
-//        ViewGroup.LayoutParams a = this.getLayoutParams();
-//        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) this.getLayoutParams();
-//        this.marginLeft = ((MarginLayoutParams)getLayoutParams()).leftMargin;
-//        this.marginTop = ((MarginLayoutParams)getLayoutParams()).topMargin;
-//        this.marginRight = ((MarginLayoutParams)getLayoutParams()).rightMargin;
-//        this.marginBottom = ((MarginLayoutParams)getLayoutParams()).bottomMargin;
-
+        /////////////////////////////////////////////////////////////////
         if(typedArray.hasValue(R.styleable.FlexibleButton_text_padding)){
             this.textPaddingLeft = this.textPadding;
             this.textPaddingTop = this.textPadding;
@@ -141,55 +122,28 @@ public class FlexibleButton extends View {
         }
         if(this.text != null){
             this.hasText = true;
-            this.textPaint.setTextAlign(Paint.Align.LEFT);
-            //getLef
         }
         else{
             this.hasText = false;
         }
-
-
-
-
-
-
-
-
-
-
-//        this.paddingLeft = this.getPaddingLeft();
-//        this.paddingTop = this.getPaddingTop();
-//        this.paddingRight = this.getPaddingRight();
-//        this.paddingBottom = this.getPaddingBottom();
-//        Log.v("khoailanglac", String.valueOf(this.paddingLeft));
-//        Log.v("khoailanglac", String.valueOf(this.paddingTop));
-//        Log.v("khoailanglac", String.valueOf(this.paddingRight));
-//        Log.v("khoailanglac", String.valueOf(this.paddingBottom));
         typedArray.recycle();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //this.width = getWidth();
-        //this.height = getHeight();
         switch(this.shape){
             case Shape.RECTANGLE:
                 drawRectangleButton(canvas);
                 break;
+            case Shape.CIRCLE:
+                drawCircleButton(canvas);
+                break;
         }
-//        if(this.shape == Shape.RECTANGLE){
-//            canvas.drawRect(this.paddingLeft,this.paddingTop,200 - this.paddingRight,200 - this.paddingBottom, this.shapePaint);
-//
-//        }
-//        else{
-//            canvas.drawCircle(100,100,100, this.shapePaint);
-//        }
     }
     protected void drawRectangleButton(Canvas canvas){
         if(this.hasText){
             canvas.drawText(this.text, this.textPaddingLeft, this.textSize, this.textPaint);
-
         }
         if(this.centerParent){
             float pivotX = ((View)getParent()).getPivotX();
@@ -197,6 +151,9 @@ public class FlexibleButton extends View {
             setX(pivotX - (float)(this.actualWidth / 2));
             setY(pivotY - (float)(this.actualHeight / 2));      // TODO
         }
+    }
+    protected void drawCircleButton(Canvas canvas){
+
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -242,13 +199,16 @@ public class FlexibleButton extends View {
         }
         this.actualWidth += this.increaseWidthAmount;
         this.actualHeight += this.increaseHeightAmount;
-
         setMeasuredDimension(this.actualWidth, this.actualHeight);
     }
+
+    // TODO: beta
     public void increaseWidth(int amount){
         this.increaseWidthAmount += amount;
         requestLayout();
     }
+
+    // TODO: beta
     public void increaseHeight(int amount){
         this.increaseHeightAmount += amount;
         requestLayout();

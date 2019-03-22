@@ -1,4 +1,4 @@
-package com.example.customview;
+package com.daophilac.customview;
 
 import org.junit.Test;
 
