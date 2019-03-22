@@ -24,12 +24,21 @@
         <attr name="text_paddingTop" format="integer"/>
         <attr name="text_paddingRight" format="integer"/>
         <attr name="text_paddingBottom" format="integer"/>
+        <attr name="text_horizontalAlign" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+            <enum name="center" value="2"/>
+        </attr>
+        <attr name="text_verticalAlign" format="enum">
+            <enum name="top" value="0"/>
+            <enum name="bottom" value="1"/>
+            <enum name="center" value="2"/>
+        </attr>
         <attr name="color_fillStyle" format="enum">
             <enum name="fill" value="0"/>
             <enum name="stroke" value="1"/>
             <enum name="fill_and_stroke" value="2"/>
         </attr>
-
         <attr name="drawable" format="string"/>
         <attr name="drawable_scaleMode" format="enum">
             <enum name="origin" value="0"/>

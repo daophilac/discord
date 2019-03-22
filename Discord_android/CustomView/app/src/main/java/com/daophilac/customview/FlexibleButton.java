@@ -15,7 +15,16 @@ class Shape{
     static final int SQUARE = 1;
     static final int CIRCLE = 2;
 }
-
+class TextHorizontalAlign{
+    static final int LEFT = 0;
+    static final int RIGHT = 1;
+    static final int CENTER = 2;
+}
+class TextVerticalAlign{
+    static final int TOP = 0;
+    static final int BOTTOM = 1;
+    static final int CENTER = 2;
+}
 class DrawableScaleMode {
     static final int ORIGIN = 0;
     static final int CROP_FIT = 1;
@@ -34,6 +43,8 @@ class Default{
     static final int TEXT_PADDING_TOP = 10;
     static final int TEXT_PADDING_RIGHT = 10;
     static final int TEXT_PADDING_BOTTOM = 10;
+    static final int TEXT_HORIZONTAL_ALIGN = TextHorizontalAlign.CENTER;
+    static final int TEXT_VERTICAL_ALIGN = TextVerticalAlign.CENTER;
     static final int TEXT_COLOR = Color.BLACK;
     static final int NO_TEXT_WIDTH = 300;
     static final int NO_TEXT_HEIGHT = 80;
@@ -55,6 +66,8 @@ public class FlexibleButton extends View {
     private int textPaddingTop;
     private int textPaddingRight;
     private int textPaddingBottom;
+    private int textHorizontalAlign;
+    private int textVerticalAlign;
     private int shape;
     private int drawableScaleMode;
 
@@ -105,6 +118,8 @@ public class FlexibleButton extends View {
         this.textPaddingTop = typedArray.getInt(R.styleable.FlexibleButton_text_paddingTop, Default.TEXT_PADDING_TOP);
         this.textPaddingRight = typedArray.getInt(R.styleable.FlexibleButton_text_paddingRight, Default.TEXT_PADDING_RIGHT);
         this.textPaddingBottom = typedArray.getInt(R.styleable.FlexibleButton_text_paddingBottom, Default.TEXT_PADDING_BOTTOM);
+        this.textHorizontalAlign = typedArray.getInt(R.styleable.FlexibleButton_text_horizontalAlign, Default.TEXT_HORIZONTAL_ALIGN);
+        this.textVerticalAlign = typedArray.getInt(R.styleable.FlexibleButton_text_verticalAlign, Default.TEXT_VERTICAL_ALIGN);
         this.drawableScaleMode = typedArray.getInt(R.styleable.FlexibleButton_drawable_scaleMode, Default.DRAWABLE_SCALE_MODE);
 
         /////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +158,31 @@ public class FlexibleButton extends View {
     }
     protected void drawRectangleButton(Canvas canvas){
         if(this.hasText){
-            canvas.drawText(this.text, this.textPaddingLeft, this.textSize, this.textPaint);
+            int xPosition;
+            int yPosition;
+            if(this.textHorizontalAlign == TextHorizontalAlign.LEFT){
+                xPosition = this.textPaddingLeft;
+                this.textPaint.setTextAlign(Paint.Align.LEFT);
+            }
+            else if(this.textHorizontalAlign == TextHorizontalAlign.RIGHT){
+                xPosition = this.actualWidth - this.textPaddingRight;
+                this.textPaint.setTextAlign(Paint.Align.RIGHT);
+            }
+            else{
+                xPosition = this.actualWidth / 2;
+                this.textPaint.setTextAlign(Paint.Align.CENTER);
+            }
+
+            if(this.textVerticalAlign == TextVerticalAlign.TOP){
+                yPosition = this.textPaddingTop + this.textHeight;
+            }
+            else if(this.textVerticalAlign == TextVerticalAlign.BOTTOM){
+                yPosition = this.actualHeight - this.textPaddingBottom;
+            }
+            else{
+                yPosition = this.actualHeight - this.textSize;
+            }
+            canvas.drawText(this.text, xPosition, yPosition, this.textPaint);
         }
         if(this.centerParent){
             float pivotX = ((View)getParent()).getPivotX();
@@ -175,9 +214,10 @@ public class FlexibleButton extends View {
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
         if (widthMode == MeasureSpec.EXACTLY) {
-            if(!this.centerParent){
-                this.actualWidth = widthSize;
-            }
+            this.actualWidth = widthSize;
+//            if(!this.centerParent){
+//
+//            }
         }
         else if (widthMode == MeasureSpec.AT_MOST) {
             // TODO
@@ -187,9 +227,10 @@ public class FlexibleButton extends View {
         }
 
         if (heightMode == MeasureSpec.EXACTLY) {
-            if(!this.centerParent){
-                this.actualHeight = heightSize;
-            }
+            this.actualHeight = heightSize;
+//            if(!this.centerParent){
+//
+//            }
         }
         else if (heightMode == MeasureSpec.AT_MOST) {
             // TODO
