@@ -23,6 +23,7 @@ namespace Discord_win {
         public static MainWindow mainWindow;
         public static LoginPage loginPage;
         public static MainPage mainPage;
+        public static TestPage testPage;
 
 
         public static string NotificationInvalidEmailOrPassword;
@@ -48,6 +49,7 @@ namespace Discord_win {
 
             //
             loginPage = new LoginPage();
+            testPage = new TestPage();
             mainPage = new MainPage();
 
             //

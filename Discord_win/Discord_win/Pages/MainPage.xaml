@@ -9,16 +9,30 @@
       Title="MainPage">
 
     <Grid>
-        <Canvas x:Name="CanvasServer" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="80" Background="{DynamicResource CanvasServer_Background}"/>
-        <Canvas x:Name="CanvasChannel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="240" Margin="80,0,0,0" Background="{DynamicResource CanvasChannel_Background}"/>
-        <Canvas x:Name="CanvasRole" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="240" Background="{DynamicResource CanvasRole_Background}"/>
-        <Canvas x:Name="CanvasChat" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="720" Margin="320,0,0,0" Background="{DynamicResource CanvasChat_Background}">
-            <Canvas x:Name="CanvasMessage" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="640" Height="40" Canvas.Left="40" Canvas.Bottom="20">
-                <TextBox x:Name="TextBoxMessage" Height="40" TextWrapping="Wrap" Text="TextBox" Width="640" VerticalContentAlignment="Center" Canvas.Bottom="0" Background="{DynamicResource TextBoxMessage_Background}" Foreground="{DynamicResource TextBoxMessage_Foreground}" FontSize="14"/>
+        <DockPanel>
+            <Canvas x:Name="CanvasServer"  DockPanel.Dock="Left" Width="80" Background="{DynamicResource ServerSection_Background}">
+                <Button Content="Button" Width="75" Click="Button_Click"/>
 
             </Canvas>
-
-        </Canvas>
-
+            <Canvas x:Name="CanvasChannel" DockPanel.Dock="Left" Width="240" Background="{DynamicResource ChannelSection_Background}"/>
+            <Canvas x:Name="CanvasRole" DockPanel.Dock="Right" Width="240" Background="{DynamicResource RoleSection_Background}"/>
+            <DockPanel Height="40" DockPanel.Dock="Bottom">
+                <Canvas Width="40" DockPanel.Dock="Left" Background="{DynamicResource MessageSection_Background}"/>
+                <Canvas Width="40" DockPanel.Dock="Right" Background="{DynamicResource MessageSection_Background}"/>
+                <TextBox x:Name="TextBoxMessage" Height="40" TextWrapping="Wrap" Text="TextBox" VerticalContentAlignment="Center"  FontSize="14" Background="{DynamicResource TextBoxChat_Background}" Foreground="{DynamicResource TextBoxChat_Foreground}"/>
+            </DockPanel>
+            <DockPanel x:Name="DockPanelMessage" Background="{DynamicResource MessageSection_Background}">
+                <Frame 
+                    Content="" 
+                    Name="MessageFrame"
+                    NavigationUIVisibility="Hidden"/>
+            </DockPanel>
+            <!--<Canvas x:Name="CanvasMessage" Background="{DynamicResource MessageSection_Background}">
+                <Frame 
+                    Content="" 
+                    Name="ChatFrame"
+                    NavigationUIVisibility="Hidden"/>
+            </Canvas>-->
+        </DockPanel>
     </Grid>
 </Page>

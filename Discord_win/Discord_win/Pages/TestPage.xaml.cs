@@ -13,23 +13,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Discord_win {
+namespace Discord_win.Pages
+{
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TestPage.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        public MainWindow() {
+    public partial class TestPage : Page
+    {
+        public TestPage()
+        {
             InitializeComponent();
-            Begin();
-        }
-        public void Begin() {
-            Program.mainWindow = this;
-            Program.Initialize();
-            this.MainFrame.Navigate(Program.loginPage);
-            //this.MainFrame.Navigate(Program.mainPage);
+            //TextBox tb = new TextBox();
+
+            //tb.Text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+            //abc.Children.Add(tb);
         }
 
-        private void Window_ContentRendered(object sender, EventArgs e) {
+        private void Canvas_Initialized(object sender, EventArgs e) {
+            
         }
     }
 }

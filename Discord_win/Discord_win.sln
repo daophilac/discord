@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{3E030F89-F3B8-4689-AF2E-0B8FDB3982D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyOrNot", "ConsoleApp1\BuyOrNot.csproj", "{3E030F89-F3B8-4689-AF2E-0B8FDB3982D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord_win", "Discord_win\Discord_win.csproj", "{6C6C3A3B-168B-4E27-A6E4-153EC3E7DF64}"
 EndProject

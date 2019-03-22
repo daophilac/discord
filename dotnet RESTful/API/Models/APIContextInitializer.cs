@@ -14,14 +14,14 @@ namespace API.Models {
                 new User{Email="lucknight@gmail.com",Password="123",UserName="lucknight",FirstName="luck",LastName="night",Gender=Gender.Male,Image=null},
                 new User{Email="eddie@gmail.com",Password="123",UserName="eddie",FirstName="ed",LastName="die",Gender=Gender.Male,Image=null}
             };
-            users.ForEach(u => context.User.Add(u));
+            users.ForEach(u => context.User.Add(u));    
             context.SaveChanges();
 
             // 2. Server
             var servers = new List<Server> {
-                new Server{Name="Final Fantasy",AdminID=1},
-                new Server{Name="Ys",AdminID=1},
-                new Server{Name="Hentai Maiden",AdminID=2}
+                new Server{Name="Final Fantasy",Image="server_1.png",AdminID=1},
+                new Server{Name="Ys",Image="server_2.png",AdminID=1},
+                new Server{Name="Hentai Maiden",Image="server_3.png",AdminID=2}
             };
             servers.ForEach(s => context.Server.Add(s));
             context.SaveChanges();

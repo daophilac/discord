@@ -9,24 +9,59 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using API.Models;
+using API.Test;
 
 namespace API.Controllers
 {
     public class UserController : ApiController
     {
         private APIContext db = new APIContext();
+        private IUserTest iUser = new UserTest();
+        [HttpPost]
+        [Route("api/user/insertUser")]
+        public string insertUser(User user) {
+            return iUser.insertUser(user);
+        }
         [HttpGet]
-        [Route("api/user/login/{email}/{password}")]
-        public IHttpActionResult Login(string email, string password) {
+        [Route("api/user/login2/{email}/{password}")]
+        public IHttpActionResult Login2(string email, string password) {
             var user = from u in db.User where u.Email == email && u.Password == password select u;
             if (user == null) {
                 return NotFound();
             }
             return Ok(user.First());
         }
-
+        [HttpPost]
+        [Route("api/user/login")]
+        [ResponseType(typeof(User))]
+        public IHttpActionResult Login(User userFromClient) {
+            var user = from u in db.User where u.Email == userFromClient.Email && u.Password == userFromClient.Password select u;
+            if (user == null) {
+                return NotFound();
+            }
+            return Ok(user.First());
+        }
+        [HttpPost]
+        [Route("api/user/login3")]
+        [ResponseType(typeof(User))]
+        public IHttpActionResult Login3(User userFromClient) {
+            var user = from u in db.User where u.Email == userFromClient.Email && u.Password == userFromClient.Password select u;
+            if (user == null) {
+                return NotFound();
+            }
+            return Ok(user.First());
+        }
+        [HttpGet]
+        [Route("api/user/taotaikhoan/{email}/{password}/{username}/{firstname}/{lastname}/{image}")]
+        public void taotaikhoan(string email, string password, string username, string firstname, string lastname, string image) {
+            User u = new User { Email = email, Password = password, UserName = username, FirstName = firstname, LastName = lastname, Gender = Gender.Female, Image = null };
+            APIContext context = new APIContext();
+            context.User.Add(u);
+            context.SaveChanges();
+        }
         // GET: api/User
         [Route("api/user/all")]
+        [HttpGet]
         public IQueryable<User> GetUsers()
         {
             return db.User;
@@ -80,6 +115,7 @@ namespace API.Controllers
 
         // POST: api/User
         [ResponseType(typeof(User))]
+        [Route("api/user/postuser")]
         public IHttpActionResult PostUser(User user)
         {
             if (!ModelState.IsValid)
@@ -89,8 +125,8 @@ namespace API.Controllers
 
             db.User.Add(user);
             db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = user.UserID }, user);
+            return Ok();
+            //return CreatedAtRoute("DefaultApi", new { id = user.UserID }, user);
         }
 
         // DELETE: api/User/5

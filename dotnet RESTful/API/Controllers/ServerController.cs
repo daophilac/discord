@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,10 +13,22 @@ using API.Models;
 
 namespace API.Controllers
 {
-    public class ServerController : ApiController
-    {
+    public class ServerController : ApiController {
         private APIContext db = new APIContext();
-
+        
+        [HttpGet]
+        [Route("api/server/getserversbyuser/{userID}")]
+        public IQueryable<Server> GetServersByUser(int userID) {
+            var servers = from server in db.Server where server.ServerID == userID select server;
+            return servers;
+        }
+        [HttpGet]
+        [Route("api/server/serverimage/{id}")]
+        public IHttpActionResult GetServerImage(int id) {
+            Server server = db.Server.Find(1);
+            string imagePath = AppDomain.CurrentDomain.BaseDirectory + "Images\\" + server.Image;
+            return new FileSender(Request, imagePath);
+        }
         // GET: api/Server
         public IQueryable<Server> GetServer()
         {
