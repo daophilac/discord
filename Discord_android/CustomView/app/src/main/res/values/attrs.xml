@@ -16,6 +16,7 @@
             <enum name="square" value="1"/>
             <enum name="circle" value="2"/>
         </attr>
+        <attr name="diameter" format="integer"/>
         <attr name="shape_color" format="color"/>
         <attr name="text_size" format="integer"/>
         <attr name="text_color" format="color"/>

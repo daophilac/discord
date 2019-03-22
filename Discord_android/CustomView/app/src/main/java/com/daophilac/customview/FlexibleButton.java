@@ -37,6 +37,7 @@ class Default{
     static final Paint.Style PAINT_STYLE = Paint.Style.FILL;
     static final int SHAPE = Shape.RECTANGLE;
     static final int SHAPE_COLOR = Color.GREEN;
+    static final int DIAMETER = 300;
     static final int TEXT_SIZE = 32;
     static final int TEXT_PADDING = 20;
     static final int TEXT_PADDING_LEFT = 10;
@@ -57,6 +58,7 @@ public class FlexibleButton extends View {
     private Paint shapePaint;
     private Paint textPaint;
     private Rect textBound;
+    private int diameter;
     //private Rect rect;              //TODO: This one is redundant
     private String text;
     private boolean hasText;
@@ -111,6 +113,7 @@ public class FlexibleButton extends View {
         this.textBound = new Rect();
         this.centerParent = typedArray.getBoolean(R.styleable.FlexibleButton_centerParent, Default.CENTER_PARENT);
         this.shape = typedArray.getInt(R.styleable.FlexibleButton_shape, Default.SHAPE);
+        this.diameter = typedArray.getInt(R.styleable.FlexibleButton_diameter, Default.DIAMETER);
         this.text = typedArray.getString(R.styleable.FlexibleButton_text);
         this.textSize = typedArray.getInt(R.styleable.FlexibleButton_text_size, Default.TEXT_SIZE);
         this.textPadding = typedArray.getInt(R.styleable.FlexibleButton_text_padding, Default.TEXT_PADDING);
@@ -180,7 +183,7 @@ public class FlexibleButton extends View {
                 yPosition = this.actualHeight - this.textPaddingBottom;
             }
             else{
-                yPosition = this.actualHeight - this.textSize;
+                yPosition = this.actualHeight / 2 + this.textHeight / 2;
             }
             canvas.drawText(this.text, xPosition, yPosition, this.textPaint);
         }
@@ -192,55 +195,134 @@ public class FlexibleButton extends View {
         }
     }
     protected void drawCircleButton(Canvas canvas){
+        if(this.hasText){
+            int xPosition;
+            int yPosition;
+            if(this.textHorizontalAlign == TextHorizontalAlign.LEFT){
+                xPosition = this.textPaddingLeft;
+                this.textPaint.setTextAlign(Paint.Align.LEFT);
+            }
+            else if(this.textHorizontalAlign == TextHorizontalAlign.RIGHT){
+                xPosition = this.actualWidth - this.textPaddingRight;
+                this.textPaint.setTextAlign(Paint.Align.RIGHT);
+            }
+            else{
+                xPosition = this.actualWidth / 2;
+                this.textPaint.setTextAlign(Paint.Align.CENTER);
+            }
 
+            if(this.textVerticalAlign == TextVerticalAlign.TOP){
+                yPosition = this.textPaddingTop + this.textHeight;
+            }
+            else if(this.textVerticalAlign == TextVerticalAlign.BOTTOM){
+                yPosition = this.actualHeight - this.textPaddingBottom;
+            }
+            else{
+                yPosition = this.actualHeight / 2 + this.textHeight / 2;
+            }
+            this.textPaint.setTextAlign(Paint.Align.CENTER);
+            xPosition = this.actualWidth / 2;
+            yPosition = this.actualHeight / 2 + this.textHeight / 2;
+            canvas.drawText(this.text, xPosition, yPosition, this.textPaint);
+            this.shapePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            this.shapePaint.setColor(0x12312312);
+            setBackgroundColor(0x00000000);
+            canvas.drawCircle(this.diameter / 2, this.diameter / 2, this.diameter, this.shapePaint);
+        }
+        if(this.centerParent){
+            float pivotX = ((View)getParent()).getPivotX();
+            float pivotY = ((View)getParent()).getPivotY();
+            setX(pivotX - (float)(this.actualWidth / 2));
+            setY(pivotY - (float)(this.actualHeight / 2));      // TODO
+        }
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if(this.hasText){
-            this.textPaint.getTextBounds(this.text, 0, text.length(), this.textBound);
-            this.textWidth = this.textBound.width();
-            this.textHeight = this.textBound.height();
-            this.actualWidth = this.textWidth + this.textPaddingLeft + this.textPaddingRight;
-            this.actualHeight = this.textHeight + this.textPaddingTop + this.textPaddingBottom; // TODO
-        }
-        else{
-            this.actualWidth = Default.NO_TEXT_WIDTH;
-            this.actualHeight = Default.NO_TEXT_HEIGHT;
-        }
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        if(this.shape == Shape.RECTANGLE){
+            if(this.hasText){
+                this.textPaint.getTextBounds(this.text, 0, text.length(), this.textBound);
+                this.textWidth = this.textBound.width();
+                this.textHeight = this.textBound.height();
+                this.actualWidth = this.textWidth + this.textPaddingLeft + this.textPaddingRight;
+                this.actualHeight = this.textHeight + this.textPaddingTop + this.textPaddingBottom; // TODO
+            }
+            else{
+                this.actualWidth = Default.NO_TEXT_WIDTH;
+                this.actualHeight = Default.NO_TEXT_HEIGHT;
+            }
+            int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+            int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+            int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+            int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        if (widthMode == MeasureSpec.EXACTLY) {
-            this.actualWidth = widthSize;
-//            if(!this.centerParent){
-//
+            if (widthMode == MeasureSpec.EXACTLY) {
+                this.actualWidth = widthSize;
+            }
+            else if (widthMode == MeasureSpec.AT_MOST) {
+                // TODO
+            }
+            else {
+                // TODO
+            }
+
+            if (heightMode == MeasureSpec.EXACTLY) {
+                this.actualHeight = heightSize;
+            }
+            else if (heightMode == MeasureSpec.AT_MOST) {
+                // TODO
+            }
+            else {
+                // TODO
+            }
+            this.actualWidth += this.increaseWidthAmount;
+            this.actualHeight += this.increaseHeightAmount;
+            setMeasuredDimension(this.actualWidth, this.actualHeight);
+        }
+        else if(this.shape == Shape.CIRCLE){
+            if(this.hasText){
+                this.textPaint.getTextBounds(this.text, 0, text.length(), this.textBound);
+                this.textWidth = this.textBound.width();
+                this.textHeight = this.textBound.height();
+                this.actualWidth = this.textWidth + this.textPaddingLeft + this.textPaddingRight;
+                //this.actualHeight = this.textHeight + this.textPaddingTop + this.textPaddingBottom; // TODO
+            }
+            else{
+                this.actualWidth = Default.NO_TEXT_WIDTH;
+                //this.actualHeight = Default.NO_TEXT_HEIGHT;
+            }
+            int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+            int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+            //int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+            //int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+            if (widthMode == MeasureSpec.EXACTLY) {
+                this.actualWidth = widthSize;
+            }
+            else if (widthMode == MeasureSpec.AT_MOST) {
+                // TODO
+            }
+            else {
+                // TODO
+            }
+
+//            if (heightMode == MeasureSpec.EXACTLY) {
+//                this.actualHeight = heightSize;
 //            }
-        }
-        else if (widthMode == MeasureSpec.AT_MOST) {
-            // TODO
-        }
-        else {
-            // TODO
+//            else if (heightMode == MeasureSpec.AT_MOST) {
+//                // TODO
+//            }
+//            else {
+//                // TODO
+//            }
+            this.actualWidth += this.increaseWidthAmount;
+            //this.actualHeight += this.increaseHeightAmount;
+            this.actualHeight = this.actualWidth;
+            this.diameter = this.actualWidth;
+            setMeasuredDimension(this.diameter, this.diameter);
         }
 
-        if (heightMode == MeasureSpec.EXACTLY) {
-            this.actualHeight = heightSize;
-//            if(!this.centerParent){
-//
-//            }
-        }
-        else if (heightMode == MeasureSpec.AT_MOST) {
-            // TODO
-        }
-        else {
-            // TODO
-        }
-        this.actualWidth += this.increaseWidthAmount;
-        this.actualHeight += this.increaseHeightAmount;
-        setMeasuredDimension(this.actualWidth, this.actualHeight);
+
     }
 
     // TODO: beta
