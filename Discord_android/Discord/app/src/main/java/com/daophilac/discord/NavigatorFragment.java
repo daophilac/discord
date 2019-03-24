@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.daophilac.discord.customview.ChannelTextView;
 import com.daophilac.discord.customview.ServerButton;
+import com.daophilac.discord.models.Channel;
 import com.daophilac.discord.models.Server;
 
 import java.util.List;
@@ -72,19 +74,47 @@ public class NavigatorFragment extends Fragment {
         this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller();
     }
-    public void initializeServerSection(List<Server> listServer){// TODO:
+    public void initializeServerSection(List<Server> listServer){
         ServerButton serverButton;
         for(int i = 0; i < listServer.size(); i++){
             serverButton = new ServerButton(this.getContext());
-            serverButton.setText(listServer.get(i).getName());
             serverButton.setServerID(listServer.get(i).getServerID());
+            serverButton.setText(listServer.get(i).getName());
+            serverButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i = ((ServerButton)v).getServerID(); // TODO: check this one to see if it actually returns serverID
+                    loadListChannel(((ServerButton)v).getServerID());
+                }
+            });
             this.linearLayoutServer.addView(serverButton);
         }
     }
-    public void handleChannelSection(){
+    public void initializeChannelSection(List<Channel> listChannel){
+        ChannelTextView channelTextView;
+        for(int i = 0; i < listChannel.size(); i++){
+            channelTextView = new ChannelTextView(this.getContext());
+            channelTextView.setChannelID(listChannel.get(i).getChannelID());
+            channelTextView.setText(listChannel.get(i).getName());
+            this.linearLayoutChannel.addView(channelTextView);
+        }
     }
     private void loadListChannel(int serverID){
-        
+        this.backgroundHandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                String json = msg.obj.toString();
+                inventory.storeListChannel(msg.obj.toString());
+                initializeChannelSection(inventory.loadListChannel());
+            }
+        };
+        this.apiCaller.setHandler(this.backgroundHandler);
+        this.apiCaller.setRequestMethod("GET");
+        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetChannelsByServer, serverID));
+        this.apiCaller.setRequestURL(requestURL);
+        this.threadBackground = new Thread(this.apiCaller);
+        this.threadBackground.start();
     }
     private void loadListServer(){
         this.backgroundHandler = new Handler(Looper.getMainLooper()){

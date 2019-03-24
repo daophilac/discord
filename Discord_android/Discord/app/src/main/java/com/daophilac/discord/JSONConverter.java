@@ -1,5 +1,6 @@
 package com.daophilac.discord;
 
+import com.daophilac.discord.models.Channel;
 import com.daophilac.discord.models.Server;
 import com.daophilac.discord.models.User;
 import com.google.gson.Gson;
@@ -10,6 +11,15 @@ import java.util.List;
 
 public class JSONConverter {
     Gson gson = new Gson();
+    public User toUser(String json){
+        User user = gson.fromJson(json, User.class);
+        return user;
+    }
+    public List<User> toListUser(String json){
+        Type listUserType = new TypeToken<List<User>>(){}.getType();
+        List<User> listUser = gson.fromJson(json, listUserType);
+        return listUser;
+    }
     public Server toServer(String json){
         Server server = gson.fromJson(json, Server.class);
         return server;
@@ -19,13 +29,13 @@ public class JSONConverter {
         List<Server> listServer = gson.fromJson(json, listServerType);
         return listServer;
     }
-    public User toUser(String json){
-        User user = gson.fromJson(json, User.class);
-        return user;
+    public Channel toChannel(String json){
+        Channel channel = gson.fromJson(json, Channel.class);
+        return channel;
     }
-    public List<User> toListUser(String json){
-        Type listUserType = new TypeToken<List<User>>(){}.getType();
-        List<User> listUser = gson.fromJson(json, listUserType);
-        return listUser;
+    public List<Channel> toListChannel(String json){
+        Type listChannelType = new TypeToken<List<Channel>>(){}.getType();
+        List<Channel> listChannel = gson.fromJson(json, listChannelType);
+        return listChannel;
     }
 }

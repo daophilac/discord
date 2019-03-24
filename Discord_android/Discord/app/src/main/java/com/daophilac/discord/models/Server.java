@@ -1,40 +1,40 @@
 package com.daophilac.discord.models;
 
 public class Server {
-    private int ServerID;
-    private String Name;
-    private String Image;
-    private int AdminID;
+    private int serverID;
+    private String name;
+    private String image;
+    private int adminID;
 
     public int getServerID() {
-        return ServerID;
+        return serverID;
     }
 
     public void setServerID(int serverID) {
-        ServerID = serverID;
+        this.serverID = serverID;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public int getAdminID() {
-        return AdminID;
+        return adminID;
     }
 
     public void setAdminID(int adminID) {
-        AdminID = adminID;
+        this.adminID = adminID;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
     public void setImage(String image) {
-        Image = image;
+        this.image = image;
     }
 }
