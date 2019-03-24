@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.daophilac.discord.customview.ServerButton;
@@ -20,6 +19,11 @@ import java.util.List;
 
 public class NavigatorFragment extends Fragment {
     private View view;
+    private Handler backgroundHandler;
+    private Thread threadBackground;
+    private APICaller apiCaller;
+    private String baseURL;
+    private Inventory inventory;
     private LinearLayout linearLayoutServer;
     private LinearLayout linearLayoutChannel;
     @Nullable
@@ -54,11 +58,19 @@ public class NavigatorFragment extends Fragment {
 //        button.setBackground(new BitmapDrawable(getResources(), bitmap));
 
 
+        loadListServer();
         return this.view;
     }
+    public void setInventory(Inventory inventory){
+        this.inventory = inventory;
+    }
+
     public void initializeGlobalVariable(){
+
         this.linearLayoutServer = this.view.findViewById(R.id.linear_layout_server);
         this.linearLayoutChannel = this.view.findViewById(R.id.linear_layout_channel);
+        this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
+        this.apiCaller = new APICaller();
     }
     public void initializeServerSection(List<Server> listServer){// TODO:
         ServerButton serverButton;
@@ -70,16 +82,25 @@ public class NavigatorFragment extends Fragment {
         }
     }
     public void handleChannelSection(){
-
     }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    private void loadListChannel(int serverID){
+        
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void loadListServer(){
+        this.backgroundHandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                String json = msg.obj.toString();
+                inventory.storeListServer(msg.obj.toString());
+                initializeServerSection(inventory.loadListServer());
+            }
+        };
+        this.apiCaller.setHandler(this.backgroundHandler);
+        this.apiCaller.setRequestMethod("GET");
+        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetServersByUser, this.inventory.loadUser().getUserID()));
+        this.apiCaller.setRequestURL(requestURL);
+        this.threadBackground = new Thread(this.apiCaller);
+        this.threadBackground.start();
     }
 }

@@ -16,6 +16,13 @@ namespace API.Controllers
     {
         private APIContext db = new APIContext();
 
+
+        [HttpGet]
+        [Route("api/channel/getchannelsbyserver/{serverID}")]
+        public IQueryable<Channel> GetChannelsByServer(int serverID) {
+            var channels = from channel in db.Channel where channel.ServerID == serverID select channel;
+            return channels;
+        }
         // GET: api/Channel
         public IQueryable<Channel> GetChannel()
         {

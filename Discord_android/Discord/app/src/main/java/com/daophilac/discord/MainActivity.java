@@ -29,7 +29,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = "com.daophilac.discord";
-    private Locale locale;
+    public static Locale locale;
     private Inventory inventory;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         this.inventory.storeUser(this.getIntent().getStringExtra("jsonUser"));
         writeLogConsole(this.inventory.loadUser().getEmail());
         this.fragmentManager.beginTransaction().replace(R.id.navigation_view, navigatorFragment).commit();////////////////////
-        getListServer();
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
         buttonSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,10 +60,11 @@ public class MainActivity extends AppCompatActivity {
         //deleteAppData();
     }
     private void initializeGlobalVariable(){
-        this.locale = Locale.ENGLISH;// TODO:
+        locale = Locale.ENGLISH;// TODO:
         this.inventory = new Inventory();
         this.drawerLayout = findViewById(R.id.drawer_layout);
         this.navigationView = findViewById(R.id.navigation_view);
+        this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, this.navigationView);
         this.toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.actionBar = getSupportActionBar();
@@ -72,27 +72,12 @@ public class MainActivity extends AppCompatActivity {
         this.actionBar.setHomeAsUpIndicator(R.drawable.ic_navigator);
 
         this.navigatorFragment = new NavigatorFragment();
+        this.navigatorFragment.setInventory(this.inventory);
         this.fragmentManager = getSupportFragmentManager();
         this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller();
     }
-    private void getListServer(){
-        this.backgroundHandler = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                String json = msg.obj.toString();
-                inventory.storeListServer(msg.obj.toString());
-                navigatorFragment.initializeServerSection(inventory.loadListServer());
-            }
-        };
-        this.apiCaller.setHandler(this.backgroundHandler);
-        this.apiCaller.setRequestMethod("GET");
-        String requestURL = this.baseURL.concat(String.format(this.locale, Route.urlGetServersByUser, this.inventory.loadUser().getUserID()));
-        this.apiCaller.setRequestURL(requestURL);
-        this.threadBackground = new Thread(this.apiCaller);
-        this.threadBackground.start();
-    }
+
 
     private void abc(){
         Intent intent = new Intent(this, ThirdActivity.class);
