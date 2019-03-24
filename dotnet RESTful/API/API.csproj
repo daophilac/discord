@@ -170,6 +170,7 @@
     <Compile Include="Controllers\ChannelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\FileSender.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -192,8 +193,6 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\ServerUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\IUserTest.cs" />
-    <Compile Include="Test\UserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

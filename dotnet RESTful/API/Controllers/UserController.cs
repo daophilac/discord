@@ -9,19 +9,12 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using API.Models;
-using API.Test;
 
 namespace API.Controllers
 {
     public class UserController : ApiController
     {
         private APIContext db = new APIContext();
-        private IUserTest iUser = new UserTest();
-        [HttpPost]
-        [Route("api/user/insertUser")]
-        public string insertUser(User user) {
-            return iUser.insertUser(user);
-        }
         [HttpGet]
         [Route("api/user/login2/{email}/{password}")]
         public IHttpActionResult Login2(string email, string password) {

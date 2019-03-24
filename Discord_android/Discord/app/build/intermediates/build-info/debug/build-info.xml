@@ -5,81 +5,125 @@
     build-mode="COLD"
     density="xhdpi"
     format="10"
+    ir-eligibility="R_CLASS_CHANGE"
     plugin-version="3.3.2"
-    timestamp="1553449213998"
+    timestamp="1553459982421"
     token="-3326771077391690235"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="11259" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="825" />
     <task
         name="verifier"
-        duration="0" />
+        duration="1703" />
+
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+        type="SPLIT" />
+    <artifact
+        location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
+        type="SPLIT_MAIN" />
 
     <build
         build-mode="FULL"
-        timestamp="1553421954261"
+        timestamp="1553449534761"
         verifier="FULL_BUILD_REQUESTED" >
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+            type="SPLIT" />
         <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
             type="SPLIT" />
         <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
             type="SPLIT" />
         <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
             type="SPLIT" />
         <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
-            type="SPLIT" />
-        <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
             type="SPLIT" />
         <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
             type="SPLIT_MAIN" />
+    </build>
+    <build
+        build-mode="COLD"
+        ir-eligibility="FIELD_TYPE_CHANGE"
+        timestamp="1553450037080"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            type="SPLIT" />
     </build>
     <build
         build-mode="COLD"
         ir-eligibility="R_CLASS_CHANGE"
-        timestamp="1553443912826"
+        timestamp="1553459982421"
         verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+            type="SPLIT" />
         <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
             type="SPLIT" />
         <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
             type="SPLIT" />
         <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
             type="SPLIT" />
         <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
             type="SPLIT" />
         <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
@@ -88,30 +132,14 @@
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
             type="SPLIT" />
         <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
-            type="SPLIT" />
-    </build>
-    <build
-        build-mode="COLD"
-        ir-eligibility="CLASS_ADDED"
-        timestamp="1553448884153"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
-            type="SPLIT" />
-        <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
             type="SPLIT" />
         <artifact
-            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
             type="SPLIT" />
         <artifact
             location="D:\Desktop\repository\discord\Discord_android\Discord\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
             type="SPLIT_MAIN" />
     </build>
-    <build
-        build-mode="COLD"
-        timestamp="1553449213998"
-        verifier="COLD_SWAP_REQUESTED" />
 
 </instant-run>

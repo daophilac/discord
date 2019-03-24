@@ -23,8 +23,8 @@ public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
     private String requestURL;
     private HashMap<String, String> parameters;
     private Handler handler;
-    private StringBuilder incomingJSON = new StringBuilder();
-    private StringBuilder outgoingJSON = new StringBuilder();
+    private StringBuilder incomingJSON;// = new StringBuilder();
+    private StringBuilder outgoingJSON;// = new StringBuilder();
 
     protected APICaller(){}
     protected APICaller(Handler handler) {
@@ -106,6 +106,7 @@ public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(this.requestMethod);
             if (this.requestMethod.equalsIgnoreCase("POST")) {
+                this.outgoingJSON = new StringBuilder();
                 this.outgoingJSON.append("{");
                 Iterator iterator = this.parameters.entrySet().iterator();
                 Map.Entry pair;
@@ -134,6 +135,7 @@ public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
             int responseCode = httpURLConnection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                this.incomingJSON = new StringBuilder();
                 String line;
                 line = bufferedReader.readLine();
                 while (line != null) {

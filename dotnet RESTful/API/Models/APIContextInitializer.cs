@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using API.Models;
@@ -9,12 +10,12 @@ namespace API.Models {
         protected override void Seed(APIContext context) {
             // 1. User
             var users = new List<User> {
-                new User{Email="daophilac@gmail.com",Password="123",UserName="peanut",FirstName="Đào Phi",LastName="Lạc",Gender=Gender.Male,Image=null},
-                new User{Email="daophilac1@gmail.com",Password="123",UserName="peanut",FirstName="Đào Phi",LastName="Lạc",Gender=Gender.Male,Image=null},
-                new User{Email="lucknight@gmail.com",Password="123",UserName="lucknight",FirstName="luck",LastName="night",Gender=Gender.Male,Image=null},
-                new User{Email="eddie@gmail.com",Password="123",UserName="eddie",FirstName="ed",LastName="die",Gender=Gender.Male,Image=null}
+                new User{Email="daophilac@gmail.com",Password="123",UserName="peanut",FirstName="Đào Phi",LastName="Lạc",Gender=Gender.Male,Image="user_1.png"},
+                new User{Email="daophilac1@gmail.com",Password="123",UserName="peanut",FirstName="Đào Phi",LastName="Lạc",Gender=Gender.Male,Image="user_2.png"},
+                new User{Email="lucknight@gmail.com",Password="123",UserName="lucknight",FirstName="luck",LastName="night",Gender=Gender.Male,Image="user_3.png"},
+                new User{Email="eddie@gmail.com",Password="123",UserName="eddie",FirstName="ed",LastName="die",Gender=Gender.Male,Image="user_4.png"}
             };
-            users.ForEach(u => context.User.Add(u));    
+            users.ForEach(u => context.User.Add(u));
             context.SaveChanges();
 
             // 2. Server
@@ -116,10 +117,18 @@ namespace API.Models {
             channelRolePermissions.ForEach(crp => context.ChannelRolePermission.Add(crp));
             context.SaveChanges();
 
+            // 8. Message
+            var messages = new List<Message> { 
+                new Message{ChannelID=1,UserID=1,Content="This is the first message in final fantasy",Time=DateTime.ParseExact("2019-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=1,UserID=2,Content="And this is the second message in final fantasy",Time=DateTime.ParseExact("2019-01-02 00:00:01", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=1,UserID=3,Content="AAAAAAAAAA",Time=DateTime.ParseExact("2019-01-02 00:00:02", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=2,UserID=1,Content="Another channel in final fantasy",Time=DateTime.ParseExact("2019-01-02 00:00:01", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=2,UserID=1,Content="BBBBBBBBBBBBBB",Time=DateTime.ParseExact("2019-01-02 00:00:02", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=2,UserID=2,Content="Hi there",Time=DateTime.ParseExact("2019-01-02 00:00:03", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
 
-
-
-            
+            };
+            messages.ForEach(m => context.Message.Add(m));
+            context.SaveChanges();
         }
     }
 }

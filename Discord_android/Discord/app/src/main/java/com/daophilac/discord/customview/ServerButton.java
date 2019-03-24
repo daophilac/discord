@@ -4,9 +4,12 @@ package com.daophilac.discord.customview;
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.Button;
 
-public class ServerButton extends AppCompatButton {
+import com.daophilac.discord.MainActivity;
+
+public class ServerButton extends AppCompatButton{
     private int serverID;
     public ServerButton(Context context) {
         super(context);

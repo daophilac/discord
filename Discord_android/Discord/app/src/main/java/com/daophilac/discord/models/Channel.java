@@ -1,31 +1,31 @@
 package com.daophilac.discord.models;
 
 public class Channel {
-    private int channelID;
-    private String name;
-    private int serverID;
+    private int ChannelID;
+    private String Name;
+    private int ServerID;
 
     public int getChannelID() {
-        return channelID;
+        return ChannelID;
     }
 
     public void setChannelID(int channelID) {
-        this.channelID = channelID;
+        this.ChannelID = channelID;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public int getServerID() {
-        return serverID;
+        return ServerID;
     }
 
     public void setServerID(int serverID) {
-        this.serverID = serverID;
+        this.ServerID = serverID;
     }
 }

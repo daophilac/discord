@@ -6,5 +6,5 @@ public final class Route {
     public static final String serverName = "discordserver2";
     public static final String urlLogin = "/api/user/login";
     public static final String urlGetServersByUser = "/api/server/getserversbyuser/%d";
-    public static final String urlGetChannelsByServer = "/api/channel/getchannelsbyserve/%d";
+    public static final String urlGetChannelsByServer = "/api/channel/getchannelsbyserver/%d";
 }

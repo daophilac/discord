@@ -26,7 +26,7 @@ namespace API.Controllers
         [Route("api/server/getserverimage/{id}")]
         public IHttpActionResult GetServerImage(int id) {
             Server server = db.Server.Find(1);
-            string imagePath = AppDomain.CurrentDomain.BaseDirectory + "Images\\" + server.Image;
+            string imagePath = AppDomain.CurrentDomain.BaseDirectory + "Images\\Server\\" + server.Image;
             return new FileSender(Request, imagePath);
         }
         // GET: api/Server

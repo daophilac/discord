@@ -1,5 +1,6 @@
 package com.daophilac.discord;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,6 +29,9 @@ public class NavigatorFragment extends Fragment {
     private Inventory inventory;
     private LinearLayout linearLayoutServer;
     private LinearLayout linearLayoutChannel;
+    private int channelTextColor;
+    private int channelTextSize;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,44 +67,53 @@ public class NavigatorFragment extends Fragment {
         loadListServer();
         return this.view;
     }
-    public void setInventory(Inventory inventory){
+
+    public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
 
-    public void initializeGlobalVariable(){
-
+    public void initializeGlobalVariable() {
         this.linearLayoutServer = this.view.findViewById(R.id.linear_layout_server);
         this.linearLayoutChannel = this.view.findViewById(R.id.linear_layout_channel);
+        this.channelTextColor = Color.WHITE;
+        this.channelTextSize = 20;
         this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller();
     }
-    public void initializeServerSection(List<Server> listServer){
+
+    public void initializeServerSection(List<Server> listServer) {
         ServerButton serverButton;
-        for(int i = 0; i < listServer.size(); i++){
+        for (int i = 0; i < listServer.size(); i++) {
             serverButton = new ServerButton(this.getContext());
             serverButton.setServerID(listServer.get(i).getServerID());
             serverButton.setText(listServer.get(i).getName());
             serverButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int i = ((ServerButton)v).getServerID(); // TODO: check this one to see if it actually returns serverID
-                    loadListChannel(((ServerButton)v).getServerID());
+                    loadListChannel(((ServerButton) v).getServerID());
                 }
             });
             this.linearLayoutServer.addView(serverButton);
         }
     }
-    public void initializeChannelSection(List<Channel> listChannel){
+
+    public void initializeChannelSection(List<Channel> listChannel) {
+        if (this.linearLayoutChannel.getChildCount() > 0) {
+            this.linearLayoutChannel.removeAllViews();
+        }
         ChannelTextView channelTextView;
-        for(int i = 0; i < listChannel.size(); i++){
+        for (int i = 0; i < listChannel.size(); i++) {
             channelTextView = new ChannelTextView(this.getContext());
             channelTextView.setChannelID(listChannel.get(i).getChannelID());
-            channelTextView.setText(listChannel.get(i).getName());
+            channelTextView.setText(String.format(MainActivity.locale, InterfaceFormation.channelName, i, listChannel.get(i).getName()));
+            channelTextView.setTextColor(this.channelTextColor);
+            channelTextView.setTextSize(this.channelTextSize);
             this.linearLayoutChannel.addView(channelTextView);
         }
     }
-    private void loadListChannel(int serverID){
-        this.backgroundHandler = new Handler(Looper.getMainLooper()){
+
+    private void loadListChannel(int serverID) {
+        this.backgroundHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -116,8 +129,9 @@ public class NavigatorFragment extends Fragment {
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
     }
-    private void loadListServer(){
-        this.backgroundHandler = new Handler(Looper.getMainLooper()){
+
+    private void loadListServer() {
+        this.backgroundHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);

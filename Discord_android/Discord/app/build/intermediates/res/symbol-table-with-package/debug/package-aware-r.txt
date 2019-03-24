@@ -1007,6 +1007,7 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_navigator
+drawable ic_send
 drawable mtrl_snackbar_background
 drawable mtrl_tabs_default_indicator
 drawable navigation_empty_icon
@@ -1061,7 +1062,6 @@ id blocking
 id bottom
 id buttonLogin
 id buttonPanel
-id buttonSignOut
 id center
 id center_horizontal
 id center_vertical
@@ -1084,6 +1084,7 @@ id design_menu_item_action_area
 id design_menu_item_action_area_stub
 id design_menu_item_text
 id design_navigation_view
+id detail_fragment_container
 id dimensions
 id direct
 id disableHome
@@ -1123,7 +1124,9 @@ id left
 id line1
 id line3
 id linear_layout_channel
+id linear_layout_messages
 id linear_layout_server
+id linear_layout_type
 id listMode
 id list_item
 id masked

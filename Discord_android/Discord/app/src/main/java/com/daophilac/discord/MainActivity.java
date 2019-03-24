@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +24,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.daophilac.discord.customview.ServerButton;
 
 import java.io.File;
 import java.util.Locale;
@@ -49,14 +52,21 @@ public class MainActivity extends AppCompatActivity {
         this.inventory.storeUser(this.getIntent().getStringExtra("jsonUser"));
         writeLogConsole(this.inventory.loadUser().getEmail());
         this.fragmentManager.beginTransaction().replace(R.id.navigation_view, navigatorFragment).commit();////////////////////
-        Button buttonSignOut = findViewById(R.id.buttonSignOut);
-        buttonSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //deleteAppData();
-                abc();
-            }
-        });
+//        ServerButton buttonabc = findViewById(R.id.buttonabc);
+//        buttonabc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MainActivity.writeLogConsole("aaaaaaaa");
+//            }
+//        });
+//        Button buttonSignOut = findViewById(R.id.buttonSignOut);
+//        buttonSignOut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //deleteAppData();
+//                abc();
+//            }
+//        });
         //deleteAppData();
     }
     private void initializeGlobalVariable(){
@@ -64,7 +74,28 @@ public class MainActivity extends AppCompatActivity {
         this.inventory = new Inventory();
         this.drawerLayout = findViewById(R.id.drawer_layout);
         this.navigationView = findViewById(R.id.navigation_view);
-        this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, this.navigationView);
+        //this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, this.navigationView);
+
+
+
+
+
+
+
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.n);
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                return true;
+//            }
+//        });
+
+
+
+
+
+
+
         this.toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.actionBar = getSupportActionBar();
@@ -101,10 +132,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
                 drawerLayout.openDrawer(GravityCompat.START);
-                //ImageView imageView = (ImageView)findViewById(R.id.imageView);
-                //MainActivity.writeLogConsole("a");
         }
         return super.onOptionsItemSelected(item);
     }
