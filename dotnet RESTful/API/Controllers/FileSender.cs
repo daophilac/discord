@@ -24,11 +24,9 @@ namespace API.Controllers {
         public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken) {
             httpResponseMessage = httpRequestMessage.CreateResponse(HttpStatusCode.OK);
             httpResponseMessage.Content = new StreamContent(fileMemory);
-            //httpResponseMessage.Content = new ByteArrayContent(bookStuff.ToArray());  
             httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
             httpResponseMessage.Content.Headers.ContentDisposition.FileName = filePath;
             httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-            
             return Task.FromResult(httpResponseMessage);
         }
     }

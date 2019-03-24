@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Desktop\\AndroidDeveloping\\Projects\\Discord\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-watch-v20\\values-watch-v20.xml",
+            "outputFile": "D:\\Desktop\\repository\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-watch-v20\\values-watch-v20.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\ab615fa6a872f76c68dfe2d660dea920\\res\\values-watch-v20\\values-watch-v20.xml",

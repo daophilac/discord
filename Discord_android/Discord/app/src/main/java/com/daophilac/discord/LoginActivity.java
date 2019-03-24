@@ -13,16 +13,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.daophilac.discord.models.Server;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     public Handler backgroundHandler;
     private Thread threadBackground;
+    private APICaller apiCaller;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private Button buttonLogin;
-    private APICaller apiCaller;
     private String baseURL;
     private boolean isLoggedIn;
     @Override
@@ -32,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
             setContentView(R.layout.activity_login);
             initializeGlobalVariable();
         }
+
+
     }
     private void initializeGlobalVariable(){
         this.isLoggedIn = false;
@@ -39,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                getIncomingJSON(msg.obj.toString());
+                handleJSON(msg.obj.toString());
             }
         };
         this.editTextEmail = findViewById(R.id.editTextEmail);
@@ -58,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         ContextWrapper contextWrapper = new ContextWrapper(this);
         File file = new File(contextWrapper.getFilesDir() + "/" + getString(R.string.account_internal_directory) + "/" + getString(R.string.account_internal_file));
         if(file.exists()){
+            this.isLoggedIn = true;
             autoLogin();
             return true;
         }
@@ -70,12 +77,11 @@ public class LoginActivity extends AppCompatActivity {
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("Email", email);
         parameters.put("Password", password);
-        this.isLoggedIn = true;
         this.backgroundHandler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                getIncomingJSON(msg.obj.toString());
+                handleJSON(msg.obj.toString());
             }
         };
         this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
@@ -83,6 +89,18 @@ public class LoginActivity extends AppCompatActivity {
         this.apiCaller = new APICaller(this.backgroundHandler, "POST");
         this.apiCaller.setRequestURL(requestURL);
         this.apiCaller.setParameters(parameters);
+
+
+
+
+
+
+
+
+
+
+//        this.apiCaller.setRequestURL("http://192.168.2.106/discordserver2/api/server/getserversbyuser/1");
+//        this.apiCaller.setRequestMethod("GET");
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
     }
@@ -99,26 +117,38 @@ public class LoginActivity extends AppCompatActivity {
         this.threadBackground.start();
     }
     private void writeUserAccount(){
-        if(!this.isLoggedIn){
-            String email = this.editTextEmail.getText().toString();
-            String password = this.editTextPassword.getText().toString();
-            InternalFileWriter internalFileWriter = new InternalFileWriter(getString(R.string.account_internal_directory),getString(R.string.account_internal_file), this);
-            internalFileWriter.write(email, false);
-            internalFileWriter.write("\n", true);
-            internalFileWriter.write(password, true);
-        }
+        String email = this.editTextEmail.getText().toString();
+        String password = this.editTextPassword.getText().toString();
+        InternalFileWriter internalFileWriter = new InternalFileWriter(getString(R.string.account_internal_directory), getString(R.string.account_internal_file), this);
+        internalFileWriter.write(email, false);
+        internalFileWriter.write("\n", true);
+        internalFileWriter.write(password, true);
     }
-    private void getIncomingJSON(String incomingJSON){
+    private void handleJSON(String incomingJSON){
         if(incomingJSON.equals("")){
             Toast.makeText(this, "Not exist.", Toast.LENGTH_LONG).show();
         }
         else{
-            writeUserAccount();
+            if(!this.isLoggedIn){
+                writeUserAccount();
+            }
             Intent intent = new Intent(this, MainActivity.class);
-            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("jsonUser", incomingJSON);
             startActivity(intent);
+
+
+
+//            JSONConverter jsonConverter = new JSONConverter();
+//            List<Server> listServer = jsonConverter.toListServer(incomingJSON);
+//            for(int i = 0; i < listServer.size(); i++){
+//                MainActivity.writeLogConsole(listServer.get(i).getName());
+//            }
+
+
+
             finish();
-            MainActivity.writeLogConsole(incomingJSON);
+
+
         }
     }
 }

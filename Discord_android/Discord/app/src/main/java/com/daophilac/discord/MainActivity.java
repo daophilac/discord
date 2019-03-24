@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -25,27 +28,24 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = "com.daophilac.discord";
+    private Inventory inventory;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ActionBar actionBar;
     private FragmentManager fragmentManager;
     private NavigatorFragment navigatorFragment;
+    public Handler backgroundHandler;
+    private Thread threadBackground;
+    private APICaller apiCaller;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        this.drawerLayout = findViewById(R.id.drawer_layout);
-        this.navigationView = findViewById(R.id.navigation_view);
-        this.toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        this.actionBar = getSupportActionBar();
-        this.actionBar.setDisplayHomeAsUpEnabled(true);
-        this.actionBar.setHomeAsUpIndicator(R.drawable.ic_navigator);
-
-        this.navigatorFragment = new NavigatorFragment();
-        this.fragmentManager = getSupportFragmentManager();
+        initializeGlobalVariable();
+        this.inventory.storeUser(this.getIntent().getStringExtra("jsonUser"));
+        writeLogConsole(this.inventory.loadUser().getEmail());
         this.fragmentManager.beginTransaction().replace(R.id.navigation_view, navigatorFragment).commit();////////////////////
 
         Button buttonSignOut = findViewById(R.id.buttonSignOut);
@@ -57,6 +57,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //deleteAppData();
+    }
+    private void initializeGlobalVariable(){
+        this.inventory = new Inventory();
+        this.drawerLayout = findViewById(R.id.drawer_layout);
+        this.navigationView = findViewById(R.id.navigation_view);
+        this.toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        this.actionBar = getSupportActionBar();
+        this.actionBar.setDisplayHomeAsUpEnabled(true);
+        this.actionBar.setHomeAsUpIndicator(R.drawable.ic_navigator);
+
+        this.navigatorFragment = new NavigatorFragment();
+        this.fragmentManager = getSupportFragmentManager();
+        this.backgroundHandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                handleJSON(msg.obj.toString());
+            }
+        };
+    }
+    public void handleJSON(String json){
+
+    }
+    private void getListServer(){
+
     }
     private void abc(){
         Intent intent = new Intent(this, ThirdActivity.class);

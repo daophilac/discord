@@ -1059,6 +1059,7 @@ id beginning
 id blocking
 id bottom
 id button
+id button2
 id buttonLogin
 id buttonPanel
 id buttonSignOut
@@ -1368,6 +1369,7 @@ string hide_bottom_view_on_scroll_behavior
 string log_file_name
 string mtrl_chip_close_icon_content_description
 string null_parameters
+string null_request_method
 string null_request_url
 string password_toggle_content_description
 string path_password_eye

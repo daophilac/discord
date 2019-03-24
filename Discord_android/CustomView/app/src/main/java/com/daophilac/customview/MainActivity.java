@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
         this.buttonWidth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                increaseWidth();
+//                increaseWidth();
+                createBitmap();
             }
         });
         this.buttonHeight.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
     protected void increaseHeight(){
         this.flexibleButton.increaseHeight(20);
     }
-
+    protected void createBitmap(){
+        this.flexibleButton.setBackground("", DrawableScaleMode.ORIGIN);
+    }
 //    public void onClick(View view) {
 //        switch (view.getId()){
 //            case R.id.one:{

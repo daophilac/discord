@@ -2,29 +2,37 @@ package com.daophilac.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
-class Shape{
+class Shape {
     static final int RECTANGLE = 0;
-    static final int SQUARE = 1;
-    static final int CIRCLE = 2;
+    static final int CIRCLE = 1;
 }
-class TextHorizontalAlign{
+
+class TextHorizontalAlign {
     static final int LEFT = 0;
     static final int RIGHT = 1;
     static final int CENTER = 2;
 }
-class TextVerticalAlign{
+
+class TextVerticalAlign {
     static final int TOP = 0;
     static final int BOTTOM = 1;
     static final int CENTER = 2;
 }
+
 class DrawableScaleMode {
     static final int ORIGIN = 0;
     static final int CROP_FIT = 1;
@@ -32,7 +40,7 @@ class DrawableScaleMode {
     static final int SCALE_ASPECT_RATIO = 3;
 }
 
-class Default{
+class Default {
     static final boolean CENTER_PARENT = false;
     static final Paint.Style PAINT_STYLE = Paint.Style.FILL;
     static final int SHAPE = Shape.RECTANGLE;
@@ -55,6 +63,7 @@ class Default{
 
 public class FlexibleButton extends View {
     private boolean centerParent;
+    private int backgroundColor;
     private Paint shapePaint;
     private Paint textPaint;
     private Rect textBound;
@@ -102,8 +111,8 @@ public class FlexibleButton extends View {
         init(attrs);
     }
 
-    public void init(@Nullable AttributeSet set){
-        if(set == null){
+    public void init(@Nullable AttributeSet set) {
+        if (set == null) {
             return;
         }
         /////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,31 +135,33 @@ public class FlexibleButton extends View {
         this.drawableScaleMode = typedArray.getInt(R.styleable.FlexibleButton_drawable_scaleMode, Default.DRAWABLE_SCALE_MODE);
 
         /////////////////////////////////////////////////////////////////////////////////////////////
+        this.backgroundColor = ((ColorDrawable) getBackground()).getColor();
         this.shapePaint.setStyle(Default.PAINT_STYLE);
         this.shapePaint.setColor(typedArray.getColor(R.styleable.FlexibleButton_shape_color, Default.SHAPE_COLOR));
         this.textPaint.setTextSize(this.textSize);
         this.textPaint.setColor(typedArray.getColor(R.styleable.FlexibleButton_text_color, Default.TEXT_COLOR));
 
         /////////////////////////////////////////////////////////////////
-        if(typedArray.hasValue(R.styleable.FlexibleButton_text_padding)){
+        if (typedArray.hasValue(R.styleable.FlexibleButton_text_padding)) {
             this.textPaddingLeft = this.textPadding;
             this.textPaddingTop = this.textPadding;
             this.textPaddingRight = this.textPadding;
             this.textPaddingBottom = this.textPadding;
         }
-        if(this.text != null){
+        if (this.text != null) {
             this.hasText = true;
         }
-        else{
+        else {
             this.hasText = false;
         }
+
         typedArray.recycle();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        switch(this.shape){
+        //super.onDraw(canvas);
+        switch (this.shape) {
             case Shape.RECTANGLE:
                 drawRectangleButton(canvas);
                 break;
@@ -159,95 +170,79 @@ public class FlexibleButton extends View {
                 break;
         }
     }
-    protected void drawRectangleButton(Canvas canvas){
-        if(this.hasText){
+
+    protected void drawRectangleButton(Canvas canvas) {
+        if (this.hasText) {
             int xPosition;
             int yPosition;
-            if(this.textHorizontalAlign == TextHorizontalAlign.LEFT){
+            if (this.textHorizontalAlign == TextHorizontalAlign.LEFT) {
                 xPosition = this.textPaddingLeft;
                 this.textPaint.setTextAlign(Paint.Align.LEFT);
             }
-            else if(this.textHorizontalAlign == TextHorizontalAlign.RIGHT){
+            else if (this.textHorizontalAlign == TextHorizontalAlign.RIGHT) {
                 xPosition = this.actualWidth - this.textPaddingRight;
                 this.textPaint.setTextAlign(Paint.Align.RIGHT);
             }
-            else{
+            else {
                 xPosition = this.actualWidth / 2;
                 this.textPaint.setTextAlign(Paint.Align.CENTER);
             }
 
-            if(this.textVerticalAlign == TextVerticalAlign.TOP){
+            if (this.textVerticalAlign == TextVerticalAlign.TOP) {
                 yPosition = this.textPaddingTop + this.textHeight;
             }
-            else if(this.textVerticalAlign == TextVerticalAlign.BOTTOM){
+            else if (this.textVerticalAlign == TextVerticalAlign.BOTTOM) {
                 yPosition = this.actualHeight - this.textPaddingBottom;
             }
-            else{
+            else {
                 yPosition = this.actualHeight / 2 + this.textHeight / 2;
             }
             canvas.drawText(this.text, xPosition, yPosition, this.textPaint);
+//            String path = "/sdcard/server_1.png";
+//            Bitmap bitmap = BitmapFactory.decodeFile(path, new BitmapFactory.Options());
+//            Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), 256, true);
+//            //canvas = new Canvas();
+//            canvas.drawBitmap(bitmap2, 0, 0, new Paint());
         }
-        if(this.centerParent){
-            float pivotX = ((View)getParent()).getPivotX();
-            float pivotY = ((View)getParent()).getPivotY();
-            setX(pivotX - (float)(this.actualWidth / 2));
-            setY(pivotY - (float)(this.actualHeight / 2));      // TODO
+        if (this.centerParent) {
+            float pivotX = ((View) getParent()).getPivotX();
+            float pivotY = ((View) getParent()).getPivotY();
+            setX(pivotX - (float) (this.actualWidth / 2));
+            setY(pivotY - (float) (this.actualHeight / 2));
         }
     }
-    protected void drawCircleButton(Canvas canvas){
-        if(this.hasText){
-            int xPosition;
-            int yPosition;
-            if(this.textHorizontalAlign == TextHorizontalAlign.LEFT){
-                xPosition = this.textPaddingLeft;
-                this.textPaint.setTextAlign(Paint.Align.LEFT);
-            }
-            else if(this.textHorizontalAlign == TextHorizontalAlign.RIGHT){
-                xPosition = this.actualWidth - this.textPaddingRight;
-                this.textPaint.setTextAlign(Paint.Align.RIGHT);
-            }
-            else{
-                xPosition = this.actualWidth / 2;
-                this.textPaint.setTextAlign(Paint.Align.CENTER);
-            }
 
-            if(this.textVerticalAlign == TextVerticalAlign.TOP){
-                yPosition = this.textPaddingTop + this.textHeight;
-            }
-            else if(this.textVerticalAlign == TextVerticalAlign.BOTTOM){
-                yPosition = this.actualHeight - this.textPaddingBottom;
-            }
-            else{
-                yPosition = this.actualHeight / 2 + this.textHeight / 2;
-            }
+    protected void drawCircleButton(Canvas canvas) {
+        if (this.hasText) {
             this.textPaint.setTextAlign(Paint.Align.CENTER);
-            xPosition = this.actualWidth / 2;
-            yPosition = this.actualHeight / 2 + this.textHeight / 2;
-            canvas.drawText(this.text, xPosition, yPosition, this.textPaint);
-            this.shapePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            this.shapePaint.setColor(0x12312312);
+            int xPosition = this.actualWidth / 2;
+            int yPosition = this.actualHeight / 2 + this.textHeight / 2;
+            float radius = (float) this.diameter / 2;
+            this.shapePaint.setColor(this.backgroundColor);
             setBackgroundColor(0x00000000);
-            canvas.drawCircle(this.diameter / 2, this.diameter / 2, this.diameter, this.shapePaint);
+            canvas.drawCircle(radius, radius, radius, this.shapePaint);
+            canvas.drawText(this.text, xPosition, yPosition, this.textPaint);
         }
-        if(this.centerParent){
-            float pivotX = ((View)getParent()).getPivotX();
-            float pivotY = ((View)getParent()).getPivotY();
-            setX(pivotX - (float)(this.actualWidth / 2));
-            setY(pivotY - (float)(this.actualHeight / 2));      // TODO
+        if (this.centerParent) {
+            float pivotX = ((View) getParent()).getPivotX();
+            float pivotY = ((View) getParent()).getPivotY();
+            setX(pivotX - (float) (this.actualWidth / 2));
+            setY(pivotY - (float) (this.actualHeight / 2));
         }
     }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if(this.shape == Shape.RECTANGLE){
-            if(this.hasText){
+        if (this.shape == Shape.RECTANGLE) {
+            if (this.hasText) {
                 this.textPaint.getTextBounds(this.text, 0, text.length(), this.textBound);
                 this.textWidth = this.textBound.width();
                 this.textHeight = this.textBound.height();
                 this.actualWidth = this.textWidth + this.textPaddingLeft + this.textPaddingRight;
-                this.actualHeight = this.textHeight + this.textPaddingTop + this.textPaddingBottom; // TODO
+                this.actualHeight = this.textHeight + this.textPaddingTop + this.textPaddingBottom;
             }
-            else{
+            else {
                 this.actualWidth = Default.NO_TEXT_WIDTH;
                 this.actualHeight = Default.NO_TEXT_HEIGHT;
             }
@@ -279,22 +274,18 @@ public class FlexibleButton extends View {
             this.actualHeight += this.increaseHeightAmount;
             setMeasuredDimension(this.actualWidth, this.actualHeight);
         }
-        else if(this.shape == Shape.CIRCLE){
-            if(this.hasText){
+        else if (this.shape == Shape.CIRCLE) {
+            if (this.hasText) {
                 this.textPaint.getTextBounds(this.text, 0, text.length(), this.textBound);
                 this.textWidth = this.textBound.width();
                 this.textHeight = this.textBound.height();
                 this.actualWidth = this.textWidth + this.textPaddingLeft + this.textPaddingRight;
-                //this.actualHeight = this.textHeight + this.textPaddingTop + this.textPaddingBottom; // TODO
             }
-            else{
+            else {
                 this.actualWidth = Default.NO_TEXT_WIDTH;
-                //this.actualHeight = Default.NO_TEXT_HEIGHT;
             }
             int widthMode = MeasureSpec.getMode(widthMeasureSpec);
             int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-            //int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-            //int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
             if (widthMode == MeasureSpec.EXACTLY) {
                 this.actualWidth = widthSize;
@@ -305,34 +296,35 @@ public class FlexibleButton extends View {
             else {
                 // TODO
             }
-
-//            if (heightMode == MeasureSpec.EXACTLY) {
-//                this.actualHeight = heightSize;
-//            }
-//            else if (heightMode == MeasureSpec.AT_MOST) {
-//                // TODO
-//            }
-//            else {
-//                // TODO
-//            }
             this.actualWidth += this.increaseWidthAmount;
-            //this.actualHeight += this.increaseHeightAmount;
             this.actualHeight = this.actualWidth;
             this.diameter = this.actualWidth;
             setMeasuredDimension(this.diameter, this.diameter);
         }
+    }
 
-
+    public void setBackground(String imagePath, int drawableScaleMode) {
+        String path = "/sdcard/server_1.png";
+        Bitmap bitmap = BitmapFactory.decodeFile(path, new BitmapFactory.Options());
+        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+        //Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), 256, true);
+        this.text = "";
+        setBackground(drawable);
+        postInvalidate();
+        //Canvas canvas = new Canvas();
+        //canvas.drawBitmap(bitmap2, 300, 300, new Paint());
+        //canvas.drawBitmap(bitmap, new Rect(0,0,255,255), rectangle, null);
+        //Log.v("khoailanglac", "hjhj");
     }
 
     // TODO: beta
-    public void increaseWidth(int amount){
+    public void increaseWidth(int amount) {
         this.increaseWidthAmount += amount;
         requestLayout();
     }
 
     // TODO: beta
-    public void increaseHeight(int amount){
+    public void increaseHeight(int amount) {
         this.increaseHeightAmount += amount;
         requestLayout();
     }

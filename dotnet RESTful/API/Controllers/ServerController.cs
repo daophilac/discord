@@ -19,11 +19,11 @@ namespace API.Controllers
         [HttpGet]
         [Route("api/server/getserversbyuser/{userID}")]
         public IQueryable<Server> GetServersByUser(int userID) {
-            var servers = from server in db.Server where server.ServerID == userID select server;
+            var servers = db.Server.Where(s => db.ServerUser.Where(su => su.UserID == userID).Any(su => su.ServerID == s.ServerID));
             return servers;
         }
         [HttpGet]
-        [Route("api/server/serverimage/{id}")]
+        [Route("api/server/getserverimage/{id}")]
         public IHttpActionResult GetServerImage(int id) {
             Server server = db.Server.Find(1);
             string imagePath = AppDomain.CurrentDomain.BaseDirectory + "Images\\" + server.Image;
@@ -36,6 +36,8 @@ namespace API.Controllers
         }
 
         // GET: api/Server/5
+        [HttpGet]
+        [Route("api/server/getserverbyid/{id}")]
         [ResponseType(typeof(Server))]
         public IHttpActionResult GetServer(int id)
         {

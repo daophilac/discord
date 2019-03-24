@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="wrong_request_method">Request method must be either GET, POST, PUT or DELETE.</string>
+    <string name="null_request_method">Request method cannot be null.</string>
     <string name="null_request_url">Request URL cannot be null.</string>
     <string name="null_parameters">Parameters cannot be null.</string>
 </resources>

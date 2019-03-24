@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical"
-    android:background="@android:color/holo_green_dark">
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -59,12 +58,12 @@
 
         <com.daophilac.customview.FlexibleButton
             android:id="@+id/myButton"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:background="@color/colorAccent"
-            app:centerParent="true"
+            android:layout_width="100px"
+            android:layout_height="255px"
+            android:background="@android:color/darker_gray"
+            app:centerParent="false"
             app:text="HELLO WORLD"
-            app:shape="circle"/>
+            app:shape="rectangle"/>
 
     </FrameLayout>
 
