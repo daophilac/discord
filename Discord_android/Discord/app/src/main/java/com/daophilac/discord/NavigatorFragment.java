@@ -19,8 +19,6 @@ import com.daophilac.discord.models.Server;
 import java.util.List;
 
 public class NavigatorFragment extends Fragment {
-    public Handler backgroundHandler;
-    private Thread threadBackground;
     private View view;
     private LinearLayout linearLayoutServer;
     private LinearLayout linearLayoutChannel;

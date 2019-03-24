@@ -26,6 +26,7 @@ public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
     private StringBuilder incomingJSON = new StringBuilder();
     private StringBuilder outgoingJSON = new StringBuilder();
 
+    protected APICaller(){}
     protected APICaller(Handler handler) {
         this.handler = handler;
     }
@@ -65,7 +66,9 @@ public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
         this.requestMethod = requestMethod;
         this.parameters = parameters;
     }
-
+    protected void setHandler(Handler handler){
+        this.handler = handler;
+    }
     protected void setRequestMethod(String requestMethod) {
         if (!requestMethod.equalsIgnoreCase("GET")
                 && !requestMethod.equalsIgnoreCase("POST")
@@ -86,13 +89,16 @@ public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
 
     @Override
     protected Void doInBackground(Void... voids) {
+        if(this.handler == null){
+            throw new IllegalArgumentException(this.resourcesRetriever.getString(R.string.null_handler));
+        }
         if (this.requestMethod == null) {
             throw new IllegalArgumentException(this.resourcesRetriever.getString(R.string.null_request_method));
         }
         if (this.requestURL == null) {
             throw new IllegalArgumentException(this.resourcesRetriever.getString(R.string.null_request_url));
         }
-        if (this.parameters == null) {
+        if (!this.requestMethod.equalsIgnoreCase("GET") && this.parameters == null) {
             throw new IllegalArgumentException(this.resourcesRetriever.getString(R.string.null_parameters));
         }
         try {

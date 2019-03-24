@@ -22,6 +22,9 @@ public class Inventory {
     public void storeListServer(List<Server> listServer){
         this.listServer = listServer;
     }
+    public void storeListServer(String json){
+        this.listServer = this.jsonConverter.toListServer(json);
+    }
     public List<Server> loadListServer(){
         return this.listServer;
     }

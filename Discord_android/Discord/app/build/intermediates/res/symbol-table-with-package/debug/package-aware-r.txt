@@ -425,6 +425,7 @@ attr searchViewStyle
 attr seekBarStyle
 attr selectableItemBackground
 attr selectableItemBackgroundBorderless
+attr serverID
 attr showAsAction
 attr showDividers
 attr showMotionSpec
@@ -1058,8 +1059,6 @@ id barrier
 id beginning
 id blocking
 id bottom
-id button
-id button2
 id buttonLogin
 id buttonPanel
 id buttonSignOut
@@ -1123,6 +1122,7 @@ id largeLabel
 id left
 id line1
 id line3
+id linear_layout_channel
 id linear_layout_server
 id listMode
 id list_item
@@ -1368,6 +1368,7 @@ string fab_transformation_sheet_behavior
 string hide_bottom_view_on_scroll_behavior
 string log_file_name
 string mtrl_chip_close_icon_content_description
+string null_handler
 string null_parameters
 string null_request_method
 string null_request_url
@@ -1937,6 +1938,7 @@ styleable RecyclerView android_orientation android_descendantFocusability fastSc
 styleable ScrimInsetsFrameLayout insetForeground
 styleable ScrollingViewBehavior_Layout behavior_overlapTop
 styleable SearchView android_focusable android_maxWidth android_inputType android_imeOptions closeIcon commitIcon defaultQueryHint goIcon iconifiedByDefault layout queryBackground queryHint searchHintIcon searchIcon submitBackground suggestionRowLayout voiceIcon
+styleable ServerButton serverID
 styleable Snackbar snackbarButtonStyle snackbarStyle
 styleable SnackbarLayout android_maxWidth elevation maxActionInlineWidth
 styleable Spinner android_entries android_popupBackground android_prompt android_dropDownWidth popupTheme
