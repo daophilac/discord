@@ -590,6 +590,7 @@ color abc_tint_spinner
 color abc_tint_switch_track
 color accent_material_dark
 color accent_material_light
+color background
 color background_floating_material_dark
 color background_floating_material_light
 color background_material_dark
@@ -1124,7 +1125,7 @@ id left
 id line1
 id line3
 id linear_layout_channel
-id linear_layout_messages
+id linear_layout_message
 id linear_layout_server
 id linear_layout_type
 id listMode

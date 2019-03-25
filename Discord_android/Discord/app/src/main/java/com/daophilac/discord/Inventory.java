@@ -1,6 +1,7 @@
 package com.daophilac.discord;
 
 import com.daophilac.discord.models.Channel;
+import com.daophilac.discord.models.Message;
 import com.daophilac.discord.models.Server;
 import com.daophilac.discord.models.User;
 
@@ -11,6 +12,7 @@ public class Inventory {
     private User user;
     private List<Server> listServer;
     private List<Channel> listChannel;
+    private List<Message> listMessage;
     public void storeUser(User user){
         this.user = user;
     }
@@ -37,5 +39,14 @@ public class Inventory {
     }
     public List<Channel> loadListChannel(){
         return this.listChannel;
+    }
+    public void storeListMessage(List<Message> listMessage){
+        this.listMessage = listMessage;
+    }
+    public void storeListMessage(String json){
+        this.listMessage = this.jsonConverter.toListMessage(json);
+    }
+    public List<Message> loadListMessage(){
+        return this.listMessage;
     }
 }

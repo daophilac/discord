@@ -14,9 +14,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.daophilac.discord.customview.ChannelTextView;
+import com.daophilac.discord.customview.MessageTextView;
 import com.daophilac.discord.customview.ServerButton;
-import com.daophilac.discord.models.Channel;
 import com.daophilac.discord.models.Server;
+import com.daophilac.discord.models.Channel;
 
 import java.util.List;
 
@@ -29,9 +30,12 @@ public class NavigatorFragment extends Fragment {
     private Inventory inventory;
     private LinearLayout linearLayoutServer;
     private LinearLayout linearLayoutChannel;
+    private LinearLayout linearLayoutMessage;
+    private int currentSelectedChannel;
     private int channelTextColor;
     private int channelTextSize;
-
+    private int messageTextColor;
+    private int messageTextSize;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,13 +79,16 @@ public class NavigatorFragment extends Fragment {
     public void initializeGlobalVariable() {
         this.linearLayoutServer = this.view.findViewById(R.id.linear_layout_server);
         this.linearLayoutChannel = this.view.findViewById(R.id.linear_layout_channel);
-        this.channelTextColor = Color.WHITE;
-        this.channelTextSize = 20;
+        this.linearLayoutMessage = this.view.findViewById(R.id.linear_layout_message);
+        this.channelTextColor = InterfaceDecoration.channelTextColor;
+        this.channelTextSize = InterfaceDecoration.channelTextSize;
+        this.messageTextColor = InterfaceDecoration.messageTextColor;
+        this.messageTextSize = InterfaceDecoration.messageTextColor;
         this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller();
     }
 
-    public void initializeServerSection(List<Server> listServer) {
+    private void initializeServerSection(List<Server> listServer) {
         ServerButton serverButton;
         for (int i = 0; i < listServer.size(); i++) {
             serverButton = new ServerButton(this.getContext());
@@ -97,7 +104,7 @@ public class NavigatorFragment extends Fragment {
         }
     }
 
-    public void initializeChannelSection(List<Channel> listChannel) {
+    private void initializeChannelSection(List<Channel> listChannel) {
         if (this.linearLayoutChannel.getChildCount() > 0) {
             this.linearLayoutChannel.removeAllViews();
         }
@@ -105,31 +112,31 @@ public class NavigatorFragment extends Fragment {
         for (int i = 0; i < listChannel.size(); i++) {
             channelTextView = new ChannelTextView(this.getContext());
             channelTextView.setChannelID(listChannel.get(i).getChannelID());
-            channelTextView.setText(String.format(MainActivity.locale, InterfaceFormation.channelName, i, listChannel.get(i).getName()));
+            channelTextView.setText(String.format(MainActivity.locale, InterfaceDecoration.channelName, i, listChannel.get(i).getName()));
             channelTextView.setTextColor(this.channelTextColor);
             channelTextView.setTextSize(this.channelTextSize);
+            channelTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loadListMessage(((ChannelTextView)v).getChannelID());
+                }
+            });
             this.linearLayoutChannel.addView(channelTextView);
         }
     }
-
-    private void loadListChannel(int serverID) {
-        this.backgroundHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                String json = msg.obj.toString();
-                inventory.storeListChannel(msg.obj.toString());
-                initializeChannelSection(inventory.loadListChannel());
-            }
-        };
-        this.apiCaller.setHandler(this.backgroundHandler);
-        this.apiCaller.setRequestMethod("GET");
-        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetChannelsByServer, serverID));
-        this.apiCaller.setRequestURL(requestURL);
-        this.threadBackground = new Thread(this.apiCaller);
-        this.threadBackground.start();
+    private void initializeMessageSection(List<com.daophilac.discord.models.Message> listMessage){
+        if(this.linearLayoutMessage.getChildCount() > 0){
+            this.linearLayoutMessage.removeAllViews();
+        }
+        MessageTextView messageTextView;
+        for(int i = 0; i < listMessage.size(); i++){
+            messageTextView = new MessageTextView(this.getContext());
+            messageTextView.setMessageID(listMessage.get(i).getMessageID());
+            messageTextView.setTextColor(this.messageTextColor);
+            messageTextView.setTextSize(this.messageTextSize);
+            this.linearLayoutMessage.addView(messageTextView);
+        }
     }
-
     private void loadListServer() {
         this.backgroundHandler = new Handler(Looper.getMainLooper()) {
             @Override
@@ -147,4 +154,43 @@ public class NavigatorFragment extends Fragment {
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
     }
+    private void loadListChannel(int serverID) {
+        this.backgroundHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                String json = msg.obj.toString();
+                inventory.storeListChannel(msg.obj.toString());
+                initializeChannelSection(inventory.loadListChannel());
+            }
+        };
+        this.apiCaller.setHandler(this.backgroundHandler);
+        this.apiCaller.setRequestMethod("GET");
+        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetChannelsByServer, serverID));
+        this.apiCaller.setRequestURL(requestURL);
+        this.threadBackground = new Thread(this.apiCaller);
+        this.threadBackground.start();
+    }
+    private void loadListMessage(int channelID){
+        if(this.currentSelectedChannel == channelID){
+            return;
+        }
+        this.currentSelectedChannel = channelID;
+        this.backgroundHandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                String json = msg.obj.toString();
+                inventory.storeListMessage(msg.obj.toString());
+                initializeMessageSection(inventory.loadListMessage());
+            }
+        };
+        this.apiCaller.setHandler(this.backgroundHandler);
+        this.apiCaller.setRequestMethod("GET");
+        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetMessagesByChannel, channelID));
+        this.apiCaller.setRequestURL(requestURL);
+        this.threadBackground = new Thread(this.apiCaller);
+        this.threadBackground.start();
+    }
+
 }

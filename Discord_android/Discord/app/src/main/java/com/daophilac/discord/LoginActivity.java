@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.daophilac.discord.models.Server;
 
 import java.io.File;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,8 +37,9 @@ public class LoginActivity extends AppCompatActivity {
             setContentView(R.layout.activity_login);
             initializeGlobalVariable();
         }
-
-
+        long millis=System.currentTimeMillis();
+        Date time = new Date(millis);
+        MainActivity.writeLogConsole(time.toString());
     }
     private void initializeGlobalVariable(){
         this.isLoggedIn = false;
