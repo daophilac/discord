@@ -9,12 +9,15 @@ import com.daophilac.discord.tools.JSONConverter;
 import java.util.List;
 
 public class Inventory {
-    private JSONConverter jsonConverter = new JSONConverter();
+    private JSONConverter jsonConverter;
     private Channel currentChannel;
     private User currentUser;
     private List<Server> listServer;
     private List<Channel> listChannel;
     private List<Message> listMessage;
+    public Inventory(){
+        this.jsonConverter = new JSONConverter();
+    }
     public void storeCurrentChannel(Channel channel){
         this.currentChannel = channel;
     }

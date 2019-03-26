@@ -1,5 +1,6 @@
 ﻿
 using Discord_win.Models;
+using Discord_win.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,8 +14,19 @@ namespace Discord_win.Pages {
     /// Interaction logic for SignInPage.xaml
     /// </summary>
     public partial class LoginPage : Page {
+        private APICaller apiCaller;
+        private JSONBuilder jsonBuilder;
+        private JSONConverter jsonConverter;
+        private FileDealer fileDealer;
         public LoginPage() {
             InitializeComponent();
+            InitializeGlobalVariable();
+        }
+        private void InitializeGlobalVariable() {
+            this.apiCaller = new APICaller();
+            this.jsonBuilder = new JSONBuilder();
+            this.jsonConverter = new JSONConverter();
+            this.fileDealer = new FileDealer();
         }
         //internal async static Task<Byte[]> GetFile(string fileName) {
         //    Byte[] returnedTask = null;
@@ -31,42 +43,17 @@ namespace Discord_win.Pages {
         //    return returnedTask;
         //}
         private async void Login() {
-            string url = "http://192.168.2.106/discordserver2/api/user/all";
-            HttpClient client = new HttpClient();
-            HttpResponseMessage responseMessage = await client.GetAsync(url);
-            if (responseMessage.IsSuccessStatusCode) {
-                List<User> users = await responseMessage.Content.ReadAsAsync<List<User>>();
-                string emails = "";
-                for(int i = 0; i < users.Count; i++) {
-                    emails += users[i].Email + ", ";
-                }
-                MessageBox.Show("Email: " + emails);
-            }
-            else {
-                MessageBox.Show("Bad request!");
-            }
-
-
-
-
-
-
+            string outgoingJSON = this.jsonBuilder.BuildLoginJSON(this.TextBoxEmail.Text, this.TextBoxPassword.Text);
+            string requestURI = Program.baseAddress + Application.Current.FindResource("URILogin").ToString();
+            this.apiCaller.SetProperties("POST", requestURI, outgoingJSON);
+            string incomingJSON = this.apiCaller.SendRequest();
+            User currentUser = this.jsonConverter.ToUser(incomingJSON);
 
             //string uri = Program.baseAddress + string.Format(Application.Current.Resources["UriLogin"].ToString(), this.TextBoxEmail.Text, this.TextBoxPassword.Text);
-            //Program.httpResponseMessage = await Program.httpClient.GetAsync(uri);
-            //if (Program.httpResponseMessage.IsSuccessStatusCode) {
-            //    Program.user = await Program.httpResponseMessage.Content.ReadAsAsync<User>();
-            //    Program.mainWindow.MainFrame.Navigate(Program.mainPage);
-            //}
-            //else {
-            //    MessageBox.Show(Program.NotificationInvalidEmailOrPassword);
-            //}
-
-            //string uri = Program.baseAddress + string.Format(Application.Current.Resources["UriLogin"].ToString(), this.TextBoxEmail.Text, this.TextBoxPassword.Text);
-            string uri = "http://192.168.2.106/discordserver2/api/server/serverimage/1";
-            Byte[] fileBytes = await Program.httpClient.GetByteArrayAsync(uri);
-            File.WriteAllBytes("D:\\Desktop\\newfile.png", fileBytes);
-            MessageBox.Show("Got file");
+            //string uri = "http://192.168.2.106/discordserver2/api/server/serverimage/1";
+            //Byte[] fileBytes = await Program.httpClient.GetByteArrayAsync(uri);
+            //File.WriteAllBytes("D:\\Desktop\\newfile.png", fileBytes);
+            //MessageBox.Show("Got file");
             //if (Program.httpResponseMessage.IsSuccessStatusCode) {
             //    //Program.user = await Program.httpResponseMessage.Content.ReadAsAsync<User>();
             //    //Program.mainWindow.MainFrame.Navigate(Program.mainPage);
@@ -85,6 +72,8 @@ namespace Discord_win.Pages {
         }
         private void ButtonLogin_Click(object sender, RoutedEventArgs e) {
             Login();
+            
+            //this.fileDealer.WriteLine("D:\\Desktop\\neww\\abc.txt", "đào phi lạc", true);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {

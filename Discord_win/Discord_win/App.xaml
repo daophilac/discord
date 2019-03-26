@@ -10,6 +10,8 @@
                 <ResourceDictionary Source="Resources/Route.xaml" />
                 <ResourceDictionary Source="Resources/Notification.xaml" />
                 <ResourceDictionary Source="Resources/ConstraintLayout.xaml"/>
+                <ResourceDictionary Source="Resources/ExceptionMessage.xaml"/>
+                <ResourceDictionary Source="Resources/FileSystem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
