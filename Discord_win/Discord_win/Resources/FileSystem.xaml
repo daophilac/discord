@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Discord_win.Resources"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
-    <system:String x:Key="RootDataDirectory">D:\Desktop\data</system:String>
-    <system:String x:Key="UserDirectory">\user</system:String>
-    <system:String x:Key="ServerDirectory">\server</system:String>
+    <system:String x:Key="RootDataDirectory">D:\Desktop\data\</system:String>
+    <system:String x:Key="UserDirectory">user\</system:String>
+    <system:String x:Key="ServerDirectory">server\</system:String>
     <system:String x:Key="UserDataFile">user.txt</system:String>
     <system:String x:Key="ServerDataFile">server.txt</system:String>
 </ResourceDictionary>

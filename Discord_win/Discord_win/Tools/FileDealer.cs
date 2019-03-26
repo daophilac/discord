@@ -119,7 +119,7 @@ namespace Discord_win.Tools {
             }
         }
         public string ReadLine(string filePath) {
-            if (File.Exists(filePath)) {
+            if (!File.Exists(filePath)) {
                 throw new Exception(Program.ExceptionFileNotFound);
             }
             if(this.streamReader == null) {
@@ -129,7 +129,7 @@ namespace Discord_win.Tools {
             return line;
         }
         public List<string> ReadAllLines(string filePath) {
-            if (File.Exists(filePath)) {
+            if (!File.Exists(filePath)) {
                 throw new Exception(Program.ExceptionFileNotFound);
             }
             if (this.streamReader == null) {

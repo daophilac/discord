@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Discord_win {
-    class Inventory {
+    public class Inventory {
         private JSONConverter jsonConverter;
         private Channel currentChannel;
         private User currentUser;

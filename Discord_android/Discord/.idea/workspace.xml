@@ -182,8 +182,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Inventory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="49" lean-forward="true" selection-start-line="18" selection-start-column="49" selection-end-line="18" selection-end-column="49" />
+            <state relative-caret-position="85">
+              <caret line="38" column="57" lean-forward="true" selection-start-line="38" selection-start-column="57" selection-end-line="38" selection-end-column="57" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#538#539#0" expanded="true" />
@@ -198,7 +198,6 @@
                 <element signature="e#671#672#0" expanded="true" />
                 <element signature="e#699#700#0" expanded="true" />
                 <element signature="e#731#732#0" expanded="true" />
-                <element signature="e#789#790#0" expanded="true" />
                 <element signature="e#833#834#0" expanded="true" />
                 <element signature="e#992#993#0" expanded="true" />
                 <element signature="e#1030#1031#0" expanded="true" />
@@ -282,7 +281,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="72" />
     <option name="y" value="20" />
     <option name="width" value="1284" />
@@ -486,7 +485,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="54" y="-8" width="1320" height="784" extended-state="6" />
+    <frame x="54" y="-8" width="1320" height="784" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
@@ -833,8 +832,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Inventory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="49" lean-forward="true" selection-start-line="18" selection-start-column="49" selection-end-line="18" selection-end-column="49" />
+        <state relative-caret-position="85">
+          <caret line="38" column="57" lean-forward="true" selection-start-line="38" selection-start-column="57" selection-end-line="38" selection-end-column="57" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#538#539#0" expanded="true" />
@@ -849,7 +848,6 @@
             <element signature="e#671#672#0" expanded="true" />
             <element signature="e#699#700#0" expanded="true" />
             <element signature="e#731#732#0" expanded="true" />
-            <element signature="e#789#790#0" expanded="true" />
             <element signature="e#833#834#0" expanded="true" />
             <element signature="e#992#993#0" expanded="true" />
             <element signature="e#1030#1031#0" expanded="true" />

@@ -19,7 +19,6 @@ namespace Discord_win {
         public static string baseAddress;
         public static HttpClient httpClient;
         public static HttpResponseMessage httpResponseMessage;
-        public static User user;
 
 
         public static MainWindow mainWindow;
@@ -32,6 +31,8 @@ namespace Discord_win {
         public static string ServerDirectory;
         public static string UserDataFile;
         public static string ServerDataFile;
+        public static string UserFilePath;
+        public static string ServerFilePath;
 
         public static string NotificationInvalidEmailOrPassword;
         public static string ExceptionNullFilePath;
@@ -62,11 +63,6 @@ namespace Discord_win {
             baseAddress = "http://" + domainName + "/" + serverName;
 
             //
-            loginPage = new LoginPage();
-            testPage = new TestPage();
-            mainPage = new MainPage();
-
-            //
             NotificationInvalidEmailOrPassword = Application.Current.FindResource("NotificationInvalidEmailOrPassword").ToString();
             ExceptionNullFilePath = Application.Current.FindResource("ExceptionNullFilePath").ToString();
             ExceptionFileNotFound = Application.Current.FindResource("ExceptionFileNotFound").ToString();
@@ -81,6 +77,13 @@ namespace Discord_win {
             ServerDirectory = Application.Current.FindResource("ServerDirectory").ToString();
             UserDataFile = Application.Current.FindResource("UserDataFile").ToString();
             ServerDataFile = Application.Current.FindResource("ServerDataFile").ToString();
+            UserFilePath = RootDataDirectory + UserDirectory + UserDataFile;
+            ServerFilePath = RootDataDirectory + ServerDirectory + ServerFilePath;
+
+            //
+            mainPage = new MainPage();
+            loginPage = new LoginPage();
+            testPage = new TestPage();
         }
     }
 }

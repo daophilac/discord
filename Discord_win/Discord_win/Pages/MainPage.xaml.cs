@@ -18,6 +18,7 @@ namespace Discord_win.Pages {
     /// Interaction logic for MainPage.xaml
     /// </summary>
     public partial class MainPage : Page {
+        public Inventory inventory { get; set; }
         //private double CanvasServerWidth;
         //private double CanvasChannelWidth;
         //private double CanvasRoleWidth;
@@ -27,9 +28,10 @@ namespace Discord_win.Pages {
         //private int CanvasMessageTotalPaddingLeftRight;
         public MainPage() {
             InitializeComponent();
-            InitializeParameter();
+            InitializeGlobalVariable();
         }
-        private void InitializeParameter() {
+        private void InitializeGlobalVariable() {
+            this.inventory = new Inventory();
             //this.CanvasServerWidth = this.CanvasServer.Width;
             //this.CanvasChannelWidth = this.CanvasChannel.Width;
             //this.CanvasRoleWidth = this.CanvasRole.Width;
