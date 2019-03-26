@@ -177,9 +177,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201903101745386_APIContext.cs" />
-    <Compile Include="Migrations\201903101745386_APIContext.Designer.cs">
-      <DependentUpon>201903101745386_APIContext.cs</DependentUpon>
+    <Compile Include="Migrations\201903260106040_APIContext.cs" />
+    <Compile Include="Migrations\201903260106040_APIContext.Designer.cs">
+      <DependentUpon>201903260106040_APIContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\APIContext.cs" />
@@ -282,8 +282,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903101745386_APIContext.resx">
-      <DependentUpon>201903101745386_APIContext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201903260106040_APIContext.resx">
+      <DependentUpon>201903260106040_APIContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -21,7 +21,6 @@ namespace API.Models {
         public string LastName { get; set; }
         public Gender? Gender { get; set; }
         public string Image { get; set; }
-
         public ICollection<Message> Messages { get; set; }
     }
 }

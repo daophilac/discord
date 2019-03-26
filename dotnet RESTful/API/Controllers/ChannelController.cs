@@ -30,6 +30,16 @@ namespace API.Controllers
         }
 
         // GET: api/Channel/5
+        [HttpGet]
+        [ResponseType(typeof(Channel))]
+        [Route("api/channel/getchannelbyid/{channelID}")]
+        public IHttpActionResult GetChannelByID(int channelID) {
+            Channel channel = db.Channel.Find(channelID);
+            if(channel == null) {
+                return NotFound();
+            }
+            return Ok(channel);
+        }
         [ResponseType(typeof(Channel))]
         public IHttpActionResult GetChannel(int id)
         {

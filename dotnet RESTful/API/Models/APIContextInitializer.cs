@@ -118,13 +118,13 @@ namespace API.Models {
             context.SaveChanges();
 
             // 8. Message
-            var messages = new List<Message> { 
-                new Message{ChannelID=1,UserID=1,Content="This is the first message in final fantasy",Time=DateTime.ParseExact("2019-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
-                new Message{ChannelID=1,UserID=2,Content="And this is the second message in final fantasy",Time=DateTime.ParseExact("2019-01-02 00:00:01", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
-                new Message{ChannelID=1,UserID=3,Content="AAAAAAAAAA",Time=DateTime.ParseExact("2019-01-02 00:00:02", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
-                new Message{ChannelID=2,UserID=1,Content="Another channel in final fantasy",Time=DateTime.ParseExact("2019-01-02 00:00:01", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
-                new Message{ChannelID=2,UserID=1,Content="BBBBBBBBBBBBBB",Time=DateTime.ParseExact("2019-01-02 00:00:02", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
-                new Message{ChannelID=2,UserID=2,Content="Hi there",Time=DateTime.ParseExact("2019-01-02 00:00:03", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)},
+            var messages = new List<Message> {
+                new Message{ChannelID=1,UserID=1,Content="This is the first message in final fantasy",Time=DateTime.ParseExact("2019-01-01 00:00:00.001", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=1,UserID=2,Content="And this is the second message in final fantasy",Time=DateTime.ParseExact("2019-01-02 00:00:01.245", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=1,UserID=3,Content="AAAAAAAAAA",Time=DateTime.ParseExact("2019-01-02 00:00:02.368", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=2,UserID=1,Content="Another channel in final fantasy",Time=DateTime.ParseExact("2019-01-02 00:00:01.123", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=2,UserID=1,Content="BBBBBBBBBBBBBB",Time=DateTime.ParseExact("2019-01-02 00:00:02.899", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)},
+                new Message{ChannelID=2,UserID=2,Content="Hi there",Time=DateTime.ParseExact("2019-01-02 00:00:03.543", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)},
 
             };
             messages.ForEach(m => context.Message.Add(m));

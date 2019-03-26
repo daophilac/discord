@@ -42,9 +42,9 @@
                 <Label Content="Label28" DockPanel.Dock="Bottom"/>
                 <Label Content="Label29" DockPanel.Dock="Bottom"/>
                 <Label Content="Label30" DockPanel.Dock="Bottom"/>-->
-                <TextBox Width="{Binding Path=ActualWidth, ElementName=abc}" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" Text="Label1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab" DockPanel.Dock="Bottom"/>
+                <!--<TextBox Width="{Binding Path=ActualWidth, ElementName=abc}" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" Text="Label1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab" DockPanel.Dock="Bottom"/>-->
             </DockPanel>
-            
+
         </ScrollViewer>
     </Grid>
 </Page>

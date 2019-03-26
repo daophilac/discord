@@ -22,6 +22,13 @@ namespace API.Controllers
             var messages = db.Message.Where(m => m.ChannelID == channelID).OrderBy(m => m.Time);
             return messages;
         }
+        [HttpPost]
+        [Route("api/message/insertmessage")]
+        public IHttpActionResult InsertMessage(Message messageFromClient) {
+            db.Message.Add(messageFromClient);
+            db.SaveChanges();
+            return Ok(messageFromClient);
+        }
         // GET: api/Message
         public IQueryable<Message> GetMessage()
         {

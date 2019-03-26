@@ -1,14 +1,12 @@
 package com.daophilac.discord.models;
-
-import java.sql.Date;
-import java.sql.Time;
+import java.util.Date;
 
 public class Message {
     private int MessageID;
     private int ChannelID;
     private int UserID;
     private String Content;
-    private Time Time;
+    public Date Time;
 
     public int getMessageID() {
         return MessageID;
@@ -42,11 +40,11 @@ public class Message {
         Content = content;
     }
 
-    public Time getTime() {
+    public Date getTime() {
         return Time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(Date time) {
         Time = time;
     }
 }

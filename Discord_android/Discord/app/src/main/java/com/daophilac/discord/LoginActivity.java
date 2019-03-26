@@ -13,18 +13,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.daophilac.discord.models.Server;
+import com.daophilac.discord.filedealer.InternalFileReader;
+import com.daophilac.discord.filedealer.InternalFileWriter;
+import com.daophilac.discord.resources.Route;
+import com.daophilac.discord.tools.APICaller;
+import com.daophilac.discord.tools.JSONBuilder;
 
 import java.io.File;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     public Handler backgroundHandler;
     private Thread threadBackground;
     private APICaller apiCaller;
+    private JSONBuilder jsonBuilder;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private Button buttonLogin;
@@ -37,9 +39,6 @@ public class LoginActivity extends AppCompatActivity {
             setContentView(R.layout.activity_login);
             initializeGlobalVariable();
         }
-        long millis=System.currentTimeMillis();
-        Date time = new Date(millis);
-        MainActivity.writeLogConsole(time.toString());
     }
     private void initializeGlobalVariable(){
         this.isLoggedIn = false;
@@ -61,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller(this.backgroundHandler, "POST");
+        this.jsonBuilder = new JSONBuilder();
     }
     private boolean checkLogin(){
         ContextWrapper contextWrapper = new ContextWrapper(this);
@@ -76,9 +76,11 @@ public class LoginActivity extends AppCompatActivity {
         InternalFileReader internalFileReader = new InternalFileReader(getString(R.string.account_internal_directory), getString(R.string.account_internal_file), this);
         String email = internalFileReader.readLine();
         String password = internalFileReader.readLine();
-        HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("Email", email);
-        parameters.put("Password", password);
+        this.jsonBuilder = new JSONBuilder();
+        String json = this.jsonBuilder.buildLoginJSON(email, password);
+//        HashMap<String, String> parameters = new HashMap<String, String>();
+//        parameters.put("Email", email);
+//        parameters.put("Password", password);
         this.backgroundHandler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
@@ -90,31 +92,20 @@ public class LoginActivity extends AppCompatActivity {
         String requestURL = this.baseURL.concat(Route.urlLogin);
         this.apiCaller = new APICaller(this.backgroundHandler, "POST");
         this.apiCaller.setRequestURL(requestURL);
-        this.apiCaller.setParameters(parameters);
-
-
-
-
-
-
-
-
-
-
-//        this.apiCaller.setRequestURL("http://192.168.2.106/discordserver2/api/server/getserversbyuser/1");
-//        this.apiCaller.setRequestMethod("GET");
+        this.apiCaller.setJSON(json);
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
     }
     private void login(){
         String email = this.editTextEmail.getText().toString();
         String password = this.editTextPassword.getText().toString();
-        HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("Email", email);
-        parameters.put("Password", password);
+        String json = this.jsonBuilder.buildLoginJSON(email, password);
+//        HashMap<String, String> parameters = new HashMap<String, String>();
+//        parameters.put("Email", email);
+//        parameters.put("Password", password);
         String requestURL = this.baseURL.concat(Route.urlLogin);
         this.apiCaller.setRequestURL(requestURL);
-        this.apiCaller.setParameters(parameters);
+        this.apiCaller.setJSON(json);
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
     }
@@ -137,20 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("jsonUser", incomingJSON);
             startActivity(intent);
-
-
-
-//            JSONConverter jsonConverter = new JSONConverter();
-//            List<Server> listServer = jsonConverter.toListServer(incomingJSON);
-//            for(int i = 0; i < listServer.size(); i++){
-//                MainActivity.writeLogConsole(listServer.get(i).getName());
-//            }
-
-
-
             finish();
-
-
         }
     }
 }

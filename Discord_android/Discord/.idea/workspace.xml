@@ -39,41 +39,42 @@
     <session id="2031754727">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.1" value="2" />
+          <entry key="project.open.time.126" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.53" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="gradle" value="1" />
-          <entry key="java" value="57" />
-          <entry key="xml" value="14" />
+          <entry key="gradle" value="2" />
+          <entry key="java" value="81" />
+          <entry key="xml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Groovy" value="1" />
-          <entry key="JAVA" value="57" />
-          <entry key="XML" value="14" />
+          <entry key="Groovy" value="2" />
+          <entry key="JAVA" value="81" />
+          <entry key="XML" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="10" />
           <entry key="gradle" value="1" />
-          <entry key="java" value="8534" />
-          <entry key="xml" value="515" />
+          <entry key="java" value="12527" />
+          <entry key="xml" value="609" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="1" />
-          <entry key="JAVA" value="8534" />
+          <entry key="JAVA" value="12527" />
           <entry key="PLAIN_TEXT" value="10" />
-          <entry key="XML" value="515" />
+          <entry key="XML" value="609" />
         </counts>
       </usages-collector>
     </session>
@@ -81,130 +82,86 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/NavigatorFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="398">
-              <caret line="177" column="48" selection-start-line="177" selection-start-column="48" selection-end-line="177" selection-end-column="48" />
+            <state relative-caret-position="-10">
+              <caret line="142" column="13" selection-start-line="142" selection-start-column="13" selection-end-line="142" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2670#2671#0" expanded="true" />
-                <element signature="e#2712#2713#0" expanded="true" />
-                <element signature="e#3535#3738#0" expanded="true" />
-                <element signature="e#3737#3738#0" expanded="true" />
-                <element signature="e#4610#4792#0" expanded="true" />
-                <element signature="e#4791#4792#0" expanded="true" />
+                <element signature="e#7701#7702#0" expanded="true" />
+                <element signature="e#7743#7744#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="37" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/customview/MessageTextView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
+            <state relative-caret-position="277">
+              <caret line="78" column="45" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#263#264#0" expanded="true" />
-                <element signature="e#293#294#0" expanded="true" />
-                <element signature="e#360#361#0" expanded="true" />
-                <element signature="e#397#398#0" expanded="true" />
-                <element signature="e#625#626#0" expanded="true" />
-                <element signature="e#672#673#0" expanded="true" />
-                <element signature="e#714#715#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/InterfaceDecoration.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/APICaller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="282">
+              <caret line="137" selection-start-line="137" selection-end-line="137" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3452#3453#0" expanded="true" />
+                <element signature="e#3496#3497#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/ExceptionMessage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="66" selection-start-line="7" selection-start-column="66" selection-end-line="7" selection-end-column="66" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/LoginActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="41" column="54" lean-forward="true" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
+            <state relative-caret-position="355">
+              <caret line="137" column="5" lean-forward="true" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#4214#4215#0" expanded="true" />
+                <element signature="e#4265#4266#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/Route.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="61" selection-start-line="4" selection-start-column="61" selection-end-line="4" selection-end-column="61" />
+            <state relative-caret-position="170">
+              <caret line="10" column="79" selection-start-line="10" selection-start-column="79" selection-end-line="10" selection-end-column="79" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/JSONConverter.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/JSONBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+            <state relative-caret-position="253">
+              <caret line="50" column="1" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/models/Message.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#246#247#0" expanded="true" />
-                <element signature="e#278#279#0" expanded="true" />
-                <element signature="e#325#326#0" expanded="true" />
-                <element signature="e#362#363#0" expanded="true" />
-                <element signature="e#395#396#0" expanded="true" />
-                <element signature="e#427#428#0" expanded="true" />
-                <element signature="e#474#475#0" expanded="true" />
-                <element signature="e#511#512#0" expanded="true" />
-                <element signature="e#541#542#0" expanded="true" />
-                <element signature="e#570#571#0" expanded="true" />
-                <element signature="e#611#612#0" expanded="true" />
-                <element signature="e#642#643#0" expanded="true" />
-                <element signature="e#676#677#0" expanded="true" />
-                <element signature="e#706#707#0" expanded="true" />
-                <element signature="e#752#753#0" expanded="true" />
-                <element signature="e#785#786#0" expanded="true" />
-                <element signature="e#814#815#0" expanded="true" />
-                <element signature="e#841#842#0" expanded="true" />
-                <element signature="e#879#880#0" expanded="true" />
-                <element signature="e#906#907#0" expanded="true" />
+                <element signature="e#1214#1230#0" expanded="true" />
+                <element signature="e#481#497#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -213,21 +170,43 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Inventory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="46" column="55" selection-start-line="46" selection-start-column="55" selection-end-line="46" selection-end-column="55" />
+            <state relative-caret-position="415">
+              <caret line="32" column="27" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#957#958#0" expanded="true" />
-                <element signature="e#1003#1004#0" expanded="true" />
-                <element signature="e#1167#1168#0" expanded="true" />
-                <element signature="e#1206#1207#0" expanded="true" />
-                <element signature="e#1351#1352#0" expanded="true" />
-                <element signature="e#1397#1398#0" expanded="true" />
-                <element signature="e#1561#1562#0" expanded="true" />
-                <element signature="e#1582#1583#0" expanded="true" />
+                <element signature="e#583#584#0" expanded="true" />
+                <element signature="e#621#622#0" expanded="true" />
+                <element signature="e#758#759#0" expanded="true" />
+                <element signature="e#793#794#0" expanded="true" />
+                <element signature="e#545#546#0" expanded="true" />
+                <element signature="e#577#578#0" expanded="true" />
+                <element signature="e#617#618#0" expanded="true" />
+                <element signature="e#671#672#0" expanded="true" />
+                <element signature="e#699#700#0" expanded="true" />
+                <element signature="e#731#732#0" expanded="true" />
+                <element signature="e#789#790#0" expanded="true" />
+                <element signature="e#833#834#0" expanded="true" />
+                <element signature="e#992#993#0" expanded="true" />
+                <element signature="e#1030#1031#0" expanded="true" />
+                <element signature="e#1091#1092#0" expanded="true" />
+                <element signature="e#1137#1138#0" expanded="true" />
+                <element signature="e#1301#1302#0" expanded="true" />
+                <element signature="e#1340#1341#0" expanded="true" />
+                <element signature="e#1401#1402#0" expanded="true" />
+                <element signature="e#1447#1448#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="47" column="48" selection-start-line="47" selection-start-column="48" selection-end-line="47" selection-end-column="48" />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2" />
         </entry>
       </file>
     </leaf>
@@ -236,6 +215,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="valueResourceFile" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -256,7 +236,6 @@
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Warehouse.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/attrs.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/exceptions.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/customview/ChannelTextView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/models/User.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/models/Channel.java" />
@@ -264,22 +243,32 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/customview/ServerButton.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/APICaller.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_navigator.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Route.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Inventory.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/customview/MessageTextView.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/InterfaceDecoration.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/models/Message.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/JSONConverter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Route.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/InterfaceDecoration.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/UIDecoration.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/PermissionInquirer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/interfaces/NavigatorListener.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/interfaces/MainActivityListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/NavigatorFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/JSONConverter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/models/Message.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Inventory.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/exceptions.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/LoginActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/JSONBuilder.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/ExceptionMessage.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/APICaller.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/Route.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/MainActivity.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="72" />
     <option name="y" value="20" />
     <option name="width" value="1284" />
@@ -291,6 +280,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -321,7 +312,35 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="discord" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="filedealer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Discord" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="discord" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="interfaces" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Discord" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="discord" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Discord" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="discord" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Discord" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="discord" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="tools" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Discord" type="1abcf292:AndroidViewProjectNode" />
@@ -340,13 +359,15 @@
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
               <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
+            <path>
+              <item name="Discord" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -470,8 +491,8 @@
       <window_info anchor="bottom" id="Build" order="5" sideWeight="0.49920633" weight="0.3276923" />
       <window_info anchor="bottom" id="Android Profiler" order="6" />
       <window_info anchor="bottom" id="Run" order="7" />
-      <window_info active="true" anchor="bottom" id="Debug" order="8" sideWeight="0.49920633" visible="true" weight="0.3276923" />
-      <window_info anchor="bottom" id="Find" order="9" />
+      <window_info anchor="bottom" id="Debug" order="8" sideWeight="0.49920633" weight="0.35384616" />
+      <window_info anchor="bottom" id="Find" order="9" weight="0.32923076" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Gradle" order="2" />
@@ -488,98 +509,8 @@
       <path value="$PROJECT_DIR$/../.." />
     </ignored-roots>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/MainActivity.java</url>
-          <line>58</line>
-          <properties />
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/NavigatorFragment.java</url>
-          <line>132</line>
-          <properties />
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/JSONConverter.java</url>
-          <line>53</line>
-          <properties />
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/JSONConverter.java</url>
-          <line>55</line>
-          <properties />
-          <option name="timeStamp" value="59" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/JSONConverter.java</url>
-          <line>56</line>
-          <properties />
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/JSONConverter.java</url>
-          <line>54</line>
-          <properties />
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/LoginActivity.java</url>
-          <line>41</line>
-          <properties />
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/InternalFileWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="21" column="75" selection-start-line="21" selection-start-column="75" selection-end-line="21" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/HttpDownloader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/ExternalFileWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/InternalFileReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="25" column="52" selection-start-line="25" selection-start-column="52" selection-end-line="25" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Warehouse.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/exceptions.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="55" selection-start-line="3" selection-start-column="55" selection-end-line="3" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/attrs.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -619,22 +550,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
-          <folding>
-            <element signature="e#193#194#0" expanded="true" />
-            <element signature="e#224#225#0" expanded="true" />
-            <element signature="e#269#270#0" expanded="true" />
-            <element signature="e#309#310#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/APICaller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="137" column="56" selection-start-line="137" selection-start-column="56" selection-end-line="137" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -647,20 +562,6 @@
             <element signature="e#687#688#0" expanded="true" />
             <element signature="e#723#724#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="92" lean-forward="true" selection-start-line="92" selection-end-line="92" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Route.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="96" selection-start-line="9" selection-start-column="96" selection-end-line="9" selection-end-column="96" />
         </state>
       </provider>
     </entry>
@@ -685,12 +586,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_navigator.xml">
-      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="426">
           <caret line="51" column="42" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
         </state>
       </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
@@ -706,16 +607,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="82" lean-forward="true" selection-start-line="10" selection-start-column="82" selection-end-line="10" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/customview/MessageTextView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
+        <state relative-caret-position="170">
+          <caret line="10" column="5" lean-forward="true" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#263#264#0" expanded="true" />
             <element signature="e#293#294#0" expanded="true" />
             <element signature="e#360#361#0" expanded="true" />
             <element signature="e#397#398#0" expanded="true" />
+            <element signature="e#593#594#0" expanded="true" />
             <element signature="e#625#626#0" expanded="true" />
             <element signature="e#672#673#0" expanded="true" />
             <element signature="e#714#715#0" expanded="true" />
@@ -723,101 +632,217 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer2" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/models/Message.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+        <state relative-caret-position="442">
+          <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
+          <folding>
+            <element signature="e#244#245#0" expanded="true" />
+            <element signature="e#276#277#0" expanded="true" />
+            <element signature="e#323#324#0" expanded="true" />
+            <element signature="e#360#361#0" expanded="true" />
+            <element signature="e#393#394#0" expanded="true" />
+            <element signature="e#425#426#0" expanded="true" />
+            <element signature="e#472#473#0" expanded="true" />
+            <element signature="e#509#510#0" expanded="true" />
+            <element signature="e#539#540#0" expanded="true" />
+            <element signature="e#568#569#0" expanded="true" />
+            <element signature="e#609#610#0" expanded="true" />
+            <element signature="e#640#641#0" expanded="true" />
+            <element signature="e#674#675#0" expanded="true" />
+            <element signature="e#704#705#0" expanded="true" />
+            <element signature="e#750#751#0" expanded="true" />
+            <element signature="e#783#784#0" expanded="true" />
+            <element signature="e#812#813#0" expanded="true" />
+            <element signature="e#839#840#0" expanded="true" />
+            <element signature="e#877#878#0" expanded="true" />
+            <element signature="e#904#905#0" expanded="true" />
+          </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/UIDecoration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/filedealer/ExternalFileWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/filedealer/InternalFileReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/filedealer/InternalFileWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/HttpDownloader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="105" column="60" lean-forward="true" selection-start-line="105" selection-start-column="60" selection-end-line="105" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/PermissionInquirer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="16" column="81" lean-forward="true" selection-start-line="16" selection-start-column="81" selection-end-line="16" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/interfaces/NavigatorListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/interfaces/MainActivityListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="48" lean-forward="true" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="47" column="48" selection-start-line="47" selection-start-column="48" selection-end-line="47" selection-end-column="48" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/Inventory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="46" column="55" selection-start-line="46" selection-start-column="55" selection-end-line="46" selection-end-column="55" />
+        <state relative-caret-position="415">
+          <caret line="32" column="27" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#957#958#0" expanded="true" />
-            <element signature="e#1003#1004#0" expanded="true" />
-            <element signature="e#1167#1168#0" expanded="true" />
-            <element signature="e#1206#1207#0" expanded="true" />
-            <element signature="e#1351#1352#0" expanded="true" />
-            <element signature="e#1397#1398#0" expanded="true" />
-            <element signature="e#1561#1562#0" expanded="true" />
-            <element signature="e#1582#1583#0" expanded="true" />
+            <element signature="e#583#584#0" expanded="true" />
+            <element signature="e#621#622#0" expanded="true" />
+            <element signature="e#758#759#0" expanded="true" />
+            <element signature="e#793#794#0" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#577#578#0" expanded="true" />
+            <element signature="e#617#618#0" expanded="true" />
+            <element signature="e#671#672#0" expanded="true" />
+            <element signature="e#699#700#0" expanded="true" />
+            <element signature="e#731#732#0" expanded="true" />
+            <element signature="e#789#790#0" expanded="true" />
+            <element signature="e#833#834#0" expanded="true" />
+            <element signature="e#992#993#0" expanded="true" />
+            <element signature="e#1030#1031#0" expanded="true" />
+            <element signature="e#1091#1092#0" expanded="true" />
+            <element signature="e#1137#1138#0" expanded="true" />
+            <element signature="e#1301#1302#0" expanded="true" />
+            <element signature="e#1340#1341#0" expanded="true" />
+            <element signature="e#1401#1402#0" expanded="true" />
+            <element signature="e#1447#1448#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/JSONConverter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/JSONConverter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+        <state relative-caret-position="272">
+          <caret line="16" column="85" selection-start-line="16" selection-start-column="85" selection-end-line="16" selection-end-column="85" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/models/Message.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+        <state relative-caret-position="277">
+          <caret line="78" column="45" selection-start-line="78" selection-start-column="45" selection-end-line="78" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#246#247#0" expanded="true" />
-            <element signature="e#278#279#0" expanded="true" />
-            <element signature="e#325#326#0" expanded="true" />
-            <element signature="e#362#363#0" expanded="true" />
-            <element signature="e#395#396#0" expanded="true" />
-            <element signature="e#427#428#0" expanded="true" />
-            <element signature="e#474#475#0" expanded="true" />
-            <element signature="e#511#512#0" expanded="true" />
-            <element signature="e#541#542#0" expanded="true" />
-            <element signature="e#570#571#0" expanded="true" />
-            <element signature="e#611#612#0" expanded="true" />
-            <element signature="e#642#643#0" expanded="true" />
-            <element signature="e#676#677#0" expanded="true" />
-            <element signature="e#706#707#0" expanded="true" />
-            <element signature="e#752#753#0" expanded="true" />
-            <element signature="e#785#786#0" expanded="true" />
-            <element signature="e#814#815#0" expanded="true" />
-            <element signature="e#841#842#0" expanded="true" />
-            <element signature="e#879#880#0" expanded="true" />
-            <element signature="e#906#907#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/NavigatorFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="177" column="48" selection-start-line="177" selection-start-column="48" selection-end-line="177" selection-end-column="48" />
+        <state relative-caret-position="-10">
+          <caret line="142" column="13" selection-start-line="142" selection-start-column="13" selection-end-line="142" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2670#2671#0" expanded="true" />
-            <element signature="e#2712#2713#0" expanded="true" />
-            <element signature="e#3535#3738#0" expanded="true" />
-            <element signature="e#3737#3738#0" expanded="true" />
-            <element signature="e#4610#4792#0" expanded="true" />
-            <element signature="e#4791#4792#0" expanded="true" />
+            <element signature="e#7701#7702#0" expanded="true" />
+            <element signature="e#7743#7744#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/InterfaceDecoration.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/exceptions.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="102">
+          <caret line="6" column="49" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="49" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/LoginActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/ExceptionMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="41" column="54" lean-forward="true" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
+        <state relative-caret-position="119">
+          <caret line="7" column="66" selection-start-line="7" selection-start-column="66" selection-end-line="7" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/resources/Route.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="79" selection-start-line="10" selection-start-column="79" selection-end-line="10" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/APICaller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="137" selection-start-line="137" selection-end-line="137" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#3452#3453#0" expanded="true" />
+            <element signature="e#3496#3497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/tools/JSONBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="50" column="1" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1214#1230#0" expanded="true" />
+            <element signature="e#481#497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/daophilac/discord/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="137" column="5" lean-forward="true" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4214#4215#0" expanded="true" />
+            <element signature="e#4265#4266#0" expanded="true" />
           </folding>
         </state>
       </provider>
