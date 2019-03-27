@@ -15,10 +15,13 @@ namespace Discord_win.Pages {
     /// Interaction logic for SignInPage.xaml
     /// </summary>
     public partial class LoginPage : Page {
+        public Inventory inventory { get; set; }
         private APICaller apiCaller;
         private JSONBuilder jsonBuilder;
         private JSONConverter jsonConverter;
         private FileDealer fileDealer;
+
+        //internal event EventHandler OnFinish;
         public LoginPage() {
             if (!AutoLogin()) {
                 InitializeComponent();
@@ -26,6 +29,7 @@ namespace Discord_win.Pages {
             }
         }
         private void InitializeGlobalVariable() {
+            this.inventory = new Inventory();
             this.apiCaller = new APICaller();
             this.jsonBuilder = new JSONBuilder();
             this.jsonConverter = new JSONConverter();
@@ -37,35 +41,22 @@ namespace Discord_win.Pages {
                 string email = this.fileDealer.ReadLine(Program.UserFilePath);
                 string password = this.fileDealer.ReadLine(Program.UserFilePath);
                 string outgoingJSON = this.jsonBuilder.BuildLoginJSON(email, password);
-                string requestURI = Program.baseAddress + Application.Current.FindResource("URILogin").ToString();
+                string requestURI = Program.baseAddress + Program.URILogin;
                 this.apiCaller.SetProperties("POST", requestURI, outgoingJSON);
                 string incomingJSON = this.apiCaller.SendRequest();
                 User currentUser = this.jsonConverter.ToUser(incomingJSON);
-                Program.mainPage.inventory.StoreCurrentUser(currentUser);
+                this.inventory.StoreCurrentUser(currentUser);
                 Dispatcher.BeginInvoke(new Action(() => {
                     Program.mainWindow.MainFrame.Navigate(Program.mainPage);
+                    //OnFinish(this, EventArgs.Empty);
                 }));
                 return true;
             }
             return false;
         }
-        //internal async static Task<Byte[]> GetFile(string fileName) {
-        //    Byte[] returnedTask = null;
-        //    using (var client = new HttpClient()) {
-        //        UriBuilder uriBuilder = new UriBuilder(string.Format(@"{0}{1}", < Web api URI >, "/Files/GetFile"));
-        //        if (!string.IsNullOrEmpty(fileName)) {
-        //            uriBuilder.Query = string.Format("fileName={0}", fileName);
-        //        }
-        //        client.BaseAddress = new Uri(uriBuilder.ToString());
-        //        client.DefaultRequestHeaders.Accept.Clear();
-        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
-        //        returnedTask = await client.GetByteArrayAsync(client.BaseAddress);
-        //    }
-        //    return returnedTask;
-        //}
         private async void Login() {
             string outgoingJSON = this.jsonBuilder.BuildLoginJSON(this.TextBoxEmail.Text, this.TextBoxPassword.Text);
-            string requestURI = Program.baseAddress + Application.Current.FindResource("URILogin").ToString();
+            string requestURI = Program.baseAddress + Program.URILogin;
             this.apiCaller.SetProperties("POST", requestURI, outgoingJSON);
             string incomingJSON = this.apiCaller.SendRequest();
             if(incomingJSON == null) {
@@ -77,6 +68,17 @@ namespace Discord_win.Pages {
             this.fileDealer.WriteLine(Program.UserFilePath, currentUser.Email, true);
             this.fileDealer.WriteLine(Program.UserFilePath, currentUser.Password, true);
             Program.mainWindow.MainFrame.Navigate(Program.mainPage);
+        }
+        private void ButtonLogin_Click(object sender, RoutedEventArgs e) {
+            Login();
+        }
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            Program.mainWindow.MainFrame.Navigate(Program.mainPage);
+            //Program.mainWindow.MainFrame.
+            //MainWindow a = Program.mainWindow;
+           // Program.mainWindow.MainGrid.
+        }
+        private void TestDownload() {
             //string uri = Program.baseAddress + string.Format(Application.Current.Resources["UriLogin"].ToString(), this.TextBoxEmail.Text, this.TextBoxPassword.Text);
             //string uri = "http://192.168.2.106/discordserver2/api/server/serverimage/1";
             //Byte[] fileBytes = await Program.httpClient.GetByteArrayAsync(uri);
@@ -93,25 +95,21 @@ namespace Discord_win.Pages {
             //else {  
             //    MessageBox.Show(Program.NotificationInvalidEmailOrPassword);
             //}
-
-
-
             //GetFile
         }
-        private void ButtonLogin_Click(object sender, RoutedEventArgs e) {
-            Login();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            Program.mainWindow.MainFrame.Navigate(Program.mainPage);
-            //Program.mainWindow.MainFrame.
-            //MainWindow a = Program.mainWindow;
-           // Program.mainWindow.MainGrid.
-        }
-
-
-
-
-        
+        //internal async static Task<Byte[]> GetFile(string fileName) {
+        //    Byte[] returnedTask = null;
+        //    using (var client = new HttpClient()) {
+        //        UriBuilder uriBuilder = new UriBuilder(string.Format(@"{0}{1}", < Web api URI >, "/Files/GetFile"));
+        //        if (!string.IsNullOrEmpty(fileName)) {
+        //            uriBuilder.Query = string.Format("fileName={0}", fileName);
+        //        }
+        //        client.BaseAddress = new Uri(uriBuilder.ToString());
+        //        client.DefaultRequestHeaders.Accept.Clear();
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
+        //        returnedTask = await client.GetByteArrayAsync(client.BaseAddress);
+        //    }
+        //    return returnedTask;
+        //}
     }
 }

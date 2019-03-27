@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Discord_win.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Discord_win.Tools {
     class JSONBuilder {
-        public string buildJSONFromHashMap(Dictionary<string, string> parameters) {
+        public string BuildJSONFromHashMap(Dictionary<string, string> parameters) {
             StringBuilder resultJSON = new StringBuilder();
             resultJSON.Append("{");
             foreach (var item in parameters) {
@@ -22,31 +23,20 @@ namespace Discord_win.Tools {
             resultJSON.Remove(resultJSON.Length - 1, 1);
             resultJSON.Append("}");
             return resultJSON.ToString();
-
-
-            //Iterator iterator = parameters.entrySet().iterator();
-            //Map.Entry pair;
-            //resultJSON.append("{");
-            //while (iterator.hasNext()) {
-            //    pair = (Map.Entry)iterator.next();
-            //    resultJSON.append("\"");
-            //    resultJSON.append(pair.getKey());
-            //    resultJSON.append("\"");
-            //    resultJSON.append(":");
-            //    resultJSON.append("\"");
-            //    resultJSON.append(pair.getValue());
-            //    resultJSON.append("\"");
-            //    resultJSON.append(",");
-            //}
-            //resultJSON.deleteCharAt(resultJSON.length() - 1);
-            //resultJSON.append("}");
-            //return resultJSON.toString();
         }
         public string BuildLoginJSON(string email, string password) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("Email", email);
             parameters.Add("Password", password);
-            return buildJSONFromHashMap(parameters);
+            return BuildJSONFromHashMap(parameters);
+        }
+        public string BuildMessageJSON(Channel currentChannel, User currentUser, string content) {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("ChannelID", currentChannel.ChannelID.ToString());
+            parameters.Add("UserID", currentUser.UserID.ToString());
+            parameters.Add("Content", content);
+            parameters.Add("Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            return BuildJSONFromHashMap(parameters);
         }
     }
 }

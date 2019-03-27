@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Discord_win.Models {
     public class Channel {
-        [Key]
         public int ChannelID { get; set; }
         public string Name { get; set; }
         public int ServerID { get; set; }

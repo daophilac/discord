@@ -1,17 +1,13 @@
-﻿using System;
+﻿using Discord_win.Models;
+using Discord_win.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Discord_win.Pages {
     /// <summary>
@@ -19,45 +15,112 @@ namespace Discord_win.Pages {
     /// </summary>
     public partial class MainPage : Page {
         public Inventory inventory { get; set; }
-        //private double CanvasServerWidth;
-        //private double CanvasChannelWidth;
-        //private double CanvasRoleWidth;
-        //private double CanvasChatWidth;
-        //private double CanvasTypeWidth;
-        //private double CanvasTextBoxMessageWidth;
-        //private int CanvasMessageTotalPaddingLeftRight;
+        private APICaller apiCaller;
+        private JSONBuilder jsonBuilder;
+        private JSONConverter jsonConverter;
+        private Dictionary<Button, int> buttonServers = new Dictionary<Button, int>();
+        private Dictionary<Button, int> buttonChannels = new Dictionary<Button, int>();
+        private int currentSelectedChannel = 0;
         public MainPage() {
             InitializeComponent();
             InitializeGlobalVariable();
         }
         private void InitializeGlobalVariable() {
-            this.inventory = new Inventory();
-            //this.CanvasServerWidth = this.CanvasServer.Width;
-            //this.CanvasChannelWidth = this.CanvasChannel.Width;
-            //this.CanvasRoleWidth = this.CanvasRole.Width;
-            //this.CanvasChatWidth = this.CanvasChat.Width;
-            //this.CanvasTypeWidth = this.CanvasType.Width;
-            //this.CanvasTextBoxMessageWidth = this.TextBoxMessage.Width;
-            //this.CanvasMessageTotalPaddingLeftRight = (int)Application.Current.FindResource("CanvasMessageTotalPaddingLeftRight");
-
-
-
-            TestPage testPage = new TestPage();
-            this.MessageFrame.Navigate(Program.testPage);
+            this.inventory = Program.loginPage.inventory;
+            this.apiCaller = new APICaller();
+            this.jsonBuilder = new JSONBuilder();
+            this.jsonConverter = new JSONConverter();
+            LoadListServer();
         }
-        public void ChangeSize() {
-            //Program.mainWindow.MainFrame.Width = Program.mainWindow.MainGrid.ActualWidth;
-            //Program.mainWindow.MainFrame.Height = Program.mainWindow.MainGrid.ActualHeight;
-            //this.Width = Program.mainWindow.MainGrid.ActualWidth;
-            //this.Height = Program.mainWindow.MainGrid.ActualHeight;
-            //this.CanvasChat.Width = this.ActualWidth - (this.CanvasServerWidth + this.CanvasChannelWidth + this.CanvasRoleWidth);
-            //this.CanvasType.Width = this.CanvasChat.Width - this.CanvasMessageTotalPaddingLeftRight;
-            //this.TextBoxMessage.Width = this.CanvasType.Width;
+        private void LoadListServer() {
+            string requestURI = Program.baseAddress + string.Format(Program.URIGetServersByUser, this.inventory.LoadCurrentUser().UserID);
+            this.apiCaller.SetProperties("GET", requestURI);
+            string incomingJSON = this.apiCaller.SendRequest();
+            List<Server> listServer = this.jsonConverter.ToListServer(incomingJSON);
+            this.inventory.StoreListServer(listServer);
+            for(int i = 0; i < listServer.Count; i++) {
+                Button button = new Button();
+                button.Content = listServer[i].Name;
+                button.Height = 40;
+                button.Margin = new Thickness(5, 5, 5, 5);
+                DockPanel.SetDock(button, Dock.Top);
+                button.Click += ServerButton_Click;
+                this.buttonServers.Add(button, listServer[i].ServerID);
+                this.DockPanelServer.Children.Add(button);
+            }
+        }
+        private void LoadListChannel(int serverID) {
+            string requestURI = Program.baseAddress + string.Format(Program.URIGetChannelsByServer, serverID);
+            this.apiCaller.SetProperties("GET", requestURI);
+            string incomingJSON = this.apiCaller.SendRequest();
+            List<Channel> listChannel = this.jsonConverter.ToListChannel(incomingJSON);
+            this.DockPanelChannel.Children.Clear();
+            this.inventory.StoreListChannel(listChannel);
+            for (int i = 0; i < listChannel.Count; i++) {
+                Button button = new Button();
+                button.Content = i + ". " + listChannel[i].Name;
+                button.Height = 40;
+                button.Margin = new Thickness(5, 5, 5, 5);
+                button.FontSize = 20;
+                button.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
+                button.HorizontalAlignment = HorizontalAlignment.Left;
+                button.Background = new SolidColorBrush(Color.FromArgb(0x00, 0x00, 0, 0));
+                DockPanel.SetDock(button, Dock.Top);
+                button.Click += ChannelButton_Click;
+                this.buttonChannels.Add(button, listChannel[i].ChannelID);
+                this.DockPanelChannel.Children.Add(button);
+            }
+        }
+        private void LoadListMessage(int channelID) {
+            string requestURI = Program.baseAddress + string.Format(Program.URIGetMessagesByChannel, channelID);
+            this.apiCaller.SetProperties("GET", requestURI);
+            string incomingJSON = this.apiCaller.SendRequest();
+            List<Message> listMessage = this.jsonConverter.ToListMessage(incomingJSON);
+            this.DockPanelMessage.Children.Clear();
+            for (int i = 0; i < listMessage.Count; i++) {
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = listMessage[i].UserID + ": " + listMessage[i].Content;
+                textBlock.FontSize = 15;
+                textBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
+                textBlock.TextWrapping = TextWrapping.Wrap;
+                textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                DockPanel.SetDock(textBlock, Dock.Top);
+                this.DockPanelMessage.Children.Add(textBlock);
+            }
+        }
+        private void ServerButton_Click(object sender, RoutedEventArgs e) {
+            int serverID = buttonServers.Where(x => x.Key == sender).First().Value;
+            LoadListChannel(serverID);
+        }
+        private void ChannelButton_Click(object sender, RoutedEventArgs e) {
+            int channelID = buttonChannels.Where(x => x.Key == sender).First().Value;
+            if (channelID != this.currentSelectedChannel) {
+                this.currentSelectedChannel = channelID;
+                Channel currentChannel = this.inventory.LoadListChannel().Where(x => x.ChannelID == channelID).First();
+                this.inventory.StoreCurrentChannel(currentChannel);
+                LoadListMessage(channelID);
+            }
+        }
+        private void ButtonSend_Click(object sender, RoutedEventArgs e) {
+            Channel currentChannel = this.inventory.LoadCurrentChannel();
+            User currentUser = this.inventory.LoadCurrentUser();
+            string json = this.jsonBuilder.BuildMessageJSON(currentChannel, currentUser, this.TextBoxType.Text);
+            string requestURI = Program.baseAddress + Program.URIInsertMessage;
+            this.apiCaller.SetProperties("POST", requestURI, json);
+            this.apiCaller.SendRequest();
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = currentUser.UserID + ": " + this.TextBoxType.Text;
+            textBlock.FontSize = 15;
+            textBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
+            textBlock.TextWrapping = TextWrapping.Wrap;
+            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+            DockPanel.SetDock(textBlock, Dock.Top);
+            this.DockPanelMessage.Children.Add(textBlock);
+            TextBoxType.Text = "";
+            //DockPanel.SetFlowDirection = 
         }
 
-        private void Page_Initialized(object sender, EventArgs e) {
 
-        }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
             //TextBox[] textBoxes = new TextBox[30];
@@ -72,5 +135,7 @@ namespace Discord_win.Pages {
             //    Program.testPage.abc.Children.Add(textBoxes[i]);
             //}
         }
+
+        
     }
 }

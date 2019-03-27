@@ -20,10 +20,6 @@ namespace API {
             //    routeTemplate: "api/{controller}/{id}",
             //    defaults: new { id = RouteParameter.Optional }
             //);
-            //config.Routes.MapHttpRoute(
-            //    name: "Query",
-            //    routeTemplate: "api/{controller}/{action}/{email}/{password}"
-            //);
         }
     }
 }

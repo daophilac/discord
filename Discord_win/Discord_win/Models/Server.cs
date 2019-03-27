@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace Discord_win.Models {
     public class Server {
-        [Key]
         public int ServerID { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
         public int AdminID { get; set; }
 
 
-        [ForeignKey("AdminID")]
+        
         public User User { get; set; }
         public ICollection<Channel> Channels { get; set; }
         public ICollection<Role> Roles { get; set; }

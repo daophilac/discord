@@ -7,70 +7,58 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Discord_win.Tools {
-    class APICaller {
-        private string requestMethod;
-        private string requestURI;
-        private string json;
+    public class APICaller {
+        public string RequestMethod { get; set; }
+        public string RequestURI { get; set; }
+        public string JSON { get; set; }
         public APICaller() { }
         public APICaller(string requestMethod) {
             if (requestMethod != "GET" && requestMethod != "POST" && requestMethod != "PUT" && requestMethod != "DELETE") {
                 throw new Exception(Program.ExceptionWrongRequestMethod);
             }
-            this.requestMethod = requestMethod;
+            this.RequestMethod = requestMethod;
         }
         public APICaller(string requestURL, string requestMethod) {
-            this.requestURI = requestURL;
+            this.RequestURI = requestURL;
             if (requestMethod != "GET" && requestMethod != "POST" && requestMethod != "PUT" && requestMethod != "DELETE") {
                 throw new Exception(Program.ExceptionWrongRequestMethod);
             }
-            this.requestMethod = requestMethod;
+            this.RequestMethod = requestMethod;
         }
         public APICaller(string requestURL, string requestMethod, string json) {
-            this.requestURI = requestURL;
+            this.RequestURI = requestURL;
             if (requestMethod != "GET" && requestMethod != "POST" && requestMethod != "PUT" && requestMethod != "DELETE") {
                 throw new Exception(Program.ExceptionWrongRequestMethod);
             }
-            this.requestMethod = requestMethod;
-            this.json = json;
-        }
-        public void SetRequestMethod(string requestMethod) {
-            if (requestMethod != "GET" && requestMethod != "POST" && requestMethod != "PUT" && requestMethod != "DELETE") {
-                throw new Exception(Program.ExceptionWrongRequestMethod);
-            }
-            this.requestMethod = requestMethod;
-        }
-        public void SetRequestURI(string requestURI) {
-            this.requestURI = requestURI;
-        }
-        public void SetJSON(string json) {
-            this.json = json;
+            this.RequestMethod = requestMethod;
+            this.JSON = json;
         }
         public void SetProperties(string requestMethod, string requestURI) {
-            this.requestMethod = requestMethod;
-            this.requestURI = requestURI;
+            this.RequestMethod = requestMethod;
+            this.RequestURI = requestURI;
         }
         public void SetProperties(string requestMethod, string requestURI, string json) {
-            this.requestMethod = requestMethod;
-            this.requestURI = requestURI;
-            this.json = json;
+            this.RequestMethod = requestMethod;
+            this.RequestURI = requestURI;
+            this.JSON = json;
         }
         public string SendRequest() {
-            if (this.requestMethod == null) {
+            if (this.RequestMethod == null) {
                 throw new Exception(Program.ExceptionNullRequestMethod);
             }
-            if (this.requestURI == null) {
+            if (this.RequestURI == null) {
                 throw new Exception(Program.ExceptionNullRequestURI);
             }
-            if (this.requestMethod != "GET" && this.json == null) {
+            if (this.RequestMethod != "GET" && this.JSON == null) {
                 throw new Exception(Program.ExceptionNullJSON);
             }
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(requestURI);
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(RequestURI);
             httpWebRequest.ContentType = "application/json; charset=utf-8";
-            httpWebRequest.Method = this.requestMethod;
+            httpWebRequest.Method = this.RequestMethod;
             httpWebRequest.Accept = "application/json; charset=utf-8";
-            if(this.requestMethod == "POST") {
+            if(this.RequestMethod == "POST") {
                 StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream());
-                streamWriter.Write(json);
+                streamWriter.Write(JSON);
                 streamWriter.Flush();
                 streamWriter.Close();
             }

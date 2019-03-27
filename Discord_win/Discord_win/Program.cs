@@ -20,7 +20,6 @@ namespace Discord_win {
         public static HttpClient httpClient;
         public static HttpResponseMessage httpResponseMessage;
 
-
         public static MainWindow mainWindow;
         public static LoginPage loginPage;
         public static MainPage mainPage;
@@ -41,6 +40,12 @@ namespace Discord_win {
         public static string ExceptionNullRequestMethod;
         public static string ExceptionNullRequestURI;
         public static string ExceptionNullJSON;
+
+        public static string URILogin;
+        public static string URIGetServersByUser;
+        public static string URIGetChannelsByServer;
+        public static string URIGetMessagesByChannel;
+        public static string URIInsertMessage;
         public static void Initialize() {
             //
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
@@ -81,8 +86,15 @@ namespace Discord_win {
             ServerFilePath = RootDataDirectory + ServerDirectory + ServerFilePath;
 
             //
-            mainPage = new MainPage();
+            URILogin = Application.Current.FindResource("URILogin").ToString();
+            URIGetServersByUser = Application.Current.FindResource("URIGetServersByUser").ToString();
+            URIGetChannelsByServer = Application.Current.FindResource("URIGetChannelsByServer").ToString();
+            URIGetMessagesByChannel = Application.Current.FindResource("URIGetMessagesByChannel").ToString();
+            URIInsertMessage = Application.Current.FindResource("URIInsertMessage").ToString();
+
+            //
             loginPage = new LoginPage();
+            mainPage = new MainPage();
             testPage = new TestPage();
         }
     }
