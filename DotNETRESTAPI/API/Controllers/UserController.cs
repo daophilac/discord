@@ -9,7 +9,7 @@ using API.Models;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -31,13 +31,16 @@ namespace API.Controllers
 
         // GET: api/User
         [HttpGet]
+        [Route("all")]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
             return await _context.User.ToListAsync();
         }
 
         // GET: api/User/5
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
+        [HttpGet]
+        [Route("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.User.FindAsync(id);
@@ -82,6 +85,7 @@ namespace API.Controllers
 
         // POST: api/User
         [HttpPost]
+        [Route("api/user/post")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             _context.User.Add(user);
