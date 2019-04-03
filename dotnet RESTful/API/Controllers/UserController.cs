@@ -61,6 +61,8 @@ namespace API.Controllers
         }
 
         // GET: api/User/5
+        [HttpGet]
+        [Route("api/user/getuserbyid/{id}")]
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(int id) {
             User user = db.User.Find(id);

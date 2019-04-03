@@ -65,7 +65,7 @@ namespace Discord_win {
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
             //
-            baseAddress = "http://" + domainName + "/" + serverName;
+            baseAddress = "https://" + domainName + serverName;
 
             //
             NotificationInvalidEmailOrPassword = Application.Current.FindResource("NotificationInvalidEmailOrPassword").ToString();

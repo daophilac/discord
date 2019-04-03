@@ -15,7 +15,17 @@ namespace API.Controllers
     public class MessageController : ApiController
     {
         private APIContext db = new APIContext();
-
+        [HttpDelete]
+        [Route("api/message/deletemessagebyid/{messageID}")]
+        public IHttpActionResult DeleteMessageByID(int messageID) {
+            Message message = db.Message.Find(messageID);
+            if (message == null) {
+                return NotFound();
+            }
+            db.Message.Remove(message);
+            db.SaveChanges();
+            return Ok();
+        }
         [HttpGet]
         [Route("api/message/getmessagesbychannel/{channelID}")]
         public IQueryable<Message> GetMessagesByChannel(int channelID) {

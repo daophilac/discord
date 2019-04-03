@@ -3,8 +3,10 @@
                     xmlns:local="clr-namespace:Discord_win.Resources"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--<system:String x:Key="DomainName">192.168.2.104</system:String>-->
-    <system:String x:Key="DomainName">192.168.43.72</system:String>
-    <system:String x:Key="ServerName">discordserver2</system:String>
+    <!--<system:String x:Key="DomainName">192.168.43.72</system:String>-->
+    <system:String x:Key="DomainName">daophilacdiscord</system:String>
+    <!--<system:String x:Key="ServerName">/discordserver2</system:String>-->
+    <system:String x:Key="ServerName">.azurewebsites.net</system:String>
     <system:String x:Key="URILogin">/api/user/login</system:String>
     <system:String x:Key="URIGetServersByUser">/api/server/getserversbyuser/{0}</system:String>
     <system:String x:Key="URIGetChannelsByServer">/api/channel/getchannelsbyserver/{0}</system:String>

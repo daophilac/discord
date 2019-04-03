@@ -13,3 +13,6 @@
 /Discord_win/WpfApp1
 /Discord_win/Discord_win/bin/Release
 /Discord_win/Discord_win/obj/Release
+/DotNETRESTAPI/.vs
+/DotNETRESTAPI/API/bin/Debug/netcoreapp2.2
+/DotNETRESTAPI/API/obj

@@ -39,7 +39,7 @@ namespace API.Models {
                 new ServerUser{ServerID=2,UserID=3},
                 new ServerUser{ServerID=2,UserID=4},
                 new ServerUser{ServerID=3,UserID=1},
-                new ServerUser{ServerID=3,UserID=4},
+                new ServerUser{ServerID=3,UserID=4}
             };
             serverUsers.ForEach(su => context.ServerUser.Add(su));
             context.SaveChanges();
