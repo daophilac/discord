@@ -19,6 +19,15 @@ namespace API.Controllers
         {
             _context = context;
         }
+        
+
+
+
+
+
+
+
+
 
         // GET: api/User
         [HttpGet]

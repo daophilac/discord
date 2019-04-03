@@ -573,6 +573,7 @@ namespace API.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256);
 
                     b.Property<string>("FirstName");
@@ -589,7 +590,8 @@ namespace API.Migrations
 
                     b.HasKey("UserID");
 
-                    b.HasIndex("Email");
+                    b.HasAlternateKey("Email")
+                        .HasName("UK_Email");
 
                     b.ToTable("User");
 

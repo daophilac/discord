@@ -7,7 +7,13 @@ using System.Threading.Tasks;
 
 namespace API.Models {
     public class MainDatabase : DbContext {
-        public MainDatabase(DbContextOptions<MainDatabase> options) : base(options) { }
+        public MainDatabase(DbContextOptions<MainDatabase> options) : base(options) {}
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+            optionsBuilder.UseSqlServer("Server=MYPC;Database=DISCORD;Trusted_Connection=True;");
+            base.OnConfiguring(optionsBuilder);
+        }
+
         public DbSet<User> User { get; set; }
         public DbSet<Server> Server { get; set; }
         public DbSet<Channel> Channel { get; set; }
@@ -17,7 +23,7 @@ namespace API.Models {
         public DbSet<ChannelRolePermission> ChannelRolePermission { get; set; }
         public DbSet<Message> Message { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.Entity<User>().HasIndex("Email");
+            modelBuilder.Entity<User>().HasAlternateKey(k => k.Email).HasName("UK_Email");
             modelBuilder.Entity<ChannelRolePermission>().HasKey(crp => new { crp.ChannelID, crp.RoleID, crp.PermissionID });
             modelBuilder.Entity<ServerUser>().HasKey(su => new { su.ServerID, su.UserID });
             modelBuilder.Entity<User>().HasData(

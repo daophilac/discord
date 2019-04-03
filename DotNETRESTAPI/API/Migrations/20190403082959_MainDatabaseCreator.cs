@@ -27,7 +27,7 @@ namespace API.Migrations
                 {
                     UserID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
                     Password = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
@@ -38,6 +38,7 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.UserID);
+                    table.UniqueConstraint("UK_Email", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(
@@ -356,11 +357,6 @@ namespace API.Migrations
                 name: "IX_ServerUser_UserID",
                 table: "ServerUser",
                 column: "UserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_Email",
-                table: "User",
-                column: "Email");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
