@@ -1,6 +1,7 @@
 ﻿
 using Discord_win.Models;
 using Discord_win.Tools;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,7 @@ namespace Discord_win.Pages {
         public Inventory inventory { get; set; }
         private APICaller apiCaller;
         private JSONBuilder jsonBuilder;
-        private JSONConverter jsonConverter;
+        //private JSONConverter jsonConverter;
         private FileDealer fileDealer;
 
         //internal event EventHandler OnFinish;
@@ -32,7 +33,7 @@ namespace Discord_win.Pages {
             this.inventory = new Inventory();
             this.apiCaller = new APICaller();
             this.jsonBuilder = new JSONBuilder();
-            this.jsonConverter = new JSONConverter();
+            //this.jsonConverter = new JSONConverter();
             this.fileDealer = new FileDealer();
         }
         private bool AutoLogin() {
@@ -44,7 +45,8 @@ namespace Discord_win.Pages {
                 string requestURI = Program.baseAddress + Program.URILogin;
                 this.apiCaller.SetProperties("POST", requestURI, outgoingJSON);
                 string incomingJSON = this.apiCaller.SendRequest();
-                User currentUser = this.jsonConverter.ToUser(incomingJSON);
+                //User currentUser = this.jsonConverter.ToUser(incomingJSON);
+                User currentUser = JsonConvert.DeserializeObject<User>(incomingJSON);
                 this.inventory.StoreCurrentUser(currentUser);
                 Dispatcher.BeginInvoke(new Action(() => {
                     Program.mainWindow.MainFrame.Navigate(Program.mainPage);
@@ -63,7 +65,8 @@ namespace Discord_win.Pages {
                 MessageBox.Show(Program.NotificationInvalidEmailOrPassword);
                 return;
             }
-            User currentUser = this.jsonConverter.ToUser(incomingJSON);
+            //User currentUser = this.jsonConverter.ToUser(incomingJSON);
+            User currentUser = JsonConvert.DeserializeObject<User>(incomingJSON);
             Program.mainPage.inventory.StoreCurrentUser(currentUser);
             this.fileDealer.WriteLine(Program.UserFilePath, currentUser.Email, true);
             this.fileDealer.WriteLine(Program.UserFilePath, currentUser.Password, true);

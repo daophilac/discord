@@ -19,7 +19,15 @@ namespace API.Controllers
         {
             _context = context;
         }
-        
+        [HttpPost]
+        [Route("login")]
+        public ActionResult<User> Login(User requestedUser) {
+            var users = _context.User.Where(u => u.Email == requestedUser.Email && u.Password == requestedUser.Password);
+            if(users.Count() == 0) {
+                return NoContent();
+            }
+            return users.First();
+        }
 
 
 

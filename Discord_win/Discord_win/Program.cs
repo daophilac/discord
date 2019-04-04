@@ -13,6 +13,7 @@ using System.Windows;
 
 namespace Discord_win {
     public static class Program {
+        public static string protocol;
         public static string localIP;
         public static string domainName;
         public static string serverName;
@@ -55,17 +56,18 @@ namespace Discord_win {
             socket.Close();
 
             //
+            protocol = Application.Current.Resources["Protocol"].ToString();
             domainName = Application.Current.Resources["DomainName"].ToString();
             serverName = Application.Current.Resources["ServerName"].ToString();
 
             //
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://" + domainName);
+            httpClient.BaseAddress = new Uri(protocol + domainName);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
             //
-            baseAddress = "https://" + domainName + serverName;
+            baseAddress = protocol + domainName + serverName;
 
             //
             NotificationInvalidEmailOrPassword = Application.Current.FindResource("NotificationInvalidEmailOrPassword").ToString();

@@ -6,7 +6,7 @@ namespace Discord_win.Models {
         public int ChannelID { get; set; }
         public int UserID { get; set; }
         public string Content { get; set; }
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
 
 
         public Channel Channel { get; set; }

@@ -1,5 +1,7 @@
 ﻿using Discord_win.Models;
 using Discord_win.Tools;
+using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,11 @@ namespace Discord_win.Pages {
         public Inventory inventory { get; set; }
         private APICaller apiCaller;
         private JSONBuilder jsonBuilder;
-        private JSONConverter jsonConverter;
+        //private JSONConverter jsonConverter;
         private Dictionary<Button, int> buttonServers = new Dictionary<Button, int>();
         private Dictionary<Button, int> buttonChannels = new Dictionary<Button, int>();
         private int currentSelectedChannel = 0;
+        private HubConnection chatHubConnection;
         public MainPage() {
             InitializeComponent();
             InitializeGlobalVariable();
@@ -29,14 +32,38 @@ namespace Discord_win.Pages {
             this.inventory = Program.loginPage.inventory;
             this.apiCaller = new APICaller();
             this.jsonBuilder = new JSONBuilder();
-            this.jsonConverter = new JSONConverter();
+            this.chatHubConnection = new HubConnectionBuilder().WithUrl("https://localhost:44334/chathub").Build();
+            RegisterListener();
             LoadListServer();
+        }
+        private async void RegisterListener() {
+            this.chatHubConnection.On<string>("ReceiveMessage", (jsonMessage) => {
+                this.Dispatcher.Invoke(() => {
+                    Message receivedMessage = JsonConvert.DeserializeObject<Message>(jsonMessage);
+                    TextBlock textBlock = new TextBlock();
+                    textBlock.Text = receivedMessage.UserID + ": " + receivedMessage.Content;
+                    textBlock.FontSize = 15;
+                    textBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
+                    textBlock.TextWrapping = TextWrapping.Wrap;
+                    textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                    DockPanel.SetDock(textBlock, Dock.Top);
+                    this.DockPanelMessage.Children.Add(textBlock);
+                });
+            });
+
+
+            try {
+                await this.chatHubConnection.StartAsync();
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
         }
         private void LoadListServer() {
             string requestURI = Program.baseAddress + string.Format(Program.URIGetServersByUser, this.inventory.LoadCurrentUser().UserID);
             this.apiCaller.SetProperties("GET", requestURI);
             string incomingJSON = this.apiCaller.SendRequest();
-            List<Server> listServer = this.jsonConverter.ToListServer(incomingJSON);
+            List<Server> listServer = JsonConvert.DeserializeObject<List<Server>>(incomingJSON);
             this.inventory.StoreListServer(listServer);
             for(int i = 0; i < listServer.Count; i++) {
                 Button button = new Button();
@@ -53,7 +80,7 @@ namespace Discord_win.Pages {
             string requestURI = Program.baseAddress + string.Format(Program.URIGetChannelsByServer, serverID);
             this.apiCaller.SetProperties("GET", requestURI);
             string incomingJSON = this.apiCaller.SendRequest();
-            List<Channel> listChannel = this.jsonConverter.ToListChannel(incomingJSON);
+            List<Channel> listChannel = JsonConvert.DeserializeObject<List<Channel>>(incomingJSON);
             this.DockPanelChannel.Children.Clear();
             this.inventory.StoreListChannel(listChannel);
             for (int i = 0; i < listChannel.Count; i++) {
@@ -75,7 +102,7 @@ namespace Discord_win.Pages {
             string requestURI = Program.baseAddress + string.Format(Program.URIGetMessagesByChannel, channelID);
             this.apiCaller.SetProperties("GET", requestURI);
             string incomingJSON = this.apiCaller.SendRequest();
-            List<Message> listMessage = this.jsonConverter.ToListMessage(incomingJSON);
+            List<Message> listMessage = JsonConvert.DeserializeObject<List<Message>>(incomingJSON);
             this.DockPanelMessage.Children.Clear();
             for (int i = 0; i < listMessage.Count; i++) {
                 TextBlock textBlock = new TextBlock();
@@ -101,26 +128,33 @@ namespace Discord_win.Pages {
                 LoadListMessage(channelID);
             }
         }
-        private void ButtonSend_Click(object sender, RoutedEventArgs e) {
+        private async void ButtonSend_Click(object sender, RoutedEventArgs e) {
             Channel currentChannel = this.inventory.LoadCurrentChannel();
             User currentUser = this.inventory.LoadCurrentUser();
             string json = this.jsonBuilder.BuildMessageJSON(currentChannel, currentUser, this.TextBoxType.Text);
-            string requestURI = Program.baseAddress + Program.URIInsertMessage;
-            this.apiCaller.SetProperties("POST", requestURI, json);
-            this.apiCaller.SendRequest();
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = currentUser.UserID + ": " + this.TextBoxType.Text;
-            textBlock.FontSize = 15;
-            textBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
-            textBlock.TextWrapping = TextWrapping.Wrap;
-            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-            DockPanel.SetDock(textBlock, Dock.Top);
-            this.DockPanelMessage.Children.Add(textBlock);
+            await this.chatHubConnection.InvokeAsync("SendMessage", json);
+            
+            //string requestURI = Program.baseAddress + Program.URIInsertMessage;
+            //this.apiCaller.SetProperties("POST", requestURI, json);
+            //this.apiCaller.SendRequest();
+            
+            
+            
+            //TextBlock textBlock = new TextBlock();
+            //textBlock.Text = currentUser.UserID + ": " + this.TextBoxType.Text;
+            //textBlock.FontSize = 15;
+            //textBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
+            //textBlock.TextWrapping = TextWrapping.Wrap;
+            //textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+            //DockPanel.SetDock(textBlock, Dock.Top);
+            //this.DockPanelMessage.Children.Add(textBlock);
             TextBoxType.Text = "";
             //DockPanel.SetFlowDirection = 
         }
 
+        private async void ReceiveMessage(string jsonMessage) {
 
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
             //TextBox[] textBoxes = new TextBox[30];
