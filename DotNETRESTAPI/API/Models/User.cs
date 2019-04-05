@@ -10,7 +10,7 @@ namespace API.Models {
     }
     public class User {
         [Key]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
         [MaxLength(256)]
         public string Email { get; set; }
         public string Password { get; set; }

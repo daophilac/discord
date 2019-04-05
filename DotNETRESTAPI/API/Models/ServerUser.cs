@@ -7,8 +7,8 @@ using System.Web;
 
 namespace API.Models {
     public class ServerUser {
-        public int ServerID { get; set; }
-        public int UserID { get; set; }
+        public int ServerId { get; set; }
+        public int UserId { get; set; }
 
 
         public Server Server { get; set; }

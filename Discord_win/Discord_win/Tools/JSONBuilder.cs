@@ -32,8 +32,8 @@ namespace Discord_win.Tools {
         }
         public string BuildMessageJSON(Channel currentChannel, User currentUser, string content) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("ChannelID", currentChannel.ChannelID.ToString());
-            parameters.Add("UserID", currentUser.UserID.ToString());
+            parameters.Add("ChannelID", currentChannel.ChannelId.ToString());
+            parameters.Add("UserID", currentUser.UserId.ToString());
             parameters.Add("Content", content);
             parameters.Add("Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             return BuildJSONFromHashMap(parameters);

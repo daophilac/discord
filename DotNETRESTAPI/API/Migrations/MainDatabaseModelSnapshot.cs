@@ -21,360 +21,360 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Channel", b =>
                 {
-                    b.Property<int>("ChannelID")
+                    b.Property<int>("ChannelId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("ServerID");
+                    b.Property<int>("ServerId");
 
-                    b.HasKey("ChannelID");
+                    b.HasKey("ChannelId");
 
-                    b.HasIndex("ServerID");
+                    b.HasIndex("ServerId");
 
                     b.ToTable("Channel");
 
                     b.HasData(
                         new
                         {
-                            ChannelID = 1,
+                            ChannelId = 1,
                             Name = "General",
-                            ServerID = 1
+                            ServerId = 1
                         },
                         new
                         {
-                            ChannelID = 2,
+                            ChannelId = 2,
                             Name = "Boss",
-                            ServerID = 1
+                            ServerId = 1
                         },
                         new
                         {
-                            ChannelID = 3,
+                            ChannelId = 3,
                             Name = "Random Encounter",
-                            ServerID = 1
+                            ServerId = 1
                         },
                         new
                         {
-                            ChannelID = 4,
+                            ChannelId = 4,
                             Name = "Origin",
-                            ServerID = 2
+                            ServerId = 2
                         },
                         new
                         {
-                            ChannelID = 5,
+                            ChannelId = 5,
                             Name = "Ys7",
-                            ServerID = 2
+                            ServerId = 2
                         },
                         new
                         {
-                            ChannelID = 6,
+                            ChannelId = 6,
                             Name = "Ys8",
-                            ServerID = 2
+                            ServerId = 2
                         },
                         new
                         {
-                            ChannelID = 7,
+                            ChannelId = 7,
                             Name = "General",
-                            ServerID = 3
+                            ServerId = 3
                         },
                         new
                         {
-                            ChannelID = 8,
+                            ChannelId = 8,
                             Name = "Secret",
-                            ServerID = 3
+                            ServerId = 3
                         });
                 });
 
             modelBuilder.Entity("API.Models.ChannelRolePermission", b =>
                 {
-                    b.Property<int>("ChannelID");
+                    b.Property<int>("ChannelId");
 
-                    b.Property<int>("RoleID");
+                    b.Property<int>("RoleId");
 
-                    b.Property<string>("PermissionID");
+                    b.Property<string>("PermissionId");
 
-                    b.HasKey("ChannelID", "RoleID", "PermissionID");
+                    b.HasKey("ChannelId", "RoleId", "PermissionId");
 
-                    b.HasIndex("PermissionID");
+                    b.HasIndex("PermissionId");
 
-                    b.HasIndex("RoleID");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("ChannelRolePermission");
 
                     b.HasData(
                         new
                         {
-                            ChannelID = 1,
-                            RoleID = 1,
-                            PermissionID = "full"
+                            ChannelId = 1,
+                            RoleId = 1,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 1,
-                            RoleID = 2,
-                            PermissionID = "full"
+                            ChannelId = 1,
+                            RoleId = 2,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 1,
-                            RoleID = 3,
-                            PermissionID = "full"
+                            ChannelId = 1,
+                            RoleId = 3,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 1,
-                            RoleID = 4,
-                            PermissionID = "full"
+                            ChannelId = 1,
+                            RoleId = 4,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 2,
-                            RoleID = 1,
-                            PermissionID = "full"
+                            ChannelId = 2,
+                            RoleId = 1,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 2,
-                            RoleID = 2,
-                            PermissionID = "full"
+                            ChannelId = 2,
+                            RoleId = 2,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 2,
-                            RoleID = 3,
-                            PermissionID = "full"
+                            ChannelId = 2,
+                            RoleId = 3,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 2,
-                            RoleID = 4,
-                            PermissionID = "full"
+                            ChannelId = 2,
+                            RoleId = 4,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 3,
-                            RoleID = 1,
-                            PermissionID = "full"
+                            ChannelId = 3,
+                            RoleId = 1,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 3,
-                            RoleID = 2,
-                            PermissionID = "full"
+                            ChannelId = 3,
+                            RoleId = 2,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 3,
-                            RoleID = 3,
-                            PermissionID = "no_chat"
+                            ChannelId = 3,
+                            RoleId = 3,
+                            PermissionId = "no_chat"
                         },
                         new
                         {
-                            ChannelID = 3,
-                            RoleID = 4,
-                            PermissionID = "no_chat"
+                            ChannelId = 3,
+                            RoleId = 4,
+                            PermissionId = "no_chat"
                         },
                         new
                         {
-                            ChannelID = 4,
-                            RoleID = 1,
-                            PermissionID = "full"
+                            ChannelId = 4,
+                            RoleId = 1,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 4,
-                            RoleID = 2,
-                            PermissionID = "no_view"
+                            ChannelId = 4,
+                            RoleId = 2,
+                            PermissionId = "no_view"
                         },
                         new
                         {
-                            ChannelID = 4,
-                            RoleID = 3,
-                            PermissionID = "no_view"
+                            ChannelId = 4,
+                            RoleId = 3,
+                            PermissionId = "no_view"
                         },
                         new
                         {
-                            ChannelID = 5,
-                            RoleID = 1,
-                            PermissionID = "full"
+                            ChannelId = 5,
+                            RoleId = 1,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 5,
-                            RoleID = 2,
-                            PermissionID = "full"
+                            ChannelId = 5,
+                            RoleId = 2,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 5,
-                            RoleID = 3,
-                            PermissionID = "full"
+                            ChannelId = 5,
+                            RoleId = 3,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 6,
-                            RoleID = 1,
-                            PermissionID = "full"
+                            ChannelId = 6,
+                            RoleId = 1,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 6,
-                            RoleID = 2,
-                            PermissionID = "full"
+                            ChannelId = 6,
+                            RoleId = 2,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 6,
-                            RoleID = 3,
-                            PermissionID = "no_view"
+                            ChannelId = 6,
+                            RoleId = 3,
+                            PermissionId = "no_view"
                         },
                         new
                         {
-                            ChannelID = 7,
-                            RoleID = 1,
-                            PermissionID = "full"
+                            ChannelId = 7,
+                            RoleId = 1,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 7,
-                            RoleID = 2,
-                            PermissionID = "full"
+                            ChannelId = 7,
+                            RoleId = 2,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 7,
-                            RoleID = 3,
-                            PermissionID = "full"
+                            ChannelId = 7,
+                            RoleId = 3,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 8,
-                            RoleID = 1,
-                            PermissionID = "full"
+                            ChannelId = 8,
+                            RoleId = 1,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 8,
-                            RoleID = 2,
-                            PermissionID = "full"
+                            ChannelId = 8,
+                            RoleId = 2,
+                            PermissionId = "full"
                         },
                         new
                         {
-                            ChannelID = 8,
-                            RoleID = 3,
-                            PermissionID = "no_chat"
+                            ChannelId = 8,
+                            RoleId = 3,
+                            PermissionId = "no_chat"
                         });
                 });
 
             modelBuilder.Entity("API.Models.Message", b =>
                 {
-                    b.Property<int>("MessageID")
+                    b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ChannelID");
+                    b.Property<int>("ChannelId");
 
                     b.Property<string>("Content");
 
                     b.Property<DateTime>("Time");
 
-                    b.Property<int>("UserID");
+                    b.Property<int>("UserId");
 
-                    b.HasKey("MessageID");
+                    b.HasKey("MessageId");
 
-                    b.HasIndex("ChannelID");
+                    b.HasIndex("ChannelId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Message");
 
                     b.HasData(
                         new
                         {
-                            MessageID = 1,
-                            ChannelID = 1,
+                            MessageId = 1,
+                            ChannelId = 1,
                             Content = "This is the first message in final fantasy",
                             Time = new DateTime(2019, 1, 1, 0, 0, 0, 1, DateTimeKind.Unspecified),
-                            UserID = 1
+                            UserId = 1
                         },
                         new
                         {
-                            MessageID = 2,
-                            ChannelID = 1,
+                            MessageId = 2,
+                            ChannelId = 1,
                             Content = "And this is the second message in final fantasy",
                             Time = new DateTime(2019, 1, 2, 0, 0, 1, 245, DateTimeKind.Unspecified),
-                            UserID = 2
+                            UserId = 2
                         },
                         new
                         {
-                            MessageID = 3,
-                            ChannelID = 1,
+                            MessageId = 3,
+                            ChannelId = 1,
                             Content = "AAAAAAAAAA",
                             Time = new DateTime(2019, 1, 2, 0, 0, 2, 368, DateTimeKind.Unspecified),
-                            UserID = 3
+                            UserId = 3
                         },
                         new
                         {
-                            MessageID = 4,
-                            ChannelID = 2,
+                            MessageId = 4,
+                            ChannelId = 2,
                             Content = "Another channel in final fantasy",
                             Time = new DateTime(2019, 1, 2, 0, 0, 1, 123, DateTimeKind.Unspecified),
-                            UserID = 1
+                            UserId = 1
                         },
                         new
                         {
-                            MessageID = 5,
-                            ChannelID = 2,
+                            MessageId = 5,
+                            ChannelId = 2,
                             Content = "BBBBBBBBBBBBBB",
                             Time = new DateTime(2019, 1, 2, 0, 0, 2, 899, DateTimeKind.Unspecified),
-                            UserID = 1
+                            UserId = 1
                         },
                         new
                         {
-                            MessageID = 6,
-                            ChannelID = 2,
+                            MessageId = 6,
+                            ChannelId = 2,
                             Content = "Hi there",
                             Time = new DateTime(2019, 1, 2, 0, 0, 3, 543, DateTimeKind.Unspecified),
-                            UserID = 2
+                            UserId = 2
                         });
                 });
 
             modelBuilder.Entity("API.Models.Permission", b =>
                 {
-                    b.Property<string>("PermissionID")
+                    b.Property<string>("PermissionId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("PermissionID");
+                    b.HasKey("PermissionId");
 
                     b.ToTable("Permission");
 
                     b.HasData(
                         new
                         {
-                            PermissionID = "full",
+                            PermissionId = "full",
                             Description = "Will allow users to do anything",
                             Name = "full"
                         },
                         new
                         {
-                            PermissionID = "no_react",
+                            PermissionId = "no_react",
                             Description = "Won't allow users to give reactions",
                             Name = "no react"
                         },
                         new
                         {
-                            PermissionID = "no_chat",
+                            PermissionId = "no_chat",
                             Description = "Won't allow users to chat",
                             Name = "no chat"
                         },
                         new
                         {
-                            PermissionID = "no_view",
+                            PermissionId = "no_view",
                             Description = "Won't allow users to see anything",
                             Name = "no view"
                         });
@@ -382,120 +382,120 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Role", b =>
                 {
-                    b.Property<int>("RoleID")
+                    b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("ServerID");
+                    b.Property<int>("ServerId");
 
-                    b.HasKey("RoleID");
+                    b.HasKey("RoleId");
 
-                    b.HasIndex("ServerID");
+                    b.HasIndex("ServerId");
 
                     b.ToTable("Role");
 
                     b.HasData(
                         new
                         {
-                            RoleID = 1,
+                            RoleId = 1,
                             Name = "Knight",
-                            ServerID = 1
+                            ServerId = 1
                         },
                         new
                         {
-                            RoleID = 2,
+                            RoleId = 2,
                             Name = "Thief",
-                            ServerID = 1
+                            ServerId = 1
                         },
                         new
                         {
-                            RoleID = 3,
+                            RoleId = 3,
                             Name = "White Wizard",
-                            ServerID = 1
+                            ServerId = 1
                         },
                         new
                         {
-                            RoleID = 4,
+                            RoleId = 4,
                             Name = "Black Wizard",
-                            ServerID = 1
+                            ServerId = 1
                         },
                         new
                         {
-                            RoleID = 5,
+                            RoleId = 5,
                             Name = "Adol",
-                            ServerID = 2
+                            ServerId = 2
                         },
                         new
                         {
-                            RoleID = 6,
+                            RoleId = 6,
                             Name = "Dogi",
-                            ServerID = 2
+                            ServerId = 2
                         },
                         new
                         {
-                            RoleID = 7,
+                            RoleId = 7,
                             Name = "Aisha",
-                            ServerID = 2
+                            ServerId = 2
                         },
                         new
                         {
-                            RoleID = 8,
+                            RoleId = 8,
                             Name = "Admin",
-                            ServerID = 3
+                            ServerId = 3
                         },
                         new
                         {
-                            RoleID = 9,
+                            RoleId = 9,
                             Name = "Artist",
-                            ServerID = 3
+                            ServerId = 3
                         },
                         new
                         {
-                            RoleID = 10,
+                            RoleId = 10,
                             Name = "Folk",
-                            ServerID = 3
+                            ServerId = 3
                         });
                 });
 
             modelBuilder.Entity("API.Models.Server", b =>
                 {
-                    b.Property<int>("ServerID")
+                    b.Property<int>("ServerId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AdminID");
+                    b.Property<int>("AdminId");
 
                     b.Property<string>("Image");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("ServerID");
+                    b.HasKey("ServerId");
 
-                    b.HasIndex("AdminID");
+                    b.HasIndex("AdminId");
 
                     b.ToTable("Server");
 
                     b.HasData(
                         new
                         {
-                            ServerID = 1,
-                            AdminID = 1,
+                            ServerId = 1,
+                            AdminId = 1,
                             Image = "server_1.png",
                             Name = "Final Fantasy"
                         },
                         new
                         {
-                            ServerID = 2,
-                            AdminID = 1,
+                            ServerId = 2,
+                            AdminId = 1,
                             Image = "server_2.png",
                             Name = "Ys"
                         },
                         new
                         {
-                            ServerID = 3,
-                            AdminID = 2,
+                            ServerId = 3,
+                            AdminId = 2,
                             Image = "server_3.png",
                             Name = "Hentai Maiden"
                         });
@@ -503,72 +503,72 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.ServerUser", b =>
                 {
-                    b.Property<int>("ServerID");
+                    b.Property<int>("ServerId");
 
-                    b.Property<int>("UserID");
+                    b.Property<int>("UserId");
 
-                    b.HasKey("ServerID", "UserID");
+                    b.HasKey("ServerId", "UserId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ServerUser");
 
                     b.HasData(
                         new
                         {
-                            ServerID = 1,
-                            UserID = 1
+                            ServerId = 1,
+                            UserId = 1
                         },
                         new
                         {
-                            ServerID = 2,
-                            UserID = 1
+                            ServerId = 2,
+                            UserId = 1
                         },
                         new
                         {
-                            ServerID = 3,
-                            UserID = 2
+                            ServerId = 3,
+                            UserId = 2
                         },
                         new
                         {
-                            ServerID = 1,
-                            UserID = 2
+                            ServerId = 1,
+                            UserId = 2
                         },
                         new
                         {
-                            ServerID = 1,
-                            UserID = 3
+                            ServerId = 1,
+                            UserId = 3
                         },
                         new
                         {
-                            ServerID = 2,
-                            UserID = 2
+                            ServerId = 2,
+                            UserId = 2
                         },
                         new
                         {
-                            ServerID = 2,
-                            UserID = 3
+                            ServerId = 2,
+                            UserId = 3
                         },
                         new
                         {
-                            ServerID = 2,
-                            UserID = 4
+                            ServerId = 2,
+                            UserId = 4
                         },
                         new
                         {
-                            ServerID = 3,
-                            UserID = 1
+                            ServerId = 3,
+                            UserId = 1
                         },
                         new
                         {
-                            ServerID = 3,
-                            UserID = 4
+                            ServerId = 3,
+                            UserId = 4
                         });
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -588,7 +588,7 @@ namespace API.Migrations
 
                     b.Property<string>("UserName");
 
-                    b.HasKey("UserID");
+                    b.HasKey("UserId");
 
                     b.HasAlternateKey("Email")
                         .HasName("UK_Email");
@@ -598,7 +598,7 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            UserID = 1,
+                            UserId = 1,
                             Email = "daophilac@gmail.com",
                             FirstName = "Đào Phi",
                             Gender = 0,
@@ -609,7 +609,7 @@ namespace API.Migrations
                         },
                         new
                         {
-                            UserID = 2,
+                            UserId = 2,
                             Email = "daophilac1@gmail.com",
                             FirstName = "Đào Phi",
                             Gender = 0,
@@ -620,7 +620,7 @@ namespace API.Migrations
                         },
                         new
                         {
-                            UserID = 3,
+                            UserId = 3,
                             Email = "lucknight@gmail.com",
                             FirstName = "luck",
                             Gender = 0,
@@ -631,7 +631,7 @@ namespace API.Migrations
                         },
                         new
                         {
-                            UserID = 4,
+                            UserId = 4,
                             Email = "eddie@gmail.com",
                             FirstName = "ed",
                             Gender = 0,
@@ -646,7 +646,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Server", "Server")
                         .WithMany("Channels")
-                        .HasForeignKey("ServerID")
+                        .HasForeignKey("ServerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -654,17 +654,17 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Channel", "Channel")
                         .WithMany("ChannelRolePermissions")
-                        .HasForeignKey("ChannelID")
+                        .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.Permission", "Permission")
                         .WithMany("ChannelRolePermissions")
-                        .HasForeignKey("PermissionID")
+                        .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.Role", "Role")
                         .WithMany("ChannelRolePermissions")
-                        .HasForeignKey("RoleID")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -672,12 +672,12 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Channel", "Channel")
                         .WithMany("Messages")
-                        .HasForeignKey("ChannelID")
+                        .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.User", "User")
                         .WithMany("Messages")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -685,7 +685,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Server", "Server")
                         .WithMany("Roles")
-                        .HasForeignKey("ServerID")
+                        .HasForeignKey("ServerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -693,7 +693,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.User", "Admin")
                         .WithMany("Servers")
-                        .HasForeignKey("AdminID")
+                        .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -701,12 +701,12 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Server", "Server")
                         .WithMany("ServerUsers")
-                        .HasForeignKey("ServerID")
+                        .HasForeignKey("ServerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

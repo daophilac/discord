@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Discord_win.Models {
     public class Channel {
-        public int ChannelID { get; set; }
+        public int ChannelId { get; set; }
         public string Name { get; set; }
-        public int ServerID { get; set; }
+        public int ServerId { get; set; }
 
         public ICollection<Message> Messages { get; set; }
     }

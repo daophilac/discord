@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Discord_win.Models {
     public class Server {
-        public int ServerID { get; set; }
+        public int ServerId { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
-        public int AdminID { get; set; }
+        public int AdminId { get; set; }
 
 
         

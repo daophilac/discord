@@ -2,49 +2,49 @@ package com.daophilac.discord.models;
 import java.util.Date;
 
 public class Message {
-    private int MessageID;
-    private int ChannelID;
-    private int UserID;
-    private String Content;
-    public Date Time;
+    private int messageId;
+    private int channelId;
+    private int userId;
+    private String content;
+    public Date time;
 
-    public int getMessageID() {
-        return MessageID;
+    public int getMessageId() {
+        return messageId;
     }
 
-    public void setMessageID(int messageID) {
-        MessageID = messageID;
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
     }
 
-    public int getChannelID() {
-        return ChannelID;
+    public int getChannelId() {
+        return channelId;
     }
 
-    public void setChannelID(int channelID) {
-        ChannelID = channelID;
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
 
-    public int getUserID() {
-        return UserID;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserID(int userID) {
-        UserID = userID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getContent() {
-        return Content;
+        return content;
     }
 
     public void setContent(String content) {
-        Content = content;
+        this.content = content;
     }
 
     public Date getTime() {
-        return Time;
+        return time;
     }
 
     public void setTime(Date time) {
-        Time = time;
+        this.time = time;
     }
 }

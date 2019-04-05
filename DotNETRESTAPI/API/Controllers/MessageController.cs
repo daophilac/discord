@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("getmessagesbychannel/{channelID}")]
         public IQueryable<Message> GetMessagesByChannel(int channelID) {
-            var messages = _context.Message.Where(m => m.ChannelID == channelID).OrderBy(m => m.Time);
+            var messages = _context.Message.Where(m => m.ChannelId == channelID).OrderBy(m => m.Time);
             return messages;
         }
 
@@ -57,7 +57,7 @@ namespace API.Controllers
         // PUT: api/Message/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMessage(int id, Message message) {
-            if (id != message.MessageID) {
+            if (id != message.MessageId) {
                 return BadRequest();
             }
 
@@ -84,7 +84,7 @@ namespace API.Controllers
             _context.Message.Add(message);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMessage", new { id = message.MessageID }, message);
+            return CreatedAtAction("GetMessage", new { id = message.MessageId }, message);
         }
 
         // DELETE: api/Message/5
@@ -102,7 +102,7 @@ namespace API.Controllers
         }
 
         private bool MessageExists(int id) {
-            return _context.Message.Any(e => e.MessageID == id);
+            return _context.Message.Any(e => e.MessageId == id);
         }
     }
 }

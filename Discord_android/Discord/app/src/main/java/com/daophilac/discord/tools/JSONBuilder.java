@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class JSONBuilder {
+public class JsonBuilder {
     public String buildJSONFromHashMap(HashMap<String, String> parameters){
         StringBuilder resultJSON = new StringBuilder();
         Iterator iterator = parameters.entrySet().iterator();
@@ -42,10 +42,10 @@ public class JSONBuilder {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", MainActivity.locale);
         Date time = new Date(System.currentTimeMillis());
         HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("ChannelID", String.valueOf(currentChannel.getChannelID()));
-        parameters.put("UserID", String.valueOf(currentUser.getUserID()));
+        parameters.put("ChannelID", String.valueOf(currentChannel.getChannelId()));
+        parameters.put("UserID", String.valueOf(currentUser.getUserId()));
         parameters.put("Content", content);
-        parameters.put("Time", simpleDateFormat.format(time));
+        parameters.put("time", simpleDateFormat.format(time));
         return buildJSONFromHashMap(parameters);
     }
 }

@@ -7,9 +7,9 @@ using System.Web;
 namespace API.Models {
     public class Channel {
         [Key]
-        public int ChannelID { get; set; }
+        public int ChannelId { get; set; }
         public string Name { get; set; }
-        public int ServerID { get; set; }
+        public int ServerId { get; set; }
 
         public IEnumerable<ChannelRolePermission> ChannelRolePermissions { get; set; }
         public IEnumerable<Message> Messages { get; set; }

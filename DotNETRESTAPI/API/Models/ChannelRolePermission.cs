@@ -7,9 +7,9 @@ using System.Web;
 
 namespace API.Models {
     public class ChannelRolePermission {
-        public int ChannelID { get; set; }
-        public int RoleID { get; set; }
-        public string PermissionID { get; set; }
+        public int ChannelId { get; set; }
+        public int RoleId { get; set; }
+        public string PermissionId { get; set; }
         
         public Channel Channel { get; set; }
         public Role Role { get; set; }

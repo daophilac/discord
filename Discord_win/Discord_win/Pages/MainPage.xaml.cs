@@ -41,7 +41,7 @@ namespace Discord_win.Pages {
                 this.Dispatcher.Invoke(() => {
                     Message receivedMessage = JsonConvert.DeserializeObject<Message>(jsonMessage);
                     TextBlock textBlock = new TextBlock();
-                    textBlock.Text = receivedMessage.UserID + ": " + receivedMessage.Content;
+                    textBlock.Text = receivedMessage.UserId + ": " + receivedMessage.Content;
                     textBlock.FontSize = 15;
                     textBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
                     textBlock.TextWrapping = TextWrapping.Wrap;
@@ -60,7 +60,7 @@ namespace Discord_win.Pages {
             }
         }
         private void LoadListServer() {
-            string requestURI = Program.baseAddress + string.Format(Program.URIGetServersByUser, this.inventory.LoadCurrentUser().UserID);
+            string requestURI = Program.baseAddress + string.Format(Program.URIGetServersByUser, this.inventory.LoadCurrentUser().UserId);
             this.apiCaller.SetProperties("GET", requestURI);
             string incomingJSON = this.apiCaller.SendRequest();
             List<Server> listServer = JsonConvert.DeserializeObject<List<Server>>(incomingJSON);
@@ -72,7 +72,7 @@ namespace Discord_win.Pages {
                 button.Margin = new Thickness(5, 5, 5, 5);
                 DockPanel.SetDock(button, Dock.Top);
                 button.Click += ServerButton_Click;
-                this.buttonServers.Add(button, listServer[i].ServerID);
+                this.buttonServers.Add(button, listServer[i].ServerId);
                 this.DockPanelServer.Children.Add(button);
             }
         }
@@ -94,7 +94,7 @@ namespace Discord_win.Pages {
                 button.Background = new SolidColorBrush(Color.FromArgb(0x00, 0x00, 0, 0));
                 DockPanel.SetDock(button, Dock.Top);
                 button.Click += ChannelButton_Click;
-                this.buttonChannels.Add(button, listChannel[i].ChannelID);
+                this.buttonChannels.Add(button, listChannel[i].ChannelId);
                 this.DockPanelChannel.Children.Add(button);
             }
         }
@@ -106,7 +106,7 @@ namespace Discord_win.Pages {
             this.DockPanelMessage.Children.Clear();
             for (int i = 0; i < listMessage.Count; i++) {
                 TextBlock textBlock = new TextBlock();
-                textBlock.Text = listMessage[i].UserID + ": " + listMessage[i].Content;
+                textBlock.Text = listMessage[i].UserId + ": " + listMessage[i].Content;
                 textBlock.FontSize = 15;
                 textBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
                 textBlock.TextWrapping = TextWrapping.Wrap;
@@ -123,7 +123,7 @@ namespace Discord_win.Pages {
             int channelID = buttonChannels.Where(x => x.Key == sender).First().Value;
             if (channelID != this.currentSelectedChannel) {
                 this.currentSelectedChannel = channelID;
-                Channel currentChannel = this.inventory.LoadListChannel().Where(x => x.ChannelID == channelID).First();
+                Channel currentChannel = this.inventory.LoadListChannel().Where(x => x.ChannelId == channelID).First();
                 this.inventory.StoreCurrentChannel(currentChannel);
                 LoadListMessage(channelID);
             }

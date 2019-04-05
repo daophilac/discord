@@ -10,13 +10,13 @@ namespace Discord_win.Models {
     public class ChannelRolePermission {
         [Key]
         [Column(Order = 1)]
-        public int ChannelID { get; set; }
+        public int ChannelId { get; set; }
         [Key]
         [Column(Order = 2)]
-        public int RoleID { get; set; }
+        public int RoleId { get; set; }
         [Key]
         [Column(Order = 3)]
-        public string PermissionID { get; set; }
+        public string PermissionId { get; set; }
 
         [ForeignKey("ChannelID")]
         public Channel Channel { get; set; }

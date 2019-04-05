@@ -1,7 +1,7 @@
 package com.daophilac.discord.resources;
 
 public final class Route {
-    public static final String protocol = "https";
+    public static final String protocol = "http";
     public static final String serverIP = "192.168.2.104";
 //    public static final String serverIP = "192.168.43.72";
     public static final String serverName = "sv";

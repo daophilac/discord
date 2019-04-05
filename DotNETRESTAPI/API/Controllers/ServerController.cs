@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("getserversbyuser/{userID}")]
         public IQueryable<Server> GetServersByUser(int userID) {
-            var servers = _context.Server.Where(s => _context.ServerUser.Where(su => su.UserID == userID).Any(su => su.ServerID == s.ServerID));
+            var servers = _context.Server.Where(s => _context.ServerUser.Where(su => su.UserId == userID).Any(su => su.ServerId == s.ServerId));
             return servers;
         }
 
@@ -57,7 +57,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutServer(int id, Server server)
         {
-            if (id != server.ServerID)
+            if (id != server.ServerId)
             {
                 return BadRequest();
             }
@@ -90,7 +90,7 @@ namespace API.Controllers
             _context.Server.Add(server);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetServer", new { id = server.ServerID }, server);
+            return CreatedAtAction("GetServer", new { id = server.ServerId }, server);
         }
 
         // DELETE: api/Server/5
@@ -111,7 +111,7 @@ namespace API.Controllers
 
         private bool ServerExists(int id)
         {
-            return _context.Server.Any(e => e.ServerID == id);
+            return _context.Server.Any(e => e.ServerId == id);
         }
     }
 }

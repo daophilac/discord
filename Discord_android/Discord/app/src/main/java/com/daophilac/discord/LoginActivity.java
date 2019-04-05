@@ -17,16 +17,15 @@ import com.daophilac.discord.filedealer.InternalFileReader;
 import com.daophilac.discord.filedealer.InternalFileWriter;
 import com.daophilac.discord.resources.Route;
 import com.daophilac.discord.tools.APICaller;
-import com.daophilac.discord.tools.JSONBuilder;
+import com.daophilac.discord.tools.JsonBuilder;
 
 import java.io.File;
-import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
     public Handler backgroundHandler;
     private Thread threadBackground;
     private APICaller apiCaller;
-    private JSONBuilder jsonBuilder;
+    private JsonBuilder jsonBuilder;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private Button buttonLogin;
@@ -60,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         this.baseURL = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller(this.backgroundHandler, "POST");
-        this.jsonBuilder = new JSONBuilder();
+        this.jsonBuilder = new JsonBuilder();
     }
     private boolean checkLogin(){
         ContextWrapper contextWrapper = new ContextWrapper(this);
@@ -76,11 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         InternalFileReader internalFileReader = new InternalFileReader(getString(R.string.account_internal_directory), getString(R.string.account_internal_file), this);
         String email = internalFileReader.readLine();
         String password = internalFileReader.readLine();
-        this.jsonBuilder = new JSONBuilder();
+        this.jsonBuilder = new JsonBuilder();
         String json = this.jsonBuilder.buildLoginJSON(email, password);
-//        HashMap<String, String> parameters = new HashMap<String, String>();
-//        parameters.put("Email", email);
-//        parameters.put("Password", password);
         this.backgroundHandler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
@@ -88,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 handleJSON(msg.obj.toString());
             }
         };
-        this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
+        this.baseURL = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
         String requestURL = this.baseURL.concat(Route.urlLogin);
         this.apiCaller = new APICaller(this.backgroundHandler, "POST");
         this.apiCaller.setRequestURL(requestURL);

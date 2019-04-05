@@ -7,7 +7,7 @@ using System.Web;
 namespace API.Models {
     public class Permission {
         [Key]
-        public string PermissionID { get; set; }
+        public string PermissionId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 

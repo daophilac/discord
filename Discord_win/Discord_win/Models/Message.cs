@@ -2,9 +2,9 @@
 
 namespace Discord_win.Models {
     public class Message {
-        public int MessageID { get; set; }
-        public int ChannelID { get; set; }
-        public int UserID { get; set; }
+        public int MessageId { get; set; }
+        public int ChannelId { get; set; }
+        public int UserId { get; set; }
         public string Content { get; set; }
         public DateTime Time { get; set; }
 

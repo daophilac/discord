@@ -64,8 +64,6 @@ namespace Discord_win.Tools {
                 streamWriter.Close();
             }
             try {
-
-                ServicePointManager.CertificatePolicy = new MyPolicy();
                 HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 if (httpWebResponse.StatusCode == HttpStatusCode.OK) {
                     StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());

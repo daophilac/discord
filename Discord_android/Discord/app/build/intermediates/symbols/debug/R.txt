@@ -424,7 +424,7 @@ int attr searchViewStyle 0x7f03018c
 int attr seekBarStyle 0x7f03018d
 int attr selectableItemBackground 0x7f03018e
 int attr selectableItemBackgroundBorderless 0x7f03018f
-int attr serverID 0x7f030190
+int attr serverId 0x7f030190
 int attr showAsAction 0x7f030191
 int attr showDividers 0x7f030192
 int attr showMotionSpec 0x7f030193
@@ -2617,7 +2617,7 @@ int styleable SearchView_submitBackground 14
 int styleable SearchView_suggestionRowLayout 15
 int styleable SearchView_voiceIcon 16
 int[] styleable ServerButton { 0x7f030190 }
-int styleable ServerButton_serverID 0
+int styleable ServerButton_serverId 0
 int[] styleable Snackbar { 0x7f030199, 0x7f03019a }
 int styleable Snackbar_snackbarButtonStyle 0
 int styleable Snackbar_snackbarStyle 1

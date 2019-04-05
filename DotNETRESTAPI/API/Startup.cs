@@ -40,7 +40,7 @@ namespace API {
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
             app.UseSignalR(routes => {
                 routes.MapHub<ChatHub>("/chathub");

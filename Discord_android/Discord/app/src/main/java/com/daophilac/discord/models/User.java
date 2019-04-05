@@ -3,76 +3,76 @@ enum Gender{
     Male, Female
 }
 public class User {
-    private int UserID;
-    private String Email;
-    private String Password;
-    private String UserName;
-    private String FistName;
-    private String LastName;
-    private Gender Gender;
-    private String Image;
+    private int userId;
+    private String email;
+    private String password;
+    private String userName;
+    private String fistName;
+    private String lastName;
+    private Gender gender;
+    private String image;
 
-    public int getUserID() {
-        return UserID;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserID(int userID) {
-        this.UserID = userID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        this.Email = email;
+        this.email = email;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        this.Password = password;
+        this.password = password;
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public void setUserName(String userName) {
-        this.UserName = userName;
+        this.userName = userName;
     }
 
     public String getFirstName() {
-        return FistName;
+        return fistName;
     }
 
     public void setFirstName(String firstName) {
-        FistName = firstName;
+        fistName = firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        this.LastName = lastName;
+        this.lastName = lastName;
     }
 
     public com.daophilac.discord.models.Gender getGender() {
-        return Gender;
+        return gender;
     }
 
     public void setGender(com.daophilac.discord.models.Gender gender) {
-        this.Gender = gender;
+        this.gender = gender;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
     public void setImage(String image) {
-        this.Image = image;
+        this.image = image;
     }
 }

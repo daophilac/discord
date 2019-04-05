@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpGet]
         [Route("getchannelsbyserver/{serverID}")]
         public IQueryable<Channel> GetChannelsByServer(int serverID) {
-            var channels = from channel in _context.Channel where channel.ServerID == serverID select channel;
+            var channels = from channel in _context.Channel where channel.ServerId == serverID select channel;
             return channels;
         }
 
@@ -56,7 +56,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutChannel(int id, Channel channel)
         {
-            if (id != channel.ChannelID)
+            if (id != channel.ChannelId)
             {
                 return BadRequest();
             }
@@ -89,7 +89,7 @@ namespace API.Controllers
             _context.Channel.Add(channel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetChannel", new { id = channel.ChannelID }, channel);
+            return CreatedAtAction("GetChannel", new { id = channel.ChannelId }, channel);
         }
 
         // DELETE: api/Channel/5
@@ -110,7 +110,7 @@ namespace API.Controllers
 
         private bool ChannelExists(int id)
         {
-            return _context.Channel.Any(e => e.ChannelID == id);
+            return _context.Channel.Any(e => e.ChannelId == id);
         }
     }
 }

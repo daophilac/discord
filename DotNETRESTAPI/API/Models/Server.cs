@@ -8,10 +8,10 @@ using System.Web;
 namespace API.Models {
     public class Server {
         [Key]
-        public int ServerID { get; set; }
+        public int ServerId { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
-        public int AdminID { get; set; }
+        public int AdminId { get; set; }
 
         
         public User Admin { get; set; }

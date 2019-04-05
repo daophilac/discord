@@ -10,10 +10,10 @@ namespace Discord_win.Models {
     public class ServerUser {
         [Key]
         [Column(Order = 1)]
-        public int ServerID { get; set; }
+        public int ServerId { get; set; }
         [Key]
         [Column(Order = 2)]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
 
 
         [ForeignKey("ServerID")]

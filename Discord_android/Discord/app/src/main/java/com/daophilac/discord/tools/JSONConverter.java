@@ -11,9 +11,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class JSONConverter {
+public class JsonConverter {
     private Gson gson;
-    public JSONConverter(){
+    public JsonConverter(){
         gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").create();
     }
     public User toUser(String json){

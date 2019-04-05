@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace Discord_win.Models {
     public class Role {
         [Key]
-        public int RoleID { get; set; }
+        public int RoleId { get; set; }
         public string Name { get; set; }
-        public int ServerID { get; set; }
+        public int ServerId { get; set; }
 
 
         [ForeignKey("ServerID")]

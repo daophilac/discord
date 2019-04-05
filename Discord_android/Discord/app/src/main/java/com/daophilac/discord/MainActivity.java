@@ -25,14 +25,13 @@ import com.daophilac.discord.interfaces.NavigatorListener;
 import com.daophilac.discord.models.Channel;
 import com.daophilac.discord.models.Message;
 import com.daophilac.discord.models.User;
-import com.daophilac.discord.resources.UIDecoration;
+import com.daophilac.discord.resources.UiDecoration;
 import com.daophilac.discord.resources.Route;
 import com.daophilac.discord.tools.APICaller;
-import com.daophilac.discord.tools.JSONBuilder;
-import com.daophilac.discord.tools.JSONConverter;
+import com.daophilac.discord.tools.JsonBuilder;
+import com.daophilac.discord.tools.JsonConverter;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
     public Handler backgroundHandler;
     private Thread threadBackground;
     private APICaller apiCaller;
-    private JSONBuilder jsonBuilder;
-    private JSONConverter jsonConverter;
+    private JsonBuilder jsonBuilder;
+    private JsonConverter jsonConverter;
     private String baseURL;
 
     private int messageTextColor;
@@ -66,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeGlobalVariable();
+        String temp = this.getIntent().getStringExtra("jsonUser");
+//        User tUser = this.jsonConverter.toUser()
         this.inventory.storeCurrentUser(this.getIntent().getStringExtra("jsonUser"));
         writeLogConsole(this.inventory.loadCurrentUser().getEmail());
         this.fragmentManager.beginTransaction().replace(R.id.navigation_view, navigatorFragment).commit();
@@ -90,10 +91,10 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
         this.fragmentManager = getSupportFragmentManager();
         this.baseURL = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller();
-        this.jsonBuilder = new JSONBuilder();
-        this.jsonConverter = new JSONConverter();
-        this.messageTextColor = UIDecoration.messageTextColor;
-        this.messageTextSize = UIDecoration.messageTextSize;
+        this.jsonBuilder = new JsonBuilder();
+        this.jsonConverter = new JsonConverter();
+        this.messageTextColor = UiDecoration.messageTextColor;
+        this.messageTextSize = UiDecoration.messageTextSize;
     }
 
     @Override
@@ -115,10 +116,10 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
                 // TODO: check this one later, am I doing too much work here?
                 Message message = jsonConverter.toMessage(msg.obj.toString());
                 MessageTextView messageTextView = new MessageTextView(getBaseContext());
-                messageTextView.setMessageID(message.getMessageID());
+                messageTextView.setMessageID(message.getMessageId());
                 messageTextView.setTextColor(messageTextColor);
                 messageTextView.setTextSize(messageTextSize);
-                messageTextView.setText(currentUser.getUserID() + ": " + editTextType.getText().toString());
+                messageTextView.setText(currentUser.getUserId() + ": " + editTextType.getText().toString());
                 linearLayoutMessage.addView(messageTextView);
                 editTextType.setText("");
             }
@@ -164,10 +165,10 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
         for (int i = 0; i < listMessage.size(); i++) {
             message = listMessage.get(i);
             messageTextView = new MessageTextView(this);
-            messageTextView.setMessageID(message.getMessageID());
+            messageTextView.setMessageID(message.getMessageId());
             messageTextView.setTextColor(this.messageTextColor);
             messageTextView.setTextSize(this.messageTextSize);
-            messageTextView.setText(message.getUserID() + ": " + message.getContent());
+            messageTextView.setText(message.getUserId() + ": " + message.getContent());
             this.linearLayoutMessage.addView(messageTextView);
         }
     }

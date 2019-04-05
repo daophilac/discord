@@ -12,20 +12,20 @@ namespace API.Migrations
                 name: "Permission",
                 columns: table => new
                 {
-                    PermissionID = table.Column<string>(nullable: false),
+                    PermissionId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permission", x => x.PermissionID);
+                    table.PrimaryKey("PK_Permission", x => x.PermissionId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Email = table.Column<string>(maxLength: 256, nullable: false),
                     Password = table.Column<string>(nullable: true),
@@ -37,7 +37,7 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserID);
+                    table.PrimaryKey("PK_User", x => x.UserId);
                     table.UniqueConstraint("UK_Email", x => x.Email);
                 });
 
@@ -45,20 +45,20 @@ namespace API.Migrations
                 name: "Server",
                 columns: table => new
                 {
-                    ServerID = table.Column<int>(nullable: false)
+                    ServerId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
-                    AdminID = table.Column<int>(nullable: false)
+                    AdminId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Server", x => x.ServerID);
+                    table.PrimaryKey("PK_Server", x => x.ServerId);
                     table.ForeignKey(
-                        name: "FK_Server_User_AdminID",
-                        column: x => x.AdminID,
+                        name: "FK_Server_User_AdminId",
+                        column: x => x.AdminId,
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -66,19 +66,19 @@ namespace API.Migrations
                 name: "Channel",
                 columns: table => new
                 {
-                    ChannelID = table.Column<int>(nullable: false)
+                    ChannelId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    ServerID = table.Column<int>(nullable: false)
+                    ServerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Channel", x => x.ChannelID);
+                    table.PrimaryKey("PK_Channel", x => x.ChannelId);
                     table.ForeignKey(
-                        name: "FK_Channel_Server_ServerID",
-                        column: x => x.ServerID,
+                        name: "FK_Channel_Server_ServerId",
+                        column: x => x.ServerId,
                         principalTable: "Server",
-                        principalColumn: "ServerID",
+                        principalColumn: "ServerId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -86,19 +86,19 @@ namespace API.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    RoleID = table.Column<int>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    ServerID = table.Column<int>(nullable: false)
+                    ServerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.RoleID);
+                    table.PrimaryKey("PK_Role", x => x.RoleId);
                     table.ForeignKey(
-                        name: "FK_Role_Server_ServerID",
-                        column: x => x.ServerID,
+                        name: "FK_Role_Server_ServerId",
+                        column: x => x.ServerId,
                         principalTable: "Server",
-                        principalColumn: "ServerID",
+                        principalColumn: "ServerId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -106,23 +106,23 @@ namespace API.Migrations
                 name: "ServerUser",
                 columns: table => new
                 {
-                    ServerID = table.Column<int>(nullable: false),
-                    UserID = table.Column<int>(nullable: false)
+                    ServerId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServerUser", x => new { x.ServerID, x.UserID });
+                    table.PrimaryKey("PK_ServerUser", x => new { x.ServerId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_ServerUser_Server_ServerID",
-                        column: x => x.ServerID,
+                        name: "FK_ServerUser_Server_ServerId",
+                        column: x => x.ServerId,
                         principalTable: "Server",
-                        principalColumn: "ServerID",
+                        principalColumn: "ServerId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ServerUser_User_UserID",
-                        column: x => x.UserID,
+                        name: "FK_ServerUser_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.NoAction);
                 });
 
@@ -130,27 +130,27 @@ namespace API.Migrations
                 name: "Message",
                 columns: table => new
                 {
-                    MessageID = table.Column<int>(nullable: false)
+                    MessageId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ChannelID = table.Column<int>(nullable: false),
-                    UserID = table.Column<int>(nullable: false),
+                    ChannelId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     Content = table.Column<string>(nullable: true),
                     Time = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Message", x => x.MessageID);
+                    table.PrimaryKey("PK_Message", x => x.MessageId);
                     table.ForeignKey(
-                        name: "FK_Message_Channel_ChannelID",
-                        column: x => x.ChannelID,
+                        name: "FK_Message_Channel_ChannelId",
+                        column: x => x.ChannelId,
                         principalTable: "Channel",
-                        principalColumn: "ChannelID",
+                        principalColumn: "ChannelId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Message_User_UserID",
-                        column: x => x.UserID,
+                        name: "FK_Message_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.NoAction);
                 });
 
@@ -158,36 +158,35 @@ namespace API.Migrations
                 name: "ChannelRolePermission",
                 columns: table => new
                 {
-                    ChannelID = table.Column<int>(nullable: false),
-                    RoleID = table.Column<int>(nullable: false),
-                    PermissionID = table.Column<string>(nullable: false)
+                    ChannelId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false),
+                    PermissionId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChannelRolePermission", x => new { x.ChannelID, x.RoleID, x.PermissionID });
+                    table.PrimaryKey("PK_ChannelRolePermission", x => new { x.ChannelId, x.RoleId, x.PermissionId });
                     table.ForeignKey(
-                        name: "FK_ChannelRolePermission_Channel_ChannelID",
-                        column: x => x.ChannelID,
+                        name: "FK_ChannelRolePermission_Channel_ChannelId",
+                        column: x => x.ChannelId,
                         principalTable: "Channel",
-                        principalColumn: "ChannelID",
+                        principalColumn: "ChannelId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChannelRolePermission_Permission_PermissionID",
-                        column: x => x.PermissionID,
+                        name: "FK_ChannelRolePermission_Permission_PermissionId",
+                        column: x => x.PermissionId,
                         principalTable: "Permission",
-                        principalColumn: "PermissionID",
+                        principalColumn: "PermissionId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChannelRolePermission_Role_RoleID",
-                        column: x => x.RoleID,
+                        name: "FK_ChannelRolePermission_Role_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Role",
-                        principalColumn: "RoleID",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.NoAction);
                 });
-
             migrationBuilder.InsertData(
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Name" },
+                columns: new[] { "PermissionId", "Description", "Name" },
                 values: new object[,]
                 {
                     { "full", "Will allow users to do anything", "full" },
@@ -198,7 +197,7 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "UserID", "Email", "FirstName", "Gender", "Image", "LastName", "Password", "UserName" },
+                columns: new[] { "UserId", "Email", "FirstName", "Gender", "Image", "LastName", "Password", "UserName" },
                 values: new object[,]
                 {
                     { 1, "daophilac@gmail.com", "Đào Phi", 0, "user_1.png", "Lạc", "123", "peanut" },
@@ -209,22 +208,22 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Server",
-                columns: new[] { "ServerID", "AdminID", "Image", "Name" },
+                columns: new[] { "ServerId", "AdminId", "Image", "Name" },
                 values: new object[] { 1, 1, "server_1.png", "Final Fantasy" });
 
             migrationBuilder.InsertData(
                 table: "Server",
-                columns: new[] { "ServerID", "AdminID", "Image", "Name" },
+                columns: new[] { "ServerId", "AdminId", "Image", "Name" },
                 values: new object[] { 2, 1, "server_2.png", "Ys" });
 
             migrationBuilder.InsertData(
                 table: "Server",
-                columns: new[] { "ServerID", "AdminID", "Image", "Name" },
+                columns: new[] { "ServerId", "AdminId", "Image", "Name" },
                 values: new object[] { 3, 2, "server_3.png", "Hentai Maiden" });
 
             migrationBuilder.InsertData(
                 table: "Channel",
-                columns: new[] { "ChannelID", "Name", "ServerID" },
+                columns: new[] { "ChannelId", "Name", "ServerId" },
                 values: new object[,]
                 {
                     { 1, "General", 1 },
@@ -239,7 +238,7 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Role",
-                columns: new[] { "RoleID", "Name", "ServerID" },
+                columns: new[] { "RoleId", "Name", "ServerId" },
                 values: new object[,]
                 {
                     { 10, "Folk", 3 },
@@ -256,7 +255,7 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "ServerUser",
-                columns: new[] { "ServerID", "UserID" },
+                columns: new[] { "ServerId", "UserId" },
                 values: new object[,]
                 {
                     { 1, 3 },
@@ -273,7 +272,7 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "ChannelRolePermission",
-                columns: new[] { "ChannelID", "RoleID", "PermissionID" },
+                columns: new[] { "ChannelId", "RoleId", "PermissionId" },
                 values: new object[,]
                 {
                     { 2, 4, "full" },
@@ -307,7 +306,7 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Message",
-                columns: new[] { "MessageID", "ChannelID", "Content", "Time", "UserID" },
+                columns: new[] { "MessageId", "ChannelId", "Content", "Time", "UserId" },
                 values: new object[,]
                 {
                     { 6, 2, "Hi there", new DateTime(2019, 1, 2, 0, 0, 3, 543, DateTimeKind.Unspecified), 2 },
@@ -319,44 +318,44 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Channel_ServerID",
+                name: "IX_Channel_ServerId",
                 table: "Channel",
-                column: "ServerID");
+                column: "ServerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChannelRolePermission_PermissionID",
+                name: "IX_ChannelRolePermission_PermissionId",
                 table: "ChannelRolePermission",
-                column: "PermissionID");
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChannelRolePermission_RoleID",
+                name: "IX_ChannelRolePermission_RoleId",
                 table: "ChannelRolePermission",
-                column: "RoleID");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_ChannelID",
+                name: "IX_Message_ChannelId",
                 table: "Message",
-                column: "ChannelID");
+                column: "ChannelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_UserID",
+                name: "IX_Message_UserId",
                 table: "Message",
-                column: "UserID");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Role_ServerID",
+                name: "IX_Role_ServerId",
                 table: "Role",
-                column: "ServerID");
+                column: "ServerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Server_AdminID",
+                name: "IX_Server_AdminId",
                 table: "Server",
-                column: "AdminID");
+                column: "AdminId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServerUser_UserID",
+                name: "IX_ServerUser_UserId",
                 table: "ServerUser",
-                column: "UserID");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -4,19 +4,19 @@ import com.daophilac.discord.models.Channel;
 import com.daophilac.discord.models.Message;
 import com.daophilac.discord.models.Server;
 import com.daophilac.discord.models.User;
-import com.daophilac.discord.tools.JSONConverter;
+import com.daophilac.discord.tools.JsonConverter;
 
 import java.util.List;
 
 public class Inventory {
-    private JSONConverter jsonConverter;
+    private JsonConverter jsonConverter;
     private Channel currentChannel;
     private User currentUser;
     private List<Server> listServer;
     private List<Channel> listChannel;
     private List<Message> listMessage;
     public Inventory(){
-        this.jsonConverter = new JSONConverter();
+        this.jsonConverter = new JsonConverter();
     }
     public void storeCurrentChannel(Channel channel){
         this.currentChannel = channel;

@@ -20,7 +20,7 @@ import com.daophilac.discord.interfaces.MainActivityListener;
 import com.daophilac.discord.interfaces.NavigatorListener;
 import com.daophilac.discord.models.Server;
 import com.daophilac.discord.models.Channel;
-import com.daophilac.discord.resources.UIDecoration;
+import com.daophilac.discord.resources.UiDecoration;
 import com.daophilac.discord.resources.Route;
 import com.daophilac.discord.tools.APICaller;
 
@@ -69,10 +69,10 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
         this.linearLayoutServer = this.view.findViewById(R.id.linear_layout_server);
         this.linearLayoutChannel = this.view.findViewById(R.id.linear_layout_channel);
         this.linearLayoutMessage = this.view.findViewById(R.id.linear_layout_message);
-        this.channelTextColor = UIDecoration.channelTextColor;
-        this.channelTextSize = UIDecoration.channelTextSize;
-        this.messageTextColor = UIDecoration.messageTextColor;
-        this.messageTextSize = UIDecoration.messageTextSize;
+        this.channelTextColor = UiDecoration.channelTextColor;
+        this.channelTextSize = UiDecoration.channelTextSize;
+        this.messageTextColor = UiDecoration.messageTextColor;
+        this.messageTextSize = UiDecoration.messageTextSize;
         this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller();
     }
@@ -81,7 +81,7 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
         ServerButton serverButton;
         for (int i = 0; i < listServer.size(); i++) {
             serverButton = new ServerButton(this.getContext());
-            serverButton.setServerID(listServer.get(i).getServerID());
+            serverButton.setServerID(listServer.get(i).getServerId());
             serverButton.setText(listServer.get(i).getName());
             serverButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,8 +100,8 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
         ChannelTextView channelTextView;
         for (int i = 0; i < listChannel.size(); i++) {
             channelTextView = new ChannelTextView(this.getContext());
-            channelTextView.setChannelID(listChannel.get(i).getChannelID());
-            channelTextView.setText(String.format(MainActivity.locale, UIDecoration.channelName, i, listChannel.get(i).getName()));
+            channelTextView.setChannelID(listChannel.get(i).getChannelId());
+            channelTextView.setText(String.format(MainActivity.locale, UiDecoration.channelName, i, listChannel.get(i).getName()));
             channelTextView.setTextColor(this.channelTextColor);
             channelTextView.setTextSize(this.channelTextSize);
             channelTextView.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +126,7 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
         };
         this.apiCaller.setHandler(this.backgroundHandler);
         this.apiCaller.setRequestMethod("GET");
-        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetServersByUser, this.inventory.loadCurrentUser().getUserID()));
+        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetServersByUser, this.inventory.loadCurrentUser().getUserId()));
         this.apiCaller.setRequestURL(requestURL);
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
@@ -158,7 +158,7 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
             this.currentSelectedChannel = channelID;
             List<Channel> listChannel = this.inventory.loadListChannel();
             for(int i = 0; i < listChannel.size(); i++){
-                if(listChannel.get(i).getChannelID() == channelID){
+                if(listChannel.get(i).getChannelId() == channelID){
                     this.inventory.storeCurrentChannel(listChannel.get(i));
                     break;
                 }

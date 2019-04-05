@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Discord_win.Models {
     public class Permission {
         [Key]
-        public string PermissionID { get; set; }
+        public string PermissionId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
