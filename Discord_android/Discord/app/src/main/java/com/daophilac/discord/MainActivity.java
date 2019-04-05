@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
         this.listener = this.navigatorFragment;
         this.listener.onCreateInventory(this.inventory);
         this.fragmentManager = getSupportFragmentManager();
-        this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
+        this.baseURL = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller();
         this.jsonBuilder = new JSONBuilder();
         this.jsonConverter = new JSONConverter();

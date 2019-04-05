@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Discord_win.Tools {
     public class APICaller {
@@ -63,6 +64,8 @@ namespace Discord_win.Tools {
                 streamWriter.Close();
             }
             try {
+
+                ServicePointManager.CertificatePolicy = new MyPolicy();
                 HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 if (httpWebResponse.StatusCode == HttpStatusCode.OK) {
                     StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
@@ -72,7 +75,7 @@ namespace Discord_win.Tools {
                 }
             }
             catch(Exception ex) {
-
+                MessageBox.Show(ex.Message);
             }
             return null;
         }

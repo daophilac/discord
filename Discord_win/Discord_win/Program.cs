@@ -47,6 +47,7 @@ namespace Discord_win {
         public static string URIGetChannelsByServer;
         public static string URIGetMessagesByChannel;
         public static string URIInsertMessage;
+        public static string URIChatHub;
         public static void Initialize() {
             //
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
@@ -93,6 +94,7 @@ namespace Discord_win {
             URIGetChannelsByServer = Application.Current.FindResource("URIGetChannelsByServer").ToString();
             URIGetMessagesByChannel = Application.Current.FindResource("URIGetMessagesByChannel").ToString();
             URIInsertMessage = Application.Current.FindResource("URIInsertMessage").ToString();
+            URIChatHub = Application.Current.FindResource("URIChatHub").ToString();
 
             //
             loginPage = new LoginPage();

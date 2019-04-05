@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-        this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
+        this.baseURL = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller(this.backgroundHandler, "POST");
         this.jsonBuilder = new JSONBuilder();
     }

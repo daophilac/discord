@@ -32,7 +32,7 @@ namespace Discord_win.Pages {
             this.inventory = Program.loginPage.inventory;
             this.apiCaller = new APICaller();
             this.jsonBuilder = new JSONBuilder();
-            this.chatHubConnection = new HubConnectionBuilder().WithUrl("https://localhost:44334/chathub").Build();
+            this.chatHubConnection = new HubConnectionBuilder().WithUrl(Program.baseAddress + Program.URIChatHub).Build();
             RegisterListener();
             LoadListServer();
         }
