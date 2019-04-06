@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private Button buttonLogin;
-    private String baseURL;
+    private String baseUrl;
     private boolean isLoggedIn;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-        this.baseURL = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
+        this.baseUrl = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
         this.apiCaller = new APICaller(this.backgroundHandler, "POST");
         this.jsonBuilder = new JsonBuilder();
     }
@@ -84,8 +84,8 @@ public class LoginActivity extends AppCompatActivity {
                 handleJSON(msg.obj.toString());
             }
         };
-        this.baseURL = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
-        String requestURL = this.baseURL.concat(Route.urlLogin);
+        this.baseUrl = Route.buildBaseUrl();
+        String requestURL = this.baseUrl.concat(Route.urlLogin);
         this.apiCaller = new APICaller(this.backgroundHandler, "POST");
         this.apiCaller.setRequestURL(requestURL);
         this.apiCaller.setJSON(json);
@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 //        HashMap<String, String> parameters = new HashMap<String, String>();
 //        parameters.put("Email", email);
 //        parameters.put("Password", password);
-        String requestURL = this.baseURL.concat(Route.urlLogin);
+        String requestURL = this.baseUrl.concat(Route.urlLogin);
         this.apiCaller.setRequestURL(requestURL);
         this.apiCaller.setJSON(json);
         this.threadBackground = new Thread(this.apiCaller);

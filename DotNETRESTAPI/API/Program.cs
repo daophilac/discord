@@ -14,24 +14,21 @@ using Microsoft.Extensions.Logging;
 
 namespace API {
     public class Program {
-        private static ResourceManager resourceManagerClientMethod;
         public static MainDatabase mainDatabase;
         public static ChatHub chatHub;
 
-        public static string ReceiveMessage { get; set; }
+        
         public static void Main(string[] args) {
             InitializeGlobalVariable();
             CreateWebHostBuilder(args).Build().Run();
         }
         public static void InitializeGlobalVariable() {
-            resourceManagerClientMethod = new ResourceManager("API.Resources.ClientMethod", typeof(Program).Assembly);
-            ReceiveMessage = resourceManagerClientMethod.GetString("ReceiveMessage");
             mainDatabase = new MainDatabase(new DbContextOptions<MainDatabase>());
             chatHub = new ChatHub();
             //testAsync();
         }
         public static async void testAsync() {
-            await chatHub.SendMessage("bb");
+            await chatHub.ReceiveMessage("bb");
         }
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
     }

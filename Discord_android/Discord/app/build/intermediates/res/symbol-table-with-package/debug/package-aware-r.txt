@@ -1063,6 +1063,7 @@ id blocking
 id bottom
 id buttonLogin
 id buttonPanel
+id buttonServer
 id button_send
 id center
 id center_horizontal
@@ -1126,9 +1127,7 @@ id largeLabel
 id left
 id line1
 id line3
-id linear_layout_channel
 id linear_layout_message
-id linear_layout_server
 id linear_layout_type
 id listMode
 id list_item
@@ -1141,8 +1140,6 @@ id mtrl_internal_children_alpha_tag
 id multiply
 id navigation_header_container
 id navigation_view
-id navigator_channel
-id navigator_server
 id navigator_server_status
 id navigator_user_status
 id never
@@ -1162,6 +1159,8 @@ id pin
 id progress_circular
 id progress_horizontal
 id radio
+id recyclerView_channel
+id recyclerView_server
 id right
 id right_icon
 id right_side
@@ -1293,6 +1292,7 @@ layout abc_tooltip
 layout activity_login
 layout activity_main
 layout activity_third
+layout channel_item
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
 layout design_layout_snackbar
@@ -1319,6 +1319,7 @@ layout notification_template_part_time
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
+layout server_item
 layout support_simple_spinner_dropdown_item
 menu menu_navigator
 mipmap ic_launcher

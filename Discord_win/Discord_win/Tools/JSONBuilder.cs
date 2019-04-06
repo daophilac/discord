@@ -26,16 +26,16 @@ namespace Discord_win.Tools {
         }
         public string BuildLoginJSON(string email, string password) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("Email", email);
-            parameters.Add("Password", password);
+            parameters.Add("email", email);
+            parameters.Add("password", password);
             return BuildJSONFromHashMap(parameters);
         }
         public string BuildMessageJSON(Channel currentChannel, User currentUser, string content) {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("ChannelID", currentChannel.ChannelId.ToString());
-            parameters.Add("UserID", currentUser.UserId.ToString());
-            parameters.Add("Content", content);
-            parameters.Add("Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            parameters.Add("channelId", currentChannel.ChannelId.ToString());
+            parameters.Add("userId", currentUser.UserId.ToString());
+            parameters.Add("content", content);
+            parameters.Add("time", DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:ss.fff"));
             return BuildJSONFromHashMap(parameters);
         }
     }

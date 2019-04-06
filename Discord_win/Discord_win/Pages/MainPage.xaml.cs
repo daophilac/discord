@@ -1,4 +1,5 @@
 ﻿using Discord_win.Models;
+using Discord_win.Resources.Static;
 using Discord_win.Tools;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
@@ -19,7 +20,6 @@ namespace Discord_win.Pages {
         public Inventory inventory { get; set; }
         private APICaller apiCaller;
         private JSONBuilder jsonBuilder;
-        //private JSONConverter jsonConverter;
         private Dictionary<Button, int> buttonServers = new Dictionary<Button, int>();
         private Dictionary<Button, int> buttonChannels = new Dictionary<Button, int>();
         private int currentSelectedChannel = 0;
@@ -32,12 +32,12 @@ namespace Discord_win.Pages {
             this.inventory = Program.loginPage.inventory;
             this.apiCaller = new APICaller();
             this.jsonBuilder = new JSONBuilder();
-            this.chatHubConnection = new HubConnectionBuilder().WithUrl(Program.baseAddress + Program.URIChatHub).Build();
+            this.chatHubConnection = new HubConnectionBuilder().WithUrl(Program.baseAddress + Route.URIChatHub).Build();
             RegisterListener();
             LoadListServer();
         }
         private async void RegisterListener() {
-            this.chatHubConnection.On<string>("ReceiveMessage", (jsonMessage) => {
+            this.chatHubConnection.On<string>(ClientMethod.ReceiveMessage, (jsonMessage) => {
                 this.Dispatcher.Invoke(() => {
                     Message receivedMessage = JsonConvert.DeserializeObject<Message>(jsonMessage);
                     TextBlock textBlock = new TextBlock();
@@ -60,7 +60,7 @@ namespace Discord_win.Pages {
             }
         }
         private void LoadListServer() {
-            string requestURI = Program.baseAddress + string.Format(Program.URIGetServersByUser, this.inventory.LoadCurrentUser().UserId);
+            string requestURI = Program.baseAddress + string.Format(Route.URIGetServersByUser, this.inventory.LoadCurrentUser().UserId);
             this.apiCaller.SetProperties("GET", requestURI);
             string incomingJSON = this.apiCaller.SendRequest();
             List<Server> listServer = JsonConvert.DeserializeObject<List<Server>>(incomingJSON);
@@ -77,7 +77,7 @@ namespace Discord_win.Pages {
             }
         }
         private void LoadListChannel(int serverID) {
-            string requestURI = Program.baseAddress + string.Format(Program.URIGetChannelsByServer, serverID);
+            string requestURI = Program.baseAddress + string.Format(Route.URIGetChannelsByServer, serverID);
             this.apiCaller.SetProperties("GET", requestURI);
             string incomingJSON = this.apiCaller.SendRequest();
             List<Channel> listChannel = JsonConvert.DeserializeObject<List<Channel>>(incomingJSON);
@@ -99,7 +99,7 @@ namespace Discord_win.Pages {
             }
         }
         private void LoadListMessage(int channelID) {
-            string requestURI = Program.baseAddress + string.Format(Program.URIGetMessagesByChannel, channelID);
+            string requestURI = Program.baseAddress + string.Format(Route.URIGetMessagesByChannel, channelID);
             this.apiCaller.SetProperties("GET", requestURI);
             string incomingJSON = this.apiCaller.SendRequest();
             List<Message> listMessage = JsonConvert.DeserializeObject<List<Message>>(incomingJSON);
@@ -132,7 +132,7 @@ namespace Discord_win.Pages {
             Channel currentChannel = this.inventory.LoadCurrentChannel();
             User currentUser = this.inventory.LoadCurrentUser();
             string json = this.jsonBuilder.BuildMessageJSON(currentChannel, currentUser, this.TextBoxType.Text);
-            await this.chatHubConnection.InvokeAsync("SendMessage", json);
+            await this.chatHubConnection.InvokeAsync(ServerMethod.ReceiveMessage, json);
             
             //string requestURI = Program.baseAddress + Program.URIInsertMessage;
             //this.apiCaller.SetProperties("POST", requestURI, json);
@@ -150,10 +150,6 @@ namespace Discord_win.Pages {
             //this.DockPanelMessage.Children.Add(textBlock);
             TextBoxType.Text = "";
             //DockPanel.SetFlowDirection = 
-        }
-
-        private async void ReceiveMessage(string jsonMessage) {
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {

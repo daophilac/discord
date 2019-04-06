@@ -1,5 +1,6 @@
 ﻿using Discord_win.Models;
 using Discord_win.Pages;
+using Discord_win.Resources.Static;
 using Discord_win.Tools;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,10 @@ using System.Windows;
 
 namespace Discord_win {
     public static class Program {
-        public static string protocol;
         public static string localIP;
-        public static string domainName;
-        public static string serverName;
+        //public static string protocol;
+        //public static string domainName;
+        //public static string serverName;
         public static string baseAddress;
         public static HttpClient httpClient;
         public static HttpResponseMessage httpResponseMessage;
@@ -26,11 +27,6 @@ namespace Discord_win {
         public static MainPage mainPage;
         public static TestPage testPage;
 
-        public static string RootDataDirectory;
-        public static string UserDirectory;
-        public static string ServerDirectory;
-        public static string UserDataFile;
-        public static string ServerDataFile;
         public static string UserFilePath;
         public static string ServerFilePath;
 
@@ -41,13 +37,6 @@ namespace Discord_win {
         public static string ExceptionNullRequestMethod;
         public static string ExceptionNullRequestURI;
         public static string ExceptionNullJSON;
-
-        public static string URILogin;
-        public static string URIGetServersByUser;
-        public static string URIGetChannelsByServer;
-        public static string URIGetMessagesByChannel;
-        public static string URIInsertMessage;
-        public static string URIChatHub;
         public static void Initialize() {
             //
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
@@ -56,19 +45,18 @@ namespace Discord_win {
             localIP = endPoint.Address.ToString();
             socket.Close();
 
-            //
-            protocol = Application.Current.Resources["Protocol"].ToString();
-            domainName = Application.Current.Resources["DomainName"].ToString();
-            serverName = Application.Current.Resources["ServerName"].ToString();
+            // TODO:
+            baseAddress = Route.Protocol + "://" + Route.DomainName + Route.ServerName;
 
             //
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(protocol + domainName);
+            httpClient.BaseAddress = new Uri(baseAddress);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
             //
-            baseAddress = protocol + domainName + serverName;
+            UserFilePath = FileSystem.RootDataDirectory + FileSystem.UserDirectory + FileSystem.UserDataFile;
+            ServerFilePath = FileSystem.RootDataDirectory + FileSystem.ServerDirectory + FileSystem.ServerDataFile;
 
             //
             NotificationInvalidEmailOrPassword = Application.Current.FindResource("NotificationInvalidEmailOrPassword").ToString();
@@ -78,23 +66,6 @@ namespace Discord_win {
             ExceptionNullRequestMethod = Application.Current.FindResource("ExceptionNullRequestMethod").ToString();
             ExceptionNullRequestURI = Application.Current.FindResource("ExceptionNullRequestURI").ToString();
             ExceptionNullJSON = Application.Current.FindResource("ExceptionNullJSON").ToString();
-
-            //
-            RootDataDirectory = Application.Current.FindResource("RootDataDirectory").ToString();
-            UserDirectory = Application.Current.FindResource("UserDirectory").ToString();
-            ServerDirectory = Application.Current.FindResource("ServerDirectory").ToString();
-            UserDataFile = Application.Current.FindResource("UserDataFile").ToString();
-            ServerDataFile = Application.Current.FindResource("ServerDataFile").ToString();
-            UserFilePath = RootDataDirectory + UserDirectory + UserDataFile;
-            ServerFilePath = RootDataDirectory + ServerDirectory + ServerFilePath;
-
-            //
-            URILogin = Application.Current.FindResource("URILogin").ToString();
-            URIGetServersByUser = Application.Current.FindResource("URIGetServersByUser").ToString();
-            URIGetChannelsByServer = Application.Current.FindResource("URIGetChannelsByServer").ToString();
-            URIGetMessagesByChannel = Application.Current.FindResource("URIGetMessagesByChannel").ToString();
-            URIInsertMessage = Application.Current.FindResource("URIInsertMessage").ToString();
-            URIChatHub = Application.Current.FindResource("URIChatHub").ToString();
 
             //
             loginPage = new LoginPage();

@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Resources.Static;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace API.Hubs {
     public class ChatHub : Hub{
-        public async Task SendMessage(string jsonMessage) {
+        public async Task ReceiveMessage(string jsonMessage) {
             //string jsonTest = "{\"ChannelID\":\"1\",\"UserID\":\"1\",\"Content\":\"TestJSON\",\"Time\":\"2022-02-02T00:00:00.003\"}";
             //Message deserializedMessage = new Message();
             Message deserializedMessage = JsonConvert.DeserializeObject<Message>(jsonMessage);
@@ -23,7 +24,7 @@ namespace API.Hubs {
             //deserializedMessage = ser.ReadObject(ms) as Message;
             //ms.Close();
             //return deserializedMessage;
-            await Clients.All.SendAsync(Program.ReceiveMessage, jsonMessage);
+            await Clients.All.SendAsync(ClientMethod.ReceiveMessage, jsonMessage);
         }
     }
 }

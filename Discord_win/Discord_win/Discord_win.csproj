@@ -152,6 +152,10 @@
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Resources\Static\ClientMethod.cs" />
+    <Compile Include="Resources\Static\FileSystem.cs" />
+    <Compile Include="Resources\Static\Route.cs" />
+    <Compile Include="Resources\Static\ServerMethod.cs" />
     <Compile Include="Tools\APICaller.cs" />
     <Compile Include="Tools\FileDealer.cs" />
     <Compile Include="Tools\JSONBuilder.cs" />
@@ -180,27 +184,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\ConstraintLayout.xaml">
+    <Page Include="Resources\UiDecoration\ConstraintLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\ExceptionMessage.xaml">
+    <Page Include="Resources\Localizable\ExceptionMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\FileSystem.xaml">
+    <Page Include="Resources\UiDecoration\InterfaceDark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\Interface_dark.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Notification.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Route.xaml">
+    <Page Include="Resources\Localizable\Notification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

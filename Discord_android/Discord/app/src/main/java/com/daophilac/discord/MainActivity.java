@@ -25,11 +25,14 @@ import com.daophilac.discord.interfaces.NavigatorListener;
 import com.daophilac.discord.models.Channel;
 import com.daophilac.discord.models.Message;
 import com.daophilac.discord.models.User;
+import com.daophilac.discord.resources.ClientMethod;
 import com.daophilac.discord.resources.UiDecoration;
 import com.daophilac.discord.resources.Route;
 import com.daophilac.discord.tools.APICaller;
 import com.daophilac.discord.tools.JsonBuilder;
 import com.daophilac.discord.tools.JsonConverter;
+import com.microsoft.signalr.HubConnection;
+import com.microsoft.signalr.HubConnectionBuilder;
 
 import java.io.File;
 import java.util.List;
@@ -59,14 +62,12 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
     private int messageTextSize;
 
     private MainActivityListener listener;
-
+    private HubConnection chatHubConnection;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeGlobalVariable();
-        String temp = this.getIntent().getStringExtra("jsonUser");
-//        User tUser = this.jsonConverter.toUser()
         this.inventory.storeCurrentUser(this.getIntent().getStringExtra("jsonUser"));
         writeLogConsole(this.inventory.loadCurrentUser().getEmail());
         this.fragmentManager.beginTransaction().replace(R.id.navigation_view, navigatorFragment).commit();
@@ -89,14 +90,28 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
         this.listener = this.navigatorFragment;
         this.listener.onCreateInventory(this.inventory);
         this.fragmentManager = getSupportFragmentManager();
-        this.baseURL = Route.protocol + "://" + Route.serverIP + "/" + Route.serverName;
+        this.baseURL = Route.protocol + "://" + Route.serverIP + Route.serverName;
         this.apiCaller = new APICaller();
         this.jsonBuilder = new JsonBuilder();
         this.jsonConverter = new JsonConverter();
         this.messageTextColor = UiDecoration.messageTextColor;
         this.messageTextSize = UiDecoration.messageTextSize;
+        registerHubListener();
     }
+    private void registerHubListener(){
+        this.chatHubConnection = HubConnectionBuilder.create(this.baseURL + Route.urlChatHub).build();
+        this.chatHubConnection.on(ClientMethod.ReceiveMessage, (jsonMessage) -> {
+            Message receivedMessage = this.jsonConverter.toMessage(jsonMessage);
+            MessageTextView messageTextView = new MessageTextView(getBaseContext());
+            messageTextView.setMessageID(receivedMessage.getMessageId());
+            messageTextView.setTextColor(messageTextColor);
+            messageTextView.setTextSize(messageTextSize);
+            messageTextView.setText(receivedMessage.getUserId() + ": " + receivedMessage.getContent());
+            runOnUiThread(() -> linearLayoutMessage.addView(messageTextView));
+        }, String.class);
 
+        this.chatHubConnection.start();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -114,13 +129,13 @@ public class MainActivity extends AppCompatActivity implements NavigatorListener
             public void handleMessage(android.os.Message msg) {
                 super.handleMessage(msg);
                 // TODO: check this one later, am I doing too much work here?
-                Message message = jsonConverter.toMessage(msg.obj.toString());
-                MessageTextView messageTextView = new MessageTextView(getBaseContext());
-                messageTextView.setMessageID(message.getMessageId());
-                messageTextView.setTextColor(messageTextColor);
-                messageTextView.setTextSize(messageTextSize);
-                messageTextView.setText(currentUser.getUserId() + ": " + editTextType.getText().toString());
-                linearLayoutMessage.addView(messageTextView);
+                //Message message = jsonConverter.toMessage(msg.obj.toString());
+//                MessageTextView messageTextView = new MessageTextView(getBaseContext());
+//                messageTextView.setMessageID(message.getMessageId());
+//                messageTextView.setTextColor(messageTextColor);
+//                messageTextView.setTextSize(messageTextSize);
+//                messageTextView.setText(currentUser.getUserId() + ": " + editTextType.getText().toString());
+//                linearLayoutMessage.addView(messageTextView);
                 editTextType.setText("");
             }
         };

@@ -34,17 +34,17 @@ public class JsonBuilder {
     }
     public String buildLoginJSON(String email, String password){
         HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("Email", email);
-        parameters.put("Password", password);
+        parameters.put("email", email);
+        parameters.put("password", password);
         return buildJSONFromHashMap(parameters);
     }
     public String buildMessageJSON(Channel currentChannel, User currentUser, String content){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", MainActivity.locale);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", MainActivity.locale);
         Date time = new Date(System.currentTimeMillis());
         HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("ChannelID", String.valueOf(currentChannel.getChannelId()));
-        parameters.put("UserID", String.valueOf(currentUser.getUserId()));
-        parameters.put("Content", content);
+        parameters.put("channelId", String.valueOf(currentChannel.getChannelId()));
+        parameters.put("userId", String.valueOf(currentUser.getUserId()));
+        parameters.put("content", content);
         parameters.put("time", simpleDateFormat.format(time));
         return buildJSONFromHashMap(parameters);
     }

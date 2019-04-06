@@ -1,5 +1,6 @@
 ﻿
 using Discord_win.Models;
+using Discord_win.Resources.Static;
 using Discord_win.Tools;
 using Newtonsoft.Json;
 using System;
@@ -42,7 +43,7 @@ namespace Discord_win.Pages {
                 string email = this.fileDealer.ReadLine(Program.UserFilePath);
                 string password = this.fileDealer.ReadLine(Program.UserFilePath);
                 string outgoingJSON = this.jsonBuilder.BuildLoginJSON(email, password);
-                string requestURI = Program.baseAddress + Program.URILogin;
+                string requestURI = Program.baseAddress + Route.URILogin;
                 this.apiCaller.SetProperties("POST", requestURI, outgoingJSON);
                 string incomingJSON = this.apiCaller.SendRequest();
                 //User currentUser = this.jsonConverter.ToUser(incomingJSON);
@@ -56,9 +57,9 @@ namespace Discord_win.Pages {
             }
             return false;
         }
-        private async void Login() {
+        private void Login() {
             string outgoingJSON = this.jsonBuilder.BuildLoginJSON(this.TextBoxEmail.Text, this.TextBoxPassword.Text);
-            string requestURI = Program.baseAddress + Program.URILogin;
+            string requestURI = Program.baseAddress + Route.URILogin;
             this.apiCaller.SetProperties("POST", requestURI, outgoingJSON);
             string incomingJSON = this.apiCaller.SendRequest();
             if(incomingJSON == null) {

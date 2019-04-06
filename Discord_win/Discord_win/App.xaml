@@ -6,12 +6,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Interface_dark.xaml" />
-                <ResourceDictionary Source="Resources/Route.xaml" />
-                <ResourceDictionary Source="Resources/Notification.xaml" />
-                <ResourceDictionary Source="Resources/ConstraintLayout.xaml"/>
-                <ResourceDictionary Source="Resources/ExceptionMessage.xaml"/>
-                <ResourceDictionary Source="Resources/FileSystem.xaml"/>
+                <ResourceDictionary Source="Resources/Localizable/Notification.xaml"/>
+                <ResourceDictionary Source="Resources/Localizable/ExceptionMessage.xaml"/>
+                <ResourceDictionary Source="Resources/UiDecoration/ConstraintLayout.xaml"/>
+                <ResourceDictionary Source="Resources/UiDecoration/InterfaceDark.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

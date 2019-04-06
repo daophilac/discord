@@ -8,35 +8,42 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 
-import com.daophilac.discord.customview.ChannelTextView;
-import com.daophilac.discord.customview.ServerButton;
 import com.daophilac.discord.interfaces.MainActivityListener;
 import com.daophilac.discord.interfaces.NavigatorListener;
 import com.daophilac.discord.models.Server;
 import com.daophilac.discord.models.Channel;
+import com.daophilac.discord.recyclerviews.ChannelAdapter;
+import com.daophilac.discord.recyclerviews.ServerAdapter;
 import com.daophilac.discord.resources.UiDecoration;
 import com.daophilac.discord.resources.Route;
 import com.daophilac.discord.tools.APICaller;
 
 import java.util.List;
 
-public class NavigatorFragment extends Fragment implements MainActivityListener {
+public class NavigatorFragment extends Fragment implements MainActivityListener, ServerAdapter.Listener {
     private NavigatorListener listener;
     private View view;
     private Handler backgroundHandler;
     private Thread threadBackground;
     private APICaller apiCaller;
-    private String baseURL;
+    private String baseUrl;
     private Inventory inventory;
-    private LinearLayout linearLayoutServer;
-    private LinearLayout linearLayoutChannel;
+    //private LinearLayout linearLayoutServer;
+    //private LinearLayout linearLayoutChannel;
     private LinearLayout linearLayoutMessage;
+    private RecyclerView recyclerViewServer;
+    private RecyclerView recyclerViewChannel;
+    private ServerAdapter serverAdapter;
+    private ChannelAdapter channelAdapter;
+    private ServerAdapter.Listener serverListener;
     private int currentSelectedChannel;
     private int channelTextColor;
     private int channelTextSize;
@@ -50,6 +57,7 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
            so the activity is an instance of OnFragmentInteractionListener. */
         if (context instanceof NavigatorListener) {
             listener = (NavigatorListener) context;
+            serverListener = (ServerAdapter.Listener) context;
         }
         else {
             throw new RuntimeException(context.toString() + " must implement OnNavigatorInteractionListener");
@@ -66,52 +74,68 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
     }
 
     public void initializeGlobalVariable() {
-        this.linearLayoutServer = this.view.findViewById(R.id.linear_layout_server);
-        this.linearLayoutChannel = this.view.findViewById(R.id.linear_layout_channel);
+        //this.linearLayoutServer = this.view.findViewById(R.id.linear_layout_server);
+        //this.linearLayoutChannel = this.view.findViewById(R.id.linear_layout_channel);
+        this.recyclerViewServer = this.view.findViewById(R.id.recyclerView_server);
+        this.recyclerViewChannel = this.view.findViewById(R.id.recyclerView_channel);
         this.linearLayoutMessage = this.view.findViewById(R.id.linear_layout_message);
         this.channelTextColor = UiDecoration.channelTextColor;
         this.channelTextSize = UiDecoration.channelTextSize;
         this.messageTextColor = UiDecoration.messageTextColor;
         this.messageTextSize = UiDecoration.messageTextSize;
-        this.baseURL = "http://" + Route.serverIP + "/" + Route.serverName;
+        this.baseUrl = Route.buildBaseUrl();
         this.apiCaller = new APICaller();
+
+//        this.serverAdapter = new ServerAdapter()
     }
 
     private void initializeServerSection(List<Server> listServer) {
-        ServerButton serverButton;
-        for (int i = 0; i < listServer.size(); i++) {
-            serverButton = new ServerButton(this.getContext());
-            serverButton.setServerID(listServer.get(i).getServerId());
-            serverButton.setText(listServer.get(i).getName());
-            serverButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loadListChannel(((ServerButton) v).getServerID());
-                }
-            });
-            this.linearLayoutServer.addView(serverButton);
-        }
+        this.serverAdapter = new ServerAdapter(listServer, this.serverListener);
+        this.recyclerViewServer.setAdapter(this.serverAdapter);
+        this.recyclerViewServer.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+//        ServerButton serverButton;
+//        for (int i = 0; i < listServer.size(); i++) {
+//            serverButton = new ServerButton(this.getContext());
+//            serverButton.setServerID(listServer.get(i).getServerId());
+//            serverButton.setText(listServer.get(i).getName());
+//            serverButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    loadListChannel(((ServerButton) v).getServerID());
+//                }
+//            });
+//            this.linearLayoutServer.addView(serverButton);
+//        }
     }
 
     private void initializeChannelSection(List<Channel> listChannel) {
-        if (this.linearLayoutChannel.getChildCount() > 0) {
-            this.linearLayoutChannel.removeAllViews();
+        if(this.channelAdapter != null){
+            this.recyclerViewChannel.removeAllViews();
         }
-        ChannelTextView channelTextView;
-        for (int i = 0; i < listChannel.size(); i++) {
-            channelTextView = new ChannelTextView(this.getContext());
-            channelTextView.setChannelID(listChannel.get(i).getChannelId());
-            channelTextView.setText(String.format(MainActivity.locale, UiDecoration.channelName, i, listChannel.get(i).getName()));
-            channelTextView.setTextColor(this.channelTextColor);
-            channelTextView.setTextSize(this.channelTextSize);
-            channelTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loadListMessage(((ChannelTextView) v).getChannelID());
-                }
-            });
-            this.linearLayoutChannel.addView(channelTextView);
-        }
+        this.channelAdapter = new ChannelAdapter(listChannel);
+        this.recyclerViewChannel.setAdapter(this.channelAdapter);
+        this.recyclerViewChannel.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        this.channelAdapter.notifyDataSetChanged();
+
+//        if (this.linearLayoutChannel.getChildCount() > 0) {
+//            this.linearLayoutChannel.removeAllViews();
+//        }
+//        ChannelTextView channelTextView;
+//        for (int i = 0; i < listChannel.size(); i++) {
+//            channelTextView = new ChannelTextView(this.getContext());
+//            channelTextView.setChannelID(listChannel.get(i).getChannelId());
+//            channelTextView.setText(String.format(MainActivity.locale, UiDecoration.channelName, i, listChannel.get(i).getName()));
+//            channelTextView.setTextColor(this.channelTextColor);
+//            channelTextView.setTextSize(this.channelTextSize);
+//            channelTextView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    loadListMessage(((ChannelTextView) v).getChannelID());
+//                }
+//            });
+//            this.linearLayoutChannel.addView(channelTextView);
+//        }
     }
 
     private void loadListServer() {
@@ -126,7 +150,7 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
         };
         this.apiCaller.setHandler(this.backgroundHandler);
         this.apiCaller.setRequestMethod("GET");
-        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetServersByUser, this.inventory.loadCurrentUser().getUserId()));
+        String requestURL = this.baseUrl.concat(String.format(MainActivity.locale, Route.urlGetServersByUser, this.inventory.loadCurrentUser().getUserId()));
         this.apiCaller.setRequestURL(requestURL);
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
@@ -144,7 +168,7 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
         };
         this.apiCaller.setHandler(this.backgroundHandler);
         this.apiCaller.setRequestMethod("GET");
-        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetChannelsByServer, serverID));
+        String requestURL = this.baseUrl.concat(String.format(MainActivity.locale, Route.urlGetChannelsByServer, serverID));
         this.apiCaller.setRequestURL(requestURL);
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
@@ -175,7 +199,7 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
         };
         this.apiCaller.setHandler(this.backgroundHandler);
         this.apiCaller.setRequestMethod("GET");
-        String requestURL = this.baseURL.concat(String.format(MainActivity.locale, Route.urlGetMessagesByChannel, channelID));
+        String requestURL = this.baseUrl.concat(String.format(MainActivity.locale, Route.urlGetMessagesByChannel, channelID));
         this.apiCaller.setRequestURL(requestURL);
         this.threadBackground = new Thread(this.apiCaller);
         this.threadBackground.start();
@@ -185,4 +209,12 @@ public class NavigatorFragment extends Fragment implements MainActivityListener 
     public void onCreateInventory(Inventory inventory) {
         this.inventory = inventory;
     }
+
+    @Override
+    public void onButtonClick(ServerAdapter.ViewHolder viewHolder) {
+        loadListChannel(viewHolder.getServerId());
+    }
+//    public ServerAdapter.Listener getListener(){
+//        //return this.serverListener;
+//    }
 }
