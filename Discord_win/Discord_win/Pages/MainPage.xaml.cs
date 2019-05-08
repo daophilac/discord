@@ -33,6 +33,7 @@ namespace Discord_win.Pages {
             this.apiCaller = new APICaller();
             this.jsonBuilder = new JSONBuilder();
             this.chatHubConnection = new HubConnectionBuilder().WithUrl(Program.baseAddress + Route.URIChatHub).Build();
+            this.chatHubConnection.InvokeAsync("GetConnectionId");
             RegisterListener();
             LoadListServer();
         }
@@ -49,6 +50,9 @@ namespace Discord_win.Pages {
                     DockPanel.SetDock(textBlock, Dock.Top);
                     this.DockPanelMessage.Children.Add(textBlock);
                 });
+            });
+            this.chatHubConnection.On<string>("GetConnectionId", (connectionId) => {
+                string a = connectionId;
             });
 
 
@@ -132,7 +136,9 @@ namespace Discord_win.Pages {
             Channel currentChannel = this.inventory.LoadCurrentChannel();
             User currentUser = this.inventory.LoadCurrentUser();
             string json = this.jsonBuilder.BuildMessageJSON(currentChannel, currentUser, this.TextBoxType.Text);
-            await this.chatHubConnection.InvokeAsync(ServerMethod.ReceiveMessage, json);
+            int a = 1;
+            await this.chatHubConnection.InvokeAsync("GetConnectionId");
+            //await this.chatHubConnection.InvokeAsync(ServerMethod.ReceiveMessage, a, a, json);
             
             //string requestURI = Program.baseAddress + Program.URIInsertMessage;
             //this.apiCaller.SetProperties("POST", requestURI, json);

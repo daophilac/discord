@@ -18,5 +18,6 @@ namespace API.Models {
         public IEnumerable<ServerUser> ServerUsers { get; set; }
         public IEnumerable<Channel> Channels { get; set; }
         public IEnumerable<Role> Roles { get; set; }
+        public InstantInvite InstantInvite { get; set; }
     }
 }

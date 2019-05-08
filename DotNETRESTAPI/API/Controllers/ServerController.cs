@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
+using System.IO;
 
 namespace API.Controllers
 {
@@ -26,6 +27,33 @@ namespace API.Controllers
             var servers = _context.Server.Where(s => _context.ServerUser.Where(su => su.UserId == userID).Any(su => su.ServerId == s.ServerId));
             return servers;
         }
+
+        [HttpGet]
+        [Route("getserverimage/{id}")]
+        public async Task<IActionResult> GetServerImage(int id) {
+            string path = "D:\\Desktop\\Images\\Server\\server_1.png";
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open)) {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, "image/png", Path.GetFileName(path));
+        }
+
+        [HttpPost]
+        [Route("insertserver")]
+        public ActionResult<Server> InsertServer(Server serverFromClient) {
+            _context.Server.Add(serverFromClient);
+            _context.SaveChanges();
+            serverFromClient = _context.Server.Last();
+            ServerUser serverUser = new ServerUser();
+            serverUser.ServerId = serverFromClient.ServerId;
+            serverUser.UserId = serverFromClient.AdminId;
+            _context.ServerUser.Add(serverUser);
+            _context.SaveChanges();
+            return serverFromClient;
+        }
+
 
 
 

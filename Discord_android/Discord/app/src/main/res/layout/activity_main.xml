@@ -5,75 +5,82 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF36393F"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="80dp">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linear_layout_message"
-            android:gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/linear_layout_type">
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_layout_type"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="9"
-                android:textColor="@android:color/white"
-                android:id="@+id/editText_type"/>
-
-            <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_send"
-                android:id="@+id/button_send"
-                android:onClick="sendMessage" />
-        </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraint_layout_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FF36393F"
-            android:fitsSystemWindows="true"
-            android:minHeight="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_navigator" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
-            android:id="@+id/detail_fragment_container"
+            <com.peanut.discord.customview.NavigationButton
+                android:id="@+id/navigation_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraint_layout_header">
 
+            <com.peanut.discord.customview.MessageRecyclerView
+                android:id="@+id/message_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/constraint_layout_type"
+                app:layout_constraintTop_toTopOf="parent"
+                app:reverseLayout="true" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_layout_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <com.peanut.discord.customview.SendMessageButton
+                    android:id="@+id/send_message_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/editText_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/send_message_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/frame_layout_create_or_join_server_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </android.support.constraint.ConstraintLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
         android:layout_gravity="start"
         android:maxWidth="345dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_navigator" />
+
 </android.support.v4.widget.DrawerLayout>

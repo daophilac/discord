@@ -22,10 +22,13 @@ namespace API.Models {
         public DbSet<ServerUser> ServerUser { get; set; }
         public DbSet<ChannelRolePermission> ChannelRolePermission { get; set; }
         public DbSet<Message> Message { get; set; }
+        public DbSet<InstantInvite> InstantInvite { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<User>().HasAlternateKey(k => k.Email).HasName("UK_Email");
             modelBuilder.Entity<ChannelRolePermission>().HasKey(crp => new { crp.ChannelId, crp.RoleId, crp.PermissionId });
             modelBuilder.Entity<ServerUser>().HasKey(su => new { su.ServerId, su.UserId });
+            modelBuilder.Entity<InstantInvite>().HasAlternateKey(k => k.ServerId).HasName("UK_ServerId");
+
             modelBuilder.Entity<User>().HasData(
                 new User { UserId = 1, Email = "daophilac@gmail.com", Password = "123", UserName = "peanut", FirstName = "Đào Phi", LastName = "Lạc", Gender = Gender.Male, Image = "user_1.png" },
                 new User { UserId = 2, Email = "daophilac1@gmail.com", Password = "123", UserName = "peanut", FirstName = "Đào Phi", LastName = "Lạc", Gender = Gender.Male, Image = "user_2.png" },
@@ -36,21 +39,22 @@ namespace API.Models {
             modelBuilder.Entity<Server>().HasData(
                 new Server { ServerId = 1, Name = "Final Fantasy", Image = "server_1.png", AdminId = 1 },
                 new Server { ServerId = 2, Name = "Ys", Image = "server_2.png", AdminId = 1 },
-                new Server { ServerId = 3, Name = "Hentai Maiden", Image = "server_3.png", AdminId = 2 }
+                new Server { ServerId = 3, Name = "Hentai Maiden", Image = "server_3.png", AdminId = 2 },
+                new Server { ServerId = 4, Name = "TSFH", Image = null, AdminId = 2}
             );
 
             modelBuilder.Entity<ServerUser>().HasData(
                 new ServerUser { ServerId = 1, UserId = 1 },
                 new ServerUser { ServerId = 2, UserId = 1 },
                 new ServerUser { ServerId = 3, UserId = 2 },
-
                 new ServerUser { ServerId = 1, UserId = 2 },
                 new ServerUser { ServerId = 1, UserId = 3 },
                 new ServerUser { ServerId = 2, UserId = 2 },
                 new ServerUser { ServerId = 2, UserId = 3 },
                 new ServerUser { ServerId = 2, UserId = 4 },
                 new ServerUser { ServerId = 3, UserId = 1 },
-                new ServerUser { ServerId = 3, UserId = 4 }
+                new ServerUser { ServerId = 3, UserId = 4 },
+                new ServerUser { ServerId = 4, UserId = 2}
             );
 
             modelBuilder.Entity<Channel>().HasData(
@@ -61,7 +65,8 @@ namespace API.Models {
                 new Channel { ChannelId = 5, Name = "Ys7", ServerId = 2 },
                 new Channel { ChannelId = 6, Name = "Ys8", ServerId = 2 },
                 new Channel { ChannelId = 7, Name = "General", ServerId = 3 },
-                new Channel { ChannelId = 8, Name = "Secret", ServerId = 3 }
+                new Channel { ChannelId = 8, Name = "Secret", ServerId = 3 },
+                new Channel { ChannelId = 9, Name = "Sky World", ServerId = 4}
             );
 
             modelBuilder.Entity<Role>().HasData(
@@ -74,7 +79,8 @@ namespace API.Models {
                 new Role { RoleId = 7, Name = "Aisha", ServerId = 2 },
                 new Role { RoleId = 8, Name = "Admin", ServerId = 3 },
                 new Role { RoleId = 9, Name = "Artist", ServerId = 3 },
-                new Role { RoleId = 10, Name = "Folk", ServerId = 3 }
+                new Role { RoleId = 10, Name = "Folk", ServerId = 3 },
+                new Role { RoleId = 11, Name = "Musician", ServerId = 4}
             );
 
             modelBuilder.Entity<Permission>().HasData(
@@ -97,21 +103,25 @@ namespace API.Models {
                 new ChannelRolePermission { ChannelId = 3, RoleId = 2, PermissionId = "full" },
                 new ChannelRolePermission { ChannelId = 3, RoleId = 3, PermissionId = "no_chat" },
                 new ChannelRolePermission { ChannelId = 3, RoleId = 4, PermissionId = "no_chat" },
-                new ChannelRolePermission { ChannelId = 4, RoleId = 1, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 4, RoleId = 2, PermissionId = "no_view" },
-                new ChannelRolePermission { ChannelId = 4, RoleId = 3, PermissionId = "no_view" },
-                new ChannelRolePermission { ChannelId = 5, RoleId = 1, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 5, RoleId = 2, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 5, RoleId = 3, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 6, RoleId = 1, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 6, RoleId = 2, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 6, RoleId = 3, PermissionId = "no_view" },
-                new ChannelRolePermission { ChannelId = 7, RoleId = 1, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 7, RoleId = 2, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 7, RoleId = 3, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 8, RoleId = 1, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 8, RoleId = 2, PermissionId = "full" },
-                new ChannelRolePermission { ChannelId = 8, RoleId = 3, PermissionId = "no_chat" }
+
+                new ChannelRolePermission { ChannelId = 4, RoleId = 5, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 4, RoleId = 6, PermissionId = "no_view" },
+                new ChannelRolePermission { ChannelId = 4, RoleId = 7, PermissionId = "no_view" },
+                new ChannelRolePermission { ChannelId = 5, RoleId = 5, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 5, RoleId = 6, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 5, RoleId = 7, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 6, RoleId = 5, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 6, RoleId = 6, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 6, RoleId = 7, PermissionId = "no_view" },
+
+                new ChannelRolePermission { ChannelId = 7, RoleId = 8, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 7, RoleId = 9, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 7, RoleId = 10, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 8, RoleId = 8, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 8, RoleId = 9, PermissionId = "full" },
+                new ChannelRolePermission { ChannelId = 8, RoleId = 10, PermissionId = "no_chat" },
+
+                new ChannelRolePermission { ChannelId = 9, RoleId = 11, PermissionId = "full"}
             );
 
             modelBuilder.Entity<Message>().HasData(
@@ -121,6 +131,11 @@ namespace API.Models {
                 new Message { MessageId = 4, ChannelId = 2, UserId = 1, Content = "Another channel in final fantasy", Time = DateTime.ParseExact("2019-01-02 00:00:01.123", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
                 new Message { MessageId = 5, ChannelId = 2, UserId = 1, Content = "BBBBBBBBBBBBBB", Time = DateTime.ParseExact("2019-01-02 00:00:02.899", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
                 new Message { MessageId = 6, ChannelId = 2, UserId = 2, Content = "Hi there", Time = DateTime.ParseExact("2019-01-02 00:00:03.543", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) }
+            );
+
+            modelBuilder.Entity<InstantInvite>().HasData(
+                new InstantInvite { Link = "3", ServerId = 3, NerverExpire = true},
+                new InstantInvite { Link = "4", ServerId = 4, NerverExpire = true}
             );
         }
     }

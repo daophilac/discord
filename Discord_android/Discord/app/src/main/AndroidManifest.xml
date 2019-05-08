@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.daophilac.discord">
+    package="com.peanut.discord">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -9,9 +9,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        android:theme="@style/AppTheme"
+
+        android:supportsRtl="true">
+        <activity android:name="com.peanut.discord.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,23 +20,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.peanut.discord.MainActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
 
         </activity>
-        <activity
-            android:name=".ThirdActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-
-        </activity>
+        <activity android:name=".CreateServerActivity" />
+        <activity android:name=".JoinServerActivity" />
     </application>
 
 </manifest>

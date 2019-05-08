@@ -2,16 +2,18 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AMOLED_dark_theme"
     tools:context=".LoginActivity">
 
-    <EditText
-        android:id="@+id/editTextEmail"
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/edit_text_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textEmailAddress"
@@ -19,8 +21,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextPassword"
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/edit_text_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -29,15 +31,15 @@
         android:inputType="textPassword"
         android:text="123"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_email" />
 
-    <Button
-        android:id="@+id/buttonLogin"
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
 </android.support.constraint.ConstraintLayout>

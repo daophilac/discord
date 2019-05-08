@@ -1,4 +1,4 @@
-#Sat Apr 06 03:01:13 ICT 2019
-base.0=D\:\\Desktop\\repository\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\8
+#Thu May 09 01:09:48 ICT 2019
+base.0=D\:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\8
 path.0=classes.dex
 renamed.0=classes.dex

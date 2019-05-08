@@ -8,7 +8,7 @@ namespace Discord_win.Resources.Static {
     static class Route {
         public static readonly string Protocol = "http";
 
-        public static readonly string DomainName = "192.168.2.104";
+        public static readonly string DomainName = "192.168.2.109";
         //public static readonly string DomainName = "192.168.43.72";
         //public static readonly string DomainName = "localhost:44334";
 

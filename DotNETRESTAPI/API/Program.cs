@@ -27,9 +27,6 @@ namespace API {
             chatHub = new ChatHub();
             //testAsync();
         }
-        public static async void testAsync() {
-            await chatHub.ReceiveMessage("bb");
-        }
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
     }
 }

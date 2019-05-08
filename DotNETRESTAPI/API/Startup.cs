@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Hubs;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -25,6 +27,9 @@ namespace API {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
             services.AddDbContext<MainDatabase>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MainConnectionString")));
             services.AddSignalR();
@@ -42,6 +47,7 @@ namespace API {
 
             //app.UseHttpsRedirection();
             app.UseMvc();
+           
             app.UseSignalR(routes => {
                 routes.MapHub<ChatHub>("/chathub");
             });

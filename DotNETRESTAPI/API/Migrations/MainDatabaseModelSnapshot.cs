@@ -83,6 +83,12 @@ namespace API.Migrations
                             ChannelId = 8,
                             Name = "Secret",
                             ServerId = 3
+                        },
+                        new
+                        {
+                            ChannelId = 9,
+                            Name = "Sky World",
+                            ServerId = 4
                         });
                 });
 
@@ -178,92 +184,123 @@ namespace API.Migrations
                         new
                         {
                             ChannelId = 4,
-                            RoleId = 1,
+                            RoleId = 5,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 4,
-                            RoleId = 2,
+                            RoleId = 6,
                             PermissionId = "no_view"
                         },
                         new
                         {
                             ChannelId = 4,
-                            RoleId = 3,
+                            RoleId = 7,
                             PermissionId = "no_view"
                         },
                         new
                         {
                             ChannelId = 5,
-                            RoleId = 1,
+                            RoleId = 5,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 5,
-                            RoleId = 2,
+                            RoleId = 6,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 5,
-                            RoleId = 3,
+                            RoleId = 7,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 6,
-                            RoleId = 1,
+                            RoleId = 5,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 6,
-                            RoleId = 2,
+                            RoleId = 6,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 6,
-                            RoleId = 3,
+                            RoleId = 7,
                             PermissionId = "no_view"
                         },
                         new
                         {
                             ChannelId = 7,
-                            RoleId = 1,
+                            RoleId = 8,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 7,
-                            RoleId = 2,
+                            RoleId = 9,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 7,
-                            RoleId = 3,
+                            RoleId = 10,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 8,
-                            RoleId = 1,
+                            RoleId = 8,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 8,
-                            RoleId = 2,
+                            RoleId = 9,
                             PermissionId = "full"
                         },
                         new
                         {
                             ChannelId = 8,
-                            RoleId = 3,
+                            RoleId = 10,
                             PermissionId = "no_chat"
+                        },
+                        new
+                        {
+                            ChannelId = 9,
+                            RoleId = 11,
+                            PermissionId = "full"
+                        });
+                });
+
+            modelBuilder.Entity("API.Models.InstantInvite", b =>
+                {
+                    b.Property<string>("Link")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("NerverExpire");
+
+                    b.Property<int>("ServerId");
+
+                    b.HasKey("Link");
+
+                    b.HasAlternateKey("ServerId")
+                        .HasName("UK_ServerId");
+
+                    b.ToTable("InstantInvite");
+
+                    b.HasData(
+                        new
+                        {
+                            Link = "https://discord.gg/3",
+                            NerverExpire = true,
+                            ServerId = 3
                         });
                 });
 
@@ -456,6 +493,12 @@ namespace API.Migrations
                             RoleId = 10,
                             Name = "Folk",
                             ServerId = 3
+                        },
+                        new
+                        {
+                            RoleId = 11,
+                            Name = "Musician",
+                            ServerId = 4
                         });
                 });
 
@@ -498,6 +541,12 @@ namespace API.Migrations
                             AdminId = 2,
                             Image = "server_3.png",
                             Name = "Hentai Maiden"
+                        },
+                        new
+                        {
+                            ServerId = 4,
+                            AdminId = 2,
+                            Name = "TSFH"
                         });
                 });
 
@@ -563,6 +612,11 @@ namespace API.Migrations
                         {
                             ServerId = 3,
                             UserId = 4
+                        },
+                        new
+                        {
+                            ServerId = 4,
+                            UserId = 2
                         });
                 });
 
@@ -665,6 +719,14 @@ namespace API.Migrations
                     b.HasOne("API.Models.Role", "Role")
                         .WithMany("ChannelRolePermissions")
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("API.Models.InstantInvite", b =>
+                {
+                    b.HasOne("API.Models.Server", "Server")
+                        .WithOne("InstantInvite")
+                        .HasForeignKey("API.Models.InstantInvite", "ServerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

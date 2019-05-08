@@ -2,75 +2,79 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright">
+    android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/navigator_user_status">
-    </android.support.constraint.ConstraintLayout>
-
-    <!--<ScrollView-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/navigator_user_status"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--android:background="#1e2124"-->
-        <!--android:id="@+id/navigator_server">-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="vertical"-->
-            <!--android:id="@+id/linear_layout_server">-->
-        <!--</LinearLayout>-->
-    <!--</ScrollView>-->
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/linear_layout_server"
         android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerView_server"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/constraint_layout_user_status"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="#1e2124">
-
-    </android.support.v7.widget.RecyclerView>
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:id="@+id/navigator_server_status"
-        app:layout_constraintLeft_toRightOf="@id/recyclerView_server"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.peanut.discord.customview.ServerRecyclerView
+                android:id="@+id/server_recycler_view"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.peanut.discord.customview.AddServerButton
+                android:id="@+id/add_server_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_layout_server_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/linear_layout_server"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/text_view_server_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/more_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.peanut.discord.customview.MoreButton
+            android:id="@+id/more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
-    <!--<ScrollView-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/navigator_server_status"-->
-        <!--app:layout_constraintBottom_toTopOf="@id/navigator_user_status"-->
-        <!--app:layout_constraintLeft_toRightOf="@id/recyclerView_server"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--android:id="@+id/navigator_channel"-->
-        <!--android:background="#2f3136">-->
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical"-->
-            <!--android:id="@+id/linear_layout_channel">-->
-        <!--</LinearLayout>-->
-    <!--</ScrollView>-->
-    <android.support.v7.widget.RecyclerView
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_layout_user_status"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"></android.support.constraint.ConstraintLayout>
+
+    <com.peanut.discord.customview.ChannelRecyclerView
+        android:id="@+id/channel_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/recyclerView_channel"
-        app:layout_constraintStart_toEndOf="@+id/recyclerView_server"
-        app:layout_constraintTop_toBottomOf="@+id/navigator_server_status"
+        app:layout_constraintBottom_toTopOf="@id/constraint_layout_user_status"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/navigator_user_status"
-        android:background="#2f3136">
+        app:layout_constraintStart_toEndOf="@id/linear_layout_server"
+        app:layout_constraintTop_toBottomOf="@id/constraint_layout_server_status">
 
-    </android.support.v7.widget.RecyclerView>
+    </com.peanut.discord.customview.ChannelRecyclerView>
 </android.support.constraint.ConstraintLayout>

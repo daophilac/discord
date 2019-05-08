@@ -3,4 +3,12 @@
     <string name="log_file_name">log.txt</string>
     <string name="account_internal_directory">user</string>
     <string name="account_internal_file">account.txt</string>
+    <string name="create_a_server">Create a server</string>
+    <string name="join_a_server">Join a server</string>
+    <string name="create">Create</string>
+    <string name="server_name">Server name</string>
+    <string name="join">Join</string>
+    <string name="enter_an_instant_invite">Enter an Instant Invite</string>
+    <string name="instant_invite_does_not_exist">That instant invite link you have typed does not exist.</string>
+    <string name="leave_server">Leave server</string>
 </resources>

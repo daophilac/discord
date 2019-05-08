@@ -30,10 +30,9 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("insertmessage")]
-        public async Task<ActionResult<Message>> InsertMessage(Message messageFromClient) {
+        public ActionResult<Message> InsertMessage(Message messageFromClient) {
             _context.Message.Add(messageFromClient);
             _context.SaveChanges();
-            //Program.chatHub.SendMessage()
             return Ok(messageFromClient);
         }
         // GET: api/Message

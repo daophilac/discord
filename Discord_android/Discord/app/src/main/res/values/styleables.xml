@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ServerRecyclerView">
+        <attr name="serverRecyclerViewStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="ChannelRecyclerView">
+        <attr name="channelRecyclerViewStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="MessageRecyclerView">
+        <attr name="messageRecyclerViewStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="NavigationButton">
+        <attr name="navigationButtonStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="SendMessageButton">
+        <attr name="sendMessageButtonStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="AddServerButton">
+        <attr name="addServerButtonStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="BackButton">
+        <attr name="backButtonStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="MoreButton">
+        <attr name="moreButtonStyle" format="reference"/>
+    </declare-styleable>
+</resources>
