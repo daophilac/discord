@@ -1,7 +1,6 @@
 package com.peanut.discord;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.peanut.discord.customview.MessageRecyclerView;
 import com.peanut.discord.customview.NavigationButton;
@@ -39,14 +36,13 @@ import com.peanut.discord.tools.JsonConverter;
 import com.peanut.discord.worker.MultipleWorker;
 import com.peanut.discord.worker.SingleWorker;
 
-import java.io.File;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements HubManager.HubListener, NavigatorListener, ServerConfigurationListener {
     public static final String LOG_TAG = "com.peanut.discord";
     public static Locale locale = Locale.ENGLISH;// TODO:
     public static LayoutInflater themeInflater;// TODO
-    public static final int themeId = R.style.AMOLED_dark_theme;
+    public static final int themeId = R.style.DarkAMOLED;
 
     public static InputMethodManager inputMethodManager;
     public static JsonBuilder jsonBuilder;
@@ -79,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        themeInflater = getLayoutInflater().cloneInContext(new ContextThemeWrapper(this, themeId));
         setTheme(themeId);
         setContentView(R.layout.activity_main);
         HubManager.establish();
@@ -120,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
 
             navigationButton.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
             sendMessageButton.setOnClickListener(v -> {
+                if(Inventory.currentChannel == null){
+                    return;
+                }
                 if(!editTextType.getText().toString().equals("")){
                     sendMessage();
                 }
@@ -167,7 +165,16 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
     }
 
     @Override
+    public void onGetNewChannel(String jsonChannel) {
+        //Channel channel = jsonConverter.toChannel(jsonChannel);
+        Inventory.addChannel(jsonChannel);
+    }
+
+    @Override
     public void onLeaveServer() {
+        if(Inventory.currentServer == null){
+            return;
+        }
         apiCaller.setProperties(handlerLeaveServer, APICaller.RequestMethod.DELETE, Route.buildLeaveServerUrl(Inventory.currentUser.getUserId(), Inventory.currentServer.getServerId()));
         singleWorker.execute(apiCaller);
         Inventory.leaveServer();
@@ -177,7 +184,9 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
     public void onReceiveMessage(String connectionId, int userId, String jsonMessage) {
         Inventory.addMessage(jsonMessage);
         if(HubManager.connectionId.equals(connectionId)){
-            runOnUiThread(() -> editTextType.setText(""));
+            runOnUiThread(() -> {
+                editTextType.setText("");
+            });
         }
     }
 
@@ -197,6 +206,9 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
     @Override
     protected void onNewIntent(Intent intent) {
         IntentCommand intentCommand = (IntentCommand) intent.getSerializableExtra("command");
+        if(intentCommand == null){
+            return;
+        }
         switch (intentCommand){
             case CREATE_SERVER:
                 Inventory.addServer(intent.getStringExtra("jsonServer"));
@@ -208,21 +220,6 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
                 }
                 break;
         }
-    }
-
-    private void deleteDirectory(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory()) {
-            for (File child : fileOrDirectory.listFiles()) {
-                deleteDirectory(child);
-            }
-        }
-        fileOrDirectory.delete();
-    }
-    private void deleteAppData() {
-        ContextWrapper contextWrapper = new ContextWrapper(this);
-        File directory = new File(contextWrapper.getFilesDir() + "/" + getString(R.string.account_internal_directory));
-        deleteDirectory(directory);
-        Toast.makeText(this, "Deleted all data", Toast.LENGTH_LONG).show();
     }
 
     enum IntentCommand{

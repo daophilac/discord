@@ -147,6 +147,7 @@ namespace Discord_win.Tools {
             try {
                 this.streamReader.Close();
             }
+            catch (Exception) { }
             finally {
 
             }

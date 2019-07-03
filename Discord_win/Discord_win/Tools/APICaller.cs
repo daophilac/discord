@@ -8,58 +8,66 @@ using System.Threading.Tasks;
 using System.Windows;
 
 namespace Discord_win.Tools {
+    public class RequestMethod {
+        private readonly string value;
+        public static readonly RequestMethod GET = new RequestMethod("GET");
+        public static readonly RequestMethod POST = new RequestMethod("POST");
+        public static readonly RequestMethod PUT = new RequestMethod("PUT");
+        public static readonly RequestMethod DELETE = new RequestMethod("DELETE");
+        private RequestMethod(string value) {
+            this.value = value;
+        }
+        public override string ToString() {
+            return value;
+        }
+    }
     public class APICaller {
-        public string RequestMethod { get; set; }
-        public string RequestURI { get; set; }
-        public string JSON { get; set; }
+        private static readonly string NULL_REQUEST_METHOD = "Request method cannot be null";
+        private static readonly string NULL_REQUEST_URL = "Request URL cannot be null";
+        private static readonly string NULL_JSON = "Outgoing JSON cannot be null";
+
+        public RequestMethod RequestMethod { get; set; }
+        public string RequestUrl { get; set; }
+        public string OutgoingJson { get; set; }
         public APICaller() { }
-        public APICaller(string requestMethod) {
-            if (requestMethod != "GET" && requestMethod != "POST" && requestMethod != "PUT" && requestMethod != "DELETE") {
-                throw new Exception(Program.ExceptionWrongRequestMethod);
-            }
-            this.RequestMethod = requestMethod;
+        public APICaller(RequestMethod requestMethod) {
+            RequestMethod = requestMethod;
         }
-        public APICaller(string requestURL, string requestMethod) {
-            this.RequestURI = requestURL;
-            if (requestMethod != "GET" && requestMethod != "POST" && requestMethod != "PUT" && requestMethod != "DELETE") {
-                throw new Exception(Program.ExceptionWrongRequestMethod);
-            }
-            this.RequestMethod = requestMethod;
+        public APICaller(RequestMethod requestMethod, string requestUrl) {
+            RequestMethod = requestMethod;
+            RequestUrl = requestUrl;
         }
-        public APICaller(string requestURL, string requestMethod, string json) {
-            this.RequestURI = requestURL;
-            if (requestMethod != "GET" && requestMethod != "POST" && requestMethod != "PUT" && requestMethod != "DELETE") {
-                throw new Exception(Program.ExceptionWrongRequestMethod);
-            }
-            this.RequestMethod = requestMethod;
-            this.JSON = json;
+        public APICaller(RequestMethod requestMethod, string requestUrl, string outgoingJson) {
+            RequestMethod = requestMethod;
+            RequestUrl = requestUrl;
+            OutgoingJson = outgoingJson;
         }
-        public void SetProperties(string requestMethod, string requestURI) {
-            this.RequestMethod = requestMethod;
-            this.RequestURI = requestURI;
+        public void SetProperties(RequestMethod requestMethod, string requestUrl) {
+            RequestMethod = requestMethod;
+            RequestUrl = requestUrl;
         }
-        public void SetProperties(string requestMethod, string requestURI, string json) {
-            this.RequestMethod = requestMethod;
-            this.RequestURI = requestURI;
-            this.JSON = json;
+        public void SetProperties(RequestMethod requestMethod, string requestUrl, string outgoingJson) {
+            RequestMethod = requestMethod;
+            RequestUrl = requestUrl;
+            OutgoingJson = outgoingJson;
         }
         public string SendRequest() {
-            if (this.RequestMethod == null) {
-                throw new Exception(Program.ExceptionNullRequestMethod);
+            if(RequestMethod == null) {
+                throw new ArgumentNullException(NULL_REQUEST_METHOD);
             }
-            if (this.RequestURI == null) {
-                throw new Exception(Program.ExceptionNullRequestURI);
+            if (RequestUrl == null) {
+                throw new ArgumentNullException(NULL_REQUEST_URL);
             }
-            if (this.RequestMethod != "GET" && this.JSON == null) {
-                throw new Exception(Program.ExceptionNullJSON);
+            if (RequestMethod != RequestMethod.GET && RequestMethod != RequestMethod.DELETE && OutgoingJson == null) {
+                throw new ArgumentNullException(NULL_JSON);
             }
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(RequestURI);
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(RequestUrl);
             httpWebRequest.ContentType = "application/json; charset=utf-8";
-            httpWebRequest.Method = this.RequestMethod;
+            httpWebRequest.Method = RequestMethod.ToString();
             httpWebRequest.Accept = "application/json; charset=utf-8";
-            if(this.RequestMethod == "POST") {
+            if(RequestMethod == RequestMethod.POST) {
                 StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream());
-                streamWriter.Write(JSON);
+                streamWriter.Write(OutgoingJson);
                 streamWriter.Flush();
                 streamWriter.Close();
             }
@@ -72,9 +80,7 @@ namespace Discord_win.Tools {
                     return result;
                 }
             }
-            catch(Exception ex) {
-                MessageBox.Show(ex.Message);
-            }
+            catch(Exception) { }
             return null;
         }
     }

@@ -17,70 +17,64 @@ namespace Discord_win.Pages {
     /// Interaction logic for SignInPage.xaml
     /// </summary>
     public partial class LoginPage : Page {
-        public Inventory inventory { get; set; }
         private APICaller apiCaller;
-        private JSONBuilder jsonBuilder;
-        //private JSONConverter jsonConverter;
         private FileDealer fileDealer;
 
-        //internal event EventHandler OnFinish;
+        
         public LoginPage() {
-            if (!AutoLogin()) {
-                InitializeComponent();
-                InitializeGlobalVariable();
-            }
+            InitializeComponent();
+        }
+        public void Activate() {
+            InitializeGlobalVariable();
+            AutoLogin();
         }
         private void InitializeGlobalVariable() {
-            this.inventory = new Inventory();
-            this.apiCaller = new APICaller();
-            this.jsonBuilder = new JSONBuilder();
-            //this.jsonConverter = new JSONConverter();
-            this.fileDealer = new FileDealer();
+            apiCaller = new APICaller();
+            fileDealer = new FileDealer();
         }
         private bool AutoLogin() {
-            InitializeGlobalVariable();
             if(File.Exists(Program.UserFilePath)){
-                string email = this.fileDealer.ReadLine(Program.UserFilePath);
-                string password = this.fileDealer.ReadLine(Program.UserFilePath);
-                string outgoingJSON = this.jsonBuilder.BuildLoginJSON(email, password);
-                string requestURI = Program.baseAddress + Route.URILogin;
-                this.apiCaller.SetProperties("POST", requestURI, outgoingJSON);
-                string incomingJSON = this.apiCaller.SendRequest();
-                //User currentUser = this.jsonConverter.ToUser(incomingJSON);
-                User currentUser = JsonConvert.DeserializeObject<User>(incomingJSON);
-                this.inventory.StoreCurrentUser(currentUser);
-                Dispatcher.BeginInvoke(new Action(() => {
-                    Program.mainWindow.MainFrame.Navigate(Program.mainPage);
-                    //OnFinish(this, EventArgs.Empty);
-                }));
-                return true;
+                string email = fileDealer.ReadLine(Program.UserFilePath);
+                string password = fileDealer.ReadLine(Program.UserFilePath);
+                string outgoingJson = JsonBuilder.BuildLoginJson(email, password);
+                string requestUrl = Route.UrlLogin;
+                apiCaller.SetProperties(RequestMethod.POST, requestUrl, outgoingJson);
+                string incomingJson = apiCaller.SendRequest();
+                if(incomingJson != null) {
+                    User currentUser = JsonConvert.DeserializeObject<User>(incomingJson);
+                    Dispatcher.BeginInvoke(new Action(() => {
+                        Inventory.StoreCurrentUser(currentUser);
+                        Program.mainPage.Activate();
+                        Program.mainWindow.MainFrame.Navigate(Program.mainPage);
+                        fileDealer.Close();
+                    }));
+                    return true;
+                }
             }
             return false;
         }
         private void Login() {
-            string outgoingJSON = this.jsonBuilder.BuildLoginJSON(this.TextBoxEmail.Text, this.TextBoxPassword.Text);
-            string requestURI = Program.baseAddress + Route.URILogin;
-            this.apiCaller.SetProperties("POST", requestURI, outgoingJSON);
-            string incomingJSON = this.apiCaller.SendRequest();
-            if(incomingJSON == null) {
+            string outgoingJson = JsonBuilder.BuildLoginJson(this.TextBoxEmail.Text, this.TextBoxPassword.Text);
+            string requestUrl = Route.UrlLogin;
+            apiCaller.SetProperties(RequestMethod.POST, requestUrl, outgoingJson);
+            string incomingJson = apiCaller.SendRequest();
+            if(incomingJson == null) {
                 MessageBox.Show(Program.NotificationInvalidEmailOrPassword);
                 return;
             }
-            //User currentUser = this.jsonConverter.ToUser(incomingJSON);
-            User currentUser = JsonConvert.DeserializeObject<User>(incomingJSON);
-            Program.mainPage.inventory.StoreCurrentUser(currentUser);
-            this.fileDealer.WriteLine(Program.UserFilePath, currentUser.Email, true);
-            this.fileDealer.WriteLine(Program.UserFilePath, currentUser.Password, true);
+            User currentUser = JsonConvert.DeserializeObject<User>(incomingJson);
+            Inventory.StoreCurrentUser(currentUser);
+            FileSystem.writeUserData(currentUser.Email, currentUser.Password);
+            Program.mainPage.Activate();
             Program.mainWindow.MainFrame.Navigate(Program.mainPage);
         }
         private void ButtonLogin_Click(object sender, RoutedEventArgs e) {
             Login();
         }
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            Program.mainWindow.MainFrame.Navigate(Program.mainPage);
-            //Program.mainWindow.MainFrame.
-            //MainWindow a = Program.mainWindow;
-           // Program.mainWindow.MainGrid.
+
+        private void ButtonRegister_Click(object sender, RoutedEventArgs e) {
+            SignUpPage signUpPage = new SignUpPage();
+            Program.mainWindow.MainFrame.Navigate(signUpPage);
         }
         private void TestDownload() {
             //string uri = Program.baseAddress + string.Format(Application.Current.Resources["UriLogin"].ToString(), this.TextBoxEmail.Text, this.TextBoxPassword.Text);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Discord_win.Models {
     public enum Gender {
-        Male, Female
+        Male = 0, Female = 1
     }
     public class User {
         public int UserId { get; set; }

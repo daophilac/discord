@@ -9,37 +9,34 @@
       Title="MainPage">
 
     <Grid>
-        <DockPanel>
-            <DockPanel x:Name="DockPanelServer" LastChildFill="False" Width="80" VerticalAlignment="Stretch" Background="{DynamicResource ServerSection_Background}">
+        <DockPanel x:Name="DockPanelMain">
+            <DockPanel x:Name="DockPanelServer" Width="80" VerticalAlignment="Stretch" x:FieldModifier="private" Background="{DynamicResource ServerSection_Background}">
+                <Grid DockPanel.Dock="Bottom">
+                    <Button x:Name="ButtonCreateOrJoinServer" Content="Join" Width="50" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                </Grid>
+                <Grid x:Name="GridServerButton">
+                </Grid>
+                <!--<Image Height="28" Width="28" Source="avatar.png"></Image>-->
+            </DockPanel>
+            <DockPanel x:Name="DockPanelChannel" x:FieldModifier="private" Width="240" Background="{DynamicResource ChannelSection_Background}">
+                <Grid DockPanel.Dock="Bottom">
+                    <Button x:Name="ButtonUserSetting" Content="Setting" HorizontalAlignment="Right" />
+                </Grid>
+                <Grid x:Name="GridChannelButton">
 
+                </Grid>
             </DockPanel>
-            <!--<Canvas x:Name="CanvasServer"  DockPanel.Dock="Left" Width="80" Background="{DynamicResource ServerSection_Background}">
-                <Button Content="Button" Width="75" Click="Button_Click" HorizontalAlignment="Center"/>
-            </Canvas>-->
-            <DockPanel x:Name="DockPanelChannel" LastChildFill="False" Width="240" Background="{DynamicResource ChannelSection_Background}">
-                
-            </DockPanel>
-            <!--<Canvas x:Name="CanvasChannel" DockPanel.Dock="Left" Width="240" Background="{DynamicResource ChannelSection_Background}"/>-->
-            <Canvas x:Name="CanvasRole" DockPanel.Dock="Right" Width="240" Background="{DynamicResource RoleSection_Background}"/>
-            <DockPanel Height="40" DockPanel.Dock="Bottom">
-                <Canvas Width="40" DockPanel.Dock="Left" Background="{DynamicResource MessageSection_Background}"/>
-                <Canvas Width="40" DockPanel.Dock="Right" Background="{DynamicResource MessageSection_Background}"/>
-                <Button x:Name="ButtonSend" Content="Send" DockPanel.Dock="Right" Click="ButtonSend_Click"></Button>
-                <TextBox x:Name="TextBoxType" Height="40" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center"  FontSize="14" Background="{DynamicResource TextBoxChat_Background}" Foreground="{DynamicResource TextBoxChat_Foreground}"/>
-                
+            <Grid x:Name="GridRole" DockPanel.Dock="Right" Width="240" Background="{DynamicResource RoleSection_Background}"/>
+            <DockPanel DockPanel.Dock="Bottom" Height="40" Background="{DynamicResource MessageSection_Background}">
+                <Grid Margin="40, 0, 40, 0">
+                    <TextBox x:Name="TextBoxType" Height="40" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" FontSize="14" Background="{DynamicResource TextBoxChat_Background}" Foreground="{DynamicResource TextBoxChat_Foreground}"/>
+                    <Button x:Name="ButtonSend" Content="Send" HorizontalAlignment="Right" />
+                </Grid>
             </DockPanel>
             <DockPanel x:Name="DockPanelMessage" LastChildFill="False" Background="{DynamicResource MessageSection_Background}">
-                <!--<Frame 
-                    Content="" 
-                    Name="MessageFrame"
-                    NavigationUIVisibility="Hidden"/>-->
+                <Grid x:Name="GridMessage" x:FieldModifier="private"></Grid>
             </DockPanel>
-            <!--<Canvas x:Name="CanvasMessage" Background="{DynamicResource MessageSection_Background}">
-                <Frame 
-                    Content="" 
-                    Name="ChatFrame"
-                    NavigationUIVisibility="Hidden"/>
-            </Canvas>-->
         </DockPanel>
+
     </Grid>
 </Page>

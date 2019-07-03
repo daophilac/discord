@@ -24,4 +24,7 @@
     <declare-styleable name="MoreButton">
         <attr name="moreButtonStyle" format="reference"/>
     </declare-styleable>
+    <declare-styleable name="UserSettingButton">
+        <attr name="userSettingButtonStyle" format="reference"/>
+    </declare-styleable>
 </resources>

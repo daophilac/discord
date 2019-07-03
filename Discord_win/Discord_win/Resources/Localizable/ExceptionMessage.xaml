@@ -4,8 +4,4 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="ExceptionNullFilePath">File path cannot be null.</system:String>
     <system:String x:Key="ExceptionFileNotFound">File not found.</system:String>
-    <system:String x:Key="ExceptionWrongRequestMethod">Request method must be either GET, POST, PUT or DELETE.</system:String>
-    <system:String x:Key="ExceptionNullRequestMethod">Request method cannot be null.</system:String>
-    <system:String x:Key="ExceptionNullRequestURI">Request URI cannot be null.</system:String>
-    <system:String x:Key="ExceptionNullJSON">JSON cannot be null.</system:String>
 </ResourceDictionary>

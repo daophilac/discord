@@ -12,12 +12,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.peanut.discord.customview.AddServerButton;
 import com.peanut.discord.customview.ChannelRecyclerView;
 import com.peanut.discord.customview.MoreButton;
 import com.peanut.discord.customview.ServerRecyclerView;
+import com.peanut.discord.customview.UserSettingButton;
 import com.peanut.discord.equipment.Inventory;
 import com.peanut.discord.interfaces.NavigatorListener;
 import com.peanut.discord.models.Channel;
@@ -26,6 +29,7 @@ import com.peanut.discord.resources.Route;
 import com.peanut.discord.tools.APICaller;
 import com.peanut.discord.worker.SingleWorker;
 public class NavigatorFragment extends Fragment implements Inventory.InventoryListener {
+    private static boolean registeredListener = false;
     private NavigatorListener navigatorListener;
     private APICaller apiCaller;
     private Handler handlerServer;
@@ -35,6 +39,9 @@ public class NavigatorFragment extends Fragment implements Inventory.InventoryLi
     private AddServerButton addServerButton;
     private MoreButton moreButton;
     private TextView textViewServerName;
+    private ImageButton imageButtonAddChannel;
+    private TextView textViewUserName;
+    private UserSettingButton userSettingButton;
 
     private SingleWorker singleWorker;
     @Override
@@ -67,15 +74,27 @@ public class NavigatorFragment extends Fragment implements Inventory.InventoryLi
         this.addServerButton = view.findViewById(R.id.add_server_button);
         this.moreButton = view.findViewById(R.id.more_button);
         this.textViewServerName = view.findViewById(R.id.text_view_server_name);
+        this.imageButtonAddChannel = view.findViewById(R.id.image_button_add_channel);
+        this.textViewUserName = view.findViewById(R.id.text_view_user_name);
+        this.userSettingButton = view.findViewById(R.id.user_setting_button);
 
+        this.textViewUserName.setText(Inventory.currentUser.getUserName());
         this.serverRecyclerView.setAdapter(Inventory.getServerAdapter());
         this.serverRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         this.channelRecyclerView.setAdapter(Inventory.getChannelAdapter());
         this.channelRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         this.addServerButton.setOnClickListener(v -> this.navigatorListener.onAddOrCreateServer());
+        this.imageButtonAddChannel.setOnClickListener(v -> {
+            if(Inventory.currentServer.getAdminId() == Inventory.currentUser.getUserId()){
+                new CreateChannelDialogFragment().show(getFragmentManager(), null);
+            }
+        });
         this.moreButton.setOnClickListener(v -> {
             new ServerConfigurationDialogFragment().show(getFragmentManager(), null);
+        });
+        this.userSettingButton.setOnClickListener(v -> {
+            new LogOutConfirmDialogFragment().show(getFragmentManager(), null);
         });
         apiGetListServer();
         return view;

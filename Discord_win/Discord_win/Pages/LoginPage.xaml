@@ -15,7 +15,7 @@
             <Label x:Name="LabelPassword" Content="Password" Canvas.Left="16" Canvas.Top="80" Foreground="#FFB4B6BA" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
             <TextBox x:Name="TextBoxPassword" Height="32" Canvas.Left="22" TextWrapping="Wrap" Text="123" Canvas.Top="111" Width="400" Background="#FF303339" BorderBrush="Black" Foreground="#FFE1E1E3" FontSize="14" VerticalContentAlignment="Center"/>
             <Button x:Name="ButtonLogin" Content="Login" Canvas.Left="22" Canvas.Top="181" Width="400" Height="32" Background="#FF7289DA" Foreground="#FFF8F9FC" FontSize="16" FontWeight="Bold" Click="ButtonLogin_Click"/>
-            <Button Content="Button" Width="75" Canvas.Left="182" Canvas.Top="256" Click="Button_Click"/>
+            <Button x:Name="ButtonRegister" Content="Register" Canvas.Left="369" Canvas.Top="218" Foreground="#FF00F3FF" Background="#00000000" Click="ButtonRegister_Click"/>
 
         </Canvas>
     </Grid>

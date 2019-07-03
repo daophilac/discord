@@ -555,6 +555,7 @@ attr trackTint
 attr trackTintMode
 attr ttcIndex
 attr useCompatPadding
+attr userSettingButtonStyle
 attr viewInflaterClass
 attr voiceIcon
 attr windowActionBar
@@ -1035,6 +1036,7 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable ic_add_black_24dp
 drawable ic_add_circle_black_72dp
 drawable ic_add_circle_white_72dp
 drawable ic_arrow_back_black_32dp
@@ -1052,6 +1054,8 @@ drawable ic_mtrl_chip_close_circle
 drawable ic_navigator
 drawable ic_send_black_32dp
 drawable ic_send_white_32dp
+drawable ic_settings_black_24dp
+drawable ic_settings_white_24dp
 drawable mtrl_snackbar_background
 drawable mtrl_tabs_default_indicator
 drawable navigation_empty_icon
@@ -1112,6 +1116,7 @@ id button_create_server
 id button_join
 id button_join_server
 id button_login
+id button_ok
 id button_server
 id center
 id center_horizontal
@@ -1123,6 +1128,7 @@ id chronometer
 id clip_horizontal
 id clip_vertical
 id collapseActionView
+id constraint_layout_channel_group
 id constraint_layout_create_server
 id constraint_layout_header
 id constraint_layout_join_server
@@ -1148,10 +1154,15 @@ id disableHome
 id drawer_layout
 id editText_type
 id edit_query
+id edit_text_channel_name
+id edit_text_confirm_password
 id edit_text_email
+id edit_text_first_name
 id edit_text_instant_invite
+id edit_text_last_name
 id edit_text_password
 id edit_text_server_name
+id edit_text_user_name
 id end
 id enterAlways
 id enterAlwaysCollapsed
@@ -1164,6 +1175,7 @@ id fill_vertical
 id filled
 id fixed
 id forever
+id fragment_container
 id frame_layout_create_or_join_server_fragment_container
 id ghost_view
 id gone
@@ -1175,6 +1187,7 @@ id icon
 id icon_group
 id ifRoom
 id image
+id image_button_add_channel
 id image_view_avatar
 id image_view_leave_server
 id info
@@ -1218,6 +1231,8 @@ id pin
 id progress_circular
 id progress_horizontal
 id radio
+id radio_button_female
+id radio_button_male
 id right
 id right_icon
 id right_side
@@ -1276,11 +1291,20 @@ id textSpacerNoTitle
 id textStart
 id text_input_password_toggle
 id text_view_channel
+id text_view_channel_name
+id text_view_confirm_password
+id text_view_email
+id text_view_first_name
 id text_view_instant_invite
+id text_view_last_name
 id text_view_leave_server
+id text_view_log_out
 id text_view_message
+id text_view_password
 id text_view_server_name
+id text_view_sign_up
 id text_view_time
+id text_view_user_name
 id textinput_counter
 id textinput_error
 id textinput_helper_text
@@ -1300,6 +1324,7 @@ id uniform
 id unlabeled
 id up
 id useLogo
+id user_setting_button
 id view_offset_helper
 id visible
 id withText
@@ -1371,11 +1396,14 @@ layout design_navigation_item_subheader
 layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_password_icon
+layout dialog_create_channel
 layout dialog_create_or_join_server
+layout dialog_log_out_confirm
 layout dialog_server_configuration
 layout fragment_create_server
 layout fragment_join_server
 layout fragment_navigator
+layout fragment_sign_up
 layout item_channel
 layout item_message
 layout item_server
@@ -1440,19 +1468,31 @@ string appbar_scrolling_view_behavior
 string bottom_sheet_behavior
 string character_counter_content_description
 string character_counter_pattern
+string confirm_password_
 string create
 string create_a_server
+string email_
 string enter_an_instant_invite
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
-string file_does_not_exist
+string female
+string first_and_last_name_are_empty
+string first_name
 string hide_bottom_view_on_scroll_behavior
 string instant_invite_does_not_exist
+string invalid_email_format
 string join
 string join_a_server
+string last_name
 string leave_server
 string log_file_name
+string log_out_confirm
+string male
 string mtrl_chip_close_icon_content_description
+string ok
+string password_
+string password_cannot_be_empty
+string password_confirmation_does_not_match
 string password_toggle_content_description
 string path_password_eye
 string path_password_eye_mask_strike_through
@@ -1460,19 +1500,10 @@ string path_password_eye_mask_visible
 string path_password_strike_through
 string search_menu_title
 string server_name
+string sign_up
 string status_bar_notification_info_overflow
-style AMOLED_dark_theme
-style AMOLED_dark_theme_AddServerButton
-style AMOLED_dark_theme_BackButton
-style AMOLED_dark_theme_Button
-style AMOLED_dark_theme_ChannelRecyclerView
-style AMOLED_dark_theme_EditText
-style AMOLED_dark_theme_MessageRecyclerView
-style AMOLED_dark_theme_MoreButton
-style AMOLED_dark_theme_NavigationButton
-style AMOLED_dark_theme_SendMessageButton
-style AMOLED_dark_theme_ServerRecyclerView
-style AMOLED_dark_theme_TextView
+string user_name_
+string user_name_cannot_be_empty
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog
@@ -1671,6 +1702,20 @@ style Base_Widget_MaterialComponents_TextInputLayout
 style CardView
 style CardView_Dark
 style CardView_Light
+style DarkAMOLED
+style DarkAMOLED_AddServerButton
+style DarkAMOLED_BackButton
+style DarkAMOLED_Button
+style DarkAMOLED_ChannelRecyclerView
+style DarkAMOLED_EditText
+style DarkAMOLED_MessageRecyclerView
+style DarkAMOLED_MoreButton
+style DarkAMOLED_NavigationButton
+style DarkAMOLED_RadioButton
+style DarkAMOLED_SendMessageButton
+style DarkAMOLED_ServerRecyclerView
+style DarkAMOLED_TextView
+style DarkAMOLED_UserSettingButton
 style Light
 style Light_AddServerButton
 style Light_BackButton
@@ -1680,9 +1725,11 @@ style Light_EditText
 style Light_MessageRecyclerView
 style Light_MoreButton
 style Light_NavigationButton
+style Light_RadioButton
 style Light_SendMessageButton
 style Light_ServerRecyclerView
 style Light_TextView
+style Light_UserSettingButton
 style Platform_AppCompat
 style Platform_AppCompat_Light
 style Platform_MaterialComponents
@@ -2063,6 +2110,7 @@ styleable TextAppearance android_textSize android_typeface android_textStyle and
 styleable TextInputLayout android_textColorHint android_hint boxBackgroundColor boxBackgroundMode boxCollapsedPaddingTop boxCornerRadiusBottomEnd boxCornerRadiusBottomStart boxCornerRadiusTopEnd boxCornerRadiusTopStart boxStrokeColor boxStrokeWidth counterEnabled counterMaxLength counterOverflowTextAppearance counterTextAppearance errorEnabled errorTextAppearance helperText helperTextEnabled helperTextTextAppearance hintAnimationEnabled hintEnabled hintTextAppearance passwordToggleContentDescription passwordToggleDrawable passwordToggleEnabled passwordToggleTint passwordToggleTintMode
 styleable ThemeEnforcement android_textAppearance enforceMaterialTheme enforceTextAppearance
 styleable Toolbar android_gravity android_minHeight buttonGravity collapseContentDescription collapseIcon contentInsetEnd contentInsetEndWithActions contentInsetLeft contentInsetRight contentInsetStart contentInsetStartWithNavigation logo logoDescription maxButtonHeight navigationContentDescription navigationIcon popupTheme subtitle subtitleTextAppearance subtitleTextColor title titleMargin titleMarginBottom titleMarginEnd titleMarginStart titleMarginTop titleMargins titleTextAppearance titleTextColor
+styleable UserSettingButton userSettingButtonStyle
 styleable View android_theme android_focusable paddingEnd paddingStart theme
 styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 styleable ViewStubCompat android_id android_layout android_inflatedId

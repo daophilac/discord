@@ -14,10 +14,55 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
-    private static final String NULL_HANDLER = "Handler cannot be null.";
-    private static final String NULL_REQUEST_METHOD = "Request method cannot be null.";
-    private static final String NULL_REQUEST_URL = "Request URL cannot be null.";
-    private static final String NULL_JSON = "Outgoing JSON cannot be null.";
+    @Override
+    protected Void doInBackground(Void... voids) {
+        validateException();
+        try {
+            URL url = new URL(this.requestURL);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod(this.requestMethod.getValue());
+            if (this.requestMethod == RequestMethod.POST) {
+                byte[] outgoingBytes = this.outgoingJson.getBytes(StandardCharsets.UTF_8);
+                int length = outgoingBytes.length;
+                httpURLConnection.setFixedLengthStreamingMode(length);
+                httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                httpURLConnection.connect();
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(outgoingBytes);
+            }
+            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line = bufferedReader.readLine();
+                if(line == null){
+                    Message message = this.handler.obtainMessage(1, null);
+                    message.sendToTarget();
+                    return null;
+                }
+                while (line != null) {
+                    stringBuilder.append(line);
+                    line = bufferedReader.readLine();
+                }
+                bufferedReader.close();
+                this.incomingJson = stringBuilder.toString();
+                Message message = this.handler.obtainMessage(1, this.incomingJson);
+                message.sendToTarget();
+            }
+            else{
+                Message message = this.handler.obtainMessage(httpURLConnection.getResponseCode());
+                message.sendToTarget();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static final String NULL_HANDLER = "Handler cannot be null";
+    private static final String NULL_REQUEST_METHOD = "Request method cannot be null";
+    private static final String NULL_REQUEST_URL = "Request URL cannot be null";
+    private static final String NULL_JSON = "Outgoing JSON cannot be null";
 
     private Handler handler;
     private RequestMethod requestMethod;
@@ -82,51 +127,7 @@ public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
     }
 
 
-    @Override
-    protected Void doInBackground(Void... voids) {
-        validateException();
-        try {
-            URL url = new URL(this.requestURL);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod(this.requestMethod.getValue());
-            if (this.requestMethod == RequestMethod.POST) {
-                byte[] outgoingBytes = this.outgoingJson.getBytes(StandardCharsets.UTF_8);
-                int length = outgoingBytes.length;
-                httpURLConnection.setFixedLengthStreamingMode(length);
-                httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                httpURLConnection.connect();
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(outgoingBytes);
-            }
-            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                StringBuilder stringBuilder = new StringBuilder();
-                String line = bufferedReader.readLine();
-                if(line == null){
-                    Message message = this.handler.obtainMessage(1, null);
-                    message.sendToTarget();
-                    return null;
-                }
-                while (line != null) {
-                    stringBuilder.append(line);
-                    line = bufferedReader.readLine();
-                }
-                bufferedReader.close();
-                this.incomingJson = stringBuilder.toString();
-                Message message = this.handler.obtainMessage(1, this.incomingJson);
-                message.sendToTarget();
-            }
-            else{
-                Message message = this.handler.obtainMessage(httpURLConnection.getResponseCode());
-                message.sendToTarget();
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 
     @Override
     public void run() {

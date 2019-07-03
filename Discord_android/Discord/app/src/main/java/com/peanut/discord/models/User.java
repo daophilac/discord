@@ -1,7 +1,5 @@
 package com.peanut.discord.models;
-enum Gender{
-    Male, Female
-}
+
 public class User {
     private int userId;
     private String email;
@@ -60,11 +58,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public com.peanut.discord.models.Gender getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(com.peanut.discord.models.Gender gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -74,5 +72,15 @@ public class User {
 
     public void setImage(String image) {
         this.image = image;
+    }
+    public enum Gender{
+        Male(0), Female(1);
+        private final int value;
+        Gender(int value){
+            this.value = value;
+        }
+        public int getValue() {
+            return value;
+        }
     }
 }

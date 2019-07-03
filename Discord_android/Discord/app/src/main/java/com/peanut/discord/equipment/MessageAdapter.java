@@ -59,7 +59,7 @@ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder messageViewHolder, int i) { Message message = this.listMessage.get(i);
-        messageViewHolder.textViewMessage.setText(message.getContent());
+        messageViewHolder.textViewMessage.setText(message.getUserId() + ": " + message.getContent());
         messageViewHolder.textViewTime.setText(message.getSimpleTime());
     }
 

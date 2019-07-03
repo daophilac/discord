@@ -24,11 +24,13 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
     private static ChannelAdapter channelAdapter;
     private static MessageAdapter messageAdapter;
 
-    private static final Inventory inventory = new Inventory();
+    private static Inventory inventory;// = new Inventory();
     private Inventory(){
 
     }
     public static void prepare(){
+        listInventoryListener = new ArrayList<>();
+        inventory = new Inventory();
         jsonConverter = new JsonConverter();
         serverAdapter = new ServerAdapter(inventory);
         channelAdapter = new ChannelAdapter(inventory);
@@ -93,6 +95,12 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
     public static void storeListChannel(String json){
         channelListener.onAddListChannel(jsonConverter.toListChannel(json));
     }
+    public static void addChannel(Channel channel){
+        channelListener.onAddChannel(channel);
+    }
+    public static void addChannel(String jsonChannel){
+        channelListener.onAddChannel(jsonConverter.toChannel(jsonChannel));
+    }
 //    public List<Channel> loadListChannel(){
 //        return this.channelAdapter.getListChannel();
 //    }
@@ -126,6 +134,10 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
 
     @Override
     public void onSelectServer(Server server) {
+        if(currentServer != null){
+            HubManager.leaveServer(currentServer.getServerId());
+        }
+        HubManager.joinServer(server.getServerId());
         currentServer = server;
         for(InventoryListener il : listInventoryListener){
             il.onSelectServer(server);
@@ -149,6 +161,7 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
     }
     public interface ChannelListener {
         void onAddListChannel(List<Channel> listChannel);
+        void onAddChannel(Channel channel);
         void onLeaveServer();
     }
     public interface MessageListener {

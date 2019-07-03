@@ -25,11 +25,10 @@ namespace Discord_win {
         public void Begin() {
             Program.mainWindow = this;
             Program.Initialize();
-            this.MainFrame.Navigate(Program.loginPage);
-            //this.MainFrame.Navigate(Program.mainPage);
+            Program.loginPage.Activate();
+            MainFrame.Navigate(Program.loginPage);
         }
 
-        private void Window_ContentRendered(object sender, EventArgs e) {
-        }
+        private void Window_ContentRendered(object sender, EventArgs e) { }
     }
 }

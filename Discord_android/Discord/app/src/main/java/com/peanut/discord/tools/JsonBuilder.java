@@ -55,4 +55,20 @@ public class JsonBuilder {
         parameters.put("name", name);
         return buildJsonFromHashMap(parameters);
     }
+    public String buildUserJson(String email, String password, String userName, String firstName, String lastName, User.Gender gender){
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("email", email);
+        parameters.put("password", password);
+        parameters.put("userName", userName);
+        parameters.put("firstName", firstName);
+        parameters.put("lastName", lastName);
+        parameters.put("gender", String.valueOf(gender.getValue()));
+        return buildJsonFromHashMap(parameters);
+    }
+    public String buildChannelJson(String name, int serverId){
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("name", name);
+        parameters.put("serverId", String.valueOf(serverId));
+        return buildJsonFromHashMap(parameters);
+    }
 }

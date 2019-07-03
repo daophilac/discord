@@ -1,5 +1,8 @@
 package com.peanut.discord.equipment;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,15 +19,28 @@ import java.util.List;
 class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelViewHolder> implements Inventory.ChannelListener {
     private List<Channel> listChannel;
     private ChannelAdapterListener channelAdapterListener;
+    private Handler handler;
     ChannelAdapter(ChannelAdapterListener channelAdapterListener){
         this.listChannel = new ArrayList<>();
         this.channelAdapterListener = channelAdapterListener;
+        handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                notifyItemInserted(listChannel.size() - 1);
+            }
+        };
     }
 
     @Override
     public void onAddListChannel(List<Channel> listChannel) {
         this.listChannel = listChannel;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAddChannel(Channel channel) {
+        this.listChannel.add(channel);
+        handler.sendEmptyMessage(0);
     }
 
     @Override

@@ -7,13 +7,11 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.peanut.discord.customview.BackButton;
-import com.peanut.discord.equipment.HubManager;
 import com.peanut.discord.resources.Route;
 import com.peanut.discord.tools.APICaller;
 import com.peanut.discord.worker.SingleWorker;
@@ -42,7 +40,7 @@ public class JoinServerActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
         buttonJoin.setOnClickListener(v -> {
             if(!editTextInstantInvite.getText().toString().equals("")){
-                apiCaller.setProperties(handler, APICaller.RequestMethod.GET, Route.buildGetServerByLinkUrl(currentUserId, editTextInstantInvite.getText().toString()));
+                apiCaller.setProperties(handler, APICaller.RequestMethod.GET, Route.buildGetServerByInstantInviteUrl(currentUserId, editTextInstantInvite.getText().toString()));
                 singleWorker.execute(apiCaller);
             }
         });

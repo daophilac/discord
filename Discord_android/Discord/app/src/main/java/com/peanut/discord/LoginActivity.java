@@ -7,8 +7,11 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.peanut.discord.filedealer.InternalFileReader;
@@ -16,11 +19,13 @@ import com.peanut.discord.filedealer.InternalFileWriter;
 import com.peanut.discord.resources.Data;
 import com.peanut.discord.resources.Route;
 import com.peanut.discord.tools.APICaller;
-import com.peanut.discord.tools.HttpDownloader;
 import com.peanut.discord.tools.JsonBuilder;
 import com.peanut.discord.worker.SingleWorker;
 
+import static com.peanut.discord.MainActivity.themeId;
+
 public class LoginActivity extends AppCompatActivity {
+//    private static final int
     public Handler handlerLogin;
     private APICaller apiCaller;
     private JsonBuilder jsonBuilder;
@@ -28,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private String email;
     private String password;
+    private TextView textViewSignUp;
     private Button buttonLogin;
     private InternalFileReader internalFileReader;
     public SingleWorker singleWorker;
@@ -41,7 +47,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ExecutionTimeTracker2 tracker = new ExecutionTimeTracker2();
+        MainActivity.themeInflater = getLayoutInflater().cloneInContext(new ContextThemeWrapper(this, themeId));
+        setTheme(themeId);
+        ExecutionTimeTracker tracker = new ExecutionTimeTracker();
         initializeGlobalVariable();
         tracker.startTracking();
         if(checkLoggedIn()){
@@ -62,8 +70,16 @@ public class LoginActivity extends AppCompatActivity {
                         setContentView(R.layout.activity_login);
                         editTextEmail = findViewById(R.id.edit_text_email);
                         editTextPassword = findViewById(R.id.edit_text_password);
+                        textViewSignUp = findViewById(R.id.text_view_sign_up);
                         buttonLogin = findViewById(R.id.button_login);
                         buttonLogin.setOnClickListener(v -> login());
+                        textViewSignUp.setOnClickListener(v -> {
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .add(R.id.fragment_container, new SignUpFragment())
+                                    .addToBackStack(null)
+                                    .commit();
+                        });
                         editTextEmail.setText(email);
                         editTextPassword.setText(password);
                     }
@@ -93,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("jsonUser", msg.obj.toString());
                         startActivity(intent);
                         finish();
-                        writeUserAccount();
+                        Data.writeUserData(LoginActivity.this, editTextEmail.getText().toString(), editTextPassword.getText().toString());
                     }
                     else{
                         Toast.makeText(LoginActivity.this, "Doesn't exist", Toast.LENGTH_LONG).show();
@@ -103,8 +119,16 @@ public class LoginActivity extends AppCompatActivity {
             setContentView(R.layout.activity_login);
             editTextEmail = findViewById(R.id.edit_text_email);
             editTextPassword = findViewById(R.id.edit_text_password);
+            textViewSignUp = findViewById(R.id.text_view_sign_up);
             buttonLogin = findViewById(R.id.button_login);
             buttonLogin.setOnClickListener(v -> login());
+            textViewSignUp.setOnClickListener(v -> {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, new SignUpFragment())
+                        .addToBackStack(null)
+                        .commit();
+            });
         }
     }
     private boolean checkLoggedIn(){
@@ -123,12 +147,5 @@ public class LoginActivity extends AppCompatActivity {
         jsonBuilder = new JsonBuilder();
         internalFileReader = new InternalFileReader(this, Data.INTERNAL_ACCOUNT_DIRECTORY, Data.INTERNAL_ACCOUNT_FILE);
         internalFileReader.setConfigurationSeparator(":");
-    }
-    private void writeUserAccount(){
-        InternalFileWriter internalFileWriter = new InternalFileWriter(this, Data.INTERNAL_ACCOUNT_DIRECTORY, Data.INTERNAL_ACCOUNT_FILE);
-        internalFileWriter.setConfigurationSeparator(":");
-        internalFileWriter.writeConfiguration("email", email);
-        internalFileWriter.writeConfiguration("password", password);
-        internalFileWriter.close();
     }
 }
