@@ -6,6 +6,7 @@ using System.Resources;
 using System.Threading.Tasks;
 using API.Hubs;
 using API.Models;
+using API.Tools;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,14 @@ namespace API {
     public class Program {
         public static MainDatabase mainDatabase;
         public static ChatHub chatHub;
-
+        public static FileCreator fileCreator;
         public static void Main(string[] args) {
             InitializeGlobalVariable();
             CreateWebHostBuilder(args).Build().Run();
         }
         public static void InitializeGlobalVariable() {
+            FileSystem.Establish();
+            fileCreator = new FileCreator();
             mainDatabase = new MainDatabase(new DbContextOptions<MainDatabase>());
             chatHub = new ChatHub();
         }

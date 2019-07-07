@@ -8,7 +8,7 @@
         Title="Create a server" Height="138" Width="379" Closing="Window_Closing">
     <Grid>
         <Label Content="Server name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBoxServerName" HorizontalAlignment="Left" Height="23" Margin="91,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260"/>
+        <TextBox x:Name="TextBoxServerName" HorizontalAlignment="Left" Height="23" Margin="91,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260"/>
         <Button x:Name="buttonCreate" Content="Create" HorizontalAlignment="Left" Margin="276,56,0,0" VerticalAlignment="Top" Width="75" Click="ButtonCreate_Click"/>
 
     </Grid>

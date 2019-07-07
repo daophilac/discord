@@ -9,59 +9,70 @@ using System.Threading.Tasks;
 
 namespace Discord_win {
     public static class Inventory {
-        public static User currentUser;
-        public static Server currentServer;
-        public static Channel currentChannel;
-        public static List<Server> listServer;
-        public static List<Channel> listChannel;
-        public static List<Message> listMessage;
-        public static void StoreCurrentChannel(Channel channel) {
-            currentChannel = channel;
+        public static User CurrentUser { get; private set; }
+        public static Server CurrentServer { get; private set; }
+        public static Channel CurrentChannel { get; private set; }
+        public static List<Server> ListServer { get; private set; }
+        public static List<Channel> ChannelsInCurrentServer { get; private set; }
+        public static List<Message> MessagesInCurrentChannel { get; private set; }
+        public static void Clear() {
+            CurrentUser = null;
+            CurrentServer = null;
+            CurrentChannel = null;
+            ListServer = null;
+            ChannelsInCurrentServer = null;
+            MessagesInCurrentChannel = null;
         }
-        public static void StoreCurrentChannel(string json) {
-            currentChannel = JsonConvert.DeserializeObject<Channel>(json);
+        public static void SetCurrentServer(Server currentServer) {
+            CurrentServer = currentServer;
         }
-        public static void StoreCurrentChannel(int channelId) {
-            currentChannel = listChannel.Where(x => x.ChannelId == channelId).First();
+        public static void SetCurrentServer(string json) {
+            CurrentServer = JsonConvert.DeserializeObject<Server>(json);
         }
-        public static Channel LoadCurrentChannel() {
-            return currentChannel;
+        public static void SetCurrentChannel(Channel currentChannel) {
+            CurrentChannel = currentChannel;
         }
-        public static void StoreCurrentUser(User user) {
-            currentUser = user;
+        public static void ClearCurrentChannel() {
+            CurrentChannel = null;
         }
-        public static void StoreCurrentUser(string json) {
-            currentUser = JsonConvert.DeserializeObject<User>(json);
+        public static void SetCurrentChannel(string json) {
+            CurrentChannel = JsonConvert.DeserializeObject<Channel>(json);
         }
-        public static User LoadCurrentUser() {
-            return currentUser;
+        public static void SetCurrentChannel(int channelId) {
+            CurrentChannel = ChannelsInCurrentServer.Where(x => x.ChannelId == channelId).First();
         }
-        public static void StoreListServer(List<Server> listServer) {
-            Inventory.listServer = listServer;
+        public static void SetCurrentUser(User currentUser) {
+            CurrentUser = currentUser;
         }
-        public static void StoreListServer(string json) {
-            listServer = JsonConvert.DeserializeObject<List<Server>>(json);
+        public static void SetCurrentUser(string json) {
+            CurrentUser = JsonConvert.DeserializeObject<User>(json);
         }
-        public static List<Server> LoadListServer() {
-            return listServer;
+        public static void SetListServer(List<Server> listServer) {
+            ListServer = listServer;
         }
-        public static void StoreListChannel(List<Channel> listChannel) {
-            Inventory.listChannel = listChannel;
+        public static void SetListServer(string json) {
+            ListServer = JsonConvert.DeserializeObject<List<Server>>(json);
         }
-        public static void StoreListChannel(string json) {
-            listChannel = JsonConvert.DeserializeObject<List<Channel>>(json);
+        public static void SetChannelsInCurrentServer(List<Channel> channelsInCurrentServer) {
+            ChannelsInCurrentServer = channelsInCurrentServer;
         }
-        public static List<Channel> LoadListChannel() {
-            return listChannel;
+        public static void SetChannelsInCurrentServer(string json) {
+            ChannelsInCurrentServer = JsonConvert.DeserializeObject<List<Channel>>(json);
         }
-        public static void StoreListMessage(List<Message> listMessage) {
-            Inventory.listMessage = listMessage;
+        public static void SetMessagesInCurrentChannel(List<Message> messagesInCurrentChannel) {
+            MessagesInCurrentChannel = messagesInCurrentChannel;
         }
-        public static void StoreListMessage(string json) {
-            listMessage = JsonConvert.DeserializeObject<List<Message>>(json);
+        public static void SetMessagesInCurrentChannel(string json) {
+            MessagesInCurrentChannel = JsonConvert.DeserializeObject<List<Message>>(json);
         }
-        public static List<Message> LoadListMessage() {
-            return listMessage;
+        public static HashSet<User> GetListUserInServers() {
+            HashSet<User> setUser = new HashSet<User>();
+            foreach (Server server in ListServer) {
+                foreach (ServerUser serverUser in server.ServerUsers) {
+                    setUser.Add(serverUser.User);
+                }
+            }
+            return setUser;
         }
     }
 }

@@ -24,6 +24,9 @@ namespace API.Controllers
         [Route("getmessagesbychannel/{channelID}")]
         public IQueryable<Message> GetMessagesByChannel(int channelID) {
             var messages = _context.Message.Where(m => m.ChannelId == channelID).OrderBy(m => m.Time);
+            foreach (var message in messages) {
+                _context.Entry(message).Reference(m => m.User).Load();
+            }
             return messages;
         }
 

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
+using System.IO;
+using API.Tools;
 
 namespace API.Controllers
 {
@@ -19,6 +21,50 @@ namespace API.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        [Route("longtask")]
+        public IActionResult LongTask() {
+            string filePath = "D:/Desktop/repos/discord/Server/API/Images/User/big1.iso";
+            return PhysicalFile(filePath, "compressed/iso");
+        }
+
+
+
+
+
+
+        [HttpGet]
+        [Route("downloadbigfile/{filename}")]
+        public IActionResult DownloadBigFile(string filename) {
+            string filePath = "D:/Desktop/repos/discord/Server/API/Images/User/" + filename;
+            return PhysicalFile(filePath, "compressed/iso");
+        }
+
+
+
+
+
+
+
+
+
+        [HttpGet]
+        [Route("testdownload/{filename}")]
+        public IActionResult Download(string filename) {
+            string fullPath = FileSystem.GetUserImagePath(filename);
+            return Program.fileCreator.Send(fullPath);
+        }
+        [HttpGet]
+        [Route("downloadimage/{userId}")]
+        public IActionResult Download(int userId) {
+            string filename = _context.User.Find(userId).Image;
+            if (filename == null) {
+                return NotFound();
+            }
+            string fullPath = FileSystem.GetUserImagePath(filename);
+            return Program.fileCreator.Send(fullPath);
+        }
+
         [HttpPost]
         [Route("login")]
         public ActionResult<User> Login(User requestedUser) {

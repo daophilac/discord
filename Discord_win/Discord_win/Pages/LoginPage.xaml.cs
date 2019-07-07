@@ -24,26 +24,26 @@ namespace Discord_win.Pages {
         public LoginPage() {
             InitializeComponent();
         }
-        public void Activate() {
+        public async void Activate() {
             InitializeGlobalVariable();
-            AutoLogin();
+            await AutoLogin();
         }
         private void InitializeGlobalVariable() {
             apiCaller = new APICaller();
             fileDealer = new FileDealer();
         }
-        private bool AutoLogin() {
-            if(File.Exists(Program.UserFilePath)){
-                string email = fileDealer.ReadLine(Program.UserFilePath);
-                string password = fileDealer.ReadLine(Program.UserFilePath);
+        private async Task<bool> AutoLogin() {
+            if(File.Exists(FileSystem.UserInformationFilePath)){
+                string email = fileDealer.ReadLine(FileSystem.UserInformationFilePath);
+                string password = fileDealer.ReadLine(FileSystem.UserInformationFilePath);
                 string outgoingJson = JsonBuilder.BuildLoginJson(email, password);
                 string requestUrl = Route.UrlLogin;
                 apiCaller.SetProperties(RequestMethod.POST, requestUrl, outgoingJson);
-                string incomingJson = apiCaller.SendRequest();
+                string incomingJson = await apiCaller.SendRequestAsync();
                 if(incomingJson != null) {
                     User currentUser = JsonConvert.DeserializeObject<User>(incomingJson);
-                    Dispatcher.BeginInvoke(new Action(() => {
-                        Inventory.StoreCurrentUser(currentUser);
+                    await Dispatcher.BeginInvoke(new Action(() => {
+                        Inventory.SetCurrentUser(currentUser);
                         Program.mainPage.Activate();
                         Program.mainWindow.MainFrame.Navigate(Program.mainPage);
                         fileDealer.Close();
@@ -53,18 +53,18 @@ namespace Discord_win.Pages {
             }
             return false;
         }
-        private void Login() {
+        private async void Login() {
             string outgoingJson = JsonBuilder.BuildLoginJson(this.TextBoxEmail.Text, this.TextBoxPassword.Text);
             string requestUrl = Route.UrlLogin;
             apiCaller.SetProperties(RequestMethod.POST, requestUrl, outgoingJson);
-            string incomingJson = apiCaller.SendRequest();
+            string incomingJson = await apiCaller.SendRequestAsync();
             if(incomingJson == null) {
                 MessageBox.Show(Program.NotificationInvalidEmailOrPassword);
                 return;
             }
             User currentUser = JsonConvert.DeserializeObject<User>(incomingJson);
-            Inventory.StoreCurrentUser(currentUser);
-            FileSystem.writeUserData(currentUser.Email, currentUser.Password);
+            Inventory.SetCurrentUser(currentUser);
+            FileSystem.WriteUserData(currentUser.Email, currentUser.Password);
             Program.mainPage.Activate();
             Program.mainWindow.MainFrame.Navigate(Program.mainPage);
         }

@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace API.Models {
     public class MainDatabase : DbContext {
-        public MainDatabase(DbContextOptions<MainDatabase> options) : base(options) {}
+        public MainDatabase(DbContextOptions<MainDatabase> options) : base(options) {
+            
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer("Server=MYPC;Database=DISCORD;Trusted_Connection=True;");
@@ -24,15 +26,19 @@ namespace API.Models {
         public DbSet<Message> Message { get; set; }
         public DbSet<InstantInvite> InstantInvite { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.Entity<User>().HasAlternateKey(k => k.Email).HasName("UK_Email");
-            modelBuilder.Entity<ChannelRolePermission>().HasKey(crp => new { crp.ChannelId, crp.RoleId, crp.PermissionId });
+            modelBuilder.Entity<User>().HasAlternateKey(k => k.Email).HasName("UK_User_Email");
+            modelBuilder.Entity<Channel>().HasAlternateKey(c => new { c.ServerId, c.Name }).HasName("UK_Channel_Server_Name");
             modelBuilder.Entity<ServerUser>().HasKey(su => new { su.ServerId, su.UserId });
+            modelBuilder.Entity<ChannelRolePermission>().HasKey(crp => new { crp.ChannelId, crp.RoleId, crp.PermissionId });
+            modelBuilder.Entity<Message>().HasOne(m => m.User).WithMany("Messages").OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ServerUser>().HasOne(su => su.User).WithMany("ServerUsers").OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ChannelRolePermission>().HasOne(crp => crp.Role).WithMany("ChannelRolePermissions").OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, Email = "daophilac@gmail.com", Password = "123", UserName = "peanut", FirstName = "Đào Phi", LastName = "Lạc", Gender = Gender.Male, Image = "user_1.png" },
-                new User { UserId = 2, Email = "daophilac1@gmail.com", Password = "123", UserName = "peanut", FirstName = "Đào Phi", LastName = "Lạc", Gender = Gender.Male, Image = "user_2.png" },
-                new User { UserId = 3, Email = "lucknight@gmail.com", Password = "123", UserName = "lucknight", FirstName = "luck", LastName = "night", Gender = Gender.Male, Image = "user_3.png" },
-                new User { UserId = 4, Email = "eddie@gmail.com", Password = "123", UserName = "eddie", FirstName = "ed", LastName = "die", Gender = Gender.Male, Image = "user_4.png" }
+                new User { UserId = 1, Email = "daophilac@gmail.com", Password = "123", Username = "peanut", FirstName = "Đào Phi", LastName = "Lạc", Gender = Gender.Male, Image = "user_1.png" },
+                new User { UserId = 2, Email = "daophilac1@gmail.com", Password = "123", Username = "peanut", FirstName = "Đào Phi", LastName = "Lạc", Gender = Gender.Male, Image = "user_2.png" },
+                new User { UserId = 3, Email = "lucknight@gmail.com", Password = "123", Username = "lucknight", FirstName = "luck", LastName = "night", Gender = Gender.Male, Image = "user_3.png" },
+                new User { UserId = 4, Email = "eddie@gmail.com", Password = "123", Username = "eddie", FirstName = "ed", LastName = "die", Gender = Gender.Male, Image = "user_4.png" }
             );
 
             modelBuilder.Entity<Server>().HasData(

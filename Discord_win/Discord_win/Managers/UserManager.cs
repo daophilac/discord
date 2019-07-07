@@ -17,6 +17,9 @@ namespace Discord_win.Managers {
             ThrowExceptions();
             buttonLogOut.Click += ButtonLogOut_Click;
         }
+        public void TearDown() {
+            buttonLogOut.Click -= ButtonLogOut_Click;
+        }
 
         private void ButtonLogOut_Click(object sender, RoutedEventArgs e) {
             if (MessageBox.Show("Log out?", "Log out", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {

@@ -32,14 +32,10 @@ namespace Discord_win.Pages {
             InitializeGlobalVariable();
         }
         private void InitializeGlobalVariable() {
-            serverManager = new ServerManager(DockPanelServer, GridServerButton, ButtonCreateOrJoinServer);
-            channelManager = new ChannelManager(DockPanelChannel, GridChannelButton);
+            serverManager = new ServerManager(DockPanelServer, GridServerButton, ButtonCreateOrJoinServer, ButtonTestCancelDownload);
+            channelManager = new ChannelManager(DockPanelChannel, GridChannelContent, LabelUsername, ButtonCreateChannel);
             messageManager = new MessageManager(DockPanelMessage, GridMessage, TextBoxType, ButtonSend);
             userManager = new UserManager(ButtonUserSetting);
-            serverManager.Establish();
-            channelManager.Establish();
-            messageManager.Establish();
-            userManager.Establish();
             HubManager.Establish();
             EventManager.Establish(serverManager, channelManager, messageManager, userManager);
         }

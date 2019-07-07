@@ -26,9 +26,6 @@ namespace Discord_win {
         public static LoginPage loginPage;
         public static MainPage mainPage;
 
-        public static string UserFilePath;
-        public static string ServerFilePath;
-
         public static string NotificationInvalidEmailOrPassword;
         public static string ExceptionNullFilePath;
         public static string ExceptionFileNotFound;
@@ -47,10 +44,6 @@ namespace Discord_win {
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
             //
-            UserFilePath = FileSystem.RootDataDirectory + FileSystem.UserDirectory + FileSystem.UserDataFile;
-            ServerFilePath = FileSystem.RootDataDirectory + FileSystem.ServerDirectory + FileSystem.ServerDataFile;
-
-            //
             NotificationInvalidEmailOrPassword = Application.Current.FindResource("NotificationInvalidEmailOrPassword").ToString();
             ExceptionNullFilePath = Application.Current.FindResource("ExceptionNullFilePath").ToString();
             ExceptionFileNotFound = Application.Current.FindResource("ExceptionFileNotFound").ToString();
@@ -58,9 +51,6 @@ namespace Discord_win {
             //
             loginPage = new LoginPage();
             mainPage = new MainPage();
-        }
-        public static void NavigateToLoginPage() {
-            mainWindow.Begin();
         }
     }
 }

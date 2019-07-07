@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Models;
@@ -14,16 +15,7 @@ namespace API.Controllers {
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get() {
-            //User user = new User();
-            //user.Email = "a";
-            //user.Password = "123";
-            //user.UserName = "peanut";
-            //user.FirstName = "Dao";
-            //user.LastName = "Lac";
-            //user.Gender = Gender.Male;
-            //user.Image = "1.png";
-            //context.User.Add(user);
-            //context.SaveChanges();
+            string path = Directory.GetCurrentDirectory();
             return new string[] { "value1", "value2" };
         }
 

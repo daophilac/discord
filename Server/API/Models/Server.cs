@@ -18,5 +18,19 @@ namespace API.Models {
         public IEnumerable<ServerUser> ServerUsers { get; set; }
         public IEnumerable<Channel> Channels { get; set; }
         public IEnumerable<Role> Roles { get; set; }
+
+        public static Server Clone(Server serverToClone) {
+            return new Server {
+                ServerId = serverToClone.ServerId,
+                Name = serverToClone.Name,
+                Image = serverToClone.Image,
+                AdminId = serverToClone.AdminId,
+                Admin = serverToClone.Admin,
+                InstantInvite = serverToClone.InstantInvite,
+                ServerUsers = serverToClone.ServerUsers,
+                Channels = serverToClone.Channels,
+                Roles = serverToClone.Roles,
+            };
+        }
     }
 }

@@ -11,5 +11,11 @@ namespace Discord_win.Models {
 
         public Channel Channel { get; set; }
         public User User { get; set; }
+        public Message() { }
+        public Message(int channelId, int userId, string content) {
+            ChannelId = channelId;
+            UserId = userId;
+            Content = content;
+        }
     }
 }

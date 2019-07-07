@@ -14,10 +14,9 @@ namespace Discord_win.Models {
         public int AdminId { get; set; }
 
 
-        
-        public User User { get; set; }
-        public ICollection<Channel> Channels { get; set; }
+        public User Admin { get; set; }
+        public IEnumerable<ServerUser> ServerUsers { get; set; }
         public ICollection<Role> Roles { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<Channel> Channels { get; set; }
     }
 }

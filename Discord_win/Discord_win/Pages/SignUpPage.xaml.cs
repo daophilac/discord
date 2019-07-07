@@ -33,7 +33,7 @@ namespace Discord_win.Pages {
             apiCaller = new APICaller();
         }
 
-        private void ButtonSignUp_Click(object sender, RoutedEventArgs e) {
+        private async void ButtonSignUp_Click(object sender, RoutedEventArgs e) {
             matchCollection = regex.Matches(TextBoxEmail.Text);
             if(matchCollection.Count == 0) {
                 MessageBox.Show("Invalid email format");
@@ -69,9 +69,9 @@ namespace Discord_win.Pages {
             string outgoingJson = JsonBuilder.BuildUserJson(email, password, userName, firstName, lastName, gender);
             string requestUrl = Route.UrlSignUp;
             apiCaller.SetProperties(RequestMethod.POST, requestUrl, outgoingJson);
-            string incomingJson = apiCaller.SendRequest();
-            FileSystem.writeUserData(email, password);
-            Inventory.StoreCurrentUser(incomingJson);
+            string incomingJson = await apiCaller.SendRequestAsync();
+            FileSystem.WriteUserData(email, password);
+            Inventory.SetCurrentUser(incomingJson);
             Program.mainPage = new MainPage();
             Program.mainWindow.MainFrame.Navigate(Program.mainPage);
         }

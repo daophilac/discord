@@ -51,7 +51,7 @@ namespace Discord_win.Tools {
             RequestUrl = requestUrl;
             OutgoingJson = outgoingJson;
         }
-        public string SendRequest() {
+        public async Task<string> SendRequestAsync() {
             if(RequestMethod == null) {
                 throw new ArgumentNullException(NULL_REQUEST_METHOD);
             }
@@ -72,7 +72,7 @@ namespace Discord_win.Tools {
                 streamWriter.Close();
             }
             try {
-                HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                HttpWebResponse httpWebResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
                 if (httpWebResponse.StatusCode == HttpStatusCode.OK) {
                     StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
                     string result = streamReader.ReadToEnd();

@@ -25,10 +25,10 @@ namespace Discord_win.Dialog {
             InitializeComponent();
         }
 
-        private void ButtonJoin_Click(object sender, RoutedEventArgs e) {
+        private async void ButtonJoin_Click(object sender, RoutedEventArgs e) {
             APICaller apiCaller = new APICaller();
             if (textBoxInstantInvite.Text != "") {
-                Server server = ResourcesCreator.GetServerByInstantInvite(textBoxInstantInvite.Text);
+                Server server = await ResourcesCreator.GetServerByInstantInvite(textBoxInstantInvite.Text);
                 if(server == null) {
                     MessageBox.Show("The instant invite you have typed doesn't exist.");
                 }

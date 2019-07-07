@@ -9,34 +9,42 @@
       Title="MainPage">
 
     <Grid>
-        <DockPanel x:Name="DockPanelMain">
+        <DockPanel x:Name="DockPanelMain" x:FieldModifier="private">
             <DockPanel x:Name="DockPanelServer" Width="80" VerticalAlignment="Stretch" x:FieldModifier="private" Background="{DynamicResource ServerSection_Background}">
-                <Grid DockPanel.Dock="Bottom">
+                <Grid x:Name="GridServerFooter" x:FieldModifier="private" DockPanel.Dock="Bottom">
                     <Button x:Name="ButtonCreateOrJoinServer" Content="Join" Width="50" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                 </Grid>
-                <Grid x:Name="GridServerButton">
+                <Grid DockPanel.Dock="Bottom">
+                    <Button x:Name="ButtonTestCancelDownload" x:FieldModifier="private" Content="Cancel" HorizontalAlignment="Center" />
                 </Grid>
-                <!--<Image Height="28" Width="28" Source="avatar.png"></Image>-->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource ServerSection_Background}">
+                    <Grid x:Name="GridServerButton">
+                    </Grid>
+                </ScrollViewer>
             </DockPanel>
             <DockPanel x:Name="DockPanelChannel" x:FieldModifier="private" Width="240" Background="{DynamicResource ChannelSection_Background}">
-                <Grid DockPanel.Dock="Bottom">
-                    <Button x:Name="ButtonUserSetting" Content="Setting" HorizontalAlignment="Right" />
+                <Grid x:Name="GridChannelHeader" x:FieldModifier="private" DockPanel.Dock="Top" Height="40">
+                    <Button x:Name="ButtonCreateChannel" x:FieldModifier="private" Content="+" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center"></Button>
                 </Grid>
-                <Grid x:Name="GridChannelButton">
-
+                <Grid x:Name="GridChannelFooter" x:FieldModifier="private" DockPanel.Dock="Bottom">
+                    <Label x:Name="LabelUsername" x:FieldModifier="private" Foreground="Aqua" FontWeight="Bold" Margin="0,0,47,0" />
+                    <Button x:Name="ButtonUserSetting" x:FieldModifier="private" Content="Setting" HorizontalAlignment="Right" />
+                </Grid>
+                <Grid x:Name="GridChannelContent" x:FieldModifier="private">
                 </Grid>
             </DockPanel>
             <Grid x:Name="GridRole" DockPanel.Dock="Right" Width="240" Background="{DynamicResource RoleSection_Background}"/>
             <DockPanel DockPanel.Dock="Bottom" Height="40" Background="{DynamicResource MessageSection_Background}">
                 <Grid Margin="40, 0, 40, 0">
-                    <TextBox x:Name="TextBoxType" Height="40" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" FontSize="14" Background="{DynamicResource TextBoxChat_Background}" Foreground="{DynamicResource TextBoxChat_Foreground}"/>
-                    <Button x:Name="ButtonSend" Content="Send" HorizontalAlignment="Right" />
+                    <TextBox x:Name="TextBoxType" x:FieldModifier="private" Height="40" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" FontSize="14" Background="{DynamicResource TextBoxChat_Background}" Foreground="{DynamicResource TextBoxChat_Foreground}"/>
+                    <Button x:Name="ButtonSend" x:FieldModifier="private" Content="Send" HorizontalAlignment="Right" />
                 </Grid>
             </DockPanel>
-            <DockPanel x:Name="DockPanelMessage" LastChildFill="False" Background="{DynamicResource MessageSection_Background}">
-                <Grid x:Name="GridMessage" x:FieldModifier="private"></Grid>
+            <DockPanel x:Name="DockPanelMessage" x:FieldModifier="private" Background="{DynamicResource MessageSection_Background}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource MessageSection_Background}">
+                    <Grid x:Name="GridMessage" x:FieldModifier="private"></Grid>
+                </ScrollViewer>
             </DockPanel>
         </DockPanel>
-
     </Grid>
 </Page>

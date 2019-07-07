@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MainDatabase))]
-    [Migration("20190703134852_Init")]
+    [Migration("20190706040919_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,13 +27,15 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int>("ServerId");
 
                     b.HasKey("ChannelId");
 
-                    b.HasIndex("ServerId");
+                    b.HasAlternateKey("ServerId", "Name")
+                        .HasName("UK_Channel_Server_Name");
 
                     b.ToTable("Channel");
 
@@ -660,12 +662,12 @@ namespace API.Migrations
 
                     b.Property<string>("Password");
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("Username");
 
                     b.HasKey("UserId");
 
                     b.HasAlternateKey("Email")
-                        .HasName("UK_Email");
+                        .HasName("UK_User_Email");
 
                     b.ToTable("User");
 
@@ -679,7 +681,7 @@ namespace API.Migrations
                             Image = "user_1.png",
                             LastName = "Lạc",
                             Password = "123",
-                            UserName = "peanut"
+                            Username = "peanut"
                         },
                         new
                         {
@@ -690,7 +692,7 @@ namespace API.Migrations
                             Image = "user_2.png",
                             LastName = "Lạc",
                             Password = "123",
-                            UserName = "peanut"
+                            Username = "peanut"
                         },
                         new
                         {
@@ -701,7 +703,7 @@ namespace API.Migrations
                             Image = "user_3.png",
                             LastName = "night",
                             Password = "123",
-                            UserName = "lucknight"
+                            Username = "lucknight"
                         },
                         new
                         {
@@ -712,7 +714,7 @@ namespace API.Migrations
                             Image = "user_4.png",
                             LastName = "die",
                             Password = "123",
-                            UserName = "eddie"
+                            Username = "eddie"
                         });
                 });
 
@@ -739,7 +741,7 @@ namespace API.Migrations
                     b.HasOne("API.Models.Role", "Role")
                         .WithMany("ChannelRolePermissions")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("API.Models.InstantInvite", b =>
@@ -760,7 +762,7 @@ namespace API.Migrations
                     b.HasOne("API.Models.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("API.Models.Role", b =>
@@ -774,7 +776,7 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Server", b =>
                 {
                     b.HasOne("API.Models.User", "Admin")
-                        .WithMany("Servers")
+                        .WithMany()
                         .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -787,9 +789,9 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.User", "User")
-                        .WithMany()
+                        .WithMany("ServerUsers")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

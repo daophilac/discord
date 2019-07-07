@@ -29,7 +29,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Email = table.Column<string>(maxLength: 256, nullable: false),
                     Password = table.Column<string>(nullable: true),
-                    UserName = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Gender = table.Column<int>(nullable: true),
@@ -38,7 +38,7 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.UserId);
-                    table.UniqueConstraint("UK_Email", x => x.Email);
+                    table.UniqueConstraint("UK_User_Email", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,12 +68,13 @@ namespace API.Migrations
                 {
                     ChannelId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     ServerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Channel", x => x.ChannelId);
+                    table.UniqueConstraint("UK_Channel_Server_Name", x => new { x.ServerId, x.Name });
                     table.ForeignKey(
                         name: "FK_Channel_Server_ServerId",
                         column: x => x.ServerId,
@@ -142,7 +143,7 @@ namespace API.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,7 +171,7 @@ namespace API.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -201,7 +202,7 @@ namespace API.Migrations
                         column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "RoleId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -217,7 +218,7 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "UserId", "Email", "FirstName", "Gender", "Image", "LastName", "Password", "UserName" },
+                columns: new[] { "UserId", "Email", "FirstName", "Gender", "Image", "LastName", "Password", "Username" },
                 values: new object[,]
                 {
                     { 1, "daophilac@gmail.com", "Đào Phi", 0, "user_1.png", "Lạc", "123", "peanut" },
@@ -347,11 +348,6 @@ namespace API.Migrations
                     { 2, 1, "And this is the second message in final fantasy", new DateTime(2019, 1, 2, 0, 0, 1, 245, DateTimeKind.Unspecified), 2 },
                     { 1, 1, "This is the first message in final fantasy", new DateTime(2019, 1, 1, 0, 0, 0, 1, DateTimeKind.Unspecified), 1 }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Channel_ServerId",
-                table: "Channel",
-                column: "ServerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChannelRolePermission_PermissionId",

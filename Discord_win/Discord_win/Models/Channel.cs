@@ -12,5 +12,12 @@ namespace Discord_win.Models {
         public int ServerId { get; set; }
 
         public ICollection<Message> Messages { get; set; }
+        public Channel() {
+
+        }
+        public Channel(string name, int serverId) {
+            Name = name;
+            ServerId = serverId;
+        }
     }
 }

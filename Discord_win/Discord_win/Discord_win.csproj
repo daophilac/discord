@@ -98,6 +98,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Pipelines, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.4.5.3\lib\netstandard2.0\System.IO.Pipelines.dll</HintPath>
     </Reference>
@@ -139,6 +140,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialog\CreateChannelDialog.xaml.cs">
+      <DependentUpon>CreateChannelDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\CreateOrJoinServerDialog.xaml.cs">
       <DependentUpon>CreateOrJoinServerDialog.xaml</DependentUpon>
     </Compile>
@@ -173,10 +177,16 @@
     <Compile Include="Resources\Static\FileSystem.cs" />
     <Compile Include="Resources\Static\Route.cs" />
     <Compile Include="Tools\APICaller.cs" />
+    <Compile Include="Tools\FileCreator.cs" />
     <Compile Include="Tools\FileDealer.cs" />
+    <Compile Include="Tools\FileDownloader.cs" />
     <Compile Include="Tools\JsonBuilder.cs" />
     <Compile Include="Tools\JSONConverter.cs" />
     <Compile Include="Tools\ResourcesCreator.cs" />
+    <Page Include="Dialog\CreateChannelDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialog\CreateOrJoinServerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
