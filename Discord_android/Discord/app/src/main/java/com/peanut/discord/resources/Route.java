@@ -2,7 +2,7 @@ package com.peanut.discord.resources;
 
 public final class Route {
     public static final String protocol = "http";
-    public static final String serverIP = "192.168.2.111";
+    public static final String serverIP = "192.168.2.113";
     public static final String serverName = "/sv";
 
     public static final String routeLogin = "/api/user/login";

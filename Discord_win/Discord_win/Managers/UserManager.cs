@@ -8,28 +8,29 @@ using System.Windows.Controls;
 
 namespace Discord_win.Managers {
     public class UserManager {
-        private Button buttonLogOut;
-        public event EventHandler OnLogOut;
-        public UserManager(Button buttonLogOut) {
-            this.buttonLogOut = buttonLogOut;
+        private Button buttonUserSetting;
+        public event EventHandler LogOut;
+        public UserManager(Button buttonUserSetting) {
+            this.buttonUserSetting = buttonUserSetting;
         }
         public void Establish() {
             ThrowExceptions();
-            buttonLogOut.Click += ButtonLogOut_Click;
+            buttonUserSetting.Click += ButtonUserSetting_Click;
         }
         public void TearDown() {
-            buttonLogOut.Click -= ButtonLogOut_Click;
+            buttonUserSetting.Click -= ButtonUserSetting_Click;
         }
 
-        private void ButtonLogOut_Click(object sender, RoutedEventArgs e) {
-            if (MessageBox.Show("Log out?", "Log out", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
-                OnLogOut(this, EventArgs.Empty);
-            }
+        private void ButtonUserSetting_Click(object sender, RoutedEventArgs e) {
+            Program.mainWindow.MainFrame.Navigate(Program.userSettingPage);
+            //if (MessageBox.Show("Log out?", "Log out", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+            //    LogOut?.Invoke(this, EventArgs.Empty);
+            //}
         }
 
         private void ThrowExceptions() {
-            if(buttonLogOut == null) {
-                throw new ArgumentNullException("buttonLogOut cannot be null");
+            if(buttonUserSetting == null) {
+                throw new ArgumentNullException("buttonUserSetting cannot be null");
             }
         }
     }

@@ -61,7 +61,7 @@ class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelViewHold
     public void onBindViewHolder(@NonNull ChannelViewHolder channelViewHolder, int i) {
         Channel channel = this.listChannel.get(i);
         TextView textView = channelViewHolder.textView;
-        textView.setText(channel.getName());
+        textView.setText(channel.getChannelName());
         textView.setOnClickListener(v -> this.channelAdapterListener.onSelectChannel(channel));
     }
 

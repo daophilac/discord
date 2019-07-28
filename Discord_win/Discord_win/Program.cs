@@ -25,6 +25,8 @@ namespace Discord_win {
         public static MainWindow mainWindow;
         public static LoginPage loginPage;
         public static MainPage mainPage;
+        public static UserSettingPage userSettingPage;
+
 
         public static string NotificationInvalidEmailOrPassword;
         public static string ExceptionNullFilePath;
@@ -51,6 +53,7 @@ namespace Discord_win {
             //
             loginPage = new LoginPage();
             mainPage = new MainPage();
+            userSettingPage = new UserSettingPage();
         }
     }
 }

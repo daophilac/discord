@@ -11,11 +11,11 @@
     <Grid Background="#FFFFFFFF">
         <Canvas x:Name="CanvasSignIn" HorizontalAlignment="Left" Height="444" Margin="10,10,0,0" VerticalAlignment="Top" Width="444" Background="#FF36393F">
             <Label x:Name="LabelEmail" Content="Email" Canvas.Left="16" Canvas.Top="10" Foreground="#FFB4B6BA" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
-            <TextBox x:Name="TextBoxEmail" Height="32" Canvas.Left="22" TextWrapping="Wrap" Text="daophilac@gmail.com" Canvas.Top="41" Width="400" Background="#FF303339" BorderBrush="Black" Foreground="#FFE1E1E3" FontSize="14" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="TextBoxEmail" Height="32" Canvas.Left="22" TextWrapping="Wrap" Canvas.Top="41" Width="400" Background="#FF303339" BorderBrush="Black" Foreground="#FFE1E1E3" FontSize="14" VerticalContentAlignment="Center"/>
             <Label x:Name="LabelPassword" Content="Password" Canvas.Left="16" Canvas.Top="80" Foreground="#FFB4B6BA" FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
-            <TextBox x:Name="TextBoxPassword" Height="32" Canvas.Left="22" TextWrapping="Wrap" Text="123" Canvas.Top="111" Width="400" Background="#FF303339" BorderBrush="Black" Foreground="#FFE1E1E3" FontSize="14" VerticalContentAlignment="Center"/>
+            <PasswordBox x:Name="PasswordBox" Height="32" Canvas.Left="22" Canvas.Top="111" Width="400" Background="#FF303339" BorderBrush="Black" Foreground="#FFE1E1E3" FontSize="14" VerticalContentAlignment="Center"/>
             <Button x:Name="ButtonLogin" Content="Login" Canvas.Left="22" Canvas.Top="181" Width="400" Height="32" Background="#FF7289DA" Foreground="#FFF8F9FC" FontSize="16" FontWeight="Bold" Click="ButtonLogin_Click"/>
-            <Button x:Name="ButtonRegister" Content="Register" Canvas.Left="369" Canvas.Top="218" Foreground="#FF00F3FF" Background="#00000000" Click="ButtonRegister_Click"/>
+            <Button x:Name="ButtonRegister" Content="Register" Canvas.Left="369" Canvas.Top="218" Foreground="#FF00F3FF" Background="Transparent" BorderBrush="Transparent" Click="ButtonRegister_Click"/>
 
         </Canvas>
     </Grid>

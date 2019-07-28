@@ -4,7 +4,7 @@
             "outputFile": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-large-v4\\values-large-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\cb8430a1766a6f01684a778631033359\\res\\values-large-v4\\values-large-v4.xml",
+                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\d84fe35d742cc1a0f31cd8a922cc5ace\\res\\values-large-v4\\values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\b73911c41964da46e3a3bcee2943f1d9\\res\\values-large-v4\\values-large-v4.xml",
+                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\ded36ef67012c43818ed470a5aa5de5a\\res\\values-large-v4\\values-large-v4.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

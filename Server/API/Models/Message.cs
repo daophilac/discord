@@ -9,9 +9,12 @@ namespace API.Models {
     public class Message {
         [Key]
         public int MessageId { get; set; }
+        [Required]
         public int ChannelId { get; set; }
+        [Required]
         public int UserId { get; set; }
         public string Content { get; set; }
+        [Required]
         public DateTime Time { get; set; }
 
         

@@ -9,9 +9,9 @@
 
     <Grid>
         <TextBox x:Name="TextBoxEmail" HorizontalAlignment="Left" Height="23" Margin="136,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
-        <TextBox x:Name="TextBoxPassword" HorizontalAlignment="Left" Height="23" Margin="136,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
-        <TextBox x:Name="TextBoxConfirmPassword" HorizontalAlignment="Left" Height="23" Margin="136,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
-        <TextBox x:Name="TextBoxUserName" HorizontalAlignment="Left" Height="23" Margin="136,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
+        <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Height="23" Margin="136,38,0,0" VerticalAlignment="Top" Width="222" />
+        <PasswordBox x:Name="PasswordBoxConfirm" HorizontalAlignment="Left" Height="23" Margin="136,66,0,0" VerticalAlignment="Top" Width="222"/>
+        <TextBox x:Name="TextBoxUsername" HorizontalAlignment="Left" Height="23" Margin="136,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
         <TextBox x:Name="TextBoxFirstName" HorizontalAlignment="Left" Height="23" Margin="136,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
         <TextBox x:Name="TextBoxLastName" HorizontalAlignment="Left" Height="23" Margin="136,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
         <RadioButton x:Name="RadioButtonMale" Content="Male" HorizontalAlignment="Left" Margin="136,178,0,0" VerticalAlignment="Top" IsChecked="True"/>

@@ -55,7 +55,7 @@ namespace API.Controllers
             //TODO
             instantInvite.ServerId = serverFromClient.ServerId;
             instantInvite.Link = serverFromClient.ServerId.ToString();
-            instantInvite.NerverExpire = true;
+            instantInvite.NerverExpired = true;
             context.InstantInvite.Add(instantInvite);
             context.SaveChanges();
 

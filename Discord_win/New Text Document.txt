@@ -1,0 +1,6 @@
+<security>
+      <requestFiltering>
+        <!-- Measured in Bytes -->
+        <requestLimits maxAllowedContentLength="4294967295" />  <!-- 1 GB-->
+      </requestFiltering>
+</security>

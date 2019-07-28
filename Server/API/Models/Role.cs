@@ -9,11 +9,13 @@ namespace API.Models {
     public class Role {
         [Key]
         public int RoleId { get; set; }
-        public string Name { get; set; }
+        [MaxLength(50), Required]
+        public string RoleName { get; set; }
+        [Required]
         public int ServerId { get; set; }
-
         
-        public IEnumerable<ChannelRolePermission> ChannelRolePermissions { get; set; }
         public Server Server { get; set; }
+        public ICollection<ServerLevelPermission> ServerLevelPermissions { get; set; }
+        public ICollection<ChannelLevelPermission> ChannelLevelPermissions { get; set; }
     }
 }

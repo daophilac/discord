@@ -8,4 +8,12 @@
     <SolidColorBrush x:Key="MessageSection_Background" Color="#FF36393F"/>
     <SolidColorBrush x:Key="TextBoxChat_Background" Color="#FF484C52"/>
     <SolidColorBrush x:Key="TextBoxChat_Foreground" Color="#FFB4B6C0"/>
+    <SolidColorBrush x:Key="UserProfileNavigation_Background" Color="#FF2F3136"/>
+    <SolidColorBrush x:Key="UserProfileMainFrame_Background" Color="#FF36393F"/>
+    <SolidColorBrush x:Key="UserInfoViewPage_Background" Color="#FF2F3136"/>
+    <SolidColorBrush x:Key="Dark1_Background" Color="#FF202225"/>
+    <SolidColorBrush x:Key="Dark2_Background" Color="#FF2F3136"/>
+    <SolidColorBrush x:Key="Dark3_Background" Color="#FF36393F"/>
+    <SolidColorBrush x:Key="Dark1_Foregound" Color="#FF5F6164"/>
+    <SolidColorBrush x:Key="Dark2_Foregound" Color="#FFB9BBBE"/>
 </ResourceDictionary>

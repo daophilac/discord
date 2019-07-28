@@ -10,7 +10,7 @@ namespace Discord_win.Resources.Static {
     static class FileSystem {
         public static int DefaultDeleteAttempt { get; } = 100;
         public static int DefaultDeleteFailDelay { get; } = 1000;
-        public static readonly string DataFolderName = "Discord";
+        public static readonly string DataFolderName = "Discorddata";
         public static readonly string UserFolderName = "user";
         public static readonly string ServerFolderName = "server";
         public static readonly string UserInformationFile = "user.txt";
@@ -45,6 +45,10 @@ namespace Discord_win.Resources.Static {
             FileStream fileStream = File.Create(fullPath);
             await stream.CopyToAsync(fileStream);
             fileStream.Close();
+        }
+        public static void DeleteUserImage(string imageName) {
+            string filePath = MakeUserImageFilePath(imageName);
+            File.Delete(filePath);
         }
         public static void CreateDirectoryIfNotExist(string directory) {
             if (!Directory.Exists(directory)) {

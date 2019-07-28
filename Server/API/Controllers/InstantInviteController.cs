@@ -38,6 +38,7 @@ namespace API.Controllers
                     serverUser = new ServerUser();
                     serverUser.ServerId = result.ServerId;
                     serverUser.UserId = id;
+                    serverUser.RoleId = (int)result.DefaultRoleId;
                     _context.ServerUser.Add(serverUser);
                     _context.SaveChanges();
                 }

@@ -4,37 +4,37 @@ ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\Android
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:2:1-36:12
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:2:1-36:12
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:2:1-36:12
-MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b73911c41964da46e3a3bcee2943f1d9\AndroidManifest.xml:17:1-24:12
-MERGED from [com.android.support:appcompat-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\cb8430a1766a6f01684a778631033359\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1378d66de84220b491669aa6cb67214d\AndroidManifest.xml:2:1-11:12
-MERGED from [com.android.support:cardview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b076c8c30f959dddfab6007912bb07fd\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-fragment:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\20dab96c15ff9e89c46acf9a4a03f192\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:animated-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\90e846a7fe95b3b2bd537221c99fcaf6\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:recyclerview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c2d66ea76660b1e93651c6dadced9241\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-core-ui:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c2f3fd244a8894d0d78d5d5e51801370\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-core-utils:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\eae4faf876a0db6decb62ac4a300346b\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2b910711eb7acbce78eb06cdf80f3cbe\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:transition:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\89729876476192bd1bfe5e43bcca1704\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:loader:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\4bc31b14a3837cac9023d2f1714b5fd6\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:viewpager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e99b786ad6dae953eaa859a7520cb649\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:coordinatorlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b5bacab222115781646c3ef400425c1a\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:drawerlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\7725ff7f5539d1a93b85472d9b0bb151\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:slidingpanelayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2ea0c0da56ef2680118a72a076a57dea\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:customview:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e5421540fd2e2e0ea50a57b146794617\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:swiperefreshlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\073d4f4dac0910bf5e39f70c22d4307c\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:asynclayoutinflater:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\0f7cd6d5adc2b48aeb88534cdbe12cf0\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d0a3d0a8ad00e534455d3884808c3c38\AndroidManifest.xml:17:1-24:12
-MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2c1ef739f6b8fbfcfa5a390be52a5548\AndroidManifest.xml:17:1-25:12
-MERGED from [com.android.support:cursoradapter:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\0d1c7db82baf9d44f1e5d274c5a71694\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2f221dfd828b5ff8db307f90f9654fd5\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:documentfile:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\060961cd0bd638f7287c4285f71600fd\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:localbroadcastmanager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\617affd27f6b02ad479bbbbb72b2c7eb\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:print:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\8f5393194bf3c9fcace01402d636d59b\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:viewmodel:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\f1b6c8d22f553781300e16e83505d1e8\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:interpolator:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\4fed440277e23ecc7e63e8140210674b\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:livedata:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c9ce243d6b7d4e36fd81906fb9319bab\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:livedata-core:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1b0309dc20904e0517c9e619c38991b4\AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.core:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2727651eb9b33254e33df4a22fce770e\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\ded36ef67012c43818ed470a5aa5de5a\AndroidManifest.xml:17:1-24:12
+MERGED from [com.android.support:appcompat-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d84fe35d742cc1a0f31cd8a922cc5ace\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2d1ef8e2c8b688715f1fd2177e0dbaf0\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:cardview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\8ab7e4ab7c81a76c19ef54c3c655fefb\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\543e9a085a773ded341113126bf58fea\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1f2e65a697817422df55984dad9dc89b\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:recyclerview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\5fee6832b886fca3b5709bd7aa0d278a\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\293c4704670376a687850bf03110376d\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\85980e3408e85a816442778dc0ad461e\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e03ba51e189a1de9e84c539a3d88afad\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:transition:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\9190e259cdae493068e63730cdf92bd1\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:loader:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\06cd437fb6e10f823f93330f858dc37f\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:viewpager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\81514c0ad916fc19e73f80c615f18627\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:coordinatorlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\004957989b4e73f4f0b9db7991333a0f\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:drawerlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\134650b2b1d5964dba92eb44320a2635\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:slidingpanelayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\a34c89a7eb1129f8d30ad55958e7d53d\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:customview:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\06db4a72c2d0063a3f489e1b4a974947\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\662c44d449f221332ecb13f2c6b5ef30\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\5ef5c467a8ac59b8218f5d001c65b449\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\3035a0e6c64c30435ee86fba1b34c22c\AndroidManifest.xml:17:1-24:12
+MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\26829fa7833a43f5a3d47a203b42e6c7\AndroidManifest.xml:17:1-25:12
+MERGED from [com.android.support:cursoradapter:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\7ef601d9b700d89c87baf118fa52ecd8\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\916fed5b1ec67348ebe03d42a6457f79\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:documentfile:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\a9d1191574fd2b0ecbb601e9b69b1458\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\83d88727c089bcd43b699ffb9d65bce6\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:print:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\60f98e3323036aaa0a7d26c73e36dea4\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\373ced4cf43834dc572d11dbb70bb44d\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:interpolator:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\45b584fd74d5b04934b250e86119e90b\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\ee0fdf6bd51c6ea676118f4c88ab359c\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1e3b77ddd3d9c3381472df36c40fd7f4\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\391c28aaab538b63326b5fc04b08216a\AndroidManifest.xml:17:1-22:12
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:2:1-36:12
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:2:1-36:12
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:2:1-36:12
@@ -66,16 +66,16 @@ ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\Android
 		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:6:22-77
 application
 ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:7:5-34:19
-MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b73911c41964da46e3a3bcee2943f1d9\AndroidManifest.xml:22:5-20
-MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b73911c41964da46e3a3bcee2943f1d9\AndroidManifest.xml:22:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1378d66de84220b491669aa6cb67214d\AndroidManifest.xml:9:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1378d66de84220b491669aa6cb67214d\AndroidManifest.xml:9:5-20
-MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d0a3d0a8ad00e534455d3884808c3c38\AndroidManifest.xml:22:5-94
-MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d0a3d0a8ad00e534455d3884808c3c38\AndroidManifest.xml:22:5-94
-MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2c1ef739f6b8fbfcfa5a390be52a5548\AndroidManifest.xml:22:5-23:19
-MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2c1ef739f6b8fbfcfa5a390be52a5548\AndroidManifest.xml:22:5-23:19
+MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\ded36ef67012c43818ed470a5aa5de5a\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\ded36ef67012c43818ed470a5aa5de5a\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2d1ef8e2c8b688715f1fd2177e0dbaf0\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2d1ef8e2c8b688715f1fd2177e0dbaf0\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\3035a0e6c64c30435ee86fba1b34c22c\AndroidManifest.xml:22:5-94
+MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\3035a0e6c64c30435ee86fba1b34c22c\AndroidManifest.xml:22:5-94
+MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\26829fa7833a43f5a3d47a203b42e6c7\AndroidManifest.xml:22:5-23:19
+MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\26829fa7833a43f5a3d47a203b42e6c7\AndroidManifest.xml:22:5-23:19
 	android:appComponentFactory
-		ADDED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d0a3d0a8ad00e534455d3884808c3c38\AndroidManifest.xml:22:18-91
+		ADDED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\3035a0e6c64c30435ee86fba1b34c22c\AndroidManifest.xml:22:18-91
 	android:supportsRtl
 		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:14:9-35
 	android:label
@@ -126,68 +126,68 @@ uses-sdk
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml
-MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b73911c41964da46e3a3bcee2943f1d9\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b73911c41964da46e3a3bcee2943f1d9\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:appcompat-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\cb8430a1766a6f01684a778631033359\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:appcompat-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\cb8430a1766a6f01684a778631033359\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1378d66de84220b491669aa6cb67214d\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1378d66de84220b491669aa6cb67214d\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support:cardview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b076c8c30f959dddfab6007912bb07fd\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:cardview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b076c8c30f959dddfab6007912bb07fd\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-fragment:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\20dab96c15ff9e89c46acf9a4a03f192\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-fragment:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\20dab96c15ff9e89c46acf9a4a03f192\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:animated-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\90e846a7fe95b3b2bd537221c99fcaf6\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:animated-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\90e846a7fe95b3b2bd537221c99fcaf6\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:recyclerview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c2d66ea76660b1e93651c6dadced9241\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:recyclerview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c2d66ea76660b1e93651c6dadced9241\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-ui:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c2f3fd244a8894d0d78d5d5e51801370\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-ui:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c2f3fd244a8894d0d78d5d5e51801370\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-utils:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\eae4faf876a0db6decb62ac4a300346b\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-utils:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\eae4faf876a0db6decb62ac4a300346b\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2b910711eb7acbce78eb06cdf80f3cbe\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2b910711eb7acbce78eb06cdf80f3cbe\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:transition:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\89729876476192bd1bfe5e43bcca1704\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:transition:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\89729876476192bd1bfe5e43bcca1704\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:loader:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\4bc31b14a3837cac9023d2f1714b5fd6\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:loader:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\4bc31b14a3837cac9023d2f1714b5fd6\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:viewpager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e99b786ad6dae953eaa859a7520cb649\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:viewpager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e99b786ad6dae953eaa859a7520cb649\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:coordinatorlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b5bacab222115781646c3ef400425c1a\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:coordinatorlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\b5bacab222115781646c3ef400425c1a\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:drawerlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\7725ff7f5539d1a93b85472d9b0bb151\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:drawerlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\7725ff7f5539d1a93b85472d9b0bb151\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:slidingpanelayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2ea0c0da56ef2680118a72a076a57dea\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:slidingpanelayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2ea0c0da56ef2680118a72a076a57dea\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:customview:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e5421540fd2e2e0ea50a57b146794617\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:customview:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e5421540fd2e2e0ea50a57b146794617\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:swiperefreshlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\073d4f4dac0910bf5e39f70c22d4307c\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:swiperefreshlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\073d4f4dac0910bf5e39f70c22d4307c\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:asynclayoutinflater:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\0f7cd6d5adc2b48aeb88534cdbe12cf0\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:asynclayoutinflater:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\0f7cd6d5adc2b48aeb88534cdbe12cf0\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d0a3d0a8ad00e534455d3884808c3c38\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d0a3d0a8ad00e534455d3884808c3c38\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2c1ef739f6b8fbfcfa5a390be52a5548\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2c1ef739f6b8fbfcfa5a390be52a5548\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:cursoradapter:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\0d1c7db82baf9d44f1e5d274c5a71694\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:cursoradapter:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\0d1c7db82baf9d44f1e5d274c5a71694\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2f221dfd828b5ff8db307f90f9654fd5\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2f221dfd828b5ff8db307f90f9654fd5\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:documentfile:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\060961cd0bd638f7287c4285f71600fd\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:documentfile:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\060961cd0bd638f7287c4285f71600fd\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:localbroadcastmanager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\617affd27f6b02ad479bbbbb72b2c7eb\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:localbroadcastmanager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\617affd27f6b02ad479bbbbb72b2c7eb\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:print:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\8f5393194bf3c9fcace01402d636d59b\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:print:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\8f5393194bf3c9fcace01402d636d59b\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:viewmodel:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\f1b6c8d22f553781300e16e83505d1e8\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:viewmodel:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\f1b6c8d22f553781300e16e83505d1e8\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:interpolator:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\4fed440277e23ecc7e63e8140210674b\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:interpolator:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\4fed440277e23ecc7e63e8140210674b\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:livedata:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c9ce243d6b7d4e36fd81906fb9319bab\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:livedata:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\c9ce243d6b7d4e36fd81906fb9319bab\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:livedata-core:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1b0309dc20904e0517c9e619c38991b4\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:livedata-core:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1b0309dc20904e0517c9e619c38991b4\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.core:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2727651eb9b33254e33df4a22fce770e\AndroidManifest.xml:20:5-44
-MERGED from [android.arch.core:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2727651eb9b33254e33df4a22fce770e\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\ded36ef67012c43818ed470a5aa5de5a\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:design:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\ded36ef67012c43818ed470a5aa5de5a\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d84fe35d742cc1a0f31cd8a922cc5ace\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\d84fe35d742cc1a0f31cd8a922cc5ace\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2d1ef8e2c8b688715f1fd2177e0dbaf0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\2d1ef8e2c8b688715f1fd2177e0dbaf0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:cardview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\8ab7e4ab7c81a76c19ef54c3c655fefb\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\8ab7e4ab7c81a76c19ef54c3c655fefb\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\543e9a085a773ded341113126bf58fea\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\543e9a085a773ded341113126bf58fea\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1f2e65a697817422df55984dad9dc89b\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1f2e65a697817422df55984dad9dc89b\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\5fee6832b886fca3b5709bd7aa0d278a\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\5fee6832b886fca3b5709bd7aa0d278a\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\293c4704670376a687850bf03110376d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\293c4704670376a687850bf03110376d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\85980e3408e85a816442778dc0ad461e\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\85980e3408e85a816442778dc0ad461e\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e03ba51e189a1de9e84c539a3d88afad\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\e03ba51e189a1de9e84c539a3d88afad\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\9190e259cdae493068e63730cdf92bd1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\9190e259cdae493068e63730cdf92bd1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:loader:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\06cd437fb6e10f823f93330f858dc37f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:loader:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\06cd437fb6e10f823f93330f858dc37f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:viewpager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\81514c0ad916fc19e73f80c615f18627\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:viewpager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\81514c0ad916fc19e73f80c615f18627\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:coordinatorlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\004957989b4e73f4f0b9db7991333a0f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:coordinatorlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\004957989b4e73f4f0b9db7991333a0f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:drawerlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\134650b2b1d5964dba92eb44320a2635\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:drawerlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\134650b2b1d5964dba92eb44320a2635\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:slidingpanelayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\a34c89a7eb1129f8d30ad55958e7d53d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:slidingpanelayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\a34c89a7eb1129f8d30ad55958e7d53d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customview:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\06db4a72c2d0063a3f489e1b4a974947\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customview:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\06db4a72c2d0063a3f489e1b4a974947\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\662c44d449f221332ecb13f2c6b5ef30\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\662c44d449f221332ecb13f2c6b5ef30\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\5ef5c467a8ac59b8218f5d001c65b449\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\5ef5c467a8ac59b8218f5d001c65b449\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\3035a0e6c64c30435ee86fba1b34c22c\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\3035a0e6c64c30435ee86fba1b34c22c\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\26829fa7833a43f5a3d47a203b42e6c7\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\26829fa7833a43f5a3d47a203b42e6c7\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cursoradapter:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\7ef601d9b700d89c87baf118fa52ecd8\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cursoradapter:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\7ef601d9b700d89c87baf118fa52ecd8\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\916fed5b1ec67348ebe03d42a6457f79\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\916fed5b1ec67348ebe03d42a6457f79\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:documentfile:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\a9d1191574fd2b0ecbb601e9b69b1458\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:documentfile:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\a9d1191574fd2b0ecbb601e9b69b1458\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\83d88727c089bcd43b699ffb9d65bce6\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\83d88727c089bcd43b699ffb9d65bce6\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:print:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\60f98e3323036aaa0a7d26c73e36dea4\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:print:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\60f98e3323036aaa0a7d26c73e36dea4\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\373ced4cf43834dc572d11dbb70bb44d\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\373ced4cf43834dc572d11dbb70bb44d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\45b584fd74d5b04934b250e86119e90b\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\45b584fd74d5b04934b250e86119e90b\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\ee0fdf6bd51c6ea676118f4c88ab359c\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\ee0fdf6bd51c6ea676118f4c88ab359c\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1e3b77ddd3d9c3381472df36c40fd7f4\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\1e3b77ddd3d9c3381472df36c40fd7f4\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\391c28aaab538b63326b5fc04b08216a\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.1] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\391c28aaab538b63326b5fc04b08216a\AndroidManifest.xml:20:5-44
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml
 	android:targetSdkVersion

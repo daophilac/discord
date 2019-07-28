@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -111,7 +110,7 @@ public class NavigatorFragment extends Fragment implements Inventory.InventoryLi
     }
     @Override
     public void onSelectServer(Server server) {
-        this.textViewServerName.setText(Inventory.currentServer.getName());
+        this.textViewServerName.setText(Inventory.currentServer.getServerName());
         apiGetListChannel(server);
     }
 

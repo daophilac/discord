@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Jun 14 03:25:01 ICT 2019
+#Sat Jul 27 20:55:35 ICT 2019
 1.base=D\:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 0.baseType=DIRECTORY
 1.baseType=DIRECTORY

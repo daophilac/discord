@@ -61,7 +61,7 @@ class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder>
     public void onBindViewHolder(@NonNull ServerViewHolder serverViewHolder, int i) {
         Server server = this.listServer.get(i);
         Button button = serverViewHolder.button;
-        button.setText(server.getName());
+        button.setText(server.getServerName());
         button.setOnClickListener(v -> this.serverAdapterListener.onSelectServer(server));
     }
     @Override

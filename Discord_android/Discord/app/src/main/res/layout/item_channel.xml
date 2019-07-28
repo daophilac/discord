@@ -4,6 +4,7 @@
     android:layout_height="wrap_content">
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
+        android:textSize="@dimen/text_h6"
         android:layout_height="wrap_content"
         android:id="@+id/text_view_channel"/>
 </LinearLayout>

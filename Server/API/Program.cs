@@ -17,17 +17,19 @@ namespace API {
     public class Program {
         public static MainDatabase mainDatabase;
         public static ChatHub chatHub;
-        public static FileCreator fileCreator;
+        public static FileProvider fileProvider;
         public static void Main(string[] args) {
             InitializeGlobalVariable();
             CreateWebHostBuilder(args).Build().Run();
         }
         public static void InitializeGlobalVariable() {
             FileSystem.Establish();
-            fileCreator = new FileCreator();
+            fileProvider = new FileProvider();
             mainDatabase = new MainDatabase(new DbContextOptions<MainDatabase>());
             chatHub = new ChatHub();
         }
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+            .UseStartup<Startup>();
     }
 }

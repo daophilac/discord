@@ -21,8 +21,8 @@ namespace Discord_win.Managers {
         private List<Channel> listChannel;
         private Dictionary<Button, Channel> buttonChannels;
         private CreateChannelDialog createChannelDialog;
-        public event EventHandler<ChannelButtonClickArgs> OnChannelButtonClick;
-        public event EventHandler<ChannelChangedArgs> OnChannelChanged;
+        public event EventHandler<ChannelButtonClickArgs> ChannelButtonClick;
+        public event EventHandler<ChannelChangedArgs> ChannelChanged;
         public ChannelManager(DockPanel dockPanelChannel, Grid gridChannelContent, Label labelUsername, Button buttonCreateChannel) {
             this.dockPanelChannel = dockPanelChannel;
             this.gridChannelContent = gridChannelContent;
@@ -33,36 +33,35 @@ namespace Discord_win.Managers {
         }
         public void Establish() {
             ThrowExceptions();
-            HubManager.OnReceiveChannelConcurrencyConflict += HubManager_OnReceiveChannelConcurrencyConflict;
-            HubManager.OnReceiveNewChannel += HubManager_OnReceiveNewChannel;
-            createChannelDialog.OnRequestCreateChannel += CreateChannelDialog_OnRequestCreateChannel;
+            HubManager.ReceiveChannelConcurrenctConflictSignal += HubManager_ReceiveChannelConcurrenctConflictSignal;
+            HubManager.ReceiveNewChannelSignal += HubManager_ReceiveNewChannelSignal;
+            createChannelDialog.RequestCreateChannel += CreateChannelDialog_RequestCreateChannel;
             buttonCreateChannel.Click += ButtonCreateChannel_Click;
             labelUsername.Content = Inventory.CurrentUser.Username;
         }
         public void TearDown() {
-            HubManager.OnReceiveChannelConcurrencyConflict -= HubManager_OnReceiveChannelConcurrencyConflict;
-            HubManager.OnReceiveNewChannel -= HubManager_OnReceiveNewChannel;
-            createChannelDialog.OnRequestCreateChannel -= CreateChannelDialog_OnRequestCreateChannel;
+            HubManager.ReceiveChannelConcurrenctConflictSignal -= HubManager_ReceiveChannelConcurrenctConflictSignal;
+            HubManager.ReceiveNewChannelSignal -= HubManager_ReceiveNewChannelSignal;
+            createChannelDialog.RequestCreateChannel -= CreateChannelDialog_RequestCreateChannel;
             buttonCreateChannel.Click -= ButtonCreateChannel_Click;
         }
 
         private void ButtonCreateChannel_Click(object sender, RoutedEventArgs e) {
             createChannelDialog.Activate();
             createChannelDialog.ShowDialog();
-
         }
 
-        private void HubManager_OnReceiveChannelConcurrencyConflict(object sender, HubManager.OnReceiveChannelConcurrencyConflictEventArgs e) {
+        private void HubManager_ReceiveChannelConcurrenctConflictSignal(object sender, HubManager.ReceiveChannelConcurrenctConflictSignalEventArgs e) {
             MessageBox.Show(e.ConflictMessage);
         }
 
-        private void CreateChannelDialog_OnRequestCreateChannel(object sender, OnRequestCreateChannelArgs e) {
-            HubManager.CreateChannel(e.ChannelName);
+        private void CreateChannelDialog_RequestCreateChannel(object sender, RequestCreateChannelArgs e) {
+            HubManager.SendCreateChannelSignal(e.ChannelName);
         }
 
-        private void HubManager_OnReceiveNewChannel(object sender, HubManager.OnGetNewChannelEventArgs e) {
+        private void HubManager_ReceiveNewChannelSignal(object sender, HubManager.GetNewChannelSignalEventArgs e) {
             Application.Current.Dispatcher.Invoke(() => {
-                Button button = CreateChannelButton(e.Channel.Name);
+                Button button = CreateChannelButton(e.Channel.ChannelName);
                 DockPanel.SetDock(button, Dock.Top);
                 buttonChannels.Add(button, e.Channel);
                 dockPanelChannelButton.Children.Add(button);
@@ -87,7 +86,7 @@ namespace Discord_win.Managers {
             gridChannelContent.Children.Add(dockPanelChannelButton);
             Inventory.SetChannelsInCurrentServer(listChannel);
             for (int i = 0; i < listChannel.Count; i++) {
-                Button button = CreateChannelButton(listChannel[i].Name);
+                Button button = CreateChannelButton(listChannel[i].ChannelName);
                 DockPanel.SetDock(button, Dock.Top);
                 buttonChannels.Add(button, listChannel[i]);
                 dockPanelChannelButton.Children.Add(button);
@@ -106,11 +105,11 @@ namespace Discord_win.Managers {
         }
         private void ChannelButton_Click(object sender, RoutedEventArgs e) {
             Channel selectedChannel = buttonChannels[(Button)sender];
-            OnChannelButtonClick(this, new ChannelButtonClickArgs() { Channel = selectedChannel });
+            ChannelButtonClick?.Invoke(this, new ChannelButtonClickArgs() { Channel = selectedChannel });
             if(Inventory.CurrentChannel != selectedChannel) {
                 Channel previousChannel = Inventory.CurrentChannel;
                 Inventory.SetCurrentChannel(selectedChannel);
-                OnChannelChanged(this, new ChannelChangedArgs() { Previous = previousChannel, Now = selectedChannel });
+                ChannelChanged?.Invoke(this, new ChannelChangedArgs() { Previous = previousChannel, Now = selectedChannel });
             }
         }
 

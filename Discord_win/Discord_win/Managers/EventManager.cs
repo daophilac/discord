@@ -32,61 +32,61 @@ namespace Discord_win.Managers {
             EventManager.messageManager.TearDown();
             EventManager.userManager.TearDown();
             if(Inventory.CurrentChannel != null) {
-                HubManager.ExitChannel(Inventory.CurrentChannel.ChannelId);
+                HubManager.SendExitChannelSignal(Inventory.CurrentChannel.ChannelId);
             }
             if(Inventory.CurrentServer != null) {
-                HubManager.ExitServer(Inventory.CurrentServer.ServerId);
+                HubManager.SendExitServerSignal(Inventory.CurrentServer.ServerId);
             }
             Inventory.Clear();
             UnregisterMemberEvent();
         }
         private static void RegisterMemberEvent() {
-            serverManager.OnServerButtonClick += ServerManager_OnServerButtonClick;
-            serverManager.OnServerChanged += ServerManager_OnServerChanged;
-            channelManager.OnChannelButtonClick += ChannelManager_OnChannelButtonClick;
-            channelManager.OnChannelChanged += ChannelManager_OnChannelChanged;
-            userManager.OnLogOut += UserManager_OnLogOut;
+            serverManager.ServerButtonClick += ServerManager_ServerButtonClick;
+            serverManager.ServerChanged += ServerManager_ServerChanged;
+            channelManager.ChannelButtonClick += ChannelManager_ChannelButtonClick;
+            channelManager.ChannelChanged += ChannelManager_ChannelChanged;
+            userManager.LogOut += UserManager_LogOut;
         }
         private static void UnregisterMemberEvent() {
-            serverManager.OnServerButtonClick -= ServerManager_OnServerButtonClick;
-            serverManager.OnServerChanged -= ServerManager_OnServerChanged;
-            channelManager.OnChannelButtonClick -= ChannelManager_OnChannelButtonClick;
-            channelManager.OnChannelChanged -= ChannelManager_OnChannelChanged;
-            userManager.OnLogOut -= UserManager_OnLogOut;
+            serverManager.ServerButtonClick -= ServerManager_ServerButtonClick;
+            serverManager.ServerChanged -= ServerManager_ServerChanged;
+            channelManager.ChannelButtonClick -= ChannelManager_ChannelButtonClick;
+            channelManager.ChannelChanged -= ChannelManager_ChannelChanged;
+            userManager.LogOut -= UserManager_LogOut;
         }
 
-        private static void UserManager_OnLogOut(object sender, EventArgs e) {
-            FileDownloader.CancelAllDownloadTasksAndDeleteFiles();
+        private static void UserManager_LogOut(object sender, EventArgs e) {
+            ImageDownloader.CancelAllDownloadTasksAndDeleteFiles();
             FileSystem.ClearData();
             Program.mainWindow.Restart();
         }
 
-        private static void ChannelManager_OnChannelChanged(object sender, ChannelManager.ChannelChangedArgs e) {
+        private static void ChannelManager_ChannelChanged(object sender, ChannelManager.ChannelChangedArgs e) {
             messageManager.ChangeChannel(e.Previous, e.Now);
             if (e.Previous != null) {
-                HubManager.ExitChannel(e.Previous.ChannelId);
+                HubManager.SendExitChannelSignal(e.Previous.ChannelId);
             }
-            HubManager.EnterChannel(e.Now.ChannelId);
+            HubManager.SendEnterChannelSignal(e.Now.ChannelId);
         }
 
-        private static void ChannelManager_OnChannelButtonClick(object sender, ChannelManager.ChannelButtonClickArgs e) {
+        private static void ChannelManager_ChannelButtonClick(object sender, ChannelManager.ChannelButtonClickArgs e) {
             //Do nothing here
         }
 
-        private static void ServerManager_OnServerChanged(object sender, ServerChangedArgs e) {
+        private static void ServerManager_ServerChanged(object sender, ServerChangedArgs e) {
             if (Inventory.CurrentChannel != null) {
-                HubManager.ExitChannel(Inventory.CurrentChannel.ChannelId);
+                HubManager.SendExitChannelSignal(Inventory.CurrentChannel.ChannelId);
                 Inventory.ClearCurrentChannel();
             }
             if(e.Previous != null) {
-                HubManager.ExitServer(e.Previous.ServerId);
+                HubManager.SendExitServerSignal(e.Previous.ServerId);
             }
-            HubManager.EnterServer(e.Now.ServerId);
+            HubManager.SendEnterServerSignal(e.Now.ServerId);
             channelManager.ChangeServer(e.Previous, e.Now);
             messageManager.ClearContent();
         }
 
-        private static void ServerManager_OnServerButtonClick(object sender, ServerButtonClickArgs e) {
+        private static void ServerManager_ServerButtonClick(object sender, ServerButtonClickArgs e) {
             //Do nothing here
         }
     }

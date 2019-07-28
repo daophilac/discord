@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 namespace Discord_win.Models {
     public class Channel {
         public int ChannelId { get; set; }
-        public string Name { get; set; }
+        public string ChannelName { get; set; }
         public int ServerId { get; set; }
 
+        public Server Server { get; set; }
         public ICollection<Message> Messages { get; set; }
+        public ICollection<ChannelLevelPermission> ChannelLevelPermissions { get; set; }
         public Channel() {
 
         }
         public Channel(string name, int serverId) {
-            Name = name;
+            ChannelName = name;
             ServerId = serverId;
         }
     }

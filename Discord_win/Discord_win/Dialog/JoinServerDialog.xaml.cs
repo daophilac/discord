@@ -20,7 +20,7 @@ namespace Discord_win.Dialog {
     /// Interaction logic for JoinServerDialog.xaml
     /// </summary>
     public partial class JoinServerDialog : Window {
-        public event EventHandler<JoinServerArgs> OnJoinServer;
+        public event EventHandler<JoinServerArgs> JoinServer;
         public JoinServerDialog() {
             InitializeComponent();
         }
@@ -33,7 +33,7 @@ namespace Discord_win.Dialog {
                     MessageBox.Show("The instant invite you have typed doesn't exist.");
                 }
                 else {
-                    OnJoinServer(this, new JoinServerArgs() { Server = server });
+                    JoinServer?.Invoke(this, new JoinServerArgs() { Server = server });
                 }
             }
         }

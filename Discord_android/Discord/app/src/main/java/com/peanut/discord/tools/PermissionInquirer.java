@@ -22,7 +22,7 @@ public final class PermissionInquirer {
     public void askPermission(String permission, int permissionCode, String hasNotBeenGrantedMessage){
         // Here, this.context is the current context
         if(ContextCompat.checkSelfPermission(this.context, permission) != PackageManager.PERMISSION_GRANTED){
-            // Permission is not granted
+            // ServerPermission is not granted
             // Should we show an explanation?
             if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) this.context, permission)){
                 // Show an explanation to the user *asynchronously* -- don't block // TODO:

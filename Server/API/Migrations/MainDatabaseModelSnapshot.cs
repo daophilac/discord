@@ -15,7 +15,7 @@ namespace API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -25,14 +25,15 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("ChannelName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<int>("ServerId");
 
                     b.HasKey("ChannelId");
 
-                    b.HasAlternateKey("ServerId", "Name")
+                    b.HasAlternateKey("ServerId", "ChannelName")
                         .HasName("UK_Channel_Server_Name");
 
                     b.ToTable("Channel");
@@ -41,254 +42,463 @@ namespace API.Migrations
                         new
                         {
                             ChannelId = 1,
-                            Name = "General",
+                            ChannelName = "General",
                             ServerId = 1
                         },
                         new
                         {
                             ChannelId = 2,
-                            Name = "Boss",
+                            ChannelName = "Boss",
                             ServerId = 1
                         },
                         new
                         {
                             ChannelId = 3,
-                            Name = "Random Encounter",
+                            ChannelName = "Random Encounter",
                             ServerId = 1
                         },
                         new
                         {
                             ChannelId = 4,
-                            Name = "Origin",
+                            ChannelName = "Origin",
                             ServerId = 2
                         },
                         new
                         {
                             ChannelId = 5,
-                            Name = "Ys7",
+                            ChannelName = "Ys7",
                             ServerId = 2
                         },
                         new
                         {
                             ChannelId = 6,
-                            Name = "Ys8",
+                            ChannelName = "Ys8",
                             ServerId = 2
                         },
                         new
                         {
                             ChannelId = 7,
-                            Name = "General",
+                            ChannelName = "General",
                             ServerId = 3
                         },
                         new
                         {
                             ChannelId = 8,
-                            Name = "Secret",
+                            ChannelName = "Secret",
                             ServerId = 3
                         },
                         new
                         {
                             ChannelId = 9,
-                            Name = "Sky World",
+                            ChannelName = "Sky World",
                             ServerId = 4
                         });
                 });
 
-            modelBuilder.Entity("API.Models.ChannelRolePermission", b =>
+            modelBuilder.Entity("API.Models.ChannelLevelPermission", b =>
                 {
                     b.Property<int>("ChannelId");
 
                     b.Property<int>("RoleId");
 
-                    b.Property<string>("PermissionId");
+                    b.Property<int>("ChannelPermissionId");
 
-                    b.HasKey("ChannelId", "RoleId", "PermissionId");
+                    b.Property<bool>("IsActive");
 
-                    b.HasIndex("PermissionId");
+                    b.HasKey("ChannelId", "RoleId", "ChannelPermissionId");
+
+                    b.HasIndex("ChannelPermissionId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("ChannelRolePermission");
+                    b.ToTable("ChannelLevelPermission");
 
                     b.HasData(
                         new
                         {
                             ChannelId = 1,
                             RoleId = 1,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 1,
                             RoleId = 2,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 1,
-                            RoleId = 3,
-                            PermissionId = "full"
+                            RoleId = 9,
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 1,
-                            RoleId = 4,
-                            PermissionId = "full"
+                            RoleId = 10,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 1,
+                            RoleId = 11,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 1,
+                            RoleId = 12,
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 2,
                             RoleId = 1,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 2,
                             RoleId = 2,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = false
                         },
                         new
                         {
                             ChannelId = 2,
-                            RoleId = 3,
-                            PermissionId = "full"
+                            RoleId = 9,
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 2,
-                            RoleId = 4,
-                            PermissionId = "full"
+                            RoleId = 10,
+                            ChannelPermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            ChannelId = 2,
+                            RoleId = 11,
+                            ChannelPermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            ChannelId = 2,
+                            RoleId = 12,
+                            ChannelPermissionId = 1,
+                            IsActive = false
                         },
                         new
                         {
                             ChannelId = 3,
                             RoleId = 1,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 3,
                             RoleId = 2,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 3,
+                            RoleId = 9,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 10,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 11,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 12,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 4,
                             RoleId = 3,
-                            PermissionId = "no_chat"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
-                            ChannelId = 3,
+                            ChannelId = 4,
                             RoleId = 4,
-                            PermissionId = "no_chat"
+                            ChannelPermissionId = 2,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 4,
-                            RoleId = 5,
-                            PermissionId = "full"
+                            RoleId = 13,
+                            ChannelPermissionId = 2,
+                            IsActive = false
                         },
                         new
                         {
                             ChannelId = 4,
-                            RoleId = 6,
-                            PermissionId = "no_view"
+                            RoleId = 14,
+                            ChannelPermissionId = 2,
+                            IsActive = false
                         },
                         new
                         {
                             ChannelId = 4,
-                            RoleId = 7,
-                            PermissionId = "no_view"
+                            RoleId = 15,
+                            ChannelPermissionId = 2,
+                            IsActive = false
                         },
                         new
                         {
                             ChannelId = 5,
+                            RoleId = 3,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 4,
+                            ChannelPermissionId = 2,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 13,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 14,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 15,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 3,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 4,
+                            ChannelPermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 13,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 14,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 15,
+                            ChannelPermissionId = 2,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 7,
                             RoleId = 5,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
-                            ChannelId = 5,
+                            ChannelId = 7,
                             RoleId = 6,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
-                            ChannelId = 5,
-                            RoleId = 7,
-                            PermissionId = "full"
+                            ChannelId = 7,
+                            RoleId = 16,
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
-                            ChannelId = 6,
+                            ChannelId = 7,
+                            RoleId = 17,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 7,
+                            RoleId = 18,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 8,
                             RoleId = 5,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
-                            ChannelId = 6,
+                            ChannelId = 8,
                             RoleId = 6,
-                            PermissionId = "full"
-                        },
-                        new
-                        {
-                            ChannelId = 6,
-                            RoleId = 7,
-                            PermissionId = "no_view"
-                        },
-                        new
-                        {
-                            ChannelId = 7,
-                            RoleId = 8,
-                            PermissionId = "full"
-                        },
-                        new
-                        {
-                            ChannelId = 7,
-                            RoleId = 9,
-                            PermissionId = "full"
-                        },
-                        new
-                        {
-                            ChannelId = 7,
-                            RoleId = 10,
-                            PermissionId = "full"
+                            ChannelPermissionId = 1,
+                            IsActive = false
                         },
                         new
                         {
                             ChannelId = 8,
-                            RoleId = 8,
-                            PermissionId = "full"
+                            RoleId = 16,
+                            ChannelPermissionId = 1,
+                            IsActive = true
                         },
                         new
                         {
                             ChannelId = 8,
-                            RoleId = 9,
-                            PermissionId = "full"
+                            RoleId = 17,
+                            ChannelPermissionId = 1,
+                            IsActive = false
                         },
                         new
                         {
                             ChannelId = 8,
-                            RoleId = 10,
-                            PermissionId = "no_chat"
+                            RoleId = 18,
+                            ChannelPermissionId = 1,
+                            IsActive = false
                         },
                         new
                         {
                             ChannelId = 9,
-                            RoleId = 11,
-                            PermissionId = "full"
+                            RoleId = 7,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 9,
+                            RoleId = 8,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            ChannelId = 9,
+                            RoleId = 19,
+                            ChannelPermissionId = 1,
+                            IsActive = true
+                        });
+                });
+
+            modelBuilder.Entity("API.Models.ChannelPermission", b =>
+                {
+                    b.Property<int>("PermissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("VARCHAR(1024)");
+
+                    b.Property<string>("PermissionName")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(50)");
+
+                    b.HasKey("PermissionId");
+
+                    b.ToTable("ChannelPermission");
+
+                    b.HasData(
+                        new
+                        {
+                            PermissionId = 1,
+                            PermissionName = "All"
+                        },
+                        new
+                        {
+                            PermissionId = 2,
+                            PermissionName = "All except send message"
+                        },
+                        new
+                        {
+                            PermissionId = 3,
+                            PermissionName = "View message"
+                        },
+                        new
+                        {
+                            PermissionId = 4,
+                            PermissionName = "Send message"
+                        },
+                        new
+                        {
+                            PermissionId = 5,
+                            PermissionName = "Send image"
+                        },
+                        new
+                        {
+                            PermissionId = 6,
+                            PermissionName = "React"
                         });
                 });
 
             modelBuilder.Entity("API.Models.InstantInvite", b =>
                 {
                     b.Property<string>("Link")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("VARCHAR(10)");
 
-                    b.Property<bool>("NerverExpire");
+                    b.Property<bool>("NerverExpired");
 
                     b.Property<int>("ServerId");
+
+                    b.Property<bool>("StillValid");
 
                     b.HasKey("Link");
 
@@ -301,26 +511,30 @@ namespace API.Migrations
                         new
                         {
                             Link = "1",
-                            NerverExpire = true,
-                            ServerId = 1
+                            NerverExpired = true,
+                            ServerId = 1,
+                            StillValid = true
                         },
                         new
                         {
                             Link = "2",
-                            NerverExpire = true,
-                            ServerId = 2
+                            NerverExpired = true,
+                            ServerId = 2,
+                            StillValid = true
                         },
                         new
                         {
                             Link = "3",
-                            NerverExpire = true,
-                            ServerId = 3
+                            NerverExpired = true,
+                            ServerId = 3,
+                            StillValid = true
                         },
                         new
                         {
                             Link = "4",
-                            NerverExpire = true,
-                            ServerId = 4
+                            NerverExpired = true,
+                            ServerId = 4,
+                            StillValid = true
                         });
                 });
 
@@ -397,53 +611,15 @@ namespace API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("API.Models.Permission", b =>
-                {
-                    b.Property<string>("PermissionId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("PermissionId");
-
-                    b.ToTable("Permission");
-
-                    b.HasData(
-                        new
-                        {
-                            PermissionId = "full",
-                            Description = "Will allow users to do anything",
-                            Name = "full"
-                        },
-                        new
-                        {
-                            PermissionId = "no_react",
-                            Description = "Won't allow users to give reactions",
-                            Name = "no react"
-                        },
-                        new
-                        {
-                            PermissionId = "no_chat",
-                            Description = "Won't allow users to chat",
-                            Name = "no chat"
-                        },
-                        new
-                        {
-                            PermissionId = "no_view",
-                            Description = "Won't allow users to see anything",
-                            Name = "no view"
-                        });
-                });
-
             modelBuilder.Entity("API.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<int>("ServerId");
 
@@ -457,67 +633,115 @@ namespace API.Migrations
                         new
                         {
                             RoleId = 1,
-                            Name = "Knight",
+                            RoleName = "Admin",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 2,
-                            Name = "Thief",
+                            RoleName = "Member",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 3,
-                            Name = "White Wizard",
-                            ServerId = 1
+                            RoleName = "Admin",
+                            ServerId = 2
                         },
                         new
                         {
                             RoleId = 4,
-                            Name = "Black Wizard",
-                            ServerId = 1
+                            RoleName = "Member",
+                            ServerId = 2
                         },
                         new
                         {
                             RoleId = 5,
-                            Name = "Adol",
-                            ServerId = 2
+                            RoleName = "Admin",
+                            ServerId = 3
                         },
                         new
                         {
                             RoleId = 6,
-                            Name = "Dogi",
-                            ServerId = 2
+                            RoleName = "Member",
+                            ServerId = 3
                         },
                         new
                         {
                             RoleId = 7,
-                            Name = "Aisha",
-                            ServerId = 2
+                            RoleName = "Admin",
+                            ServerId = 4
                         },
                         new
                         {
                             RoleId = 8,
-                            Name = "Admin",
-                            ServerId = 3
+                            RoleName = "Member",
+                            ServerId = 4
                         },
                         new
                         {
                             RoleId = 9,
-                            Name = "Artist",
-                            ServerId = 3
+                            RoleName = "Knight",
+                            ServerId = 1
                         },
                         new
                         {
                             RoleId = 10,
-                            Name = "Folk",
-                            ServerId = 3
+                            RoleName = "Thief",
+                            ServerId = 1
                         },
                         new
                         {
                             RoleId = 11,
-                            Name = "Musician",
+                            RoleName = "White Wizard",
+                            ServerId = 1
+                        },
+                        new
+                        {
+                            RoleId = 12,
+                            RoleName = "Black Wizard",
+                            ServerId = 1
+                        },
+                        new
+                        {
+                            RoleId = 13,
+                            RoleName = "Adol",
+                            ServerId = 2
+                        },
+                        new
+                        {
+                            RoleId = 14,
+                            RoleName = "Dogi",
+                            ServerId = 2
+                        },
+                        new
+                        {
+                            RoleId = 15,
+                            RoleName = "Aisha",
+                            ServerId = 2
+                        },
+                        new
+                        {
+                            RoleId = 16,
+                            RoleName = "New Admin",
+                            ServerId = 3
+                        },
+                        new
+                        {
+                            RoleId = 17,
+                            RoleName = "Artist",
+                            ServerId = 3
+                        },
+                        new
+                        {
+                            RoleId = 18,
+                            RoleName = "Folk",
+                            ServerId = 3
+                        },
+                        new
+                        {
+                            RoleId = 19,
+                            RoleName = "Musician",
                             ServerId = 4
                         });
                 });
@@ -530,9 +754,14 @@ namespace API.Migrations
 
                     b.Property<int>("AdminId");
 
-                    b.Property<string>("Image");
+                    b.Property<int?>("DefaultRoleId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(254);
+
+                    b.Property<string>("ServerName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("ServerId");
 
@@ -545,28 +774,208 @@ namespace API.Migrations
                         {
                             ServerId = 1,
                             AdminId = 1,
-                            Image = "server_1.png",
-                            Name = "Final Fantasy"
+                            DefaultRoleId = 2,
+                            ImageUrl = "server_1.png",
+                            ServerName = "Final Fantasy"
                         },
                         new
                         {
                             ServerId = 2,
                             AdminId = 1,
-                            Image = "server_2.png",
-                            Name = "Ys"
+                            DefaultRoleId = 4,
+                            ImageUrl = "server_2.png",
+                            ServerName = "Ys"
                         },
                         new
                         {
                             ServerId = 3,
                             AdminId = 2,
-                            Image = "server_3.png",
-                            Name = "Maiden"
+                            DefaultRoleId = 6,
+                            ImageUrl = "server_3.png",
+                            ServerName = "Maiden"
                         },
                         new
                         {
                             ServerId = 4,
                             AdminId = 2,
-                            Name = "TSFH"
+                            DefaultRoleId = 8,
+                            ServerName = "TSFH"
+                        });
+                });
+
+            modelBuilder.Entity("API.Models.ServerLevelPermission", b =>
+                {
+                    b.Property<int>("RoleId");
+
+                    b.Property<int>("PermissionId");
+
+                    b.Property<bool>("IsActive");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("ServerLevelPermission");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 9,
+                            PermissionId = 2,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            RoleId = 10,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 11,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 12,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 13,
+                            PermissionId = 2,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            RoleId = 14,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 15,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 5,
+                            PermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            RoleId = 6,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 16,
+                            PermissionId = 2,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            RoleId = 17,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 18,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 7,
+                            PermissionId = 1,
+                            IsActive = true
+                        },
+                        new
+                        {
+                            RoleId = 8,
+                            PermissionId = 1,
+                            IsActive = false
+                        },
+                        new
+                        {
+                            RoleId = 19,
+                            PermissionId = 2,
+                            IsActive = true
+                        });
+                });
+
+            modelBuilder.Entity("API.Models.ServerPermission", b =>
+                {
+                    b.Property<int>("PermissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("VARCHAR(1024)");
+
+                    b.Property<string>("PermissionName")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(50)");
+
+                    b.HasKey("PermissionId");
+
+                    b.ToTable("ServerPermission");
+
+                    b.HasData(
+                        new
+                        {
+                            PermissionId = 1,
+                            PermissionName = "All"
+                        },
+                        new
+                        {
+                            PermissionId = 2,
+                            PermissionName = "All except kick"
+                        },
+                        new
+                        {
+                            PermissionId = 3,
+                            PermissionName = "Kick"
+                        },
+                        new
+                        {
+                            PermissionId = 4,
+                            PermissionName = "Modify channel"
+                        },
+                        new
+                        {
+                            PermissionId = 5,
+                            PermissionName = "Modify role"
                         });
                 });
 
@@ -576,7 +985,14 @@ namespace API.Migrations
 
                     b.Property<int>("UserId");
 
+                    b.Property<int>("RoleId");
+
                     b.HasKey("ServerId", "UserId");
+
+                    b.HasAlternateKey("ServerId", "UserId", "RoleId")
+                        .HasName("UK_ServerUser_ServerId_UserId_RoleId");
+
+                    b.HasIndex("RoleId");
 
                     b.HasIndex("UserId");
 
@@ -586,57 +1002,68 @@ namespace API.Migrations
                         new
                         {
                             ServerId = 1,
-                            UserId = 1
+                            UserId = 1,
+                            RoleId = 1
                         },
                         new
                         {
                             ServerId = 2,
-                            UserId = 1
+                            UserId = 1,
+                            RoleId = 1
                         },
                         new
                         {
                             ServerId = 3,
-                            UserId = 2
+                            UserId = 2,
+                            RoleId = 5
                         },
                         new
                         {
                             ServerId = 1,
-                            UserId = 2
+                            UserId = 2,
+                            RoleId = 9
                         },
                         new
                         {
                             ServerId = 1,
-                            UserId = 3
+                            UserId = 3,
+                            RoleId = 9
                         },
                         new
                         {
                             ServerId = 2,
-                            UserId = 2
+                            UserId = 2,
+                            RoleId = 13
                         },
                         new
                         {
                             ServerId = 2,
-                            UserId = 3
+                            UserId = 3,
+                            RoleId = 13
                         },
                         new
                         {
                             ServerId = 2,
-                            UserId = 4
+                            UserId = 4,
+                            RoleId = 13
                         },
                         new
                         {
                             ServerId = 3,
-                            UserId = 1
+                            UserId = 1,
+                            RoleId = 16
                         },
                         new
                         {
                             ServerId = 3,
-                            UserId = 4
+                            UserId = 4,
+                            RoleId = 16
                         },
                         new
                         {
                             ServerId = 4,
-                            UserId = 2
+                            UserId = 2,
+                            RoleId = 7
                         });
                 });
 
@@ -648,19 +1075,29 @@ namespace API.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasColumnType("VARCHAR(254)");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(30);
 
-                    b.Property<int?>("Gender");
+                    b.Property<int>("Gender");
 
-                    b.Property<string>("Image");
+                    b.Property<string>("ImageName")
+                        .HasMaxLength(254);
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasMaxLength(30);
 
-                    b.Property<string>("Password");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(60)");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("Phone")
+                        .HasColumnType("VARCHAR(15)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(50)");
 
                     b.HasKey("UserId");
 
@@ -676,7 +1113,7 @@ namespace API.Migrations
                             Email = "daophilac@gmail.com",
                             FirstName = "Đào Phi",
                             Gender = 0,
-                            Image = "user_1.png",
+                            ImageName = "user_1.png",
                             LastName = "Lạc",
                             Password = "123",
                             Username = "peanut"
@@ -687,7 +1124,7 @@ namespace API.Migrations
                             Email = "daophilac1@gmail.com",
                             FirstName = "Đào Phi",
                             Gender = 0,
-                            Image = "user_2.png",
+                            ImageName = "user_2.png",
                             LastName = "Lạc",
                             Password = "123",
                             Username = "peanut"
@@ -698,7 +1135,7 @@ namespace API.Migrations
                             Email = "lucknight@gmail.com",
                             FirstName = "luck",
                             Gender = 0,
-                            Image = "user_3.png",
+                            ImageName = "user_3.png",
                             LastName = "night",
                             Password = "123",
                             Username = "lucknight"
@@ -709,7 +1146,7 @@ namespace API.Migrations
                             Email = "eddie@gmail.com",
                             FirstName = "ed",
                             Gender = 0,
-                            Image = "user_4.png",
+                            ImageName = "user_4.png",
                             LastName = "die",
                             Password = "123",
                             Username = "eddie"
@@ -724,20 +1161,20 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("API.Models.ChannelRolePermission", b =>
+            modelBuilder.Entity("API.Models.ChannelLevelPermission", b =>
                 {
                     b.HasOne("API.Models.Channel", "Channel")
-                        .WithMany("ChannelRolePermissions")
+                        .WithMany("ChannelLevelPermissions")
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("API.Models.Permission", "Permission")
-                        .WithMany("ChannelRolePermissions")
-                        .HasForeignKey("PermissionId")
+                    b.HasOne("API.Models.ChannelPermission", "ChannelPermission")
+                        .WithMany("ChannelLevelPermissions")
+                        .HasForeignKey("ChannelPermissionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.Role", "Role")
-                        .WithMany("ChannelRolePermissions")
+                        .WithMany("ChannelLevelPermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -755,12 +1192,12 @@ namespace API.Migrations
                     b.HasOne("API.Models.Channel", "Channel")
                         .WithMany("Messages")
                         .HasForeignKey("ChannelId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("API.Models.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.Role", b =>
@@ -779,12 +1216,30 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("API.Models.ServerLevelPermission", b =>
+                {
+                    b.HasOne("API.Models.ServerPermission", "ServerPermission")
+                        .WithMany("ServerLevelPermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.Role", "Role")
+                        .WithMany("ServerLevelPermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("API.Models.ServerUser", b =>
                 {
+                    b.HasOne("API.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("API.Models.Server", "Server")
                         .WithMany("ServerUsers")
                         .HasForeignKey("ServerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("API.Models.User", "User")
                         .WithMany("ServerUsers")

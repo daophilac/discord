@@ -23,15 +23,15 @@ namespace API.Hubs {
         /// </summary>
         /// <returns></returns>
         public async Task GetConnectionId() {
-            await Clients.Caller.SendAsync(ClientMethod.ReceiveConnectionId, Context.ConnectionId);
+            await Clients.Caller.SendAsync(ClientMethod.ReceiveConnectionIdSignal, Context.ConnectionId);
         }
 
         /// <summary>
         /// Create a channel inside a server.
-        /// There is a client-side validation to check whether the requested channel is unique in a correspond server,
-        /// but this method still has to check if there is concurrency conflict by actually querying the database to get a channel
-        /// which has the same Name and ServerId as the requested channel.
-        /// If there is, this method will send a concurrency error by envoking the client's ReceiveChannelConcurrencyConflict method.
+        /// There is a client-side validation to check whether the requested channel is unique in the corresponding server,
+        /// but this method still has to check if there is concurrent conflict by actually querying the database to get a channel
+        /// which has the same ChannelName and ServerId as the requested channel.
+        /// If there is, this method will send a concurrent error by envoking the client's ReceiveChannelConcurrentConflict method.
         /// Otherwise, this method will add the requested channel to the database and broadcast the json representation
         /// of the channel to all the clients that are currently in the server which the channel belongs to.
         /// </summary>
@@ -41,15 +41,15 @@ namespace API.Hubs {
         /// <returns></returns>
         public async Task CreateChannel(string jsonChannel) {
             Channel channel = JsonConvert.DeserializeObject<Channel>(jsonChannel);
-            Channel duplicatedChannel = mainDatabase.Channel.Where(c => c.Name == channel.Name && c.ServerId == channel.ServerId).FirstOrDefault();
+            Channel duplicatedChannel = mainDatabase.Channel.Where(c => c.ChannelName == channel.ChannelName && c.ServerId == channel.ServerId).FirstOrDefault();
             if(duplicatedChannel != null) {
-                await Clients.Caller.SendAsync(ClientMethod.ReceiveChannelConcurrencyConflict, ConcurrencyError.DuplicateChannel, DuplicateChannelErrorMessage);
+                await Clients.Caller.SendAsync(ClientMethod.ReceiveChannelConcurrenctConflictSignal, ConcurrenctError.DuplicateChannel, DuplicateChannelErrorMessage);
                 return;
             }
             mainDatabase.Channel.Add(channel);
             mainDatabase.SaveChanges();
             jsonChannel = JsonConvert.SerializeObject(channel);
-            await Clients.Group(MakeServerGroupId(channel.ServerId)).SendAsync(ClientMethod.ReceiveNewChannel, Context.ConnectionId, jsonChannel);
+            await Clients.Group(MakeServerGroupId(channel.ServerId)).SendAsync(ClientMethod.ReceiveNewChannelSignal, Context.ConnectionId, jsonChannel);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace API.Hubs {
             mainDatabase.ServerUser.Remove(serverUser);
             mainDatabase.SaveChanges();
             Groups.RemoveFromGroupAsync(Context.ConnectionId, serverId.ToString());
-            Clients.Group(MakeServerGroupId(serverId)).SendAsync(ClientMethod.LeaveServer, userId, serverId);
+            Clients.Group(MakeServerGroupId(serverId)).SendAsync(ClientMethod.ReceiveLeaveServerSignal, userId, serverId);
         }
         public async Task ReceiveMessage(string json) {
             Message message = JsonConvert.DeserializeObject<Message>(json);
@@ -104,16 +104,35 @@ namespace API.Hubs {
             mainDatabase.Message.Add(message);
             mainDatabase.SaveChanges();
             json = JsonConvert.SerializeObject(message);
-            await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync(ClientMethod.ReceiveMessage, Context.ConnectionId, message.UserId, json);
+            await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync(ClientMethod.ReceiveMessageSignal, Context.ConnectionId, message.UserId, json);
+        }
+        public async Task DeleteMessage(int channelId, int messageId) {
+            Message message = await mainDatabase.Message.FindAsync(messageId);
+            if(message != null) {
+                mainDatabase.Message.Remove(message);//channel id?
+                await mainDatabase.SaveChangesAsync();
+            }
+            await Clients.Group(MakeChannelGroupId(channelId)).SendAsync(ClientMethod.ReceiveDeleteMessageSignal, messageId);
+        }
+        public async Task EditMessage(int messageId, string content) {
+            Message message = await mainDatabase.Message.FindAsync(messageId);
+            if(message == null) {
+                return;
+            }
+            message.Content = content;
+            await mainDatabase.SaveChangesAsync();
+            await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync(ClientMethod.ReceiveEditMessageSignal, messageId, content);
         }
         public static class ClientMethod {
-            public static readonly string ReceiveChannelConcurrencyConflict = "ReceiveChannelConcurrencyConflict";
-            public static readonly string ReceiveConnectionId = "ReceiveConnectionId";
-            public static readonly string ReceiveNewChannel = "ReceiveNewChannel";
-            public static readonly string LeaveServer = "LeaveServer";
-            public static readonly string ReceiveMessage = "ReceiveMessage";
+            public static readonly string ReceiveChannelConcurrenctConflictSignal = "ReceiveChannelConcurrenctConflictSignal";
+            public static readonly string ReceiveConnectionIdSignal = "ReceiveConnectionIdSignal";
+            public static readonly string ReceiveNewChannelSignal = "ReceiveNewChannelSignal";
+            public static readonly string ReceiveLeaveServerSignal = "LeaveServer";
+            public static readonly string ReceiveMessageSignal = "ReceiveMessageSignal";
+            public static readonly string ReceiveDeleteMessageSignal = "ReceiveDeleteMessageSignal";
+            public static readonly string ReceiveEditMessageSignal = "ReceiveEditMessageSignal";
         }
-        private static class ConcurrencyError {
+        private static class ConcurrenctError {
             public static readonly string DuplicateChannel = "DuplicateChannel";
         }
     }

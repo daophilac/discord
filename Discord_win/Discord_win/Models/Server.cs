@@ -9,14 +9,16 @@ using System.Threading.Tasks;
 namespace Discord_win.Models {
     public class Server {
         public int ServerId { get; set; }
-        public string Name { get; set; }
-        public string Image { get; set; }
+        public string ServerName { get; set; }
+        public string ImageUrl { get; set; }
+        public int? DefaultRoleId { get; set; }
         public int AdminId { get; set; }
 
 
+        public Role DefaultRole { get; set; }
         public User Admin { get; set; }
-        public IEnumerable<ServerUser> ServerUsers { get; set; }
-        public ICollection<Role> Roles { get; set; }
         public ICollection<Channel> Channels { get; set; }
+        public ICollection<Role> Roles { get; set; }
+        public ICollection<ServerUser> ServerUsers { get; set; }
     }
 }

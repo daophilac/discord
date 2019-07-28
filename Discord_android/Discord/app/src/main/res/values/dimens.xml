@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_oddly_big">48sp</dimen>
-    <dimen name="text_biggest">38sp</dimen>
-    <dimen name="text_bigger">34sp</dimen>
-    <dimen name="text_big">30sp</dimen>
-    <dimen name="text_h1">26sp</dimen>
-    <dimen name="text_h2">22sp</dimen>
-    <dimen name="text_h3">20sp</dimen>
-    <dimen name="text_h4">18sp</dimen>
-    <dimen name="text_h5">16sp</dimen>
-    <dimen name="text_h6">14sp</dimen>
-    <dimen name="text_normal">12sp</dimen>
-    <dimen name="text_small">10sp</dimen>
-    <dimen name="text_smaller">8sp</dimen>
-    <dimen name="text_smallest">6sp</dimen>
-    <dimen name="text_oddly_small">4sp</dimen>
+    <dimen name="text_oddly_big">80sp</dimen>
+    <dimen name="text_biggest">70sp</dimen>
+    <dimen name="text_bigger">60sp</dimen>
+    <dimen name="text_big">50sp</dimen>
+    <dimen name="text_h1">40sp</dimen>
+    <dimen name="text_h2">36sp</dimen>
+    <dimen name="text_h3">32sp</dimen>
+    <dimen name="text_h4">28sp</dimen>
+    <dimen name="text_h5">24sp</dimen>
+    <dimen name="text_h6">20sp</dimen>
+    <dimen name="text_normal">16sp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_smaller">12sp</dimen>
+    <dimen name="text_smallest">10sp</dimen>
+    <dimen name="text_oddly_small">6sp</dimen>
 
     <dimen name="margin_giant">16dp</dimen>
     <dimen name="margin_largest">12dp</dimen>

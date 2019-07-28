@@ -4,8 +4,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Discord_win.Pages"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
-      d:DesignHeight="720" d:DesignWidth="1280"
+      d:DesignHeight="500" d:DesignWidth="1000"
       Title="MainPage">
 
     <Grid>
@@ -14,9 +15,14 @@
                 <Grid x:Name="GridServerFooter" x:FieldModifier="private" DockPanel.Dock="Bottom">
                     <Button x:Name="ButtonCreateOrJoinServer" Content="Join" Width="50" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                 </Grid>
-                <Grid DockPanel.Dock="Bottom">
-                    <Button x:Name="ButtonTestCancelDownload" x:FieldModifier="private" Content="Cancel" HorizontalAlignment="Center" />
-                </Grid>
+                <!--<Grid DockPanel.Dock="Bottom">
+                    <DockPanel LastChildFill="False">
+                        <Button x:Name="ButtonTestCancelDownload" x:FieldModifier="private" Content="Cancel" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+                        </Button>
+                        <Button x:Name="ButtonPause" x:FieldModifier="private" Content="Pause" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
+                        <Button x:Name="ButtonResume" x:FieldModifier="private" Content="Resume" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
+                    </DockPanel>
+                </Grid>-->
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource ServerSection_Background}">
                     <Grid x:Name="GridServerButton">
                     </Grid>
@@ -34,10 +40,13 @@
                 </Grid>
             </DockPanel>
             <Grid x:Name="GridRole" DockPanel.Dock="Right" Width="240" Background="{DynamicResource RoleSection_Background}"/>
-            <DockPanel DockPanel.Dock="Bottom" Height="40" Background="{DynamicResource MessageSection_Background}">
+            <DockPanel DockPanel.Dock="Bottom" Height="60" Background="{DynamicResource MessageSection_Background}">
                 <Grid Margin="40, 0, 40, 0">
-                    <TextBox x:Name="TextBoxType" x:FieldModifier="private" Height="40" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" FontSize="14" Background="{DynamicResource TextBoxChat_Background}" Foreground="{DynamicResource TextBoxChat_Foreground}"/>
-                    <Button x:Name="ButtonSend" x:FieldModifier="private" Content="Send" HorizontalAlignment="Right" />
+                    <DockPanel Height="40" VerticalAlignment="Bottom">
+                        <Button x:Name="ButtonSend" x:FieldModifier="private" Content="Send" DockPanel.Dock="Right" />
+                        <TextBox x:Name="TextBoxType" x:FieldModifier="private" FontSize="14" TextWrapping="Wrap" VerticalContentAlignment="Center" Background="{DynamicResource TextBoxChat_Background}" Foreground="{DynamicResource TextBoxChat_Foreground}"/>
+                    </DockPanel>
+                    <Button x:Name="ButtonCancelEdit" x:FieldModifier="private" Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Hidden"/>
                 </Grid>
             </DockPanel>
             <DockPanel x:Name="DockPanelMessage" x:FieldModifier="private" Background="{DynamicResource MessageSection_Background}">

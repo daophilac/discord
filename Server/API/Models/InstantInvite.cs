@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Models {
     public class InstantInvite {
-        [Key]
+        [Key, Column(TypeName = "VARCHAR(10)")]
         public string Link { get; set; }
+        [Required]
         public int ServerId { get; set; }
-        public bool NerverExpire { get; set; }
+        [Required]
+        public bool StillValid { get; set; }
+        [Required]
+        public bool NerverExpired { get; set; }
 
         public Server Server { get; set; }
     }

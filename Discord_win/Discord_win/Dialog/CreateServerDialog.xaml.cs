@@ -21,14 +21,14 @@ namespace Discord_win.Dialog {
     /// Interaction logic for CreateServerDialog.xaml
     /// </summary>
     public partial class CreateServerDialog : Window {
-        public event EventHandler<OnRequestCreateServerArgs> OnRequestCreateServer;
+        public event EventHandler<RequestCreateServerArgs> RequestCreateServer;
         public CreateServerDialog() {
             InitializeComponent();
         }
 
         private void ButtonCreate_Click(object sender, RoutedEventArgs e) {
             if(TextBoxServerName.Text != "") {
-                OnRequestCreateServer(this, new OnRequestCreateServerArgs(TextBoxServerName.Text));
+                RequestCreateServer?.Invoke(this, new RequestCreateServerArgs(TextBoxServerName.Text));
             }
         }
 
@@ -37,9 +37,9 @@ namespace Discord_win.Dialog {
             Visibility = Visibility.Hidden;
         }
     }
-    public class OnRequestCreateServerArgs : EventArgs {
+    public class RequestCreateServerArgs : EventArgs {
         public string ServerName { get; }
-        public OnRequestCreateServerArgs(string serverName) {
+        public RequestCreateServerArgs(string serverName) {
             ServerName = serverName;
         }
     }

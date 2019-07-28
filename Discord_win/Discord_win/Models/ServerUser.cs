@@ -8,17 +8,13 @@ using System.Threading.Tasks;
 
 namespace Discord_win.Models {
     public class ServerUser {
-        [Key]
-        [Column(Order = 1)]
         public int ServerId { get; set; }
-        [Key]
-        [Column(Order = 2)]
         public int UserId { get; set; }
+        public int RoleId { get; set; }
 
-
-        [ForeignKey("ServerID")]
+        
         public Server Server { get; set; }
-        [ForeignKey("UserID")]
         public User User { get; set; }
+        public Role Role { get; set; }
     }
 }

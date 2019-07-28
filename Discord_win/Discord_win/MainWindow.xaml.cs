@@ -25,17 +25,28 @@ namespace Discord_win {
             ServicePointManager.DefaultConnectionLimit = 100;
             InitializeComponent();
             FileSystem.Establish();
-            Begin();
+            BeginLogin();
         }
-        public void Begin() {
+        public void BeginLogin() {
             Program.mainWindow = this;
             Program.Initialize();
             Program.loginPage.Activate();
             MainFrame.Navigate(Program.loginPage);
         }
+        public void BeginMain() {
+            Program.Initialize();
+            Program.mainPage.Activate();
+            MainFrame.Navigate(Program.mainPage);
+        }
         public void Restart() {
             EventManager.TearDown();
-            Begin();
+            BeginLogin();
+        }
+
+        private void MainFrame_Navigating(object sender, NavigatingCancelEventArgs e) {
+            if(e.NavigationMode == NavigationMode.Back) {
+                e.Cancel = true;
+            }
         }
     }
 }

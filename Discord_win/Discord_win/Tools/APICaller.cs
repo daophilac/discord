@@ -1,87 +1,63 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace Discord_win.Tools {
-    public class RequestMethod {
-        private readonly string value;
-        public static readonly RequestMethod GET = new RequestMethod("GET");
-        public static readonly RequestMethod POST = new RequestMethod("POST");
-        public static readonly RequestMethod PUT = new RequestMethod("PUT");
-        public static readonly RequestMethod DELETE = new RequestMethod("DELETE");
-        private RequestMethod(string value) {
-            this.value = value;
-        }
-        public override string ToString() {
-            return value;
-        }
-    }
     public class APICaller {
         private static readonly string NULL_REQUEST_METHOD = "Request method cannot be null";
         private static readonly string NULL_REQUEST_URL = "Request URL cannot be null";
-        private static readonly string NULL_JSON = "Outgoing JSON cannot be null";
-
-        public RequestMethod RequestMethod { get; set; }
+        private static readonly string NULL_JSON = "Json Object cannot be null";
+        public HttpMethod HttpMethod { get; set; }
         public string RequestUrl { get; set; }
-        public string OutgoingJson { get; set; }
+        public object jsonObject;
+        private HttpClient HttpClient { get; } = new HttpClient();
         public APICaller() { }
-        public APICaller(RequestMethod requestMethod) {
-            RequestMethod = requestMethod;
+        public APICaller(HttpMethod httpMethod) {
+            HttpMethod = httpMethod;
         }
-        public APICaller(RequestMethod requestMethod, string requestUrl) {
-            RequestMethod = requestMethod;
+        public APICaller(HttpMethod httpMethod, string requestUrl) {
+            HttpMethod = httpMethod;
             RequestUrl = requestUrl;
         }
-        public APICaller(RequestMethod requestMethod, string requestUrl, string outgoingJson) {
-            RequestMethod = requestMethod;
+        public APICaller(HttpMethod httpMethod, string requestUrl, object jsonObject) {
+            HttpMethod = httpMethod;
             RequestUrl = requestUrl;
-            OutgoingJson = outgoingJson;
+            this.jsonObject = jsonObject;
         }
-        public void SetProperties(RequestMethod requestMethod, string requestUrl) {
-            RequestMethod = requestMethod;
+        public void SetProperties(HttpMethod httpMethod, string requestUrl) {
+            HttpMethod = httpMethod;
             RequestUrl = requestUrl;
         }
-        public void SetProperties(RequestMethod requestMethod, string requestUrl, string outgoingJson) {
-            RequestMethod = requestMethod;
+        public void SetProperties(HttpMethod httpMethod, string requestUrl, object jsonObject) {
+            HttpMethod = httpMethod;
             RequestUrl = requestUrl;
-            OutgoingJson = outgoingJson;
+            this.jsonObject = jsonObject;
         }
-        public async Task<string> SendRequestAsync() {
-            if(RequestMethod == null) {
+        public async Task<HttpResponseMessage> SendRequestAsync() {
+            if(HttpMethod == null) {
                 throw new ArgumentNullException(NULL_REQUEST_METHOD);
             }
             if (RequestUrl == null) {
                 throw new ArgumentNullException(NULL_REQUEST_URL);
             }
-            if (RequestMethod != RequestMethod.GET && RequestMethod != RequestMethod.DELETE && OutgoingJson == null) {
+            if (HttpMethod != HttpMethod.Get && HttpMethod != HttpMethod.Delete && jsonObject == null) {
                 throw new ArgumentNullException(NULL_JSON);
             }
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(RequestUrl);
-            httpWebRequest.ContentType = "application/json; charset=utf-8";
-            httpWebRequest.Method = RequestMethod.ToString();
-            httpWebRequest.Accept = "application/json; charset=utf-8";
-            if(RequestMethod == RequestMethod.POST) {
-                StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream());
-                streamWriter.Write(OutgoingJson);
-                streamWriter.Flush();
-                streamWriter.Close();
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage {
+                Method = HttpMethod,
+                RequestUri = new Uri(RequestUrl)
+            };
+            if(HttpMethod == HttpMethod.Post) {
+                httpRequestMessage.Content = new StringContent(JsonConvert.SerializeObject(jsonObject), Encoding.UTF8, "application/json");
             }
-            try {
-                HttpWebResponse httpWebResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-                if (httpWebResponse.StatusCode == HttpStatusCode.OK) {
-                    StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
-                    string result = streamReader.ReadToEnd();
-                    streamReader.Close();
-                    return result;
-                }
-            }
-            catch(Exception) { }
-            return null;
+            return await HttpClient.SendAsync(httpRequestMessage);
         }
     }
 }

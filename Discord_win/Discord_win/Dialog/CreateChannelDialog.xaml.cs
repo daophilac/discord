@@ -17,14 +17,14 @@ namespace Discord_win.Dialog {
     /// Interaction logic for CreateChannelDialog.xaml
     /// </summary>
     public partial class CreateChannelDialog : Window {
-        public event EventHandler<OnRequestCreateChannelArgs> OnRequestCreateChannel;
+        public event EventHandler<RequestCreateChannelArgs> RequestCreateChannel;
         public CreateChannelDialog() {
             InitializeComponent();
         }
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e) {
             if(TextBoxChannelName.Text != "") {
-                OnRequestCreateChannel(this, new OnRequestCreateChannelArgs(TextBoxChannelName.Text));
+                RequestCreateChannel?.Invoke(this, new RequestCreateChannelArgs(TextBoxChannelName.Text));
             }
         }
 
@@ -33,9 +33,9 @@ namespace Discord_win.Dialog {
             Visibility = Visibility.Hidden;
         }
     }
-    public class OnRequestCreateChannelArgs : EventArgs {
+    public class RequestCreateChannelArgs : EventArgs {
         public string ChannelName { get; }
-        public OnRequestCreateChannelArgs(string channelName) {
+        public RequestCreateChannelArgs(string channelName) {
             ChannelName = channelName;
         }
     }
