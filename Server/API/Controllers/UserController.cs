@@ -46,7 +46,7 @@ namespace API.Controllers {
         }
         [HttpGet, HttpHead, Route("testdownload")]
         public IActionResult TestDownload() {
-            string fullPath = "D:/Desktop/a.zip";
+            string fullPath = Path.Combine(FileSystem.UserImageDirectory, "a.zip");
             return Program.fileProvider.Send(fullPath);
         }
 
