@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,6 +16,7 @@ namespace API.Models {
         public int ServerId { get; set; }
 
         public Server Server { get; set; }
+        [JsonIgnore]
         public ICollection<Message> Messages { get; set; }
         public ICollection<ChannelLevelPermission> ChannelLevelPermissions { get; set; }
     }

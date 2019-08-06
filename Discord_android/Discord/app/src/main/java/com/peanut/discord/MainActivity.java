@@ -2,16 +2,17 @@ package com.peanut.discord;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.support.transition.Slide;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.transition.Slide;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,6 +20,10 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.peanut.androidlib.common.worker.MultipleWorker;
+import com.peanut.androidlib.common.worker.SingleWorker;
 import com.peanut.discord.customview.MessageRecyclerView;
 import com.peanut.discord.customview.NavigationButton;
 import com.peanut.discord.customview.SendMessageButton;
@@ -33,16 +38,19 @@ import com.peanut.discord.resources.Route;
 import com.peanut.discord.tools.APICaller;
 import com.peanut.discord.tools.JsonBuilder;
 import com.peanut.discord.tools.JsonConverter;
-import com.peanut.discord.worker.MultipleWorker;
-import com.peanut.discord.worker.SingleWorker;
 
+import java.io.IOException;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements HubManager.HubListener, NavigatorListener, ServerConfigurationListener {
+    public static final String preferenceName = "com.peanut.discord";
     public static final String LOG_TAG = "com.peanut.discord";
+    public static final String dateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
+    public static final Gson gson = new GsonBuilder().setDateFormat(dateTimePattern).create();
     public static Locale locale = Locale.ENGLISH;// TODO:
     public static LayoutInflater themeInflater;// TODO
-    public static final int themeId = R.style.DarkAMOLED;
+    public static int themeId;
+    public static SharedPreferences sharedPreferences;
 
     public static InputMethodManager inputMethodManager;
     public static JsonBuilder jsonBuilder;
@@ -56,14 +64,10 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
     private FragmentManager fragmentManager;
     private NavigatorFragment navigatorFragment;
     private MessageRecyclerView messageRecyclerView;
-    private Handler handlerGetListMessage;
-    private Handler handlerLeaveServer;
     private APICaller apiCaller;
 
     private SingleWorker singleWorker;
     private MultipleWorker multipleWorker;
-
-
 
     @Override
     protected void onDestroy() {
@@ -71,10 +75,7 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
         singleWorker.quit();
         multipleWorker.quit();
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private void initialize(){
         setTheme(themeId);
         setContentView(R.layout.activity_main);
         HubManager.establish();
@@ -86,61 +87,81 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
         fragmentManager = getSupportFragmentManager();
         navigatorFragment = new NavigatorFragment();
         apiCaller = new APICaller();
-        singleWorker.execute(() -> {
-            handlerGetListMessage = new Handler(Looper.getMainLooper()){
-                @Override
-                public void handleMessage(Message msg) {
-                    Inventory.storeListMessage((String)msg.obj);
-                }
-            };
-            handlerLeaveServer = new Handler(Looper.getMainLooper()){
-                @Override
-                public void handleMessage(Message msg) {
-
-                }
-            };
-            navigatorFragment.setEnterTransition(new Slide(Gravity.START));
-            navigatorFragment.setExitTransition(new Slide(Gravity.START));
+        Inventory.registerOnUserLongClickMessageListener(message -> {
+            MessageOperationDialog mod = new MessageOperationDialog();
+            mod.show(fragmentManager, getPackageName());
         });
         multipleWorker.execute(() -> {
             inputMethodManager = (InputMethodManager) getBaseContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             jsonBuilder = new JsonBuilder();
             jsonConverter = new JsonConverter();
         }).execute(() -> {
-            drawerLayout = findViewById(R.id.drawer_layout);
-            navigationButton = findViewById(R.id.navigation_button);
-            messageRecyclerView = findViewById(R.id.message_recycler_view);
-            editTextType = findViewById(R.id.editText_type);
-            sendMessageButton = findViewById(R.id.send_message_button);
-
-            navigationButton.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-            sendMessageButton.setOnClickListener(v -> {
-                if(Inventory.currentChannel == null){
-                    return;
-                }
-                if(!editTextType.getText().toString().equals("")){
-                    sendMessage();
-                }
-            });
+            registerViews();
             runOnUiThread(() -> {
+                navigatorFragment.setEnterTransition(new Slide(Gravity.START));
+                navigatorFragment.setExitTransition(new Slide(Gravity.START));
                 messageRecyclerView.setAdapter(Inventory.getMessageAdapter());
                 messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 fragmentManager.beginTransaction().replace(R.id.navigation_view, navigatorFragment).commit();
             });
+            navigatorFragment.setOnThemeChangeListener(themeId -> {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("themeId", themeId);
+                editor.apply();
+                Intent i = new Intent(this, MainActivity.class);
+                i.putExtra("command", IntentCommand.CHANGE_THEME);
+                startActivity(i);
+            });
         });
     }
-    private void apiGetListMessage(Channel channel){
-        apiCaller.setProperties(handlerGetListMessage, APICaller.RequestMethod.GET, Route.buildGetMessagesByChannelUrl(channel.getChannelId()));
-        singleWorker.execute(apiCaller);
+    private void changeTheme(){
+        themeId = sharedPreferences.getInt("themeId", R.style.Light);
+        themeInflater = getLayoutInflater().cloneInContext(new ContextThemeWrapper(this, themeId));
+        setTheme(themeId);
+        setContentView(R.layout.activity_main);
+        multipleWorker.execute(() -> {
+            registerViews();
+            runOnUiThread(() -> {
+                messageRecyclerView.setAdapter(Inventory.getMessageAdapter());
+                messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                fragmentManager.beginTransaction().detach(navigatorFragment).attach(navigatorFragment).commit();
+                drawerLayout.openDrawer(GravityCompat.START, false);
+            });
+        });
     }
-
+    public void registerViews(){
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationButton = findViewById(R.id.navigation_button);
+        messageRecyclerView = findViewById(R.id.message_recycler_view);
+        editTextType = findViewById(R.id.editText_type);
+        sendMessageButton = findViewById(R.id.send_message_button);
+        navigationButton.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+        sendMessageButton.setOnClickListener(v -> {
+            if(Inventory.currentChannel == null){
+                return;
+            }
+            if(!editTextType.getText().toString().equals("")){
+                sendMessage();
+            }
+        });
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initialize();
+    }
+    private void apiGetListMessage(Channel channel){
+        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.buildGetMessagesByChannelUrl(channel.getChannelId()));
+        apiCaller.setOnSuccessListener((connection, response) -> {
+            runOnUiThread(() -> Inventory.storeListMessage(response));
+        }).sendRequest();
+    }
     public void sendMessage(){
         User currentUser = Inventory.currentUser;
         Channel currentChannel = Inventory.currentChannel;
-        String json = jsonBuilder.buildMessageJson(currentChannel, currentUser, editTextType.getText().toString());
-        HubManager.sendMessage(currentUser.getUserId(), currentChannel.getChannelId(), json);
+        String content = editTextType.getText().toString();
+        HubManager.sendMessage(currentUser.getUserId(), currentChannel.getChannelId(), content);
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -149,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
         }
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     public void onAddOrCreateServer() {
         new CreateOrJoinServerDialogFragment().show(fragmentManager, null);
@@ -158,15 +178,14 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
     @Override
     public void onChannelChanged(Channel previousChannel, Channel currentChannel) {
         if(previousChannel != null){
-            HubManager.leaveChannel(previousChannel.getChannelId());
+            HubManager.exitChannel(previousChannel.getChannelId());
         }
-        HubManager.joinChannel(currentChannel.getChannelId());
+        HubManager.enterChannel(currentChannel.getChannelId());
         apiGetListMessage(currentChannel);
     }
 
     @Override
     public void onGetNewChannel(String jsonChannel) {
-        //Channel channel = jsonConverter.toChannel(jsonChannel);
         Inventory.addChannel(jsonChannel);
     }
 
@@ -175,8 +194,8 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
         if(Inventory.currentServer == null){
             return;
         }
-        apiCaller.setProperties(handlerLeaveServer, APICaller.RequestMethod.DELETE, Route.buildLeaveServerUrl(Inventory.currentUser.getUserId(), Inventory.currentServer.getServerId()));
-        singleWorker.execute(apiCaller);
+        apiCaller.setProperties(APICaller.RequestMethod.DELETE, Route.buildLeaveServerUrl(Inventory.currentUser.getUserId(), Inventory.currentServer.getServerId()));
+        apiCaller.sendRequest();
         Inventory.leaveServer();
     }
 
@@ -189,22 +208,12 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
             });
         }
     }
-
-    SingleWorker getSingleWorker() {
-        return singleWorker;
-    }
-
-    MultipleWorker getMultipleWorker() {
-        return multipleWorker;
-    }
-
     public static void writeLogVerbose(String message) {
         Log.v(LOG_TAG, message);
     }
-
-
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         IntentCommand intentCommand = (IntentCommand) intent.getSerializableExtra("command");
         if(intentCommand == null){
             return;
@@ -219,10 +228,12 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
                     Inventory.addServer(newServer);
                 }
                 break;
+            case CHANGE_THEME:
+                changeTheme();
+                break;
         }
     }
-
     enum IntentCommand{
-        CREATE_SERVER, JOIN_SERVER
+        CREATE_SERVER, JOIN_SERVER, CHANGE_THEME
     }
 }

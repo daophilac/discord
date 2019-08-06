@@ -4,7 +4,7 @@
             "outputFile": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-land\\values-land.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\ded36ef67012c43818ed470a5aa5de5a\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\a45c2c25c357bd3275b244f522928a1a\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\d84fe35d742cc1a0f31cd8a922cc5ace\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",

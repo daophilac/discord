@@ -6,7 +6,7 @@ public class User {
     private String phone;
     private String password;
     private String userName;
-    private String fistName;
+    private String firstName;
     private String lastName;
     private Gender gender;
     private String imageName;
@@ -40,11 +40,11 @@ public class User {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    public String getFistName() {
-        return fistName;
+    public String getFirstName() {
+        return firstName;
     }
-    public void setFistName(String fistName) {
-        this.fistName = fistName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
     public String getLastName() {
         return lastName;

@@ -2,6 +2,7 @@
 using Discord_win.Models;
 using Discord_win.Resources.Static;
 using Discord_win.Tools;
+using Peanut.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace Discord_win.Managers {
         }
 
         private static void UserManager_LogOut(object sender, EventArgs e) {
-            ImageDownloader.CancelAllDownloadTasksAndDeleteFiles();
+            Downloader.CancelAllAndDeleteFiles();
             FileSystem.ClearData();
             Program.mainWindow.Restart();
         }

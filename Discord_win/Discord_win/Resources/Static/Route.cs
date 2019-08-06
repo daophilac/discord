@@ -26,7 +26,7 @@ namespace Discord_win.Resources.Static {
         private static readonly string RouteChatHub = "/chathub";
 
         public static readonly string BaseUrl = Protocol + "://" + DomainName + ServerName;
-        //public static readonly string BaseUrl = "https://localhost:44334";
+        //public static readonly string BaseUrl = "http://127.0.0.1:55555";
         public static readonly string UrlLogin = BaseUrl + RouteLogin;
         public static readonly string UrlSignUp = BaseUrl + RouteSignUp;
         public static readonly string UrlPostServer = BaseUrl + RoutePostServer;

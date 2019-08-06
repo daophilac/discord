@@ -1,8 +1,7 @@
 package com.peanut.discord.tools;
-
-import android.os.AsyncTask;
-import android.os.Handler;
 import android.os.Message;
+
+import com.peanut.androidlib.common.worker.SingleWorker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,86 +11,94 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
-public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
-    @Override
-    protected Void doInBackground(Void... voids) {
-        validateException();
-        try {
-            URL url = new URL(this.requestURL);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod(this.requestMethod.getValue());
-            if (this.requestMethod == RequestMethod.POST) {
-                byte[] outgoingBytes = this.outgoingJson.getBytes(StandardCharsets.UTF_8);
-                int length = outgoingBytes.length;
-                httpURLConnection.setFixedLengthStreamingMode(length);
-                httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                httpURLConnection.connect();
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(outgoingBytes);
-            }
-            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                StringBuilder stringBuilder = new StringBuilder();
-                String line = bufferedReader.readLine();
-                if(line == null){
-                    Message message = this.handler.obtainMessage(1, null);
-                    message.sendToTarget();
-                    return null;
-                }
-                while (line != null) {
-                    stringBuilder.append(line);
-                    line = bufferedReader.readLine();
-                }
-                bufferedReader.close();
-                this.incomingJson = stringBuilder.toString();
-                Message message = this.handler.obtainMessage(1, this.incomingJson);
-                message.sendToTarget();
-            }
-            else{
-                Message message = this.handler.obtainMessage(httpURLConnection.getResponseCode());
-                message.sendToTarget();
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    private static final String NULL_HANDLER = "Handler cannot be null";
+public class APICaller {
     private static final String NULL_REQUEST_METHOD = "Request method cannot be null";
     private static final String NULL_REQUEST_URL = "Request URL cannot be null";
     private static final String NULL_JSON = "Outgoing JSON cannot be null";
-
-    private Handler handler;
+    private SingleWorker singleWorker;
     private RequestMethod requestMethod;
     private String requestURL;
     private String outgoingJson;
     private String incomingJson;
-    public APICaller(){ }
-    public APICaller(Handler handler){
-        this.handler = handler;
+    private OnSuccessListener onSuccessListener;
+    private OnHttpFailListener onHttpFailListener;
+    private OnExceptionListener onExceptionListener;
+    public APICaller() {
+        singleWorker = new SingleWorker();
     }
-    public APICaller(Handler handler, RequestMethod requestMethod){
-        this.handler = handler;
+    public APICaller(RequestMethod requestMethod) {
         this.requestMethod = requestMethod;
+        singleWorker = new SingleWorker();
     }
-    public APICaller(Handler handler, RequestMethod requestMethod, String requestURL){
-        this.handler = handler;
+    public APICaller(RequestMethod requestMethod, String requestURL) {
         this.requestMethod = requestMethod;
         this.requestURL = requestURL;
+        singleWorker = new SingleWorker();
     }
-    public APICaller(Handler handler, RequestMethod requestMethod, String requestURL, String outgoingJson){
-        this.handler = handler;
+    public APICaller(RequestMethod requestMethod, String requestURL, String outgoingJson) {
         this.requestMethod = requestMethod;
         this.requestURL = requestURL;
         this.outgoingJson = outgoingJson;
+        singleWorker = new SingleWorker();
     }
-    public void setHandler(Handler handler){
-        this.handler = handler;
+    public void sendRequest() {
+        validateException();
+        singleWorker.execute(() -> {
+            try {
+                URL url = new URL(this.requestURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod(this.requestMethod.getValue());
+                if (this.requestMethod == RequestMethod.POST) {
+                    byte[] outgoingBytes = this.outgoingJson.getBytes(StandardCharsets.UTF_8);
+                    int length = outgoingBytes.length;
+                    httpURLConnection.setFixedLengthStreamingMode(length);
+                    httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                    httpURLConnection.connect();
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    outputStream.write(outgoingBytes);
+                }
+                if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    InputStreamReader inputStreamReader = new InputStreamReader(httpURLConnection.getInputStream());
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line = bufferedReader.readLine();
+                    while (line != null) {
+                        stringBuilder.append(line);
+                        line = bufferedReader.readLine();
+                    }
+                    bufferedReader.close();
+                    incomingJson = stringBuilder.toString();
+                    Message message = Message.obtain();
+                    message.obj = incomingJson;
+                    triggerOnSuccessEvent(httpURLConnection, incomingJson);
+                } else {
+                    triggerOnHttpFailEvent(httpURLConnection, httpURLConnection.getResponseMessage());
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                triggerOnExceptionEvent(e);
+            } catch (IOException e) {
+                e.printStackTrace();
+                triggerOnExceptionEvent(e);
+            }
+        });
     }
-    public void setRequestMethod(RequestMethod method){
+    private void triggerOnSuccessEvent(HttpURLConnection connection, String response){
+        if(onSuccessListener != null){
+            onSuccessListener.onSuccess(connection, response);
+        }
+    }
+    private void triggerOnHttpFailEvent(HttpURLConnection connection, String response){
+        if(onHttpFailListener != null){
+            onHttpFailListener.onHttpFail(connection, response);
+        }
+    }
+    private void triggerOnExceptionEvent(Exception e){
+        if(onExceptionListener != null){
+            onExceptionListener.onException(e);
+        }
+    }
+    public void setRequestMethod(RequestMethod method) {
         this.requestMethod = method;
     }
     public void setRequestURL(String requestURL) {
@@ -100,53 +107,55 @@ public class APICaller extends AsyncTask<Void, Void, Void> implements Runnable {
     public void setOutgoingJson(String outgoingJson) {
         this.outgoingJson = outgoingJson;
     }
-    public void setProperties(Handler handler, RequestMethod requestMethod, String requestURL){
-        this.handler = handler;
+    public void setProperties(RequestMethod requestMethod, String requestURL) {
         this.requestMethod = requestMethod;
         this.requestURL = requestURL;
     }
-    public void setProperties(Handler handler, RequestMethod requestMethod, String requestURL, String json){
-        this.handler = handler;
+    public void setProperties(RequestMethod requestMethod, String requestURL, String json) {
         this.requestMethod = requestMethod;
         this.requestURL = requestURL;
         this.outgoingJson = json;
     }
-    private void validateException(){
-        if(this.handler == null){
-            throw new RuntimeException(NULL_HANDLER);
-        }
-        if(this.requestMethod == null){
+    private void validateException() {
+        if (this.requestMethod == null) {
             throw new RuntimeException(NULL_REQUEST_METHOD);
         }
-        if(this.requestURL == null){
+        if (this.requestURL == null) {
             throw new RuntimeException(NULL_REQUEST_URL);
         }
-        if(this.requestMethod != RequestMethod.GET  && this.requestMethod != RequestMethod.DELETE && this.outgoingJson == null){
+        if (this.requestMethod != RequestMethod.GET && this.requestMethod != RequestMethod.DELETE && this.outgoingJson == null) {
             throw new RuntimeException(NULL_JSON);
         }
     }
-
-
-
-
-    @Override
-    public void run() {
-        doInBackground();
+    public APICaller setOnSuccessListener(OnSuccessListener onSuccessListener) {
+        this.onSuccessListener = onSuccessListener;
+        return this;
     }
-
-
-
-
-
-
-
-
-    public enum RequestMethod{
+    public APICaller setOnHttpFailListener(OnHttpFailListener onHttpFailListener) {
+        this.onHttpFailListener = onHttpFailListener;
+        return this;
+    }
+    public APICaller setOnExceptionListener(OnExceptionListener onExceptionListener) {
+        this.onExceptionListener = onExceptionListener;
+        return this;
+    }
+    public interface OnSuccessListener{
+        void onSuccess(HttpURLConnection connection, String response);
+    }
+    public interface OnHttpFailListener{
+        void onHttpFail(HttpURLConnection connection, String response);
+    }
+    public interface OnExceptionListener{
+        void onException(Exception e);
+    }
+    public enum RequestMethod {
         GET("GET"), POST("POST"), PUT("PUT"), DELETE("DELETE");
         private final String value;
-        RequestMethod(String value){
+        RequestMethod(String value) {
             this.value = value;
         }
-        private String getValue(){return this.value;}
+        private String getValue() {
+            return this.value;
+        }
     }
 }

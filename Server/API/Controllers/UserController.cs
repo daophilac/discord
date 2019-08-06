@@ -21,12 +21,15 @@ namespace API.Controllers {
         }
         [HttpPost, HttpHead, Route("uploadimage/{userId}")]
         public async Task<IActionResult> UploadFile(IFormFileCollection formFileCollection, int userId) {
-            if(Request.Form == null) {
-                return BadRequest();
+            if (!Request.HasFormContentType) {
+                return BadRequest("Must be a form-data request.");
+            }
+            if (Request.Form == null) {
+                return BadRequest("form-data is empty.");
             }
             IFormFileCollection formFiles = Request.Form.Files;
             foreach (IFormFile formFile in formFiles) {
-                if(await Program.fileProvider.Get(formFile, FileSystem.BuildUserImagePath(formFile.FileName, userId), true) != Ok()) {
+                if(!await Program.fileProvider.Get(formFile, FileSystem.BuildUserImagePath(formFile.FileName, userId), true)) {
                     return BadRequest();
                 }
             }
@@ -48,6 +51,24 @@ namespace API.Controllers {
         public IActionResult TestDownload() {
             string fullPath = Path.Combine(FileSystem.UserImageDirectory, "a.zip");
             return Program.fileProvider.Send(fullPath);
+        }
+        [HttpPost, Route("testupload")]
+        public async Task<IActionResult> TestUpload(IFormFile formFile) {
+             if (!Request.HasFormContentType) {
+                return BadRequest("Must be a form-data request.");
+            }
+            if (Request.Form == null) {
+                return BadRequest("form-data is empty.");
+            }
+            if(Request.Form.Files.Count == 0) {
+                return BadRequest();
+            }
+            await Program.fileProvider.Get(Request.Form.Files[0], "D:/Desktop/a.zip", true);
+            return Ok();
+        }
+        [HttpPost, Route("testupload2")]
+        public IActionResult TestUpload2() {
+            return Ok();
         }
 
         [HttpPost, Route("login")]

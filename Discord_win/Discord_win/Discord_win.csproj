@@ -89,6 +89,10 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Peanut.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\csharplib\Peanut.Client\Peanut.Client\bin\Release\Peanut.Client.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
@@ -191,7 +195,6 @@
     <Compile Include="Resources\Static\FileSystem.cs" />
     <Compile Include="Resources\Static\Route.cs" />
     <Compile Include="Tools\APICaller.cs" />
-    <Compile Include="Tools\Downloader.cs" />
     <Compile Include="Tools\FileDealer.cs" />
     <Compile Include="Tools\ImageDownloader.cs" />
     <Compile Include="Tools\ImageResolver.cs" />
@@ -199,7 +202,6 @@
     <Compile Include="Tools\JsonBuilder.cs" />
     <Compile Include="Tools\JSONConverter.cs" />
     <Compile Include="Tools\ResourcesCreator.cs" />
-    <Compile Include="Tools\Uploader.cs" />
     <Compile Include="ViewModels\UserConfirmPasswordVM.cs" />
     <Compile Include="ViewModels\UserLoginVM.cs" />
     <Compile Include="ViewModels\UserUpdateProfileVM.cs" />

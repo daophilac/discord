@@ -27,4 +27,13 @@
     <declare-styleable name="UserSettingButton">
         <attr name="userSettingButtonStyle" format="reference"/>
     </declare-styleable>
+    <declare-styleable name="CopyImage">
+        <attr name="copyImageStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="EditImage">
+        <attr name="editImageStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="DeleteImage">
+        <attr name="deleteImageStyle" format="reference"/>
+    </declare-styleable>
 </resources>

@@ -1,6 +1,6 @@
 package com.peanut.discord.models;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 public class Server {

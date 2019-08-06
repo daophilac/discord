@@ -57,4 +57,18 @@ public class Message {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         return simpleDateFormat.format(this.time);
     }
+    public Message(){
+
+    }
+    public Message(int channelId, int userId, String content, boolean setCurrentTime){
+        this.channelId = channelId;
+        this.userId = userId;
+        this.content = content;
+        if(setCurrentTime){
+            setCurrentTime();
+        }
+    }
+    public void setCurrentTime(){
+        time = new Date(System.currentTimeMillis());
+    }
 }

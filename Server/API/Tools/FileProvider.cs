@@ -25,6 +25,7 @@ namespace Peanut.Server {
             ContentTypes.Add(".csv", "text/csv");
             ContentTypes.Add(".iso", "compressed/iso");
             ContentTypes.Add(".zip", "compressed/zip");
+            ContentTypes.Add(".flac", "media/flac");
         }
         public static string GetContentType(string extension) {
             string key = ContentTypes.Keys.Where(k => k == extension.ToLower()).FirstOrDefault();
@@ -43,22 +44,22 @@ namespace Peanut.Server {
             string contentType = GetContentType(Path.GetExtension(filePath));
             string fileName = Path.GetFileName(filePath);
             FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, DefaultBufferSize, true);
-            return File(fileStream, contentType, fileName, true);
+            return File(fileStream, contentType, fileName);
         }
-        public async Task<IActionResult> Get(IFormFile formFile, string filePath, bool willOverride = false) {
+        public async Task<bool> Get(IFormFile formFile, string filePath, bool willOverride = false) {
             try {
                 if (!willOverride) {
                     if (System.IO.File.Exists(filePath)) {
-                        return BadRequest();
+                        return true;
                     }
                 }
                 FileStream fileStream = new FileStream(filePath, FileMode.Create);
                 await formFile.CopyToAsync(fileStream);
                 fileStream.Close();
-                return Ok();
+                return true;
             }
             catch (Exception) {
-                return BadRequest();
+                return false;
             }
         }
         public async Task<IActionResult> Get(IFormFileCollection formFileCollection, string directory, bool willOverride = false) {

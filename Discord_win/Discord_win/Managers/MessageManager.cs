@@ -185,7 +185,7 @@ namespace Discord_win.Managers {
             }
             internal void UpdateContent(string content) {
                 Message.Content = content;
-                TextBlock.Text = Message.User.Username + ": " + content;
+                TextBlock.Text = Message.User.UserName + ": " + content;
             }
             internal void MakeComponent() {
                 PairMessageComponent.Add(Message.MessageId, this);
@@ -241,7 +241,7 @@ namespace Discord_win.Managers {
             internal void MakeTextBlock() {
                 TextBlock = new TextBlock();
                 Children.Add(TextBlock);
-                TextBlock.Text = Message.User.Username + ": " + Message.Content;
+                TextBlock.Text = Message.User.UserName + ": " + Message.Content;
                 TextBlock.FontSize = 15;
                 TextBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
                 TextBlock.TextWrapping = TextWrapping.Wrap;

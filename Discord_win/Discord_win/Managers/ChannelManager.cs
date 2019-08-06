@@ -37,7 +37,7 @@ namespace Discord_win.Managers {
             HubManager.ReceiveNewChannelSignal += HubManager_ReceiveNewChannelSignal;
             createChannelDialog.RequestCreateChannel += CreateChannelDialog_RequestCreateChannel;
             buttonCreateChannel.Click += ButtonCreateChannel_Click;
-            labelUsername.Content = Inventory.CurrentUser.Username;
+            labelUsername.Content = Inventory.CurrentUser.UserName;
         }
         public void TearDown() {
             HubManager.ReceiveChannelConcurrenctConflictSignal -= HubManager_ReceiveChannelConcurrenctConflictSignal;

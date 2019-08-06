@@ -7,6 +7,8 @@ public final class Route {
 
     public static final String routeLogin = "/api/user/login";
     public static final String routeSignUp = "/api/user/signup";
+    public static final String routeUserDownloadImage = "/api/user/downloadimage/%s";
+    public static final String routeuserUploadImage = "/api/user/uploadimage/%d";
     public static final String routeGetServersByUser = "/api/server/getserversbyuser/%d";
     public static final String routeGetChannelsByServer = "/api/channel/getchannelsbyserver/%d";
     public static final String routeGetMessagesByChannel = "/api/message/getmessagesbychannel/%d";
@@ -16,6 +18,7 @@ public final class Route {
     public static final String routeLeaveServer = "/api/serveruser/leaveserver/%d/%d";
     public static final String routeChatHub = "/chathub";
     public static final String baseUrl = protocol + "://" + serverIP + serverName;
+//    public static final String baseUrl = "http://10.0.2.2:55555";
     public static final String urlLogin = baseUrl + routeLogin;
     public static final String urlSignUp = baseUrl + routeSignUp;
     public static final String urlChatHub = baseUrl + routeChatHub;
@@ -35,5 +38,11 @@ public final class Route {
     }
     public static String buildLeaveServerUrl(int userId, int serverId){
         return baseUrl.concat(String.format(routeLeaveServer, userId, serverId));
+    }
+    public static String buildUserDownloadImageUrl(String imageName){
+        return baseUrl.concat(String.format(routeUserDownloadImage, imageName));
+    }
+    public static String buildUserUploadImageUrl(int userId){
+        return baseUrl.concat(String.format(routeuserUploadImage, userId));
     }
 }

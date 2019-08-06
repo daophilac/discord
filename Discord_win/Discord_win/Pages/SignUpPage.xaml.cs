@@ -86,7 +86,7 @@ namespace Discord_win.Pages {
             User user = new User {
                 Email = TextBoxEmail.Text,
                 Password = PasswordBox.Password,
-                Username = TextBoxUsername.Text,
+                UserName = TextBoxUsername.Text,
                 FirstName = TextBoxFirstName.Text,
                 LastName = TextBoxLastName.Text,
                 Gender = (bool) RadioButtonMale.IsChecked ? Gender.Male : Gender.Female

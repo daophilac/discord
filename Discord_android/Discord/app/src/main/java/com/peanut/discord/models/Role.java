@@ -3,6 +3,7 @@ import java.util.List;
 public class Role {
     private int roleId;
     private String roleName;
+    private boolean canDelete;
     private int serverId;
     private Server server;
     private List<ServerLevelPermission> serverLevelPermissions;
@@ -24,6 +25,12 @@ public class Role {
     }
     public void setServerId(int serverId) {
         this.serverId = serverId;
+    }
+    public boolean isCanDelete() {
+        return canDelete;
+    }
+    public void setCanDelete(boolean canDelete) {
+        this.canDelete = canDelete;
     }
     public Server getServer() {
         return server;

@@ -27,4 +27,7 @@
     <string name="female">Female</string>
     <string name="user_name_cannot_be_empty">User name cannot be empty</string>
     <string name="first_and_last_name_are_empty">First name and last name can\'t be both empty</string>
+    <string name="copy_text">Copy Text</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -23,7 +23,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("getserversbyuser/{userID}")]
-        public async Task<IEnumerable<Server>> GetServersByUser(int userId) {
+        public async Task<ActionResult<IEnumerable<Server>>> GetServersByUser(int userId) {
             IQueryable<ServerUser> tempListServerUser = context.ServerUser.Where(su => su.UserId == userId).AsQueryable();
             List<Server> listServer = await context.Server.Where(s => tempListServerUser.Any(su => su.ServerId == s.ServerId)).Select(server => Server.Clone(server)).ToListAsync();
             foreach (Server server in listServer) {
@@ -36,7 +36,7 @@ namespace API.Controllers
                     serverUser.User = user;
                 }
             }
-            return listServer;
+            return Ok(listServer);
         }
 
         [HttpPost]
@@ -59,7 +59,7 @@ namespace API.Controllers
             context.InstantInvite.Add(instantInvite);
             context.SaveChanges();
 
-            return serverFromClient;
+            return Ok(serverFromClient);
         }
 
 

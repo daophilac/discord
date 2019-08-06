@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -37,7 +38,7 @@ namespace Discord_win.Pages {
             CancelEdit?.Invoke(this, EventArgs.Empty);
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e) {
-            TextBoxUserName.Text = Inventory.CurrentUser.Username;
+            TextBoxUserName.Text = Inventory.CurrentUser.UserName;
             TextBoxEmail.Text = Inventory.CurrentUser.Email;
             if (Inventory.CurrentUser.ImageName != null) {
                 UserImage.Source = await ImageResolver.DownloadBitmapImageAsync(Inventory.CurrentUser.ImageName);
@@ -76,9 +77,14 @@ namespace Discord_win.Pages {
                 if(newUserImageFileName != null) {
                     FileSystem.DeleteUserImage(Inventory.CurrentUser.ImageName);
                     ImageUploader imageUploader = new ImageUploader();
-                    imageUploader.UploadUserImage(Inventory.CurrentUser.UserId, newUserImageFileName);
+                    imageUploader.OnDone += (o, arg) => {
+                        DoneEdit?.Invoke(this, EventArgs.Empty);
+                    };
+                    await imageUploader.UploadUserImage(Inventory.CurrentUser.UserId, newUserImageFileName);
                 }
-                DoneEdit?.Invoke(this, EventArgs.Empty);
+                else {
+                    DoneEdit?.Invoke(this, EventArgs.Empty);
+                }
             }
             else {
                 MessageBox.Show("Something went wrong.");

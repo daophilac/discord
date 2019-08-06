@@ -617,6 +617,8 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("CanDelete");
+
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -633,114 +635,133 @@ namespace API.Migrations
                         new
                         {
                             RoleId = 1,
+                            CanDelete = false,
                             RoleName = "Admin",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 2,
+                            CanDelete = false,
                             RoleName = "Member",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 3,
+                            CanDelete = false,
                             RoleName = "Admin",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 4,
+                            CanDelete = false,
                             RoleName = "Member",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 5,
+                            CanDelete = false,
                             RoleName = "Admin",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 6,
+                            CanDelete = false,
                             RoleName = "Member",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 7,
+                            CanDelete = false,
                             RoleName = "Admin",
                             ServerId = 4
                         },
                         new
                         {
                             RoleId = 8,
+                            CanDelete = false,
                             RoleName = "Member",
                             ServerId = 4
                         },
                         new
                         {
                             RoleId = 9,
+                            CanDelete = true,
                             RoleName = "Knight",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 10,
+                            CanDelete = true,
                             RoleName = "Thief",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 11,
+                            CanDelete = true,
                             RoleName = "White Wizard",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 12,
+                            CanDelete = true,
                             RoleName = "Black Wizard",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 13,
+                            CanDelete = true,
                             RoleName = "Adol",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 14,
+                            CanDelete = true,
                             RoleName = "Dogi",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 15,
+                            CanDelete = true,
                             RoleName = "Aisha",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 16,
+                            CanDelete = true,
                             RoleName = "New Admin",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 17,
+                            CanDelete = true,
                             RoleName = "Artist",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 18,
+                            CanDelete = true,
                             RoleName = "Folk",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 19,
+                            CanDelete = true,
                             RoleName = "Musician",
                             ServerId = 4
                         });
@@ -1095,7 +1116,7 @@ namespace API.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("VARCHAR(15)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("VARCHAR(50)");
 
@@ -1116,7 +1137,7 @@ namespace API.Migrations
                             ImageName = "user_1.png",
                             LastName = "Lạc",
                             Password = "123",
-                            Username = "peanut"
+                            UserName = "peanut"
                         },
                         new
                         {
@@ -1127,7 +1148,7 @@ namespace API.Migrations
                             ImageName = "user_2.png",
                             LastName = "Lạc",
                             Password = "123",
-                            Username = "peanut"
+                            UserName = "peanut"
                         },
                         new
                         {
@@ -1138,7 +1159,7 @@ namespace API.Migrations
                             ImageName = "user_3.png",
                             LastName = "night",
                             Password = "123",
-                            Username = "lucknight"
+                            UserName = "lucknight"
                         },
                         new
                         {
@@ -1149,7 +1170,7 @@ namespace API.Migrations
                             ImageName = "user_4.png",
                             LastName = "die",
                             Password = "123",
-                            Username = "eddie"
+                            UserName = "eddie"
                         });
                 });
 

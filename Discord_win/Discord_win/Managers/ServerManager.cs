@@ -101,7 +101,7 @@ namespace Discord_win.Managers {
         }
         private void DownloadUserImages() {
             HashSet<User> listUser = Inventory.GetListUserInServers();
-            fileDownloader.DownloadUserImages(listUser.ToList());
+            fileDownloader.DownloadUserImages(listUser.ToList(), FileSystem.UserDirectory);
         }
         private void AttachListButton() {
             gridServerButton.Children.Clear();

@@ -18,7 +18,7 @@ namespace API.Models {
         [Column(TypeName = "VARCHAR(60)"), Required]
         public string Password { get; set; }
         [Column(TypeName = "VARCHAR(50)"), Required]
-        public string Username { get; set; }
+        public string UserName { get; set; }
         [MaxLength(30)]
         public string FirstName { get; set; }
         [MaxLength(30)]
@@ -36,7 +36,7 @@ namespace API.Models {
                 UserId = userToCopy.UserId,
                 Email = userToCopy.Email,
                 Password = userToCopy.Password,
-                Username = userToCopy.Username,
+                UserName = userToCopy.UserName,
                 FirstName = userToCopy.FirstName,
                 LastName = userToCopy.LastName,
                 Gender = userToCopy.Gender,

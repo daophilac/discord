@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace API.ViewModels {
     public static class Mapper {
         public static void Map(this UserUpdateProfileViewModel userUpdateProfileViewModel, User user) {
-            user.Username = userUpdateProfileViewModel.Username;
+            user.UserName = userUpdateProfileViewModel.Username;
             user.Email = userUpdateProfileViewModel.Email;
         }
     }

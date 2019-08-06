@@ -57,6 +57,7 @@ namespace API {
             //app.UseHttpsRedirection();
             app.UseMvc();
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
+                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver(),
                 Formatting = Formatting.Indented,
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects

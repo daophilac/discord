@@ -30,7 +30,7 @@ namespace Discord_win.Pages {
             if (Inventory.CurrentUser == null) {
                 return;
             }
-            LabelUserName.Content = Inventory.CurrentUser.Username;
+            LabelUserName.Content = Inventory.CurrentUser.UserName;
             LabelEmail.Content = Inventory.CurrentUser.Email;
             if (Inventory.CurrentUser.ImageName != null) {
                 UserImage.Source = await ImageResolver.DownloadBitmapImageAsync(Inventory.CurrentUser.ImageName);

@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +17,13 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.peanut.androidlib.common.worker.SingleWorker;
 import com.peanut.discord.customview.BackButton;
 import com.peanut.discord.models.User;
 import com.peanut.discord.resources.Data;
 import com.peanut.discord.resources.Route;
 import com.peanut.discord.tools.APICaller;
 import com.peanut.discord.tools.JsonBuilder;
-import com.peanut.discord.worker.SingleWorker;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,8 +31,6 @@ import java.util.regex.Pattern;
 public class SignUpFragment extends Fragment {
     private Context context;
     private APICaller apiCaller;
-    private Handler handler;
-    private SingleWorker singleWorker;
     private JsonBuilder jsonBuilder;
     private String emailFormat = "\\S+@\\S+\\.\\S+";
     private Pattern pattern = Pattern.compile(emailFormat);
@@ -54,17 +52,6 @@ public class SignUpFragment extends Fragment {
         this.context = context;
         this.apiCaller = new APICaller();
         this.jsonBuilder = new JsonBuilder();
-        this.singleWorker = new SingleWorker(MainActivity.LOG_TAG);
-        this.handler = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(Message msg) {
-                Intent intent = new Intent(context, MainActivity.class);
-                intent.putExtra("jsonUser", (String)msg.obj);
-                getActivity().finish();
-                startActivity(intent);
-                Data.writeUserData(context, editTextEmail.getText().toString(), editTextPassword.getText().toString());
-            }
-        };
     }
 
     @Nullable
@@ -117,8 +104,14 @@ public class SignUpFragment extends Fragment {
                 String firstName = editTextFirstName.getText().toString();
                 String lastName = editTextLastName.getText().toString();
                 String json = jsonBuilder.buildUserJson(email, password, userName, firstName, lastName, gender);
-                apiCaller.setProperties(handler, APICaller.RequestMethod.POST, Route.urlSignUp, json);
-                singleWorker.execute(apiCaller);
+                apiCaller.setProperties(APICaller.RequestMethod.POST, Route.urlSignUp, json);
+                apiCaller.setOnSuccessListener((connection, response) -> {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("jsonUser", response);
+                    getActivity().finish();
+                    startActivity(intent);
+                    Data.writeUserData(context, editTextEmail.getText().toString(), editTextPassword.getText().toString());
+                }).sendRequest();
             }
         });
         return view;

@@ -12,6 +12,8 @@ namespace API.Models {
         [MaxLength(50), Required]
         public string RoleName { get; set; }
         [Required]
+        public bool CanDelete { get; set; }
+        [Required]
         public int ServerId { get; set; }
         
         public Server Server { get; set; }

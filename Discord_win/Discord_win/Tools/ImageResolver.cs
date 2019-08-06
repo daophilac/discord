@@ -1,4 +1,5 @@
 ﻿using Discord_win.Resources.Static;
+using Peanut.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,12 +10,12 @@ using System.Windows.Media.Imaging;
 
 namespace Discord_win.Tools {
     public static class ImageResolver {
-        private static ImageDownloader FileDownloader { get; } = new ImageDownloader(FileSystem.UserDirectory);
+        private static ImageDownloader ImageDownloader { get; } = new ImageDownloader(FileSystem.UserDirectory);
         public static async Task<BitmapImage> DownloadBitmapImageAsync(string imageName) {
             string imagePath = FileSystem.MakeUserImageFilePath(imageName);
             if (!File.Exists(imagePath)) {
                 string imageUrl = Route.BuildUserDownloadImageUrl(imageName);
-                await FileDownloader.CreateDownloadTask(imageUrl, true);
+                await ImageDownloader.DownloadUserImage(imageName);
             }
             while (true) {
                 try {
