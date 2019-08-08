@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Models {
+namespace Discord.Models {
     public class Channel {
         public int ChannelId { get; set; }
         public string ChannelName { get; set; }
@@ -13,7 +13,7 @@ namespace Discord_win.Models {
 
         public Server Server { get; set; }
         public ICollection<Message> Messages { get; set; }
-        public ICollection<ChannelLevelPermission> ChannelLevelPermissions { get; set; }
+        public ICollection<ChannelPermission> ChannelPermissions { get; set; }
         public Channel() {
 
         }

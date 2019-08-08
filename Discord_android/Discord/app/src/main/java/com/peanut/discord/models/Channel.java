@@ -6,7 +6,7 @@ public class Channel {
     private int serverId;
     private Server server;
     private List<Message> messages;
-    private List<ChannelLevelPermission> channelLevelPermissions;
+    private List<ChannelPermission> channelPermissions;
     public int getChannelId() {
         return channelId;
     }
@@ -37,10 +37,10 @@ public class Channel {
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
-    public List<ChannelLevelPermission> getChannelLevelPermissions() {
-        return channelLevelPermissions;
+    public List<ChannelPermission> getChannelPermissions() {
+        return channelPermissions;
     }
-    public void setChannelLevelPermissions(List<ChannelLevelPermission> channelLevelPermissions) {
-        this.channelLevelPermissions = channelLevelPermissions;
+    public void setChannelPermissions(List<ChannelPermission> channelPermissions) {
+        this.channelPermissions = channelPermissions;
     }
 }

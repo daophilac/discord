@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             password = internalFileReader.readConfiguration("password");
             internalFileReader.close();
             String json = jsonBuilder.buildLoginJson(email, password);
-            apiCaller.setProperties(APICaller.RequestMethod.POST, Route.urlLogin, json);
+            apiCaller.setProperties(APICaller.RequestMethod.POST, Route.User.urlLogin, json);
             apiCaller.setOnSuccessListener((connection, response) -> {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("jsonUser", response);
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         email = editTextEmail.getText().toString();
         password = editTextPassword.getText().toString();
         String json = jsonBuilder.buildLoginJson(email, password);
-        apiCaller.setProperties(APICaller.RequestMethod.POST, Route.urlLogin, json);
+        apiCaller.setProperties(APICaller.RequestMethod.POST, Route.User.urlLogin, json);
         apiCaller.setOnSuccessListener((connection, response) -> {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("jsonUser", response);

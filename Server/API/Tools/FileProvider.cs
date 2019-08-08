@@ -44,7 +44,7 @@ namespace Peanut.Server {
             string contentType = GetContentType(Path.GetExtension(filePath));
             string fileName = Path.GetFileName(filePath);
             FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, DefaultBufferSize, true);
-            return File(fileStream, contentType, fileName);
+            return File(fileStream, contentType, fileName, true);
         }
         public async Task<bool> Get(IFormFile formFile, string filePath, bool willOverride = false) {
             try {

@@ -1,9 +1,9 @@
-﻿<Page x:Class="Discord_win.Pages.UserSettingPage"
+﻿<Page x:Class="Discord.Pages.UserSettingPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Discord_win.Pages"
+      xmlns:local="clr-namespace:Discord.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="UserSettingPage">
@@ -12,6 +12,7 @@
             <DockPanel x:Name="DockPanelNavigation" x:FieldModifier="private" LastChildFill="False" Width="200px" DockPanel.Dock="Left" Background="{DynamicResource UserProfileNavigation_Background}">
                 <Label Content="USER SETTINGS" DockPanel.Dock="Top" Foreground="#FFB4B6BA" FontWeight="Bold"/>
                 <Button x:Name="ButtonMyAccount" x:FieldModifier="private" Content="My Account" FontWeight="Bold" FontSize="14" Foreground="#FFB4B6BA" Background="Transparent" BorderBrush="Transparent" DockPanel.Dock="Top" HorizontalContentAlignment="Left" Click="ButtonMyAccount_Click" />
+                <Button x:Name="ButtonLogOut" x:FieldModifier="private" Content="LOG OUT" FontWeight="Bold" FontSize="14" Foreground="Red"  Background="Transparent" BorderBrush="Transparent" DockPanel.Dock="Top" HorizontalContentAlignment="Left" Click="ButtonLogOut_Click" />
             </DockPanel>
             <DockPanel Width="100" DockPanel.Dock="Right" LastChildFill="False">
                 <Button x:Name="ButtonEsc" x:FieldModifier="private" Content="ESC" DockPanel.Dock="Top" Click="ButtonEsc_Click" />

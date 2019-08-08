@@ -1,4 +1,4 @@
-﻿using Discord_win.Tools;
+﻿using Discord.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Resources.Static {
+namespace Discord.Resources.Static {
     static class FileSystem {
         public static int DefaultDeleteAttempt { get; } = 100;
         public static int DefaultDeleteFailDelay { get; } = 1000;

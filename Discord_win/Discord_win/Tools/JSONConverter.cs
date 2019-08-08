@@ -1,4 +1,4 @@
-﻿using Discord_win.Models;
+﻿using Discord.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Tools {
+namespace Discord.Tools {
     class JSONConverter<T> {
         private T genericType;
         public JSONConverter(T value) {

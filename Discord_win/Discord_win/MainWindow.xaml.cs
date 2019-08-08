@@ -1,4 +1,4 @@
-﻿using Discord_win.Resources.Static;
+﻿using Discord.Resources.Static;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using EventManager = Discord_win.Managers.EventManager;
+using EventManager = Discord.Managers.EventManager;
 
-namespace Discord_win {
+namespace Discord {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -24,23 +24,25 @@ namespace Discord_win {
         public MainWindow() {
             ServicePointManager.DefaultConnectionLimit = 100;
             InitializeComponent();
-            FileSystem.Establish();
-            BeginLogin();
+            Task.Run(() => {
+                FileSystem.Establish();
+                Dispatcher.BeginInvoke((Action)(async () => {
+                    await BeginLoginAsync();
+                }));
+            });
         }
-        public void BeginLogin() {
+        public async Task BeginLoginAsync() {
             Program.mainWindow = this;
             Program.Initialize();
-            Program.loginPage.Activate();
-            MainFrame.Navigate(Program.loginPage);
+            await Program.loginPage.ActivateAsync();
         }
-        public void BeginMain() {
-            Program.Initialize();
-            Program.mainPage.Activate();
+        public async Task BeginMainAsync() {
+            await Program.mainPage.ActivateAsync();
             MainFrame.Navigate(Program.mainPage);
         }
-        public void Restart() {
-            EventManager.TearDown();
-            BeginLogin();
+        public async Task RestartAsync() {
+            await EventManager.TearDownAsync();
+            await BeginLoginAsync();
         }
 
         private void MainFrame_Navigating(object sender, NavigatingCancelEventArgs e) {

@@ -21,8 +21,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("getmessagesbychannel/{channelID}")]
-        public IQueryable<Message> GetMessagesByChannel(int channelID) {
+        [Route("getbychannel/{channelID}")]
+        public IQueryable<Message> GetByChannel(int channelID) {
             var messages = _context.Message.Where(m => m.ChannelId == channelID).OrderBy(m => m.Time);
             foreach (var message in messages) {
                 _context.Entry(message).Reference(m => m.User).Load();
@@ -32,8 +32,8 @@ namespace API.Controllers
 
 
         [HttpPost]
-        [Route("insertmessage")]
-        public ActionResult<Message> InsertMessage(Message messageFromClient) {
+        [Route("add")]
+        public ActionResult<Message> Add(Message messageFromClient) {
             _context.Message.Add(messageFromClient);
             _context.SaveChanges();
             return Ok(messageFromClient);

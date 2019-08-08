@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Discord_win {
+namespace Discord {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

@@ -19,9 +19,18 @@ namespace API.Controllers
         {
             _context = context;
         }
-        [HttpGet, Route("getbyserver")]
+        [HttpGet, Route("getbyserver/{serverId}")]
         public async Task<ActionResult<IEnumerable<Role>>> GetByServer(int serverId) {
-            return await _context.Role.Where(r => r.ServerId == serverId).ToListAsync();
+            return await _context.Role.Where(r => r.ServerId == serverId).OrderByDescending(r => r.RoleLevel).ToListAsync();
+        }
+        [HttpGet, Route("getuserroleinserver/{userId}/{serverId}")]
+        public IActionResult GetUserRoleInServer(int userId, int serverId) {
+            Role role = _context.ServerUser
+                .Where(su => su.UserId == userId && su.ServerId == serverId)
+                .Include("Role")
+                .FirstOrDefaultAsync()
+                .Result.Role;
+            return Ok(role);
         }
 
         // GET: api/Role

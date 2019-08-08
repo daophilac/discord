@@ -1,6 +1,6 @@
-﻿using Discord_win.Models;
-using Discord_win.Resources.Static;
-using Discord_win.Tools;
+﻿using Discord.Models;
+using Discord.Resources.Static;
+using Discord.Tools;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Discord_win.Dialog {
+namespace Discord.Dialog {
     /// <summary>
     /// Interaction logic for CreateServerDialog.xaml
     /// </summary>

@@ -1,4 +1,4 @@
-﻿using Discord_win.Resources.Static;
+﻿using Discord.Resources.Static;
 using Peanut.Client;
 using System;
 using System.Collections.Generic;
@@ -8,28 +8,55 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace Discord_win.Tools {
+namespace Discord.Tools {
     public static class ImageResolver {
         private static ImageDownloader ImageDownloader { get; } = new ImageDownloader(FileSystem.UserDirectory);
-        public static async Task<BitmapImage> DownloadBitmapImageAsync(string imageName) {
+        private static HashSet<string> SetDownloadingImage { get; } = new HashSet<string>();
+        private static Dictionary<string, List<TaskCompletionSource<bool>>> Queue { get; } = new Dictionary<string, List<TaskCompletionSource<bool>>>();
+        public static async Task DownloadUserImageAsync(string imageName, Action<BitmapImage> actionResult) {
             string imagePath = FileSystem.MakeUserImageFilePath(imageName);
-            if (!File.Exists(imagePath)) {
-                string imageUrl = Route.BuildUserDownloadImageUrl(imageName);
-                await ImageDownloader.DownloadUserImage(imageName);
-            }
-            while (true) {
-                try {
-                    byte[] imageBytes = File.ReadAllBytes(imagePath);
-                    MemoryStream memoryStream = new MemoryStream(imageBytes);
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = memoryStream;
-                    bitmapImage.EndInit();
-                    return bitmapImage;
+            // The file is being downloaded
+            if (SetDownloadingImage.Contains(imagePath)) {
+                // But the waiting queue hasn't been initialized yet
+                if (!Queue.Keys.Contains(imagePath)) {
+                    // Initialize it!
+                    Queue.Add(imagePath, new List<TaskCompletionSource<bool>>());
                 }
-                catch (Exception) {
-                    await Task.Delay(1000);
-                    continue;
+                // Enqueue and wait until the file is completely downloaded
+                List<TaskCompletionSource<bool>> waiters = Queue[imagePath];
+                TaskCompletionSource<bool> waiter = new TaskCompletionSource<bool>();
+                waiters.Add(waiter);
+                // Wait!
+                await waiter.Task;
+                // Make bitmap and throw it out!
+                actionResult?.Invoke(GetBitmapFromLocalFile(imagePath));
+            }
+            // The file is not being downloaded
+            else {
+                // But it doesn't exist as well
+                if (!File.Exists(imagePath)) {
+                    // Download it!
+                    SetDownloadingImage.Add(imagePath);
+                    Downloader downloader = ImageDownloader.MakeDownloader(imageName);
+                    downloader.OnDone += (o, e) => {
+                        SetDownloadingImage.Remove(imagePath);
+                        // Done downloading and there is a queue waiting for this file
+                        if (Queue.Keys.Contains(imagePath)) {
+                            // Notify the waiters that the file is completely downloaded
+                            List<TaskCompletionSource<bool>> waiters = Queue[imagePath];
+                            foreach (TaskCompletionSource<bool> waiter in waiters) {
+                                waiter.SetResult(true);
+                            }
+                            Queue.Remove(imagePath);
+                        }
+                        actionResult?.Invoke(GetBitmapFromLocalFile(imagePath));
+                    };
+                    await downloader.StartDownloadingAsync();
+                }
+                // And it does exist
+                else {
+                    // Make bitmap and throw it out!
+                    actionResult.Invoke(GetBitmapFromLocalFile(imagePath));
                 }
             }
         }

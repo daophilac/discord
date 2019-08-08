@@ -22,8 +22,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("getserversbyuser/{userID}")]
-        public async Task<ActionResult<IEnumerable<Server>>> GetServersByUser(int userId) {
+        [Route("getbyuser/{userID}")]
+        public async Task<ActionResult<IEnumerable<Server>>> GetByUser(int userId) {
             IQueryable<ServerUser> tempListServerUser = context.ServerUser.Where(su => su.UserId == userId).AsQueryable();
             List<Server> listServer = await context.Server.Where(s => tempListServerUser.Any(su => su.ServerId == s.ServerId)).Select(server => Server.Clone(server)).ToListAsync();
             foreach (Server server in listServer) {
@@ -40,8 +40,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Route("insertserver")]
-        public ActionResult<Server> InsertServer(Server serverFromClient) {
+        [Route("add")]
+        public ActionResult<Server> Add(Server serverFromClient) {
             context.Server.Add(serverFromClient);
             context.SaveChanges();
             serverFromClient = context.Server.Last();

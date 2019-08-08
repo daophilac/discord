@@ -1,9 +1,9 @@
-﻿using Discord_win.Dialog;
-using Discord_win.Equipments;
-using Discord_win.Managers;
-using Discord_win.Models;
-using Discord_win.Resources.Static;
-using Discord_win.Tools;
+﻿using Discord.Dialog;
+using Discord.Equipments;
+using Discord.Managers;
+using Discord.Models;
+using Discord.Resources.Static;
+using Discord.Tools;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System;
@@ -14,30 +14,32 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using EventManager = Discord_win.Managers.EventManager;
+using EventManager = Discord.Managers.EventManager;
 
-namespace Discord_win.Pages {
+namespace Discord.Pages {
     /// <summary>
     /// Interaction logic for MainPage.xaml
     /// </summary>
     public partial class MainPage : Page {
-        private ServerManager serverManager;
-        private ChannelManager channelManager;
-        private MessageManager messageManager;
-        private UserManager userManager;
+        private ServerManager ServerManager { get; set; }
+        private ChannelManager ChannelManager { get; set; }
+        private RoleManager RoleManager { get; set; }
+        private MessageManager MessageManager { get; set; }
+        private UserManager UserManager { get; set; }
         public MainPage() {
             InitializeComponent();
         }
-        public void Activate() {
-            InitializeGlobalVariable();
+        public async Task ActivateAsync() {
+            await InitializeGlobalVariableAsync();
         }
-        private void InitializeGlobalVariable() {
-            serverManager = new ServerManager(DockPanelServer, GridServerButton, ButtonCreateOrJoinServer);
-            channelManager = new ChannelManager(DockPanelChannel, GridChannelContent, LabelUsername, ButtonCreateChannel);
-            messageManager = new MessageManager(DockPanelMessage, GridMessage, TextBoxType, ButtonSend, ButtonCancelEdit);
-            userManager = new UserManager(ButtonUserSetting);
-            HubManager.Establish();
-            EventManager.Establish(serverManager, channelManager, messageManager, userManager);
+        private async Task InitializeGlobalVariableAsync() {
+            ServerManager = new ServerManager(DockPanelServer, GridServerButton, ButtonCreateOrJoinServer);
+            ChannelManager = new ChannelManager(DockPanelChannel, GridChannelContent, LabelUsername, ButtonCreateChannel);
+            RoleManager = new RoleManager(DockPanelRole);
+            MessageManager = new MessageManager(DockPanelMessage, GridMessage, TextBoxType, ButtonSend, ButtonCancelEdit);
+            UserManager = new UserManager(ButtonUserSetting);
+            await HubManager.EstablishAsync();
+            EventManager.Establish(ServerManager, ChannelManager, RoleManager, MessageManager, UserManager);
         }
     }
 }

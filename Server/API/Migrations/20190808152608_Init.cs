@@ -9,34 +9,6 @@ namespace API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ChannelPermission",
-                columns: table => new
-                {
-                    PermissionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PermissionName = table.Column<string>(type: "VARCHAR(50)", nullable: false),
-                    Description = table.Column<string>(type: "VARCHAR(1024)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChannelPermission", x => x.PermissionId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServerPermission",
-                columns: table => new
-                {
-                    PermissionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PermissionName = table.Column<string>(type: "VARCHAR(50)", nullable: false),
-                    Description = table.Column<string>(type: "VARCHAR(1024)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServerPermission", x => x.PermissionId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -126,13 +98,19 @@ namespace API.Migrations
                 {
                     RoleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RoleLevel = table.Column<int>(nullable: false),
+                    MainRole = table.Column<bool>(nullable: false),
                     RoleName = table.Column<string>(maxLength: 50, nullable: false),
-                    CanDelete = table.Column<bool>(nullable: false),
+                    Kick = table.Column<bool>(nullable: false),
+                    ModifyChannel = table.Column<bool>(nullable: false),
+                    ModifyRole = table.Column<bool>(nullable: false),
+                    ChangeUserRole = table.Column<bool>(nullable: false),
                     ServerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Role", x => x.RoleId);
+                    table.UniqueConstraint("UK_Role_ServerId_RoleLevel", x => new { x.ServerId, x.RoleLevel });
                     table.ForeignKey(
                         name: "FK_Role_Server_ServerId",
                         column: x => x.ServerId,
@@ -160,70 +138,41 @@ namespace API.Migrations
                         column: x => x.ChannelId,
                         principalTable: "Channel",
                         principalColumn: "ChannelId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Message_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChannelLevelPermission",
+                name: "ChannelPermission",
                 columns: table => new
                 {
                     ChannelId = table.Column<int>(nullable: false),
                     RoleId = table.Column<int>(nullable: false),
-                    ChannelPermissionId = table.Column<int>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false)
+                    ViewMessage = table.Column<bool>(nullable: false),
+                    React = table.Column<bool>(nullable: false),
+                    SendMessage = table.Column<bool>(nullable: false),
+                    SendImage = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChannelLevelPermission", x => new { x.ChannelId, x.RoleId, x.ChannelPermissionId });
+                    table.PrimaryKey("PK_ChannelPermission", x => new { x.ChannelId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_ChannelLevelPermission_Channel_ChannelId",
+                        name: "FK_ChannelPermission_Channel_ChannelId",
                         column: x => x.ChannelId,
                         principalTable: "Channel",
                         principalColumn: "ChannelId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChannelLevelPermission_ChannelPermission_ChannelPermissionId",
-                        column: x => x.ChannelPermissionId,
-                        principalTable: "ChannelPermission",
-                        principalColumn: "PermissionId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ChannelLevelPermission_Role_RoleId",
+                        name: "FK_ChannelPermission_Role_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "RoleId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServerLevelPermission",
-                columns: table => new
-                {
-                    RoleId = table.Column<int>(nullable: false),
-                    PermissionId = table.Column<int>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServerLevelPermission", x => new { x.RoleId, x.PermissionId });
-                    table.ForeignKey(
-                        name: "FK_ServerLevelPermission_ServerPermission_PermissionId",
-                        column: x => x.PermissionId,
-                        principalTable: "ServerPermission",
-                        principalColumn: "PermissionId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ServerLevelPermission_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Role",
-                        principalColumn: "RoleId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -256,31 +205,6 @@ namespace API.Migrations
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.InsertData(
-                table: "ChannelPermission",
-                columns: new[] { "PermissionId", "Description", "PermissionName" },
-                values: new object[,]
-                {
-                    { 1, null, "All" },
-                    { 2, null, "All except send message" },
-                    { 3, null, "View message" },
-                    { 4, null, "Send message" },
-                    { 5, null, "Send image" },
-                    { 6, null, "React" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ServerPermission",
-                columns: new[] { "PermissionId", "Description", "PermissionName" },
-                values: new object[,]
-                {
-                    { 1, null, "All" },
-                    { 2, null, "All except kick" },
-                    { 3, null, "Kick" },
-                    { 4, null, "Modify channel" },
-                    { 5, null, "Modify role" }
                 });
 
             migrationBuilder.InsertData(
@@ -334,81 +258,81 @@ namespace API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Role",
-                columns: new[] { "RoleId", "CanDelete", "RoleName", "ServerId" },
+                columns: new[] { "RoleId", "ChangeUserRole", "Kick", "MainRole", "ModifyChannel", "ModifyRole", "RoleLevel", "RoleName", "ServerId" },
                 values: new object[,]
                 {
-                    { 18, true, "Folk", 3 },
-                    { 17, true, "Artist", 3 },
-                    { 7, false, "Admin", 4 },
-                    { 6, false, "Member", 3 },
-                    { 5, false, "Admin", 3 },
-                    { 16, true, "New Admin", 3 },
-                    { 4, false, "Member", 2 },
-                    { 14, true, "Dogi", 2 },
-                    { 13, true, "Adol", 2 },
-                    { 8, false, "Member", 4 },
-                    { 3, false, "Admin", 2 },
-                    { 12, true, "Black Wizard", 1 },
-                    { 11, true, "White Wizard", 1 },
-                    { 10, true, "Thief", 1 },
-                    { 9, true, "Knight", 1 },
-                    { 2, false, "Member", 1 },
-                    { 1, false, "Admin", 1 },
-                    { 15, true, "Aisha", 2 },
-                    { 19, true, "Musician", 4 }
+                    { 18, false, false, false, false, false, 997, "Folk", 3 },
+                    { 17, false, false, false, false, false, 998, "Artist", 3 },
+                    { 7, true, true, true, true, true, 1000, "Admin", 4 },
+                    { 6, false, false, true, false, false, 0, "Member", 3 },
+                    { 5, true, true, true, true, true, 1000, "Admin", 3 },
+                    { 16, true, false, false, true, true, 999, "New Admin", 3 },
+                    { 4, false, false, true, false, false, 0, "Member", 2 },
+                    { 14, false, false, false, false, false, 998, "Dogi", 2 },
+                    { 13, true, false, false, true, true, 999, "Adol", 2 },
+                    { 8, false, false, true, false, false, 0, "Member", 4 },
+                    { 3, true, true, true, true, true, 1000, "Admin", 2 },
+                    { 12, false, false, false, false, false, 996, "Black Wizard", 1 },
+                    { 11, false, false, false, false, false, 997, "White Wizard", 1 },
+                    { 10, false, false, false, false, false, 998, "Thief", 1 },
+                    { 9, true, false, false, true, true, 999, "Knight", 1 },
+                    { 2, false, false, true, false, false, 0, "Member", 1 },
+                    { 1, true, true, true, true, true, 1000, "Admin", 1 },
+                    { 15, false, false, false, false, false, 997, "Aisha", 2 },
+                    { 19, true, false, false, true, true, 999, "Musician", 4 }
                 });
 
             migrationBuilder.InsertData(
-                table: "ChannelLevelPermission",
-                columns: new[] { "ChannelId", "RoleId", "ChannelPermissionId", "IsActive" },
+                table: "ChannelPermission",
+                columns: new[] { "ChannelId", "RoleId", "React", "SendImage", "SendMessage", "ViewMessage" },
                 values: new object[,]
                 {
-                    { 6, 4, 1, false },
-                    { 6, 15, 2, true },
-                    { 1, 11, 1, true },
-                    { 2, 11, 1, false },
-                    { 3, 11, 1, true },
-                    { 5, 15, 1, true },
-                    { 1, 12, 1, true },
-                    { 2, 12, 1, false },
-                    { 3, 12, 1, true },
-                    { 4, 15, 2, false },
-                    { 4, 3, 1, true },
-                    { 5, 3, 1, true },
-                    { 6, 3, 1, true },
-                    { 6, 14, 1, true },
-                    { 4, 4, 2, true },
-                    { 5, 4, 2, false },
-                    { 9, 19, 1, true },
-                    { 5, 14, 1, true },
-                    { 4, 13, 2, false },
-                    { 5, 13, 1, true },
-                    { 3, 10, 1, true },
-                    { 2, 10, 1, false },
-                    { 1, 10, 1, true },
-                    { 7, 5, 1, true },
-                    { 9, 8, 1, true },
-                    { 9, 7, 1, true },
-                    { 8, 18, 1, false },
-                    { 7, 18, 1, true },
-                    { 8, 17, 1, false },
-                    { 1, 1, 1, true },
-                    { 2, 1, 1, true },
-                    { 3, 1, 1, true },
-                    { 7, 17, 1, true },
-                    { 6, 13, 1, true },
-                    { 8, 16, 1, true },
-                    { 1, 2, 1, true },
-                    { 2, 2, 1, false },
-                    { 3, 2, 1, true },
-                    { 8, 6, 1, false },
-                    { 1, 9, 1, true },
-                    { 2, 9, 1, true },
-                    { 3, 9, 1, true },
-                    { 7, 6, 1, true },
-                    { 8, 5, 1, true },
-                    { 7, 16, 1, true },
-                    { 4, 14, 2, false }
+                    { 4, 4, true, true, false, true },
+                    { 6, 3, true, true, true, true },
+                    { 9, 8, true, true, true, true },
+                    { 5, 4, false, false, false, false },
+                    { 6, 4, false, false, false, false },
+                    { 4, 13, true, true, false, true },
+                    { 5, 13, true, true, true, true },
+                    { 6, 13, true, true, true, true },
+                    { 4, 14, true, true, false, true },
+                    { 5, 14, true, true, true, true },
+                    { 6, 14, true, true, true, true },
+                    { 4, 15, true, true, false, true },
+                    { 5, 3, true, true, true, true },
+                    { 5, 15, true, true, true, true },
+                    { 7, 5, true, true, true, true },
+                    { 8, 5, true, true, true, true },
+                    { 7, 6, true, true, true, true },
+                    { 8, 6, false, false, false, false },
+                    { 7, 16, true, true, true, true },
+                    { 8, 16, true, true, true, true },
+                    { 7, 17, true, true, true, true },
+                    { 8, 17, false, false, false, false },
+                    { 7, 18, true, true, true, true },
+                    { 8, 18, false, false, false, false },
+                    { 9, 7, true, true, true, true },
+                    { 6, 15, true, true, true, true },
+                    { 4, 3, true, true, true, true },
+                    { 9, 19, true, true, true, true },
+                    { 2, 12, false, false, false, false },
+                    { 1, 1, true, true, true, true },
+                    { 1, 2, true, true, true, true },
+                    { 2, 2, false, false, false, false },
+                    { 3, 12, true, true, true, true },
+                    { 3, 2, true, true, true, true },
+                    { 1, 9, true, true, true, true },
+                    { 2, 9, true, true, true, true },
+                    { 3, 9, true, true, true, true },
+                    { 2, 1, true, true, true, true },
+                    { 3, 1, true, true, true, true },
+                    { 1, 10, true, true, true, true },
+                    { 2, 10, false, false, false, false },
+                    { 3, 10, true, true, true, true },
+                    { 1, 11, true, true, true, true },
+                    { 2, 11, false, false, false, false },
+                    { 3, 11, true, true, true, true },
+                    { 1, 12, true, true, true, true }
                 });
 
             migrationBuilder.InsertData(
@@ -416,38 +340,12 @@ namespace API.Migrations
                 columns: new[] { "MessageId", "ChannelId", "Content", "Time", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, "This is the first message in final fantasy", new DateTime(2019, 1, 1, 0, 0, 0, 1, DateTimeKind.Unspecified), 1 },
-                    { 5, 2, "BBBBBBBBBBBBBB", new DateTime(2019, 1, 2, 0, 0, 2, 899, DateTimeKind.Unspecified), 1 },
-                    { 4, 2, "Another channel in final fantasy", new DateTime(2019, 1, 2, 0, 0, 1, 123, DateTimeKind.Unspecified), 1 },
                     { 3, 1, "AAAAAAAAAA", new DateTime(2019, 1, 2, 0, 0, 2, 368, DateTimeKind.Unspecified), 3 },
+                    { 6, 2, "Hi there", new DateTime(2019, 1, 2, 0, 0, 3, 543, DateTimeKind.Unspecified), 2 },
                     { 2, 1, "And this is the second message in final fantasy", new DateTime(2019, 1, 2, 0, 0, 1, 245, DateTimeKind.Unspecified), 2 },
-                    { 6, 2, "Hi there", new DateTime(2019, 1, 2, 0, 0, 3, 543, DateTimeKind.Unspecified), 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ServerLevelPermission",
-                columns: new[] { "RoleId", "PermissionId", "IsActive" },
-                values: new object[,]
-                {
-                    { 19, 2, true },
-                    { 1, 1, true },
-                    { 16, 2, true },
-                    { 18, 1, false },
-                    { 6, 1, false },
-                    { 2, 1, false },
-                    { 9, 2, true },
-                    { 7, 1, true },
-                    { 5, 1, true },
-                    { 15, 1, false },
-                    { 10, 1, false },
-                    { 11, 1, false },
-                    { 12, 1, false },
-                    { 14, 1, false },
-                    { 3, 1, true },
-                    { 4, 1, false },
-                    { 13, 2, true },
-                    { 8, 1, false },
-                    { 17, 1, false }
+                    { 4, 2, "Another channel in final fantasy", new DateTime(2019, 1, 2, 0, 0, 1, 123, DateTimeKind.Unspecified), 1 },
+                    { 5, 2, "BBBBBBBBBBBBBB", new DateTime(2019, 1, 2, 0, 0, 2, 899, DateTimeKind.Unspecified), 1 },
+                    { 1, 1, "This is the first message in final fantasy", new DateTime(2019, 1, 1, 0, 0, 0, 1, DateTimeKind.Unspecified), 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -455,27 +353,22 @@ namespace API.Migrations
                 columns: new[] { "ServerId", "UserId", "RoleId" },
                 values: new object[,]
                 {
-                    { 4, 2, 7 },
-                    { 2, 1, 1 },
-                    { 3, 1, 16 },
-                    { 1, 1, 1 },
-                    { 2, 2, 13 },
                     { 3, 2, 5 },
+                    { 3, 1, 16 },
+                    { 3, 4, 16 },
                     { 1, 2, 9 },
                     { 1, 3, 9 },
-                    { 2, 4, 13 },
-                    { 3, 4, 16 },
-                    { 2, 3, 13 }
+                    { 2, 3, 13 },
+                    { 2, 2, 13 },
+                    { 2, 1, 3 },
+                    { 4, 2, 7 },
+                    { 1, 1, 1 },
+                    { 2, 4, 15 }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChannelLevelPermission_ChannelPermissionId",
-                table: "ChannelLevelPermission",
-                column: "ChannelPermissionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChannelLevelPermission_RoleId",
-                table: "ChannelLevelPermission",
+                name: "IX_ChannelPermission_RoleId",
+                table: "ChannelPermission",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
@@ -495,19 +388,9 @@ namespace API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Role_ServerId",
-                table: "Role",
-                column: "ServerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Server_AdminId",
                 table: "Server",
                 column: "AdminId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServerLevelPermission_PermissionId",
-                table: "ServerLevelPermission",
-                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServerUser_RoleId",
@@ -523,7 +406,7 @@ namespace API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ChannelLevelPermission");
+                name: "ChannelPermission");
 
             migrationBuilder.DropTable(
                 name: "InstantInvite");
@@ -532,19 +415,10 @@ namespace API.Migrations
                 name: "Message");
 
             migrationBuilder.DropTable(
-                name: "ServerLevelPermission");
-
-            migrationBuilder.DropTable(
                 name: "ServerUser");
 
             migrationBuilder.DropTable(
-                name: "ChannelPermission");
-
-            migrationBuilder.DropTable(
                 name: "Channel");
-
-            migrationBuilder.DropTable(
-                name: "ServerPermission");
 
             migrationBuilder.DropTable(
                 name: "Role");

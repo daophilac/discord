@@ -1,7 +1,7 @@
-﻿using Discord_win.Equipments;
-using Discord_win.Models;
-using Discord_win.Resources.Static;
-using Discord_win.Tools;
+﻿using Discord.Equipments;
+using Discord.Models;
+using Discord.Resources.Static;
+using Discord.Tools;
 using Peanut.Client;
 using System;
 using System.Collections.Generic;
@@ -9,82 +9,87 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Managers {
+namespace Discord.Managers {
     public static class EventManager {
-        private static ServerManager serverManager;
-        private static ChannelManager channelManager;
-        private static MessageManager messageManager;
-        private static UserManager userManager;
-        public static async void Establish(ServerManager serverManager, ChannelManager channelManager, MessageManager messageManager, UserManager userManager) {
-            EventManager.serverManager = serverManager;
-            EventManager.channelManager = channelManager;
-            EventManager.messageManager = messageManager;
-            EventManager.userManager = userManager;
+        private static ServerManager ServerManager { get; set; }
+        private static ChannelManager ChannelManager { get; set; }
+        private static RoleManager RoleManager { get; set; }
+        private static MessageManager MessageManager { get; set; }
+        private static UserManager UserManager { get; set; }
+        public static async void Establish(ServerManager serverManager, ChannelManager channelManager, RoleManager roleManager, MessageManager messageManager, UserManager userManager) {
+            ServerManager = serverManager;
+            ChannelManager = channelManager;
+            RoleManager = roleManager;
+            MessageManager = messageManager;
+            UserManager = userManager;
 
-            await serverManager.Establish();
-            channelManager.Establish();
-            messageManager.Establish();
-            userManager.Establish();
+            await ServerManager.EstablishAsync();
+            ChannelManager.Establish();
+            RoleManager.Establish();
+            MessageManager.Establish();
+            UserManager.Establish();
             RegisterMemberEvent();
         }
-        public static void TearDown() {
-            EventManager.serverManager.TearDown();
-            EventManager.channelManager.TearDown();
-            EventManager.messageManager.TearDown();
-            EventManager.userManager.TearDown();
+        public static async Task TearDownAsync() {
+            ServerManager.TearDown();
+            ChannelManager.TearDown();
+            RoleManager.TearDown();
+            MessageManager.TearDown();
+            UserManager.TearDown();
             if(Inventory.CurrentChannel != null) {
-                HubManager.SendExitChannelSignal(Inventory.CurrentChannel.ChannelId);
+                await HubManager.SendExitChannelSignalAsync(Inventory.CurrentChannel.ChannelId);
             }
             if(Inventory.CurrentServer != null) {
-                HubManager.SendExitServerSignal(Inventory.CurrentServer.ServerId);
+                await HubManager.SendExitServerSignalAsync(Inventory.CurrentServer.ServerId);
             }
             Inventory.Clear();
             UnregisterMemberEvent();
         }
         private static void RegisterMemberEvent() {
-            serverManager.ServerButtonClick += ServerManager_ServerButtonClick;
-            serverManager.ServerChanged += ServerManager_ServerChanged;
-            channelManager.ChannelButtonClick += ChannelManager_ChannelButtonClick;
-            channelManager.ChannelChanged += ChannelManager_ChannelChanged;
-            userManager.LogOut += UserManager_LogOut;
+            ServerManager.ServerButtonClick += ServerManager_ServerButtonClick;
+            ServerManager.ServerChanged += ServerManager_ServerChanged;
+            ChannelManager.ChannelButtonClick += ChannelManager_ChannelButtonClick;
+            ChannelManager.ChannelChanged += ChannelManager_ChannelChanged;
+            UserManager.LogOut += UserManager_LogOut;
         }
         private static void UnregisterMemberEvent() {
-            serverManager.ServerButtonClick -= ServerManager_ServerButtonClick;
-            serverManager.ServerChanged -= ServerManager_ServerChanged;
-            channelManager.ChannelButtonClick -= ChannelManager_ChannelButtonClick;
-            channelManager.ChannelChanged -= ChannelManager_ChannelChanged;
-            userManager.LogOut -= UserManager_LogOut;
+            ServerManager.ServerButtonClick -= ServerManager_ServerButtonClick;
+            ServerManager.ServerChanged -= ServerManager_ServerChanged;
+            ChannelManager.ChannelButtonClick -= ChannelManager_ChannelButtonClick;
+            ChannelManager.ChannelChanged -= ChannelManager_ChannelChanged;
+            UserManager.LogOut -= UserManager_LogOut;
         }
 
-        private static void UserManager_LogOut(object sender, EventArgs e) {
+        private static async void UserManager_LogOut(object sender, EventArgs e) {
             Downloader.CancelAllAndDeleteFiles();
             FileSystem.ClearData();
-            Program.mainWindow.Restart();
+            await Program.mainWindow.RestartAsync();
         }
 
-        private static void ChannelManager_ChannelChanged(object sender, ChannelManager.ChannelChangedArgs e) {
-            messageManager.ChangeChannel(e.Previous, e.Now);
+        private static async void ChannelManager_ChannelChanged(object sender, ChannelManager.ChannelChangedArgs e) {
+            MessageManager.ChangeChannel(e.Previous, e.Now);
             if (e.Previous != null) {
-                HubManager.SendExitChannelSignal(e.Previous.ChannelId);
+                await HubManager.SendExitChannelSignalAsync(e.Previous.ChannelId);
             }
-            HubManager.SendEnterChannelSignal(e.Now.ChannelId);
+            await HubManager.SendEnterChannelSignalAsync(e.Now.ChannelId);
         }
 
         private static void ChannelManager_ChannelButtonClick(object sender, ChannelManager.ChannelButtonClickArgs e) {
             //Do nothing here
         }
 
-        private static void ServerManager_ServerChanged(object sender, ServerChangedArgs e) {
+        private static async void ServerManager_ServerChanged(object sender, ServerChangedArgs e) {
             if (Inventory.CurrentChannel != null) {
-                HubManager.SendExitChannelSignal(Inventory.CurrentChannel.ChannelId);
+                await HubManager.SendExitChannelSignalAsync(Inventory.CurrentChannel.ChannelId);
                 Inventory.ClearCurrentChannel();
             }
             if(e.Previous != null) {
-                HubManager.SendExitServerSignal(e.Previous.ServerId);
+                await HubManager.SendExitServerSignalAsync(e.Previous.ServerId);
             }
-            HubManager.SendEnterServerSignal(e.Now.ServerId);
-            channelManager.ChangeServer(e.Previous, e.Now);
-            messageManager.ClearContent();
+            await HubManager.SendEnterServerSignalAsync(e.Now.ServerId);
+            ChannelManager.ChangeServer(e.Previous, e.Now);
+            RoleManager.ChangeServer(e.Previous, e.Now);
+            MessageManager.ClearContent();
         }
 
         private static void ServerManager_ServerButtonClick(object sender, ServerButtonClickArgs e) {

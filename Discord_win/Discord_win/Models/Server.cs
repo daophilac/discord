@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Models {
+namespace Discord.Models {
     public class Server {
         public int ServerId { get; set; }
         public string ServerName { get; set; }

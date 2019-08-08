@@ -13,12 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Discord_win.Pages {
+namespace Discord.Pages {
     /// <summary>
     /// Interaction logic for UserSettingPage.xaml
     /// </summary>
     public partial class UserSettingPage : Page {
         private UserProfilePage UserProfilePage { get; set; }
+        public event EventHandler LogOut;
         public UserSettingPage() {
             InitializeComponent();
             UserProfilePage = new UserProfilePage();
@@ -31,6 +32,12 @@ namespace Discord_win.Pages {
         private void ButtonEsc_Click(object sender, RoutedEventArgs e) {
             UserProfilePage.NavigateToViewMode();
             Program.mainWindow.MainFrame.Navigate(Program.mainPage);
+        }
+
+        private void ButtonLogOut_Click(object sender, RoutedEventArgs e) {
+            if (MessageBox.Show("Log out?", "Log out", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+                LogOut?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

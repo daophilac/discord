@@ -6,16 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Models {
+namespace Discord.Models {
     public class Role {
         public int RoleId { get; set; }
+        public int RoleLevel { get; set; }
+        public bool MainRole { get; set; }
         public string RoleName { get; set; }
-        public bool CanDelete { get; set; }
+        public bool Kick { get; set; }
+        public bool ModifyChannel { get; set; }
+        public bool ModifyRole { get; set; }
         public int ServerId { get; set; }
 
-        
         public Server Server { get; set; }
-        public ICollection<ServerLevelPermission> ServerLevelPermissions { get; set; }
-        public ICollection<ChannelLevelPermission> ChannelLevelPermissions { get; set; }
+        public ICollection<ChannelPermission> ChannelPermissions { get; set; }
     }
 }

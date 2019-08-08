@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Discord_win.Models {
+namespace Discord.Models {
     public class Message {
         public int MessageId { get; set; }
         public int ChannelId { get; set; }

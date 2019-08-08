@@ -1,5 +1,5 @@
-﻿using Discord_win.Models;
-using Discord_win.Resources.Static;
+﻿using Discord.Models;
+using Discord.Resources.Static;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,55 +8,72 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Tools {
+namespace Discord.Tools {
     public static class ResourcesCreator {
         private static APICaller apiCaller;
         public static void Establish() {
             apiCaller = new APICaller();
         }
-        public static async Task<List<Server>> GetListServer(int userId) {
-            string requestUrl = Route.BuildGetSeversByUserUrl(Inventory.CurrentUser.UserId);
+        public static async Task<ICollection<Server>> GetListServerAsync(int userId) {
+            string requestUrl = Route.Server.BuildGetByUserUrl(Inventory.CurrentUser.UserId);
             apiCaller.SetProperties(HttpMethod.Get, requestUrl);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             string result = await httpResponseMessage.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Server>>(result);
+            return JsonConvert.DeserializeObject<ICollection<Server>>(result);
         }
-        public static async Task<List<Channel>> GetListChannel(int serverId) {
-            string requestUrl = Route.BuildGetChannelsByServerUrl(serverId);
+        public static async Task<ICollection<Channel>> GetListChannelAsync(int serverId) {
+            string requestUrl = Route.Channel.BuildGetByServerUrl(serverId);
             apiCaller.SetProperties(HttpMethod.Get, requestUrl);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             string result = await httpResponseMessage.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Channel>>(result);
+            return JsonConvert.DeserializeObject<ICollection<Channel>>(result);
         }
-        public static async Task<List<Message>> GetListMessage(int channelId) {
-            string requestUrl = Route.BuildGetMessagesByChannelUrl(channelId);
+        public static async Task<ICollection<User>> GetListUserAsync(int serverId) {
+            string requestUrl = Route.User.BuildGetByServer(serverId);
             apiCaller.SetProperties(HttpMethod.Get, requestUrl);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             string result = await httpResponseMessage.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Message>>(result);
+            return JsonConvert.DeserializeObject<ICollection<User>>(result);
         }
-        public static async Task<Server> GetServerByInstantInvite(string instantInvite) {
-            string requestUrl = Route.BuildGetServerByInstantInviteUrl(Inventory.CurrentUser.UserId, instantInvite);
+        public static async Task<ICollection<Role>> GetListRoleAsync(int serverId) {
+            string requestUrl = Route.Role.BuildGetByServerUrl(serverId);
+            apiCaller.SetProperties(HttpMethod.Get, requestUrl);
+            HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
+            string result = await httpResponseMessage.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ICollection<Role>>(result);
+        }
+        public static async Task<ICollection<Message>> GetListMessageAsync(int channelId) {
+            string requestUrl = Route.Message.BuildGetByChannelUrl(channelId);
+            apiCaller.SetProperties(HttpMethod.Get, requestUrl);
+            HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
+            string result = await httpResponseMessage.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ICollection<Message>>(result);
+        }
+        public static async Task<Server> GetServerByInstantInviteAsync(string instantInvite) {
+            string requestUrl = Route.InstantInvite.BuildGetServer(Inventory.CurrentUser.UserId, instantInvite);
             apiCaller.SetProperties(HttpMethod.Get, requestUrl);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             if (!httpResponseMessage.IsSuccessStatusCode) {
                 return null;
-                //MessageBox.Show("The instant invite you have typed doesn't exist.");
             }
             else {
                 string result = await httpResponseMessage.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Server>(result);
-                //Program.mainPage.JoinServer(incomingJson);
-                //this.Close();
             }
         }
-        public static async Task<Server> CreateServer(string serverName) {
-            string requestUrl = Route.UrlPostServer;
-            //string json = JsonBuilder.BuildServerJson(Inventory.CurrentUser.UserId, serverName);
+        public static async Task<Server> CreateServerAsync(string serverName) {
+            string requestUrl = Route.Server.UrlAdd;
             apiCaller.SetProperties(HttpMethod.Post, requestUrl, new Server { AdminId = Inventory.CurrentUser.UserId, ServerName = serverName });
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             string result = await httpResponseMessage.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Server>(result);
+        }
+        public static async Task<Role> GetUserRoleInCurrentServerAsync(int userId, int serverId) {
+            string requestUrl = Route.Role.BuildRouteGetUserRoleInServerUrl(userId, serverId);
+            apiCaller.SetProperties(HttpMethod.Get, requestUrl);
+            HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
+            string result = await httpResponseMessage.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Role>(result);
         }
     }
 }

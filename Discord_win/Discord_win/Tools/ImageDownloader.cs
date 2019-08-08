@@ -1,5 +1,5 @@
-﻿using Discord_win.Models;
-using Discord_win.Resources.Static;
+﻿using Discord.Models;
+using Discord.Resources.Static;
 using Peanut.Client;
 using System;
 using System.Collections.Generic;
@@ -8,33 +8,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Tools {
+namespace Discord.Tools {
     public class ImageDownloader {
         public string SaveDirectory { get; set; }
         public ImageDownloader(string saveDirectory) {
             SaveDirectory = saveDirectory;
         }
-        public async void DownloadUserImage(User user) {
-            string url = Route.BuildUserDownloadImageUrl(user.ImageName);
-            await new Downloader(url, SaveDirectory).StartDownloadingAsync();
+        public Downloader MakeDownloader(User user) {
+            string url = Route.User.BuildDownloadImageUrl(user.ImageName);
+            return new Downloader(url, SaveDirectory);
         }
-        public async Task DownloadUserImage(string imageName) {
-            string url = Route.BuildUserDownloadImageUrl(imageName);
-            await new Downloader(url, SaveDirectory).StartDownloadingAsync();
+        public Downloader MakeDownloader(string imageName) {
+            string url = Route.User.BuildDownloadImageUrl(imageName);
+            return new Downloader(url, SaveDirectory);
         }
-        public async void DownloadUserImages(List<User> listUser, string saveDirectory) {
-            Dictionary<string, string> urls = Route.BuildUserDownloadImageUrls(listUser.Select(u => u.ImageName).ToArray());
+        public Dictionary<string, Downloader> MakeDownloaders(List<User> listUser, string saveDirectory) {
+            Dictionary<string, string> urls = Route.User.BuildDownloadImageUrls(listUser.Select(u => u.ImageName).ToArray());
+            Dictionary<string, Downloader> result = new Dictionary<string, Downloader>();
             foreach (KeyValuePair<string, string> url in urls) {
-                await new Downloader(url.Value, saveDirectory).StartDownloadingAsync();
+                result.Add(url.Key, new Downloader(url.Value, SaveDirectory));
             }
+            return result;
         }
-        public async void DownloaduserImages(List<string> listImageName, string saveDirectory) {
-            Dictionary<string, string> urls = Route.BuildUserDownloadImageUrls(listImageName.ToArray());
+        public Dictionary<string, Downloader> DownloaduserImages(List<string> listImageName, string saveDirectory) {
+            Dictionary<string, string> urls = Route.User.BuildDownloadImageUrls(listImageName.ToArray());
+            Dictionary<string, Downloader> result = new Dictionary<string, Downloader>();
             foreach (KeyValuePair<string, string> url in urls) {
-                await new Downloader(url.Value, saveDirectory).StartDownloadingAsync();
+                result.Add(url.Key, new Downloader(url.Value, SaveDirectory));
             }
+            return result;
         }
-        public async void CancelAllDownloadTasksAndDeleteDataFolder() {
+        public async Task CancelAllDownloadTasksAndDeleteDataFolderAsync() {
             Downloader.CancelAllAndDeleteFiles();
             int numAttempts = 0;
             while(++numAttempts < Downloader.DefaultDeleteAttempt) {

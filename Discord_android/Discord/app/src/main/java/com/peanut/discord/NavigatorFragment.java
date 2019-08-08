@@ -109,14 +109,14 @@ public class NavigatorFragment extends Fragment {
     }
 
     private void apiGetListServer() {
-        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.buildGetSeversByUserUrl(Inventory.currentUser.getUserId()));
+        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.Server.buildGetByUserUrl(Inventory.currentUser.getUserId()));
         apiCaller.setOnSuccessListener((connection, response) -> {
             getActivity().runOnUiThread(() -> Inventory.storeListServer(response));
         }).sendRequest();
     }
 
     private void apiGetListChannel(Server server) {
-        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.buildGetChannelsByServerUrl(server.getServerId()));
+        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.Channel.buildGetByServerUrl(server.getServerId()));
         apiCaller.setOnSuccessListener((connection, response) -> {
             getActivity().runOnUiThread(() -> Inventory.storeListChannel(response));
         }).sendRequest();

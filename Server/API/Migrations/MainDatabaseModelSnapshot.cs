@@ -95,396 +95,440 @@ namespace API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("API.Models.ChannelLevelPermission", b =>
+            modelBuilder.Entity("API.Models.ChannelPermission", b =>
                 {
                     b.Property<int>("ChannelId");
 
                     b.Property<int>("RoleId");
 
-                    b.Property<int>("ChannelPermissionId");
+                    b.Property<bool>("React");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("SendImage");
 
-                    b.HasKey("ChannelId", "RoleId", "ChannelPermissionId");
+                    b.Property<bool>("SendMessage");
 
-                    b.HasIndex("ChannelPermissionId");
+                    b.Property<bool>("ViewMessage");
+
+                    b.HasKey("ChannelId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.ToTable("ChannelLevelPermission");
-
-                    b.HasData(
-                        new
-                        {
-                            ChannelId = 1,
-                            RoleId = 1,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 1,
-                            RoleId = 2,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 1,
-                            RoleId = 9,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 1,
-                            RoleId = 10,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 1,
-                            RoleId = 11,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 1,
-                            RoleId = 12,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 2,
-                            RoleId = 1,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 2,
-                            RoleId = 2,
-                            ChannelPermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 2,
-                            RoleId = 9,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 2,
-                            RoleId = 10,
-                            ChannelPermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 2,
-                            RoleId = 11,
-                            ChannelPermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 2,
-                            RoleId = 12,
-                            ChannelPermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 3,
-                            RoleId = 1,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 3,
-                            RoleId = 2,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 3,
-                            RoleId = 9,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 3,
-                            RoleId = 10,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 3,
-                            RoleId = 11,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 3,
-                            RoleId = 12,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 4,
-                            RoleId = 3,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 4,
-                            RoleId = 4,
-                            ChannelPermissionId = 2,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 4,
-                            RoleId = 13,
-                            ChannelPermissionId = 2,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 4,
-                            RoleId = 14,
-                            ChannelPermissionId = 2,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 4,
-                            RoleId = 15,
-                            ChannelPermissionId = 2,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 5,
-                            RoleId = 3,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 5,
-                            RoleId = 4,
-                            ChannelPermissionId = 2,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 5,
-                            RoleId = 13,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 5,
-                            RoleId = 14,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 5,
-                            RoleId = 15,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 6,
-                            RoleId = 3,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 6,
-                            RoleId = 4,
-                            ChannelPermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 6,
-                            RoleId = 13,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 6,
-                            RoleId = 14,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 6,
-                            RoleId = 15,
-                            ChannelPermissionId = 2,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 7,
-                            RoleId = 5,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 7,
-                            RoleId = 6,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 7,
-                            RoleId = 16,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 7,
-                            RoleId = 17,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 7,
-                            RoleId = 18,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 8,
-                            RoleId = 5,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 8,
-                            RoleId = 6,
-                            ChannelPermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 8,
-                            RoleId = 16,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 8,
-                            RoleId = 17,
-                            ChannelPermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 8,
-                            RoleId = 18,
-                            ChannelPermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            ChannelId = 9,
-                            RoleId = 7,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 9,
-                            RoleId = 8,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            ChannelId = 9,
-                            RoleId = 19,
-                            ChannelPermissionId = 1,
-                            IsActive = true
-                        });
-                });
-
-            modelBuilder.Entity("API.Models.ChannelPermission", b =>
-                {
-                    b.Property<int>("PermissionId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("VARCHAR(1024)");
-
-                    b.Property<string>("PermissionName")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR(50)");
-
-                    b.HasKey("PermissionId");
 
                     b.ToTable("ChannelPermission");
 
                     b.HasData(
                         new
                         {
-                            PermissionId = 1,
-                            PermissionName = "All"
+                            ChannelId = 1,
+                            RoleId = 1,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
                         },
                         new
                         {
-                            PermissionId = 2,
-                            PermissionName = "All except send message"
+                            ChannelId = 1,
+                            RoleId = 2,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
                         },
                         new
                         {
-                            PermissionId = 3,
-                            PermissionName = "View message"
+                            ChannelId = 1,
+                            RoleId = 9,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
                         },
                         new
                         {
-                            PermissionId = 4,
-                            PermissionName = "Send message"
+                            ChannelId = 1,
+                            RoleId = 10,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
                         },
                         new
                         {
-                            PermissionId = 5,
-                            PermissionName = "Send image"
+                            ChannelId = 1,
+                            RoleId = 11,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
                         },
                         new
                         {
-                            PermissionId = 6,
-                            PermissionName = "React"
+                            ChannelId = 1,
+                            RoleId = 12,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 2,
+                            RoleId = 1,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 2,
+                            RoleId = 2,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 2,
+                            RoleId = 9,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 2,
+                            RoleId = 10,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 2,
+                            RoleId = 11,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 2,
+                            RoleId = 12,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 1,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 2,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 9,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 10,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 11,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 3,
+                            RoleId = 12,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 4,
+                            RoleId = 3,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 4,
+                            RoleId = 4,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = false,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 4,
+                            RoleId = 13,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = false,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 4,
+                            RoleId = 14,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = false,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 4,
+                            RoleId = 15,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = false,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 3,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 4,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 13,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 14,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 5,
+                            RoleId = 15,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 3,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 4,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 13,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 14,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 6,
+                            RoleId = 15,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 7,
+                            RoleId = 5,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 7,
+                            RoleId = 6,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 7,
+                            RoleId = 16,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 7,
+                            RoleId = 17,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 7,
+                            RoleId = 18,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 8,
+                            RoleId = 5,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 8,
+                            RoleId = 6,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 8,
+                            RoleId = 16,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 8,
+                            RoleId = 17,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 8,
+                            RoleId = 18,
+                            React = false,
+                            SendImage = false,
+                            SendMessage = false,
+                            ViewMessage = false
+                        },
+                        new
+                        {
+                            ChannelId = 9,
+                            RoleId = 7,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 9,
+                            RoleId = 8,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
+                        },
+                        new
+                        {
+                            ChannelId = 9,
+                            RoleId = 19,
+                            React = true,
+                            SendImage = true,
+                            SendMessage = true,
+                            ViewMessage = true
                         });
                 });
 
@@ -617,7 +661,17 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("CanDelete");
+                    b.Property<bool>("ChangeUserRole");
+
+                    b.Property<bool>("Kick");
+
+                    b.Property<bool>("MainRole");
+
+                    b.Property<bool>("ModifyChannel");
+
+                    b.Property<bool>("ModifyRole");
+
+                    b.Property<int>("RoleLevel");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
@@ -627,7 +681,8 @@ namespace API.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.HasIndex("ServerId");
+                    b.HasAlternateKey("ServerId", "RoleLevel")
+                        .HasName("UK_Role_ServerId_RoleLevel");
 
                     b.ToTable("Role");
 
@@ -635,133 +690,228 @@ namespace API.Migrations
                         new
                         {
                             RoleId = 1,
-                            CanDelete = false,
+                            ChangeUserRole = true,
+                            Kick = true,
+                            MainRole = true,
+                            ModifyChannel = true,
+                            ModifyRole = true,
+                            RoleLevel = 1000,
                             RoleName = "Admin",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 2,
-                            CanDelete = false,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = true,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 0,
                             RoleName = "Member",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 3,
-                            CanDelete = false,
+                            ChangeUserRole = true,
+                            Kick = true,
+                            MainRole = true,
+                            ModifyChannel = true,
+                            ModifyRole = true,
+                            RoleLevel = 1000,
                             RoleName = "Admin",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 4,
-                            CanDelete = false,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = true,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 0,
                             RoleName = "Member",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 5,
-                            CanDelete = false,
+                            ChangeUserRole = true,
+                            Kick = true,
+                            MainRole = true,
+                            ModifyChannel = true,
+                            ModifyRole = true,
+                            RoleLevel = 1000,
                             RoleName = "Admin",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 6,
-                            CanDelete = false,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = true,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 0,
                             RoleName = "Member",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 7,
-                            CanDelete = false,
+                            ChangeUserRole = true,
+                            Kick = true,
+                            MainRole = true,
+                            ModifyChannel = true,
+                            ModifyRole = true,
+                            RoleLevel = 1000,
                             RoleName = "Admin",
                             ServerId = 4
                         },
                         new
                         {
                             RoleId = 8,
-                            CanDelete = false,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = true,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 0,
                             RoleName = "Member",
                             ServerId = 4
                         },
                         new
                         {
                             RoleId = 9,
-                            CanDelete = true,
+                            ChangeUserRole = true,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = true,
+                            ModifyRole = true,
+                            RoleLevel = 999,
                             RoleName = "Knight",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 10,
-                            CanDelete = true,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 998,
                             RoleName = "Thief",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 11,
-                            CanDelete = true,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 997,
                             RoleName = "White Wizard",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 12,
-                            CanDelete = true,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 996,
                             RoleName = "Black Wizard",
                             ServerId = 1
                         },
                         new
                         {
                             RoleId = 13,
-                            CanDelete = true,
+                            ChangeUserRole = true,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = true,
+                            ModifyRole = true,
+                            RoleLevel = 999,
                             RoleName = "Adol",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 14,
-                            CanDelete = true,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 998,
                             RoleName = "Dogi",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 15,
-                            CanDelete = true,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 997,
                             RoleName = "Aisha",
                             ServerId = 2
                         },
                         new
                         {
                             RoleId = 16,
-                            CanDelete = true,
+                            ChangeUserRole = true,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = true,
+                            ModifyRole = true,
+                            RoleLevel = 999,
                             RoleName = "New Admin",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 17,
-                            CanDelete = true,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 998,
                             RoleName = "Artist",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 18,
-                            CanDelete = true,
+                            ChangeUserRole = false,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = false,
+                            ModifyRole = false,
+                            RoleLevel = 997,
                             RoleName = "Folk",
                             ServerId = 3
                         },
                         new
                         {
                             RoleId = 19,
-                            CanDelete = true,
+                            ChangeUserRole = true,
+                            Kick = false,
+                            MainRole = false,
+                            ModifyChannel = true,
+                            ModifyRole = true,
+                            RoleLevel = 999,
                             RoleName = "Musician",
                             ServerId = 4
                         });
@@ -824,182 +974,6 @@ namespace API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("API.Models.ServerLevelPermission", b =>
-                {
-                    b.Property<int>("RoleId");
-
-                    b.Property<int>("PermissionId");
-
-                    b.Property<bool>("IsActive");
-
-                    b.HasKey("RoleId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("ServerLevelPermission");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 9,
-                            PermissionId = 2,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            RoleId = 10,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 11,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 12,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            RoleId = 4,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 13,
-                            PermissionId = 2,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            RoleId = 14,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 15,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 5,
-                            PermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            RoleId = 6,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 16,
-                            PermissionId = 2,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            RoleId = 17,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 18,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 7,
-                            PermissionId = 1,
-                            IsActive = true
-                        },
-                        new
-                        {
-                            RoleId = 8,
-                            PermissionId = 1,
-                            IsActive = false
-                        },
-                        new
-                        {
-                            RoleId = 19,
-                            PermissionId = 2,
-                            IsActive = true
-                        });
-                });
-
-            modelBuilder.Entity("API.Models.ServerPermission", b =>
-                {
-                    b.Property<int>("PermissionId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("VARCHAR(1024)");
-
-                    b.Property<string>("PermissionName")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR(50)");
-
-                    b.HasKey("PermissionId");
-
-                    b.ToTable("ServerPermission");
-
-                    b.HasData(
-                        new
-                        {
-                            PermissionId = 1,
-                            PermissionName = "All"
-                        },
-                        new
-                        {
-                            PermissionId = 2,
-                            PermissionName = "All except kick"
-                        },
-                        new
-                        {
-                            PermissionId = 3,
-                            PermissionName = "Kick"
-                        },
-                        new
-                        {
-                            PermissionId = 4,
-                            PermissionName = "Modify channel"
-                        },
-                        new
-                        {
-                            PermissionId = 5,
-                            PermissionName = "Modify role"
-                        });
-                });
-
             modelBuilder.Entity("API.Models.ServerUser", b =>
                 {
                     b.Property<int>("ServerId");
@@ -1030,7 +1004,7 @@ namespace API.Migrations
                         {
                             ServerId = 2,
                             UserId = 1,
-                            RoleId = 1
+                            RoleId = 3
                         },
                         new
                         {
@@ -1066,7 +1040,7 @@ namespace API.Migrations
                         {
                             ServerId = 2,
                             UserId = 4,
-                            RoleId = 13
+                            RoleId = 15
                         },
                         new
                         {
@@ -1182,20 +1156,15 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("API.Models.ChannelLevelPermission", b =>
+            modelBuilder.Entity("API.Models.ChannelPermission", b =>
                 {
                     b.HasOne("API.Models.Channel", "Channel")
                         .WithMany("ChannelLevelPermissions")
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("API.Models.ChannelPermission", "ChannelPermission")
-                        .WithMany("ChannelLevelPermissions")
-                        .HasForeignKey("ChannelPermissionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("API.Models.Role", "Role")
-                        .WithMany("ChannelLevelPermissions")
+                        .WithMany("ChannelPermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -1213,12 +1182,12 @@ namespace API.Migrations
                     b.HasOne("API.Models.Channel", "Channel")
                         .WithMany("Messages")
                         .HasForeignKey("ChannelId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("API.Models.Role", b =>
@@ -1234,19 +1203,6 @@ namespace API.Migrations
                     b.HasOne("API.Models.User", "Admin")
                         .WithMany()
                         .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("API.Models.ServerLevelPermission", b =>
-                {
-                    b.HasOne("API.Models.ServerPermission", "ServerPermission")
-                        .WithMany("ServerLevelPermissions")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.Role", "Role")
-                        .WithMany("ServerLevelPermissions")
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

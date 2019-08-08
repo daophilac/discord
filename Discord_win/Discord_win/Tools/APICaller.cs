@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Discord_win.Tools {
+namespace Discord.Tools {
     public class APICaller {
         private static readonly string NULL_REQUEST_METHOD = "Request method cannot be null";
         private static readonly string NULL_REQUEST_URL = "Request URL cannot be null";

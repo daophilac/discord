@@ -21,8 +21,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("getchannelsbyserver/{serverID}")]
-        public IQueryable<Channel> GetChannelsByServer(int serverID) {
+        [Route("getbyserver/{serverID}")]
+        public IQueryable<Channel> GetByServer(int serverID) {
             var channels = from channel in _context.Channel where channel.ServerId == serverID select channel;
             return channels;
         }

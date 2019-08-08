@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Models {
     public class MainDatabase : DbContext {
@@ -16,40 +13,31 @@ namespace API.Models {
         }
 
         public DbSet<Channel> Channel { get; set; }
-        public DbSet<ChannelLevelPermission> ChannelLevelPermission { get; set; }
         public DbSet<ChannelPermission> ChannelPermission { get; set; }
         public DbSet<InstantInvite> InstantInvite { get; set; }
         public DbSet<Message> Message { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<Server> Server { get; set; }
-        public DbSet<ServerLevelPermission> ServerLevelPermission { get; set; }
-        public DbSet<ServerPermission> ServerPermission { get; set; }
         public DbSet<ServerUser> ServerUser { get; set; }
         public DbSet<User> User { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             ModelBuilder = modelBuilder;
             modelBuilder.Entity<User>().HasAlternateKey(k => k.Email).HasName("UK_User_Email");
             modelBuilder.Entity<Channel>().HasAlternateKey(c => new { c.ServerId, c.ChannelName }).HasName("UK_Channel_Server_Name");
+            modelBuilder.Entity<Role>().HasAlternateKey(r => new { r.ServerId, r.RoleLevel }).HasName("UK_Role_ServerId_RoleLevel");
             modelBuilder.Entity<ServerUser>().HasAlternateKey(su => new { su.ServerId, su.UserId, su.RoleId }).HasName("UK_ServerUser_ServerId_UserId_RoleId");
-            modelBuilder.Entity<Role>().HasOne(r => r.Server).WithMany("Roles");
-
             modelBuilder.Entity<ServerUser>().HasKey(su => new { su.ServerId, su.UserId });
-            modelBuilder.Entity<ServerLevelPermission>().HasKey(slp => new { slp.RoleId, slp.PermissionId });
-            modelBuilder.Entity<ChannelLevelPermission>().HasKey(clp => new { clp.ChannelId, clp.RoleId, clp.ChannelPermissionId });
+            modelBuilder.Entity<ChannelPermission>().HasKey(clp => new { clp.ChannelId, clp.RoleId });
+            modelBuilder.Entity<Message>().HasOne(m => m.User).WithMany("Messages").OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ChannelPermission>().HasOne(cp => cp.Role).WithMany("ChannelPermissions").OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ServerUser>().HasOne(su => su.Server).WithMany("ServerUsers").OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ServerUser>().HasOne(su => su.User).WithMany("ServerUsers").OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<ChannelLevelPermission>().HasOne(crp => crp.Role).WithMany("ChannelLevelPermissions").OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Message>().HasOne(m => m.Channel).WithMany("Messages").OnDelete(DeleteBehavior.Restrict);
-
-            SeedServerPermission();
-            SeedChannelPermission();
             SeedUser();
             SeedServer();
             SeedChannel();
             SeedRole();
             SeedServerUser();
-            SeedServerLevelPermission();
-            SeedChannelLevelPermission();
+            SeedChannelPermission();
             SeedMessage();
             SeedInstantInvite();
         }
@@ -84,75 +72,29 @@ namespace API.Models {
         }
         private void SeedRole() {
             ModelBuilder.Entity<Role>().HasData(
-                new Role { RoleId = 1, RoleName = "Admin", ServerId = 1, CanDelete = false },
-                new Role { RoleId = 2, RoleName = "Member", ServerId = 1, CanDelete = false },
-                new Role { RoleId = 3, RoleName = "Admin", ServerId = 2, CanDelete = false },
-                new Role { RoleId = 4, RoleName = "Member", ServerId = 2, CanDelete = false },
-                new Role { RoleId = 5, RoleName = "Admin", ServerId = 3, CanDelete = false },
-                new Role { RoleId = 6, RoleName = "Member", ServerId = 3, CanDelete = false },
-                new Role { RoleId = 7, RoleName = "Admin", ServerId = 4, CanDelete = false },
-                new Role { RoleId = 8, RoleName = "Member", ServerId = 4, CanDelete = false },
-                new Role { RoleId = 9, RoleName = "Knight", ServerId = 1, CanDelete = true },
-                new Role { RoleId = 10, RoleName = "Thief", ServerId = 1, CanDelete = true },
-                new Role { RoleId = 11, RoleName = "White Wizard", ServerId = 1, CanDelete = true },
-                new Role { RoleId = 12, RoleName = "Black Wizard", ServerId = 1, CanDelete = true },
-                new Role { RoleId = 13, RoleName = "Adol", ServerId = 2, CanDelete = true },
-                new Role { RoleId = 14, RoleName = "Dogi", ServerId = 2, CanDelete = true },
-                new Role { RoleId = 15, RoleName = "Aisha", ServerId = 2, CanDelete = true },
-                new Role { RoleId = 16, RoleName = "New Admin", ServerId = 3, CanDelete = true },
-                new Role { RoleId = 17, RoleName = "Artist", ServerId = 3, CanDelete = true },
-                new Role { RoleId = 18, RoleName = "Folk", ServerId = 3, CanDelete = true },
-                new Role { RoleId = 19, RoleName = "Musician", ServerId = 4, CanDelete = true }
-            );
-        }
-        private void SeedServerPermission() {
-            ModelBuilder.Entity<ServerPermission>().HasData(
-                new ServerPermission { PermissionId = 1, PermissionName = "All" },
-                new ServerPermission { PermissionId = 2, PermissionName = "All except kick" },
-                new ServerPermission { PermissionId = 3, PermissionName = "Kick" },
-                new ServerPermission { PermissionId = 4, PermissionName = "Modify channel" },
-                new ServerPermission { PermissionId = 5, PermissionName = "Modify role" }
+                new Role { RoleId = 1, RoleLevel = 1000, MainRole = true, RoleName = "Admin", ServerId = 1, Kick = true, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 2, RoleLevel = 0, MainRole = true, RoleName = "Member", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 3, RoleLevel = 1000, MainRole = true, RoleName = "Admin", ServerId = 2, Kick = true, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 4, RoleLevel = 0, MainRole = true, RoleName = "Member", ServerId = 2, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 5, RoleLevel = 1000, MainRole = true, RoleName = "Admin", ServerId = 3, Kick = true, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 6, RoleLevel = 0, MainRole = true, RoleName = "Member", ServerId = 3, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 7, RoleLevel = 1000, MainRole = true, RoleName = "Admin", ServerId = 4, Kick = true, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 8, RoleLevel = 0, MainRole = true, RoleName = "Member", ServerId = 4, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 9, RoleLevel = 999, MainRole = false, RoleName = "Knight", ServerId = 1, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 10, RoleLevel = 998, MainRole = false, RoleName = "Thief", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 11, RoleLevel = 997, MainRole = false, RoleName = "White Wizard", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 12, RoleLevel = 996, MainRole = false, RoleName = "Black Wizard", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 13, RoleLevel = 999, MainRole = false, RoleName = "Adol", ServerId = 2, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 14, RoleLevel = 998, MainRole = false, RoleName = "Dogi", ServerId = 2, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 15, RoleLevel = 997, MainRole = false, RoleName = "Aisha", ServerId = 2, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 16, RoleLevel = 999, MainRole = false, RoleName = "New Admin", ServerId = 3, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 17, RoleLevel = 998, MainRole = false, RoleName = "Artist", ServerId = 3, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 18, RoleLevel = 997, MainRole = false, RoleName = "Folk", ServerId = 3, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 19, RoleLevel = 999, MainRole = false, RoleName = "Musician", ServerId = 4, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true }
             );
         }
         private void SeedChannelPermission() {
             ModelBuilder.Entity<ChannelPermission>().HasData(
-                new ChannelPermission { PermissionId = 1, PermissionName = "All" },
-                new ChannelPermission { PermissionId = 2, PermissionName = "All except send message" },
-                new ChannelPermission { PermissionId = 3, PermissionName = "View message" },
-                new ChannelPermission { PermissionId = 4, PermissionName = "Send message" },
-                new ChannelPermission { PermissionId = 5, PermissionName = "Send image" },
-                new ChannelPermission { PermissionId = 6, PermissionName = "React" }
-            );
-        }
-        private void SeedServerLevelPermission() {
-            ModelBuilder.Entity<ServerLevelPermission>().HasData(
-                // server 1
-                new ServerLevelPermission { RoleId = 1, PermissionId = 1, IsActive = true},
-                new ServerLevelPermission { RoleId = 2, PermissionId = 1, IsActive = false},
-                new ServerLevelPermission { RoleId = 9, PermissionId = 2, IsActive = true},
-                new ServerLevelPermission { RoleId = 10, PermissionId = 1, IsActive = false},
-                new ServerLevelPermission { RoleId = 11, PermissionId = 1, IsActive = false},
-                new ServerLevelPermission { RoleId = 12, PermissionId = 1, IsActive = false},
-                // server 2
-                new ServerLevelPermission { RoleId = 3, PermissionId = 1, IsActive = true },
-                new ServerLevelPermission { RoleId = 4, PermissionId = 1, IsActive = false },
-                new ServerLevelPermission { RoleId = 13, PermissionId = 2, IsActive = true },
-                new ServerLevelPermission { RoleId = 14, PermissionId = 1, IsActive = false },
-                new ServerLevelPermission { RoleId = 15, PermissionId = 1, IsActive = false },
-                // server 3
-                new ServerLevelPermission { RoleId = 5, PermissionId = 1, IsActive = true },
-                new ServerLevelPermission { RoleId = 6, PermissionId = 1, IsActive = false },
-                new ServerLevelPermission { RoleId = 16, PermissionId = 2, IsActive = true },
-                new ServerLevelPermission { RoleId = 17, PermissionId = 1, IsActive = false },
-                new ServerLevelPermission { RoleId = 18, PermissionId = 1, IsActive = false },
-                // server 4
-                new ServerLevelPermission { RoleId = 7, PermissionId = 1, IsActive = true },
-                new ServerLevelPermission { RoleId = 8, PermissionId = 1, IsActive = false },
-                new ServerLevelPermission { RoleId = 19, PermissionId = 2, IsActive = true }
-            );
-        }
-        private void SeedChannelLevelPermission() {
-            ModelBuilder.Entity<ChannelLevelPermission>().HasData(
                 // Server 1
                 // Role 1: Admin
                 // Role 2: Member
@@ -161,26 +103,27 @@ namespace API.Models {
                 // Role 11: White Wizard
                 // Role 12: Black Wizard
                 // Channel 1 General
-                new ChannelLevelPermission { ChannelId = 1, RoleId = 1, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 1, RoleId = 2, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 1, RoleId = 9, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 1, RoleId = 10, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 1, RoleId = 11, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 1, RoleId = 12, ChannelPermissionId = 1, IsActive = true },
+                new ChannelPermission { ChannelId = 1, RoleId = 1, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 1, RoleId = 2, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 1, RoleId = 9, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 1, RoleId = 10, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 1, RoleId = 11, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 1, RoleId = 12, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+
                 // Channel 2 Boss
-                new ChannelLevelPermission { ChannelId = 2, RoleId = 1, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 2, RoleId = 2, ChannelPermissionId = 1, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 2, RoleId = 9, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 2, RoleId = 10, ChannelPermissionId = 1, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 2, RoleId = 11, ChannelPermissionId = 1, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 2, RoleId = 12, ChannelPermissionId = 1, IsActive = false },
+                new ChannelPermission { ChannelId = 2, RoleId = 1, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 2, RoleId = 2, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
+                new ChannelPermission { ChannelId = 2, RoleId = 9, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 2, RoleId = 10, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
+                new ChannelPermission { ChannelId = 2, RoleId = 11, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
+                new ChannelPermission { ChannelId = 2, RoleId = 12, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
                 // Channel 3 Random Encounter
-                new ChannelLevelPermission { ChannelId = 3, RoleId = 1, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 3, RoleId = 2, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 3, RoleId = 9, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 3, RoleId = 10, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 3, RoleId = 11, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 3, RoleId = 12, ChannelPermissionId = 1, IsActive = true },
+                new ChannelPermission { ChannelId = 3, RoleId = 1, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 3, RoleId = 2, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 3, RoleId = 9, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 3, RoleId = 10, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 3, RoleId = 11, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 3, RoleId = 12, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
                 
                 // Server 2
                 // Role 3: Admin
@@ -189,23 +132,23 @@ namespace API.Models {
                 // Role 14: Dogi
                 // Role 15: Aisha
                 // Channel 4 Origin
-                new ChannelLevelPermission { ChannelId = 4, RoleId = 3, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 4, RoleId = 4, ChannelPermissionId = 2, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 4, RoleId = 13, ChannelPermissionId = 2, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 4, RoleId = 14, ChannelPermissionId = 2, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 4, RoleId = 15, ChannelPermissionId = 2, IsActive = false },
+                new ChannelPermission { ChannelId = 4, RoleId = 3, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 4, RoleId = 4, ViewMessage = true, React = true, SendMessage = false, SendImage = true },
+                new ChannelPermission { ChannelId = 4, RoleId = 13, ViewMessage = true, React = true, SendMessage = false, SendImage = true },
+                new ChannelPermission { ChannelId = 4, RoleId = 14, ViewMessage = true, React = true, SendMessage = false, SendImage = true },
+                new ChannelPermission { ChannelId = 4, RoleId = 15, ViewMessage = true, React = true, SendMessage = false, SendImage = true },
                 // Channel 5 Ys7
-                new ChannelLevelPermission { ChannelId = 5, RoleId = 3, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 5, RoleId = 4, ChannelPermissionId = 2, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 5, RoleId = 13, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 5, RoleId = 14, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 5, RoleId = 15, ChannelPermissionId = 1, IsActive = true },
+                new ChannelPermission { ChannelId = 5, RoleId = 3, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 5, RoleId = 4, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
+                new ChannelPermission { ChannelId = 5, RoleId = 13, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 5, RoleId = 14, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 5, RoleId = 15, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
                 // Channel 6 Ys8
-                new ChannelLevelPermission { ChannelId = 6, RoleId = 3, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 6, RoleId = 4, ChannelPermissionId = 1, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 6, RoleId = 13, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 6, RoleId = 14, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 6, RoleId = 15, ChannelPermissionId = 2, IsActive = true },
+                new ChannelPermission { ChannelId = 6, RoleId = 3, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 6, RoleId = 4, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
+                new ChannelPermission { ChannelId = 6, RoleId = 13, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 6, RoleId = 14, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 6, RoleId = 15, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
 
                 // Server 3
                 // Role 5: Admin
@@ -214,39 +157,39 @@ namespace API.Models {
                 // Role 17: Artist
                 // Role 18: Folk
                 // Channel 7 General
-                new ChannelLevelPermission { ChannelId = 7, RoleId = 5, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 7, RoleId = 6, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 7, RoleId = 16, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 7, RoleId = 17, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 7, RoleId = 18, ChannelPermissionId = 1, IsActive = true },
+                new ChannelPermission { ChannelId = 7, RoleId = 5, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 7, RoleId = 6, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 7, RoleId = 16, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 7, RoleId = 17, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 7, RoleId = 18, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
                 // Channel 8 Secret
-                new ChannelLevelPermission { ChannelId = 8, RoleId = 5, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 8, RoleId = 6, ChannelPermissionId = 1, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 8, RoleId = 16, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 8, RoleId = 17, ChannelPermissionId = 1, IsActive = false },
-                new ChannelLevelPermission { ChannelId = 8, RoleId = 18, ChannelPermissionId = 1, IsActive = false },
+                new ChannelPermission { ChannelId = 8, RoleId = 5, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 8, RoleId = 6, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
+                new ChannelPermission { ChannelId = 8, RoleId = 16, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 8, RoleId = 17, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
+                new ChannelPermission { ChannelId = 8, RoleId = 18, ViewMessage = false, React = false, SendMessage = false, SendImage = false },
 
                 // Server 4
                 // Role 7: Admin
                 // Role 8: Member
                 // Role 19: Musician
                 // Channel 9 Sky World
-                new ChannelLevelPermission { ChannelId = 9, RoleId = 7, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 9, RoleId = 8, ChannelPermissionId = 1, IsActive = true },
-                new ChannelLevelPermission { ChannelId = 9, RoleId = 19, ChannelPermissionId = 1, IsActive = true }
+                new ChannelPermission { ChannelId = 9, RoleId = 7, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 9, RoleId = 8, ViewMessage = true, React = true, SendMessage = true, SendImage = true },
+                new ChannelPermission { ChannelId = 9, RoleId = 19, ViewMessage = true, React = true, SendMessage = true, SendImage = true }
             );
         }
         private void SeedServerUser() {
             // TODO: The RoleId is not complicated enough
             ModelBuilder.Entity<ServerUser>().HasData(
                 new ServerUser { ServerId = 1, UserId = 1, RoleId = 1 },
-                new ServerUser { ServerId = 2, UserId = 1, RoleId = 1 },
+                new ServerUser { ServerId = 2, UserId = 1, RoleId = 3 },
                 new ServerUser { ServerId = 3, UserId = 2, RoleId = 5 },
                 new ServerUser { ServerId = 1, UserId = 2, RoleId = 9 },
                 new ServerUser { ServerId = 1, UserId = 3, RoleId = 9 },
                 new ServerUser { ServerId = 2, UserId = 2, RoleId = 13 },
                 new ServerUser { ServerId = 2, UserId = 3, RoleId = 13 },
-                new ServerUser { ServerId = 2, UserId = 4, RoleId = 13 },
+                new ServerUser { ServerId = 2, UserId = 4, RoleId = 15 },
                 new ServerUser { ServerId = 3, UserId = 1, RoleId = 16 },
                 new ServerUser { ServerId = 3, UserId = 4, RoleId = 16 },
                 new ServerUser { ServerId = 4, UserId = 2, RoleId = 7 }
@@ -270,6 +213,5 @@ namespace API.Models {
                 new InstantInvite { Link = "4", ServerId = 4, StillValid = true, NerverExpired = true }
             );
         }
-        
     }
 }

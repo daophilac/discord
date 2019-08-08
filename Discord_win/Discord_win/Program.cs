@@ -1,8 +1,8 @@
-﻿using Discord_win.Dialog;
-using Discord_win.Models;
-using Discord_win.Pages;
-using Discord_win.Resources.Static;
-using Discord_win.Tools;
+﻿using Discord.Dialog;
+using Discord.Models;
+using Discord.Pages;
+using Discord.Resources.Static;
+using Discord.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Discord_win {
+namespace Discord {
     public static class Program {
         public static string localIP;
         //public static string protocol;
@@ -51,7 +51,7 @@ namespace Discord_win {
             ExceptionFileNotFound = Application.Current.FindResource("ExceptionFileNotFound").ToString();
 
             //
-            loginPage = new LoginPage();
+            loginPage = new LoginPage("a");
             mainPage = new MainPage();
             userSettingPage = new UserSettingPage();
         }

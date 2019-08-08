@@ -1,7 +1,8 @@
-﻿using Discord_win.Dialog;
-using Discord_win.Models;
-using Discord_win.Resources.Static;
-using Discord_win.Tools;
+﻿using Discord.Dialog;
+using Discord.Models;
+using Discord.Resources.Static;
+using Discord.Tools;
+using Peanut.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,47 +16,46 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Discord_win.Managers {
+namespace Discord.Managers {
     public class ServerManager {
-        private ImageDownloader fileDownloader;
-        private DockPanel dockPanelServer;
-        private Grid gridServerButton;
-        private Button buttonCreateOrJoinServer;
+        private ImageDownloader FileDownloader { get; set; }
+        private DockPanel DockPanelServer { get; set; }
+        private Grid GridServerButton { get; set; }
+        private Button ButtonCreateOrJoinServer { get; set; }
 
-        private DockPanel dockPanelServerButton;
-        private List<Server> listServer;
-        private Dictionary<Button, Server> buttonServers;
-        private CreateOrJoinServerDialog createOrJoinServerDialog;
-        private CreateServerDialog createServerDialog;
-        private JoinServerDialog joinServerDialog;
+        private DockPanel DockPanelServerButton { get; set; }
+        private ICollection<Server> ListServer { get; set; }
+        private Dictionary<Button, Server> ButtonServers { get; set; }
+        private CreateOrJoinServerDialog CreateOrJoinServerDialog { get; set; }
+        private CreateServerDialog CreateServerDialog { get; set; }
+        private JoinServerDialog JoinServerDialog { get; set; }
         public event EventHandler<ServerButtonClickArgs> ServerButtonClick;
         public event EventHandler<ServerChangedArgs> ServerChanged;
         //private Button buttonTestCancelDownload;
         //private Button buttonPause;
         //private Button buttonResume;
         public ServerManager(DockPanel dockPanelServer, Grid gridServerButton, Button buttonCreateOrJoinServer) {
-            fileDownloader = new ImageDownloader(FileSystem.UserDirectory);
-            this.dockPanelServer = dockPanelServer;
-            this.gridServerButton = gridServerButton;
-            this.buttonCreateOrJoinServer = buttonCreateOrJoinServer;
-            this.buttonServers = new Dictionary<Button, Server>();
+            FileDownloader = new ImageDownloader(FileSystem.UserDirectory);
+            DockPanelServer = dockPanelServer;
+            GridServerButton = gridServerButton;
+            ButtonCreateOrJoinServer = buttonCreateOrJoinServer;
+            ButtonServers = new Dictionary<Button, Server>();
 
-            createServerDialog = new CreateServerDialog();
-            joinServerDialog = new JoinServerDialog();
-            createOrJoinServerDialog = new CreateOrJoinServerDialog(createServerDialog, joinServerDialog);
+            CreateServerDialog = new CreateServerDialog();
+            JoinServerDialog = new JoinServerDialog();
+            CreateOrJoinServerDialog = new CreateOrJoinServerDialog(CreateServerDialog, JoinServerDialog);
             //this.buttonTestCancelDownload = buttonTestCancelDownload;
             //this.buttonPause = buttonPause;
             //this.buttonResume = buttonResume;
         }
-        public async Task Establish() {
-            ThrowExceptions();
-            buttonCreateOrJoinServer.Click += ButtonCreateOrJoinServer_Click;
-            createServerDialog.RequestCreateServer += CreateServerDialog_RequestCreateServer;
-            joinServerDialog.JoinServer += JoinServerDialog_JoinServer;
+        public async Task EstablishAsync() {
+            ButtonCreateOrJoinServer.Click += ButtonCreateOrJoinServer_Click;
+            CreateServerDialog.RequestCreateServer += CreateServerDialog_RequestCreateServer;
+            JoinServerDialog.JoinServer += JoinServerDialog_JoinServer;
             //buttonTestCancelDownload.Click += ButtonTestCancelDownload_Click;
             //buttonPause.Click += ButtonPause_Click;
             //buttonResume.Click += ButtonResume_Click;
-            await RetrieveListServer();
+            await RetrieveListServerAsync();
             //DownloadUserImages();
         }
 
@@ -70,23 +70,23 @@ namespace Discord_win.Managers {
         }
 
         public void TearDown() {
-            buttonCreateOrJoinServer.Click -= ButtonCreateOrJoinServer_Click;
-            createServerDialog.RequestCreateServer -= CreateServerDialog_RequestCreateServer;
-            joinServerDialog.JoinServer -= JoinServerDialog_JoinServer;
+            ButtonCreateOrJoinServer.Click -= ButtonCreateOrJoinServer_Click;
+            CreateServerDialog.RequestCreateServer -= CreateServerDialog_RequestCreateServer;
+            JoinServerDialog.JoinServer -= JoinServerDialog_JoinServer;
         }
 
         private void JoinServerDialog_JoinServer(object sender, JoinServerArgs e) {
-            if (buttonServers.Where(server => server.Value.ServerId == e.Server.ServerId).FirstOrDefault().Value != null) {
+            if (ButtonServers.Where(server => server.Value.ServerId == e.Server.ServerId).FirstOrDefault().Value != null) {
                 MessageBox.Show("You are already in this server: " + e.Server.ServerName);
             }
             else {
                 CreateServerButton(e.Server);
-                joinServerDialog.Close();
+                JoinServerDialog.Close();
             }
         }
 
         private async void CreateServerDialog_RequestCreateServer(object sender, RequestCreateServerArgs e) {
-            Server server = await ResourcesCreator.CreateServer(e.ServerName);
+            Server server = await ResourcesCreator.CreateServerAsync(e.ServerName);
             CreateServerButton(server);
         }
         private void ButtonCreateOrJoinServer_Click(object sender, RoutedEventArgs e) {
@@ -94,27 +94,18 @@ namespace Discord_win.Managers {
             //createOrJoinServerDialog.ShowDialog();
         }
 
-        private async Task RetrieveListServer() {
-            listServer = await ResourcesCreator.GetListServer(Inventory.CurrentUser.UserId);
-            Inventory.SetListServer(listServer);
+        private async Task RetrieveListServerAsync() {
+            ListServer = await ResourcesCreator.GetListServerAsync(Inventory.CurrentUser.UserId);
+            Inventory.SetListServer(ListServer);
             AttachListButton();
         }
-        private void DownloadUserImages() {
-            HashSet<User> listUser = Inventory.GetListUserInServers();
-            fileDownloader.DownloadUserImages(listUser.ToList(), FileSystem.UserDirectory);
-        }
         private void AttachListButton() {
-            gridServerButton.Children.Clear();
-            dockPanelServerButton = new DockPanel() { LastChildFill = false };
-            gridServerButton.Children.Add(dockPanelServerButton);
-            for (int i = 0; i < listServer.Count; i++) {
-                CreateServerButton(listServer[i]);
+            GridServerButton.Children.Clear();
+            DockPanelServerButton = new DockPanel() { LastChildFill = false };
+            GridServerButton.Children.Add(DockPanelServerButton);
+            for (int i = 0; i < ListServer.Count; i++) {
+                CreateServerButton(ListServer.ElementAt(i));
             }
-        }
-        private void AttachButton(Button button, Server server) {
-            button.Click += ServerButton_Click;
-            DockPanel.SetDock(button, Dock.Top);
-            dockPanelServerButton.Children.Add(button);
         }
 
         private void CreateServerButton(Server server, int height = 40) {
@@ -123,22 +114,19 @@ namespace Discord_win.Managers {
             button.Height = height;
             button.Margin = new Thickness(5, 5, 5, 5);
             button.Click += ServerButton_Click;
-            buttonServers.Add(button, server);
-            AttachButton(button, server);
+            ButtonServers.Add(button, server);
+            DockPanel.SetDock(button, Dock.Top);
+            DockPanelServerButton.Children.Add(button);
         }
-        private void ServerButton_Click(object sender, RoutedEventArgs e) {
-            Server selectedServer = buttonServers[(Button)sender];
+        private async void ServerButton_Click(object sender, RoutedEventArgs e) {
+            Server selectedServer = ButtonServers[(Button)sender];
             ServerButtonClick?.Invoke(this, new ServerButtonClickArgs() { Server = selectedServer });
             if (Inventory.CurrentServer != selectedServer) {
                 Server previousServer = Inventory.CurrentServer;
+                Role userRoleInCurrentServer = await ResourcesCreator.GetUserRoleInCurrentServerAsync(Inventory.CurrentUser.UserId, selectedServer.ServerId);
                 Inventory.SetCurrentServer(selectedServer);
+                Inventory.SetUserRoleInCurrentServer(userRoleInCurrentServer);
                 ServerChanged?.Invoke(this, new ServerChangedArgs() { Previous = previousServer, Now = selectedServer });
-            }
-        }
-
-        private void ThrowExceptions() {
-            if(dockPanelServer == null) {
-                throw new ArgumentNullException("dockPanelServer cannot be null");
             }
         }
     }

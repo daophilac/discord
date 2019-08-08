@@ -39,7 +39,7 @@ public class CreateServerActivity extends AppCompatActivity {
         buttonCreate.setOnClickListener(v -> {
             if(!editTextServerName.getText().toString().equals("")){
                 String json = MainActivity.jsonBuilder.buildServerJson(currentUserId, editTextServerName.getText().toString());
-                apiCaller.setProperties(APICaller.RequestMethod.POST, Route.urlPostServer, json);
+                apiCaller.setProperties(APICaller.RequestMethod.POST, Route.Server.urlAdd, json);
                 apiCaller.setOnSuccessListener((connection, response) -> {
                     Intent intent = new Intent(CreateServerActivity.this, MainActivity.class);
                     intent.putExtra("command", MainActivity.IntentCommand.CREATE_SERVER);

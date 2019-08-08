@@ -71,7 +71,7 @@ ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\Android
 	android:name
 		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:6:22-77
 application
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:7:5-33:19
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:7:5-34:19
 MERGED from [com.google.android.material:material:1.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\a45c2c25c357bd3275b244f522928a1a\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.0.0] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\a45c2c25c357bd3275b244f522928a1a\AndroidManifest.xml:22:5-20
 MERGED from [com.github.daophilac.androidlib:activitymanager:13f81d09bd] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\8092573299b69a191ebba6359757e524\AndroidManifest.xml:13:5-15:19
@@ -85,53 +85,55 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0-rc01] C:\Use
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.1.0-rc01] C:\Users\Dao Phi Lac\.gradle\caches\transforms-2\files-2.1\64a8526901103ce4196532efa07e3d36\AndroidManifest.xml:24:18-86
 	android:supportsRtl
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:14:9-35
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:15:9-35
 	android:label
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:10:9-41
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:11:9-41
 	android:roundIcon
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:11:9-54
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:12:9-54
+	android:largeHeap
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:9:9-33
 	android:icon
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:9:9-43
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:10:9-43
 	android:allowBackup
 		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:8:9-35
 	android:theme
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:12:9-42
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:13:9-42
 	android:networkSecurityConfig
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:13:9-69
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:14:9-69
 activity#com.peanut.discord.LoginActivity
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:15:9-21:20
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:16:9-22:20
 	android:name
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:15:19-66
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:16:19-66
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:16:13-20:29
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:17:13-21:29
 action#android.intent.action.MAIN
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:17:17-69
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:18:17-69
 	android:name
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:17:25-66
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:18:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:19:17-77
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:20:17-77
 	android:name
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:19:27-74
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:20:27-74
 activity#com.peanut.discord.MainActivity
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:22:9-30:20
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:23:9-31:20
 	android:screenOrientation
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:24:13-49
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:25:13-49
 	android:label
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:26:13-45
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:27:13-45
 	android:launchMode
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:25:13-44
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:26:13-44
 	android:name
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:23:13-59
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:24:13-59
 intent-filter#action:name:android.intent.action.MAIN
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:27:13-29:29
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:28:13-30:29
 activity#com.peanut.discord.CreateServerActivity
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:31:9-58
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:32:9-58
 	android:name
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:31:19-55
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:32:19-55
 activity#com.peanut.discord.JoinServerActivity
-ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:32:9-56
+ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:33:9-56
 	android:name
-		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:32:19-53
+		ADDED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml:33:19-53
 uses-sdk
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\Desktop\repos\discord\Discord_android\Discord\app\src\main\AndroidManifest.xml

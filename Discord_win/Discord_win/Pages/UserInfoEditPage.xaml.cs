@@ -1,7 +1,7 @@
-﻿using Discord_win.Models;
-using Discord_win.Resources.Static;
-using Discord_win.Tools;
-using Discord_win.ViewModels;
+﻿using Discord.Models;
+using Discord.Resources.Static;
+using Discord.Tools;
+using Discord.ViewModels;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -21,7 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Discord_win.Pages {
+namespace Discord.Pages {
     /// <summary>
     /// Interaction logic for UserInfoEditPage.xaml
     /// </summary>
@@ -41,7 +41,9 @@ namespace Discord_win.Pages {
             TextBoxUserName.Text = Inventory.CurrentUser.UserName;
             TextBoxEmail.Text = Inventory.CurrentUser.Email;
             if (Inventory.CurrentUser.ImageName != null) {
-                UserImage.Source = await ImageResolver.DownloadBitmapImageAsync(Inventory.CurrentUser.ImageName);
+                await ImageResolver.DownloadUserImageAsync(Inventory.CurrentUser.ImageName, bitmap => {
+                    UserImage.Source = bitmap;
+                });
             }
         }
         private async void ButtonSave_Click(object sender, RoutedEventArgs e) {
@@ -70,7 +72,7 @@ namespace Discord_win.Pages {
                 Username = TextBoxUserName.Text,
                 Email = TextBoxEmail.Text
             };
-            apiCaller.SetProperties(HttpMethod.Post, Route.UrlUpdateProfile, userUpdateProfileVM);
+            apiCaller.SetProperties(HttpMethod.Post, Route.User.UrlUpdateProfile, userUpdateProfileVM);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             if (httpResponseMessage.IsSuccessStatusCode) {
                 Inventory.SetCurrentUser(await httpResponseMessage.Content.ReadAsStringAsync());
@@ -80,7 +82,7 @@ namespace Discord_win.Pages {
                     imageUploader.OnDone += (o, arg) => {
                         DoneEdit?.Invoke(this, EventArgs.Empty);
                     };
-                    await imageUploader.UploadUserImage(Inventory.CurrentUser.UserId, newUserImageFileName);
+                    await imageUploader.UploadUserImageAsync(Inventory.CurrentUser.UserId, newUserImageFileName);
                 }
                 else {
                     DoneEdit?.Invoke(this, EventArgs.Empty);
@@ -95,7 +97,7 @@ namespace Discord_win.Pages {
                 UserId = Inventory.CurrentUser.UserId,
                 Password = PasswordBox.Password
             };
-            apiCaller.SetProperties(HttpMethod.Post, Route.UrlConfirmPassword, userConfirmPasswordVM);
+            apiCaller.SetProperties(HttpMethod.Post, Route.User.UrlConfirmPassword, userConfirmPasswordVM);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             if (httpResponseMessage.IsSuccessStatusCode) {
                 return true;
@@ -106,7 +108,7 @@ namespace Discord_win.Pages {
             if(Inventory.CurrentUser.Email == TextBoxEmail.Text) {
                 return true;
             }
-            apiCaller.SetProperties(HttpMethod.Get, Route.BuildCheckUnavailableEmail(TextBoxEmail.Text));
+            apiCaller.SetProperties(HttpMethod.Get, Route.User.BuildCheckUnavailableEmail(TextBoxEmail.Text));
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             if (httpResponseMessage.IsSuccessStatusCode) {
                 return true;

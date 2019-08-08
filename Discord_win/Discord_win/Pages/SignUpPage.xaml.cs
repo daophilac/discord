@@ -1,6 +1,6 @@
-﻿using Discord_win.Models;
-using Discord_win.Resources.Static;
-using Discord_win.Tools;
+﻿using Discord.Models;
+using Discord.Resources.Static;
+using Discord.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Discord_win.Pages {
+namespace Discord.Pages {
     /// <summary>
     /// Interaction logic for SignUpPage.xaml
     /// </summary>
@@ -27,7 +27,6 @@ namespace Discord_win.Pages {
         private Regex regex;
         private MatchCollection matchCollection;
         private APICaller apiCaller;
-        private Gender gender;
         public SignUpPage() {
             InitializeComponent();
             regex = new Regex(emailFormat);
@@ -92,7 +91,7 @@ namespace Discord_win.Pages {
                 Gender = (bool) RadioButtonMale.IsChecked ? Gender.Male : Gender.Female
             };
             //string outgoingJson = JsonBuilder.BuildUserJson(email, password, userName, firstName, lastName, gender);
-            string requestUrl = Route.UrlSignUp;
+            string requestUrl = Route.User.UrlSignUp;
             apiCaller.SetProperties(HttpMethod.Post, requestUrl, user);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             if (httpResponseMessage.IsSuccessStatusCode) {
@@ -100,7 +99,7 @@ namespace Discord_win.Pages {
                 FileSystem.WriteUserData(email, password);
                 Inventory.SetCurrentUser(result);
                 Program.mainPage = new MainPage();
-                Program.mainWindow.BeginMain();
+                await Program.mainWindow.BeginMainAsync();
             }
             else {
                 MessageBox.Show("Something went wrong.");

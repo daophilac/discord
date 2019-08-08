@@ -18,6 +18,6 @@ namespace API.Models {
         public Server Server { get; set; }
         [JsonIgnore]
         public ICollection<Message> Messages { get; set; }
-        public ICollection<ChannelLevelPermission> ChannelLevelPermissions { get; set; }
+        public ICollection<ChannelPermission> ChannelLevelPermissions { get; set; }
     }
 }

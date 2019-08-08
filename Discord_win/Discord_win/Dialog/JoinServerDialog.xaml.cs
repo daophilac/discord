@@ -1,6 +1,6 @@
-﻿using Discord_win.Models;
-using Discord_win.Resources.Static;
-using Discord_win.Tools;
+﻿using Discord.Models;
+using Discord.Resources.Static;
+using Discord.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Discord_win.Dialog {
+namespace Discord.Dialog {
     /// <summary>
     /// Interaction logic for JoinServerDialog.xaml
     /// </summary>
@@ -28,7 +28,7 @@ namespace Discord_win.Dialog {
         private async void ButtonJoin_Click(object sender, RoutedEventArgs e) {
             APICaller apiCaller = new APICaller();
             if (textBoxInstantInvite.Text != "") {
-                Server server = await ResourcesCreator.GetServerByInstantInvite(textBoxInstantInvite.Text);
+                Server server = await ResourcesCreator.GetServerByInstantInviteAsync(textBoxInstantInvite.Text);
                 if(server == null) {
                     MessageBox.Show("The instant invite you have typed doesn't exist.");
                 }

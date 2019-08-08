@@ -1,11 +1,11 @@
-﻿using Discord_win.Models;
+﻿using Discord.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Tools {
+namespace Discord.Tools {
     static class JsonBuilder {
         public static string BuildJsonFromHashMap(Dictionary<string, string> parameters) {
             StringBuilder resultJson = new StringBuilder();

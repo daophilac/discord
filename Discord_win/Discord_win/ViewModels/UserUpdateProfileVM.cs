@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.ViewModels {
+namespace Discord.ViewModels {
     public class UserUpdateProfileVM {
         public int UserId { get; set; }
         public string Username { get; set; }

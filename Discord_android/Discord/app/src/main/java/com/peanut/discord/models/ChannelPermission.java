@@ -1,32 +1,59 @@
 package com.peanut.discord.models;
-import java.util.List;
 public class ChannelPermission {
-    private int permissionId;
-    private String permissionName;
-    private String description;
-    private List<ChannelLevelPermission> channelLevelPermissions;
-    public int getPermissionId() {
-        return permissionId;
+    private int channelId;
+    private int roleId;
+    private boolean viewMessage;
+    private boolean react;
+    private boolean sendMessage;
+    private boolean sendImage;
+    private Channel channel;
+    private Role role;
+    public int getChannelId() {
+        return channelId;
     }
-    public void setPermissionId(int permissionId) {
-        this.permissionId = permissionId;
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
-    public String getPermissionName() {
-        return permissionName;
+    public int getRoleId() {
+        return roleId;
     }
-    public void setPermissionName(String permissionName) {
-        this.permissionName = permissionName;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
-    public String getDescription() {
-        return description;
+    public boolean isViewMessage() {
+        return viewMessage;
     }
-    public void setDescription(String description) {
-        this.description = description;
+    public void setViewMessage(boolean viewMessage) {
+        this.viewMessage = viewMessage;
     }
-    public List<ChannelLevelPermission> getChannelLevelPermissions() {
-        return channelLevelPermissions;
+    public boolean isReact() {
+        return react;
     }
-    public void setChannelLevelPermissions(List<ChannelLevelPermission> channelLevelPermissions) {
-        this.channelLevelPermissions = channelLevelPermissions;
+    public void setReact(boolean react) {
+        this.react = react;
+    }
+    public boolean isSendMessage() {
+        return sendMessage;
+    }
+    public void setSendMessage(boolean sendMessage) {
+        this.sendMessage = sendMessage;
+    }
+    public boolean isSendImage() {
+        return sendImage;
+    }
+    public void setSendImage(boolean sendImage) {
+        this.sendImage = sendImage;
+    }
+    public Channel getChannel() {
+        return channel;
+    }
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class HubManager {
-    private static final HubConnection hubConnection = HubConnectionBuilder.create(Route.urlChatHub).build();
+    private static final HubConnection hubConnection = HubConnectionBuilder.create(Route.ChatHub.urlChatHub).build();
     private static final List<HubListener> listHubListener = new ArrayList<>();
     public static String connectionId;
     private HubManager(){ }
@@ -19,7 +19,7 @@ public final class HubManager {
         registerOnReceiveNewChannel();
         registerOnReceiveMessage();
         hubConnection.start().blockingAwait();
-        hubConnection.invoke(Void.class, "GetConnectionId");
+        hubConnection.invoke(Void.class, "GetConnectionIdAsync");
     }
     public static void registerListener(HubListener hubListener){
         listHubListener.add(hubListener);
@@ -31,22 +31,22 @@ public final class HubManager {
         message.setContent(content);
         message.setCurrentTime();
         String json = MainActivity.gson.toJson(message);
-        hubConnection.invoke(Void.class, "ReceiveMessage", json);
+        hubConnection.invoke(Void.class, "ReceiveMessageAsync", json);
     }
     public static void enterServer(int serverId){
-        hubConnection.invoke(Void.class, "EnterServer", serverId);
+        hubConnection.invoke(Void.class, "EnterServerAsync", serverId);
     }
     public static void exitServer(int serverId){
-        hubConnection.invoke(Void.class, "ExitServer", serverId);
+        hubConnection.invoke(Void.class, "ExitServerAsync", serverId);
     }
     public static void createChannel(int serverId, String jsonChannel){
-        hubConnection.invoke(Void.class, "CreateChannel", serverId, jsonChannel);
+        hubConnection.invoke(Void.class, "CreateChannelAsync", serverId, jsonChannel);
     }
     public static void enterChannel(int channelId){
-        hubConnection.invoke(Void.class, "EnterChannel", channelId);
+        hubConnection.invoke(Void.class, "EnterChannelAsync", channelId);
     }
     public static void exitChannel(int channelId){
-        hubConnection.invoke(Void.class, "ExitChannel", channelId);
+        hubConnection.invoke(Void.class, "ExitChannelAsync", channelId);
     }
     private static void registerOnGetConnectionId(){
         hubConnection.on("ReceiveConnectionIdSignal", (connectionId) -> {

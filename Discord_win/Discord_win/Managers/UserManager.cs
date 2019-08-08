@@ -6,19 +6,26 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Discord_win.Managers {
+namespace Discord.Managers {
     public class UserManager {
-        private Button buttonUserSetting;
+        private Button ButtonUserSetting { get; set; }
         public event EventHandler LogOut;
         public UserManager(Button buttonUserSetting) {
-            this.buttonUserSetting = buttonUserSetting;
+            ButtonUserSetting = buttonUserSetting;
         }
         public void Establish() {
             ThrowExceptions();
-            buttonUserSetting.Click += ButtonUserSetting_Click;
+            ButtonUserSetting.Click += ButtonUserSetting_Click;
+            Program.userSettingPage.LogOut += UserSettingPage_LogOut;
         }
+
         public void TearDown() {
-            buttonUserSetting.Click -= ButtonUserSetting_Click;
+            ButtonUserSetting.Click -= ButtonUserSetting_Click;
+            Program.userSettingPage.LogOut -= UserSettingPage_LogOut;
+        }
+
+        private void UserSettingPage_LogOut(object sender, EventArgs e) {
+            LogOut?.Invoke(this, EventArgs.Empty);
         }
 
         private void ButtonUserSetting_Click(object sender, RoutedEventArgs e) {
@@ -29,7 +36,7 @@ namespace Discord_win.Managers {
         }
 
         private void ThrowExceptions() {
-            if(buttonUserSetting == null) {
+            if(ButtonUserSetting == null) {
                 throw new ArgumentNullException("buttonUserSetting cannot be null");
             }
         }

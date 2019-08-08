@@ -104,7 +104,7 @@ public class SignUpFragment extends Fragment {
                 String firstName = editTextFirstName.getText().toString();
                 String lastName = editTextLastName.getText().toString();
                 String json = jsonBuilder.buildUserJson(email, password, userName, firstName, lastName, gender);
-                apiCaller.setProperties(APICaller.RequestMethod.POST, Route.urlSignUp, json);
+                apiCaller.setProperties(APICaller.RequestMethod.POST, Route.User.urlSignUp, json);
                 apiCaller.setOnSuccessListener((connection, response) -> {
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.putExtra("jsonUser", response);

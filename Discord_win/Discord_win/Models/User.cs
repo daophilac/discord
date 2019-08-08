@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Models {
+namespace Discord.Models {
     public enum Gender {
         Male = 0, Female = 1
     }
@@ -24,7 +24,10 @@ namespace Discord_win.Models {
         public ICollection<ServerUser> ServerUsers { get; set; }
 
         public override bool Equals(object obj) {
-            return UserId == ((User)obj).UserId;
+            if(obj is User) {
+                return UserId == ((User)obj).UserId;
+            }
+            return false;
         }
         public override int GetHashCode() {
             return UserId.GetHashCode();

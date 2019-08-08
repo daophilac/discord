@@ -160,15 +160,12 @@
     <Compile Include="Managers\ChannelManager.cs" />
     <Compile Include="Managers\EventManager.cs" />
     <Compile Include="Managers\MessageManager.cs" />
+    <Compile Include="Managers\RoleManager.cs" />
     <Compile Include="Managers\ServerManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Models\Channel.cs" />
-    <Compile Include="Models\ChannelLevelPermission.cs" />
     <Compile Include="Models\ChannelPermission.cs" />
-    <Compile Include="Models\ChannelRolePermission.cs" />
     <Compile Include="Models\Message.cs" />
-    <Compile Include="Models\ServerLevelPermission.cs" />
-    <Compile Include="Models\ServerPermission.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Server.cs" />
     <Compile Include="Models\ServerUser.cs" />

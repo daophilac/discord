@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Discord_win.Dialog {
+namespace Discord.Dialog {
     /// <summary>
     /// Interaction logic for CreateOrJoinServerDialog.xaml
     /// </summary>

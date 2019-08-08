@@ -3,6 +3,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.peanut.androidlib.common.client.Downloader;
+import com.peanut.androidlib.common.worker.SingleWorker;
 import com.peanut.discord.resources.Data;
 
 import java.io.File;
@@ -13,56 +14,75 @@ import java.util.List;
 public class ImageResolver {
     private static ImageDownloader imageDownloader = new ImageDownloader();
     private static List<String> listDownloadingFile = new LinkedList<>();
-    private static HashMap<String, List<Object>> mapFilePathWaiter = new HashMap<>();
-    public static void downloadImage(String imageName, OnFinishListener onFinishListener) {
-        if (onFinishListener == null) {
-            throw new IllegalArgumentException("onFinishListener cannot be null.");
-        }
-        String imagePath = Data.makeUserImageFilePath(imageName);
-        File file = new File(imagePath);
-        if (!file.exists()) {
+    private static HashMap<String, List<Object>> queue = new HashMap<>();
+    private static HashMap<String, Bitmap> mapFilePathBitmap = new HashMap<>();
+    private static SingleWorker singleWorker = new SingleWorker();
+    public static void downloadUserImage(String imageName, OnFinishListener onFinishListener) {
+        singleWorker.execute(() -> {
+            String imagePath = Data.makeUserImageFilePath(imageName);
+            if(mapFilePathBitmap.containsKey(imagePath)){
+                onFinishListener.onFinish(mapFilePathBitmap.get(imagePath));
+                return;
+            }
             if(listDownloadingFile.contains(imagePath)){
-                onFinishListener.onFinish(makeBitmap(imagePath));
-            }
-            else{
-                listDownloadingFile.add(imagePath);
-                Downloader d = imageDownloader.makeDownloader(imageName);
-                d.setOnDoneListener(() -> {
-                    listDownloadingFile.remove(imagePath);
-                    if(mapFilePathWaiter.containsKey(imagePath)){
-                        List<Object> list = mapFilePathWaiter.get(imagePath);
-                        for(Object o : list){
-                            synchronized (o){
-                                o.notify();
-                            }
+                if(!queue.containsKey(imagePath)){
+                    queue.put(imagePath, new ArrayList<>());
+                }
+                List<Object> waiters = queue.get(imagePath);
+                Object waiter = new Object();
+                waiters.add(waiter);
+                synchronized (waiter){
+                    try {
+                        waiter.wait();
+                        if(onFinishListener != null){
+                            onFinishListener.onFinish(mapFilePathBitmap.get(imagePath));
                         }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    onFinishListener.onFinish(makeBitmap(imagePath));
-                }).start();
-            }
-        } else {
-            onFinishListener.onFinish(makeBitmap(imagePath));
-        }
-    }
-    private static Bitmap makeBitmap(String imagePath) {
-        if(listDownloadingFile.contains(imagePath)){
-            if(!mapFilePathWaiter.containsKey(imagePath)){
-                List<Object> list = new ArrayList<>();
-                mapFilePathWaiter.put(imagePath, list);
-            }
-            List<Object> list = mapFilePathWaiter.get(imagePath);
-            Object object = new Object();
-            list.add(object);
-            synchronized (object){
-                try {
-                    object.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
+            else{
+                File file = new File(imagePath);
+                if(!file.exists()){
+                    listDownloadingFile.add(imagePath);
+                    Downloader downloader = imageDownloader.makeDownloader(imageName);
+                    downloader.setOnDoneListener(() -> {
+                        mapFilePathBitmap.put(imagePath, makeBitmapFromLocalFile(imagePath));
+                        listDownloadingFile.remove(imagePath);
+                        if(queue.containsKey(imagePath)){
+                            List<Object> waiters = queue.get(imagePath);
+                            for(Object waiter : waiters){
+                                synchronized (waiter){
+                                    waiter.notify();
+                                }
+                            }
+                            queue.remove(imagePath);
+                        }
+                        if(onFinishListener != null){
+                            onFinishListener.onFinish(mapFilePathBitmap.get(imagePath));
+                        }
+                    });
+                    downloader.start();
+                }
+                else{
+                    if(mapFilePathBitmap.containsKey(imagePath)){
+                        mapFilePathBitmap.put(imagePath, makeBitmapFromLocalFile(imagePath));
+                    }
+                    if(onFinishListener != null){
+                        onFinishListener.onFinish(mapFilePathBitmap.get(imagePath));
+                    }
+                }
+            }
+        });
+
+    }
+    private static Bitmap makeBitmapFromLocalFile(String filePath){
+        File file = new File(filePath);
+        if(!file.exists() || !file.isFile()){
+            return null;
         }
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-        return Bitmap.createScaledBitmap(bitmap, 128, 128, false);
+        return BitmapFactory.decodeFile(filePath);
     }
     public interface OnFinishListener {
         void onFinish(Bitmap bitmap);

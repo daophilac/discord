@@ -2,17 +2,33 @@ package com.peanut.discord.models;
 import java.util.List;
 public class Role {
     private int roleId;
+    private int roleLevel;
+    private boolean mainRole;
     private String roleName;
-    private boolean canDelete;
+    private boolean kick;
+    private boolean modifyChannel;
+    private boolean modifyRole;
+    private boolean changeUserRole;
     private int serverId;
     private Server server;
-    private List<ServerLevelPermission> serverLevelPermissions;
-    private List<ChannelLevelPermission> channelLevelPermissions;
+    private List<ChannelPermission> channelPermissions;
     public int getRoleId() {
         return roleId;
     }
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+    public int getRoleLevel() {
+        return roleLevel;
+    }
+    public void setRoleLevel(int roleLevel) {
+        this.roleLevel = roleLevel;
+    }
+    public boolean isMainRole() {
+        return mainRole;
+    }
+    public void setMainRole(boolean mainRole) {
+        this.mainRole = mainRole;
     }
     public String getRoleName() {
         return roleName;
@@ -20,17 +36,35 @@ public class Role {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
+    public boolean isKick() {
+        return kick;
+    }
+    public void setKick(boolean kick) {
+        this.kick = kick;
+    }
+    public boolean isModifyChannel() {
+        return modifyChannel;
+    }
+    public void setModifyChannel(boolean modifyChannel) {
+        this.modifyChannel = modifyChannel;
+    }
+    public boolean isModifyRole() {
+        return modifyRole;
+    }
+    public void setModifyRole(boolean modifyRole) {
+        this.modifyRole = modifyRole;
+    }
+    public boolean isChangeUserRole() {
+        return changeUserRole;
+    }
+    public void setChangeUserRole(boolean changeUserRole) {
+        this.changeUserRole = changeUserRole;
+    }
     public int getServerId() {
         return serverId;
     }
     public void setServerId(int serverId) {
         this.serverId = serverId;
-    }
-    public boolean isCanDelete() {
-        return canDelete;
-    }
-    public void setCanDelete(boolean canDelete) {
-        this.canDelete = canDelete;
     }
     public Server getServer() {
         return server;
@@ -38,16 +72,10 @@ public class Role {
     public void setServer(Server server) {
         this.server = server;
     }
-    public List<ServerLevelPermission> getServerLevelPermissions() {
-        return serverLevelPermissions;
+    public List<ChannelPermission> getChannelPermissions() {
+        return channelPermissions;
     }
-    public void setServerLevelPermissions(List<ServerLevelPermission> serverLevelPermissions) {
-        this.serverLevelPermissions = serverLevelPermissions;
-    }
-    public List<ChannelLevelPermission> getChannelLevelPermissions() {
-        return channelLevelPermissions;
-    }
-    public void setChannelLevelPermissions(List<ChannelLevelPermission> channelLevelPermissions) {
-        this.channelLevelPermissions = channelLevelPermissions;
+    public void setChannelPermissions(List<ChannelPermission> channelPermissions) {
+        this.channelPermissions = channelPermissions;
     }
 }

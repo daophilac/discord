@@ -1,5 +1,6 @@
 package com.peanut.discord.equipment;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.peanut.androidlib.common.worker.UIWorker;
+import com.peanut.discord.MainActivity;
 import com.peanut.discord.R;
 import com.peanut.discord.models.Message;
 import com.peanut.discord.tools.ImageResolver;
@@ -65,8 +67,11 @@ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHold
         Message message = this.listMessage.get(i);
         messageViewHolder.textViewMessage.setText(message.getUser().getUserName() + ": " + message.getContent());
         messageViewHolder.textViewTime.setText(message.getSimpleTime());
-        ImageResolver.downloadImage(message.getUser().getImageName(), bitmap -> {
-            uiWorker.execute(() -> messageViewHolder.imageViewAvatar.setImageBitmap(bitmap));
+        ImageResolver.downloadUserImage(message.getUser().getImageName(), b -> {
+            uiWorker.execute(() -> {
+                Bitmap bitmap = Bitmap.createScaledBitmap(b, 128, 128, false);
+                messageViewHolder.imageViewAvatar.setImageBitmap(bitmap);
+            });
         });
         messageViewHolder.textViewMessage.setOnLongClickListener(v -> {
             if(onMessageLongClickListener != null){

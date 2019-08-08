@@ -1,5 +1,5 @@
-﻿using Discord_win.Resources.Static;
-using Discord_win.Tools;
+﻿using Discord.Resources.Static;
+using Discord.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Discord_win.Pages {
+namespace Discord.Pages {
     /// <summary>
     /// Interaction logic for UserInfoViewPage.xaml
     /// </summary>
@@ -33,7 +33,9 @@ namespace Discord_win.Pages {
             LabelUserName.Content = Inventory.CurrentUser.UserName;
             LabelEmail.Content = Inventory.CurrentUser.Email;
             if (Inventory.CurrentUser.ImageName != null) {
-                UserImage.Source = await ImageResolver.DownloadBitmapImageAsync(Inventory.CurrentUser.ImageName);
+                await ImageResolver.DownloadUserImageAsync(Inventory.CurrentUser.ImageName, bitmap => {
+                    UserImage.Source = bitmap;
+                });
             }
         }
 

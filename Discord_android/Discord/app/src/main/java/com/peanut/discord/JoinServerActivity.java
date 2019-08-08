@@ -1,17 +1,12 @@
 package com.peanut.discord;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.peanut.androidlib.common.worker.SingleWorker;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.peanut.discord.customview.BackButton;
 import com.peanut.discord.resources.Route;
 import com.peanut.discord.tools.APICaller;
@@ -37,7 +32,7 @@ public class JoinServerActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
         buttonJoin.setOnClickListener(v -> {
             if(!editTextInstantInvite.getText().toString().equals("")){
-                apiCaller.setProperties(APICaller.RequestMethod.GET, Route.buildGetServerByInstantInviteUrl(currentUserId, editTextInstantInvite.getText().toString()));
+                apiCaller.setProperties(APICaller.RequestMethod.GET, Route.InstantInvite.buildGetServerUrl(currentUserId, editTextInstantInvite.getText().toString()));
                 apiCaller.setOnSuccessListener((connection, response) -> {
                     Intent intent = new Intent(JoinServerActivity.this, MainActivity.class);
                     intent.putExtra("command", MainActivity.IntentCommand.JOIN_SERVER);

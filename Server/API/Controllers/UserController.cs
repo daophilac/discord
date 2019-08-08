@@ -111,7 +111,10 @@ namespace API.Controllers {
             }
             return Conflict();
         }
-
+        [HttpGet, Route("getbyserver/{serverId}")]
+        public async Task<ActionResult<IEnumerable<User>>> GetByServer(int serverId) {
+            return await _context.User.Where(u => u.ServerUsers.Any(su => su.ServerId == serverId)).Include("ServerUsers").ToListAsync();
+        }
 
 
 

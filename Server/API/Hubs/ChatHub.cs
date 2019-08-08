@@ -1,5 +1,6 @@
 ﻿using API.Models;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -22,7 +23,7 @@ namespace API.Hubs {
         /// whether the information it receives from the server is actually the result of its requests.
         /// </summary>
         /// <returns></returns>
-        public async Task GetConnectionId() {
+        public async Task GetConnectionIdAsync() {
             await Clients.Caller.SendAsync("ReceiveConnectionIdSignal", Context.ConnectionId);
         }
 
@@ -39,15 +40,15 @@ namespace API.Hubs {
         /// to broadcast the json representation of the channel to all the clients that are currently in the server which the channel belongs to.</param>
         /// <param name="jsonChannel">The json representation of the requested channel.</param>
         /// <returns></returns>
-        public async Task CreateChannel(string jsonChannel) {
+        public async Task CreateChannelAsync(string jsonChannel) {
             Channel channel = JsonConvert.DeserializeObject<Channel>(jsonChannel);
-            Channel duplicatedChannel = mainDatabase.Channel.Where(c => c.ChannelName == channel.ChannelName && c.ServerId == channel.ServerId).FirstOrDefault();
+            Channel duplicatedChannel = await mainDatabase.Channel.Where(c => c.ChannelName == channel.ChannelName && c.ServerId == channel.ServerId).FirstOrDefaultAsync();
             if(duplicatedChannel != null) {
                 await Clients.Caller.SendAsync("ReceiveChannelConcurrentConflictSignal", ConcurrenctError.DuplicateChannel, DuplicateChannelErrorMessage);
                 return;
             }
-            mainDatabase.Channel.Add(channel);
-            mainDatabase.SaveChanges();
+            await mainDatabase.Channel.AddAsync(channel);
+            await mainDatabase.SaveChangesAsync();
             jsonChannel = JsonConvert.SerializeObject(channel);
             await Clients.Group(MakeServerGroupId(channel.ServerId)).SendAsync("ReceiveNewChannelSignal", Context.ConnectionId, jsonChannel);
         }
@@ -75,38 +76,38 @@ namespace API.Hubs {
         private string MakeServerGroupId(int serverId) {
             return "server" + serverId.ToString();
         }
-        public void EnterChannel(int channelId) {
-            Groups.AddToGroupAsync(Context.ConnectionId, MakeChannelGroupId(channelId));
+        public async Task EnterChannelAsync(int channelId) {
+            await Groups.AddToGroupAsync(Context.ConnectionId, MakeChannelGroupId(channelId));
         }
 
-        public void ExitChannel(int channelId) {
-            Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeChannelGroupId(channelId));
+        public async Task ExitChannelAsync(int channelId) {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeChannelGroupId(channelId));
         }
 
-        public void EnterServer(int serverId) {
-            Groups.AddToGroupAsync(Context.ConnectionId, MakeServerGroupId(serverId));
+        public async Task EnterServerAsync(int serverId) {
+            await Groups.AddToGroupAsync(Context.ConnectionId, MakeServerGroupId(serverId));
         }
-        public void ExitServer(int serverId) {
-            Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeServerGroupId(serverId));
+        public async Task ExitServerAsync(int serverId) {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeServerGroupId(serverId));
         }
-        public void LeaveServer(int userId, int serverId) {
-            ServerUser serverUser = mainDatabase.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).First();
+        public async Task LeaveServerAsync(int userId, int serverId) {
+            ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
             mainDatabase.ServerUser.Remove(serverUser);
-            mainDatabase.SaveChanges();
-            Groups.RemoveFromGroupAsync(Context.ConnectionId, serverId.ToString());
-            Clients.Group(MakeServerGroupId(serverId)).SendAsync("ReceiveLeaveServerSignal", userId, serverId);
+            await mainDatabase.SaveChangesAsync();
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, serverId.ToString());
+            await Clients.Group(MakeServerGroupId(serverId)).SendAsync("ReceiveLeaveServerSignal", userId, serverId);
         }
-        public async Task ReceiveMessage(string json) {
+        public async Task ReceiveMessageAsync(string json) {
             Message message = JsonConvert.DeserializeObject<Message>(json);
-            message.User = mainDatabase.User.Find(message.UserId);
-            message.Channel = mainDatabase.Channel.Find(message.ChannelId);
+            message.User = await mainDatabase.User.FindAsync(message.UserId);
+            message.Channel = await mainDatabase.Channel.FindAsync(message.ChannelId);
             message.Time = DateTime.Now;
-            mainDatabase.Message.Add(message);
-            mainDatabase.SaveChanges();
+            await mainDatabase.Message.AddAsync(message);
+            await mainDatabase.SaveChangesAsync();
             json = JsonConvert.SerializeObject(message);
             await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync("ReceiveMessageSignal", Context.ConnectionId, message.UserId, json);
         }
-        public async Task DeleteMessage(int channelId, int messageId) {
+        public async Task DeleteMessageAsync(int channelId, int messageId) {
             Message message = await mainDatabase.Message.FindAsync(messageId);
             if(message != null) {
                 mainDatabase.Message.Remove(message);//channel id?
@@ -114,7 +115,7 @@ namespace API.Hubs {
             }
             await Clients.Group(MakeChannelGroupId(channelId)).SendAsync("ReceiveDeleteMessageSignal", messageId);
         }
-        public async Task EditMessage(int messageId, string content) {
+        public async Task EditMessageAsync(int messageId, string content) {
             Message message = await mainDatabase.Message.FindAsync(messageId);
             if(message == null) {
                 return;
@@ -123,6 +124,13 @@ namespace API.Hubs {
             await mainDatabase.SaveChangesAsync();
             await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync("ReceiveEditMessageSignal", messageId, content);
         }
+        public async Task KickUserAsync(int userId, int serverId) {
+            ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
+            mainDatabase.ServerUser.Remove(serverUser);
+            await mainDatabase.SaveChangesAsync();
+            await Clients.Group(MakeServerGroupId(serverId)).SendAsync("ReceiveKickUserSignal", serverId, userId, serverUser.RoleId);
+        }
+
         private static class ConcurrenctError {
             public static readonly string DuplicateChannel = "DuplicateChannel";
         }

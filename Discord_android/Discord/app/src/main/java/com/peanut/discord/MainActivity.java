@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
         initialize();
     }
     private void apiGetListMessage(Channel channel){
-        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.buildGetMessagesByChannelUrl(channel.getChannelId()));
+        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.Message.buildGetByChannelUrl(channel.getChannelId()));
         apiCaller.setOnSuccessListener((connection, response) -> {
             runOnUiThread(() -> Inventory.storeListMessage(response));
         }).sendRequest();
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
         if(Inventory.currentServer == null){
             return;
         }
-        apiCaller.setProperties(APICaller.RequestMethod.DELETE, Route.buildLeaveServerUrl(Inventory.currentUser.getUserId(), Inventory.currentServer.getServerId()));
+        apiCaller.setProperties(APICaller.RequestMethod.DELETE, Route.ServerUser.buildLeaveServerUrl(Inventory.currentUser.getUserId(), Inventory.currentServer.getServerId()));
         apiCaller.sendRequest();
         Inventory.leaveServer();
     }
@@ -210,6 +210,9 @@ public class MainActivity extends AppCompatActivity implements HubManager.HubLis
     }
     public static void writeLogVerbose(String message) {
         Log.v(LOG_TAG, message);
+    }
+    public static void writeLogVerbose(int number) {
+        Log.v(LOG_TAG, String.valueOf(number));
     }
     @Override
     protected void onNewIntent(Intent intent) {

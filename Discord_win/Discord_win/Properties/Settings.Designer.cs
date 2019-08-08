@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Discord_win.Properties {
+namespace Discord.Properties {
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

@@ -5,12 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Models {
+namespace Discord.Models {
     public class ChannelPermission {
-        public int PermissionId { get; set; }
-        public string PermissionName { get; set; }
-        public string Description { get; set; }
+        public int ChannelId { get; set; }
+        public int RoleId { get; set; }
+        public bool ViewMessage { get; set; }
+        public bool React { get; set; }
+        public bool SendMessage { get; set; }
+        public bool SendImage { get; set; }
 
-        public ICollection<ChannelLevelPermission> ChannelLevelPermissions { get; set; }
+        public Channel Channel { get; set; }
+        public Role Role { get; set; }
     }
 }
