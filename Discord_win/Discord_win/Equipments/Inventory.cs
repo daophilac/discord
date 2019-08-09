@@ -40,6 +40,13 @@ namespace Discord {
         public static void SetUserRoleInCurrentServer(string json) {
             UserRoleInCurrentServer = JsonConvert.DeserializeObject<Role>(json);
         }
+        public static ChannelPermission ChannelPermissionInCurrentChannel { get; private set; }
+        public static void SetChannelPermissionInCurrentChannel(ChannelPermission channelPermissionInCurrentChannel) {
+            ChannelPermissionInCurrentChannel = channelPermissionInCurrentChannel;
+        }
+        public static void SetChannelPermissionInCurrentChannel(string json) {
+            ChannelPermissionInCurrentChannel = JsonConvert.DeserializeObject<ChannelPermission>(json);
+        }
         public static ICollection<Server> ListServer { get; private set; }
         public static void SetListServer(ICollection<Server> listServer) {
             ListServer = listServer;
@@ -54,7 +61,11 @@ namespace Discord {
         public static void SetChannelsInCurrentServer(string json) {
             ChannelsInCurrentServer = JsonConvert.DeserializeObject<ICollection<Channel>>(json);
         }
-        public static ICollection<Role> RolesInCurrentServer { get; private set; }
+        public static ICollection<Role> rolesInCurrentServer;
+        public static ICollection<Role> RolesInCurrentServer {
+            get => rolesInCurrentServer;
+            set => rolesInCurrentServer = value?.OrderByDescending(r => r.RoleLevel).ToList();
+        }
         public static void SetRolesInCurrentServer(ICollection<Role> rolesInCurrentServer) {
             RolesInCurrentServer = rolesInCurrentServer;
         }

@@ -34,12 +34,24 @@ namespace Discord.Pages {
         }
         private async Task InitializeGlobalVariableAsync() {
             ServerManager = new ServerManager(DockPanelServer, GridServerButton, ButtonCreateOrJoinServer);
-            ChannelManager = new ChannelManager(DockPanelChannel, GridChannelContent, LabelUsername, ButtonCreateChannel);
+            ChannelManager = new ChannelManager(DockPanelChannel, GridChannelContent, LabelUsername, LabelServerName);
             RoleManager = new RoleManager(DockPanelRole);
             MessageManager = new MessageManager(DockPanelMessage, GridMessage, TextBoxType, ButtonSend, ButtonCancelEdit);
             UserManager = new UserManager(ButtonUserSetting);
             await HubManager.EstablishAsync();
             EventManager.Establish(ServerManager, ChannelManager, RoleManager, MessageManager, UserManager);
+        }
+
+        private void LabelServerName_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            LabelServerName.ContextMenu.IsOpen = true;
+        }
+
+        private void MenuItemInvite_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void MenuItemCreateChannel_Click(object sender, RoutedEventArgs e) {
+
         }
     }
 }

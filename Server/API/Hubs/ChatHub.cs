@@ -130,7 +130,16 @@ namespace API.Hubs {
             await mainDatabase.SaveChangesAsync();
             await Clients.Group(MakeServerGroupId(serverId)).SendAsync("ReceiveKickUserSignal", serverId, userId, serverUser.RoleId);
         }
-
+        public async Task ChangeUserRole(int userId, int serverId, int newRoleId) {
+            ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.ServerId == serverId && su.UserId == userId).FirstOrDefaultAsync();
+            if (serverUser == null) {
+                return;
+            }
+            int oldRoleId = serverUser.RoleId;
+            serverUser.RoleId = newRoleId;
+            await mainDatabase.SaveChangesAsync();
+            await Clients.Group(MakeServerGroupId(serverId)).SendAsync("ReceiveChangeUserRoleSignal", userId, oldRoleId, newRoleId);
+        }
         private static class ConcurrenctError {
             public static readonly string DuplicateChannel = "DuplicateChannel";
         }

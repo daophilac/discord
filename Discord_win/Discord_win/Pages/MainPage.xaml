@@ -8,50 +8,56 @@
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="1000"
       Title="MainPage">
+    <!--<Page.Resources>
+        <ContextMenu x:Key="ContextMenuA">
+            <MenuItem x:Name="MenuItemInvite" Header="Invite people"/>
+            <MenuItem x:Name="MenuItemCreateChannel" Header="Create channel"/>
+        </ContextMenu>
+    </Page.Resources>-->
 
-    <Grid>
+    <Grid Background="{DynamicResource Light3_Background}">
         <DockPanel x:Name="DockPanelMain" x:FieldModifier="private">
-            <DockPanel x:Name="DockPanelServer" Width="80" VerticalAlignment="Stretch" x:FieldModifier="private" Background="{DynamicResource ServerSection_Background}">
+            <DockPanel x:Name="DockPanelServer" Width="80" VerticalAlignment="Stretch" x:FieldModifier="private" Background="{DynamicResource Light1_Background}">
                 <Grid x:Name="GridServerFooter" x:FieldModifier="private" DockPanel.Dock="Bottom">
                     <Button x:Name="ButtonCreateOrJoinServer" Content="Join" Width="50" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                 </Grid>
-                <!--<Grid DockPanel.Dock="Bottom">
-                    <DockPanel LastChildFill="False">
-                        <Button x:Name="ButtonTestCancelDownload" x:FieldModifier="private" Content="Cancel" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
-                        </Button>
-                        <Button x:Name="ButtonPause" x:FieldModifier="private" Content="Pause" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
-                        <Button x:Name="ButtonResume" x:FieldModifier="private" Content="Resume" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
-                    </DockPanel>
-                </Grid>-->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource ServerSection_Background}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource Light1_Background}">
                     <Grid x:Name="GridServerButton">
                     </Grid>
                 </ScrollViewer>
             </DockPanel>
-            <DockPanel x:Name="DockPanelChannel" x:FieldModifier="private" Width="240" Background="{DynamicResource ChannelSection_Background}">
+            <DockPanel x:Name="DockPanelChannel" x:FieldModifier="private" Width="240" Background="{DynamicResource Light2_Background}">
                 <Grid x:Name="GridChannelHeader" x:FieldModifier="private" DockPanel.Dock="Top" Height="40">
-                    <Button x:Name="ButtonCreateChannel" x:FieldModifier="private" Content="+" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center"></Button>
+                    <Label x:Name="LabelServerName" x:FieldModifier="private" Visibility="Hidden" FontSize="20" Foreground="Firebrick" FontWeight="Bold" HorizontalAlignment="Stretch" ContextMenu="{DynamicResource ContextMenuServerManagement}">
+                        <Label.Resources>
+                            <ContextMenu x:Key="ContextMenuServerManagement">
+                                <MenuItem x:Name="MenuItemInvite" Header="Invite people" />
+                                <MenuItem x:Name="MenuItemCreateChannel" Header="Create channel" />
+                            </ContextMenu>
+                        </Label.Resources>
+                    </Label>
+                    <!--<Button x:Name="ButtonCreateChannel" x:FieldModifier="private" Content="+" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center"></Button>-->
                 </Grid>
                 <Grid x:Name="GridChannelFooter" x:FieldModifier="private" DockPanel.Dock="Bottom">
-                    <Label x:Name="LabelUsername" x:FieldModifier="private" Foreground="Aqua" FontWeight="Bold" Margin="0,0,47,0" />
+                    <Label x:Name="LabelUsername" x:FieldModifier="private" Foreground="DarkGreen" FontWeight="Bold" Margin="0,0,47,0" />
                     <Button x:Name="ButtonUserSetting" x:FieldModifier="private" Content="Setting" HorizontalAlignment="Right" />
                 </Grid>
                 <Grid x:Name="GridChannelContent" x:FieldModifier="private">
                 </Grid>
             </DockPanel>
-            <DockPanel x:Name="DockPanelRole" x:FieldModifier="private" LastChildFill="False" DockPanel.Dock="Right" Width="240" Background="{DynamicResource RoleSection_Background}"/>
-            <DockPanel DockPanel.Dock="Bottom" Height="60" Background="{DynamicResource MessageSection_Background}">
+            <DockPanel x:Name="DockPanelRole" x:FieldModifier="private" LastChildFill="False" DockPanel.Dock="Right" Width="240" Background="{DynamicResource Light2_Background}"/>
+            <DockPanel DockPanel.Dock="Bottom" Height="60">
                 <Grid Margin="40, 0, 40, 0">
                     <DockPanel Height="40" VerticalAlignment="Bottom">
                         <Button x:Name="ButtonSend" x:FieldModifier="private" Content="Send" DockPanel.Dock="Right" />
-                        <TextBox x:Name="TextBoxType" x:FieldModifier="private" FontSize="14" TextWrapping="Wrap" VerticalContentAlignment="Center" Background="{DynamicResource TextBoxChat_Background}" Foreground="{DynamicResource TextBoxChat_Foreground}"/>
+                        <TextBox x:Name="TextBoxType" x:FieldModifier="private" FontSize="14" TextWrapping="Wrap" VerticalContentAlignment="Center" />
                     </DockPanel>
                     <Button x:Name="ButtonCancelEdit" x:FieldModifier="private" Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Hidden"/>
                 </Grid>
             </DockPanel>
-            <DockPanel x:Name="DockPanelMessage" x:FieldModifier="private" Background="{DynamicResource MessageSection_Background}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{DynamicResource MessageSection_Background}">
-                    <Grid x:Name="GridMessage" x:FieldModifier="private"></Grid>
+            <DockPanel x:Name="DockPanelMessage" x:FieldModifier="private" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                    <Grid x:Name="GridMessage" x:FieldModifier="private"/>
                 </ScrollViewer>
             </DockPanel>
         </DockPanel>

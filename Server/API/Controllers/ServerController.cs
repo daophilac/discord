@@ -10,7 +10,7 @@ using System.IO;
 
 namespace API.Controllers
 {
-    [Route("api/server")]
+    [Route("api/Server")]
     [ApiController]
     public class ServerController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("getbyuser/{userID}")]
+        [Route("GetByUser/{userId}")]
         public async Task<ActionResult<IEnumerable<Server>>> GetByUser(int userId) {
             IQueryable<ServerUser> tempListServerUser = context.ServerUser.Where(su => su.UserId == userId).AsQueryable();
             List<Server> listServer = await context.Server.Where(s => tempListServerUser.Any(su => su.ServerId == s.ServerId)).Select(server => Server.Clone(server)).ToListAsync();
@@ -40,7 +40,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("Add")]
         public ActionResult<Server> Add(Server serverFromClient) {
             context.Server.Add(serverFromClient);
             context.SaveChanges();
@@ -54,7 +54,7 @@ namespace API.Controllers
 
             //TODO
             instantInvite.ServerId = serverFromClient.ServerId;
-            instantInvite.Link = serverFromClient.ServerId.ToString();
+            instantInvite.Link = Guid.NewGuid().ToString();
             instantInvite.NerverExpired = true;
             context.InstantInvite.Add(instantInvite);
             context.SaveChanges();

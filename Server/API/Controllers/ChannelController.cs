@@ -9,7 +9,7 @@ using API.Models;
 
 namespace API.Controllers
 {
-    [Route("api/channel")]
+    [Route("api/Channel")]
     [ApiController]
     public class ChannelController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("getbyserver/{serverID}")]
+        [Route("GetByServer/{serverID}")]
         public IQueryable<Channel> GetByServer(int serverID) {
             var channels = from channel in _context.Channel where channel.ServerId == serverID select channel;
             return channels;

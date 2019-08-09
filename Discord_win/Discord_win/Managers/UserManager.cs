@@ -30,9 +30,6 @@ namespace Discord.Managers {
 
         private void ButtonUserSetting_Click(object sender, RoutedEventArgs e) {
             Program.mainWindow.MainFrame.Navigate(Program.userSettingPage);
-            //if (MessageBox.Show("Log out?", "Log out", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
-            //    LogOut?.Invoke(this, EventArgs.Empty);
-            //}
         }
 
         private void ThrowExceptions() {

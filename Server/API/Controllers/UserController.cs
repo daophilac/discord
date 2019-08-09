@@ -12,14 +12,14 @@ using System.Net.Http;
 using API.ViewModels;
 
 namespace API.Controllers {
-    [Route("api/user")]
+    [Route("api/User")]
     [ApiController]
     public class UserController : ControllerBase {
         private readonly MainDatabase _context;
         public UserController(MainDatabase context) {
             _context = context;
         }
-        [HttpPost, HttpHead, Route("uploadimage/{userId}")]
+        [HttpPost, HttpHead, Route("UploadImage/{userId}")]
         public async Task<IActionResult> UploadFile(IFormFileCollection formFileCollection, int userId) {
             if (!Request.HasFormContentType) {
                 return BadRequest("Must be a form-data request.");
@@ -35,7 +35,7 @@ namespace API.Controllers {
             }
             return Ok();
         }
-        [HttpGet, HttpHead, Route("downloadimage/{imageName}")]
+        [HttpGet, HttpHead, Route("DownloadImage/{imageName}")]
         public async Task<IActionResult> Download(string imageName) {
             if(imageName == null) {
                 return BadRequest();
@@ -71,21 +71,21 @@ namespace API.Controllers {
             return Ok();
         }
 
-        [HttpPost, Route("login")]
+        [HttpPost, Route("Login")]
         public ActionResult<User> Login(UserLoginViewModel requestedUser) {
             var users = _context.User.Where(u => u.Email == requestedUser.Email && u.Password == requestedUser.Password);
             if (users.Count() == 0) {
-                return NoContent();
+                return NotFound();
             }
             return users.First();
         }
-        [HttpPost, Route("signup")]
+        [HttpPost, Route("SignUp")]
         public ActionResult<User> SignUp(User userFromClient) {
             _context.User.Add(userFromClient);
             _context.SaveChanges();
             return _context.User.Last();
         }
-        [HttpPost, Route("updateprofile")]
+        [HttpPost, Route("UpdateProfile")]
         public async Task<IActionResult> UpdateProfile(UserUpdateProfileViewModel userUpdateProfileViewModel) {
             User user = await _context.User.FindAsync(userUpdateProfileViewModel.UserId);
             if(user == null) {
@@ -95,7 +95,7 @@ namespace API.Controllers {
             await _context.SaveChangesAsync();
             return Ok(user);
         }
-        [HttpPost, Route("confirmpassword")]
+        [HttpPost, Route("ConfirmPassword")]
         public async Task<IActionResult> ConfirmPassword(UserConfirmPasswordViewModel userVM) {
             User user = await _context.User.Where(u => u.UserId == userVM.UserId && u.Password == userVM.Password).FirstOrDefaultAsync();
             if(user == null) {
@@ -103,7 +103,7 @@ namespace API.Controllers {
             }
             return Ok();
         }
-        [HttpGet, Route("checkunavailableemail/{email}")]
+        [HttpGet, Route("CheckUnavailableEmail/{email}")]
         public async Task<IActionResult> CheckUnavailableEmail(string email) {
             User user = await _context.User.Where(u => u.Email == email).FirstOrDefaultAsync();
             if(user == null) {
@@ -111,7 +111,7 @@ namespace API.Controllers {
             }
             return Conflict();
         }
-        [HttpGet, Route("getbyserver/{serverId}")]
+        [HttpGet, Route("GetByServer/{serverId}")]
         public async Task<ActionResult<IEnumerable<User>>> GetByServer(int serverId) {
             return await _context.User.Where(u => u.ServerUsers.Any(su => su.ServerId == serverId)).Include("ServerUsers").ToListAsync();
         }

@@ -10,7 +10,7 @@ using API.Hubs;
 
 namespace API.Controllers
 {
-    [Route("api/message")]
+    [Route("api/Message")]
     [ApiController]
     public class MessageController : ControllerBase
     {
@@ -21,9 +21,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("getbychannel/{channelID}")]
-        public IQueryable<Message> GetByChannel(int channelID) {
-            var messages = _context.Message.Where(m => m.ChannelId == channelID).OrderBy(m => m.Time);
+        [Route("GetByChannel/{channelId}")]
+        public IQueryable<Message> GetByChannel(int channelId) {
+            var messages = _context.Message.Where(m => m.ChannelId == channelId).OrderBy(m => m.Time);
             foreach (var message in messages) {
                 _context.Entry(message).Reference(m => m.User).Load();
             }
@@ -32,7 +32,7 @@ namespace API.Controllers
 
 
         [HttpPost]
-        [Route("add")]
+        [Route("Add")]
         public ActionResult<Message> Add(Message messageFromClient) {
             _context.Message.Add(messageFromClient);
             _context.SaveChanges();

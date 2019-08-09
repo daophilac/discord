@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace API.Models {
     public class InstantInvite {
-        [Key, Column(TypeName = "VARCHAR(10)")]
+        [Key, Column(TypeName = "VARCHAR(50)")]
         public string Link { get; set; }
         [Required]
         public int ServerId { get; set; }

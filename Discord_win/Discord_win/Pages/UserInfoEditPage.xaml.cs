@@ -116,10 +116,10 @@ namespace Discord.Pages {
             return false;
         }
         private void ButtonCancel_MouseEnter(object sender, MouseEventArgs e) {
-            ButtonCancel.Foreground = Brushes.Black;
+            ButtonCancel.Foreground = Brushes.Green;
         }
         private void ButtonCancel_MouseLeave(object sender, MouseEventArgs e) {
-            ButtonCancel.Foreground = Brushes.White;
+            ButtonCancel.Foreground = Brushes.Black;
         }
         private void ButtonUpload_Click(object sender, RoutedEventArgs e) {
             OpenFileDialog openFileDialog = new OpenFileDialog();

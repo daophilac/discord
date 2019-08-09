@@ -14,14 +14,15 @@ using System.Windows.Threading;
 
 namespace Discord.Equipments {
     class HubManager {
+        public static string ConnectionId { get; private set; }
         private static HubConnection HubConnection { get; set; }
-        public static string connectionId;
         public static event EventHandler<ReceiveChannelConcurrentConflictSignalEventArgs> ReceiveChannelConcurrentConflictSignal;
         public static event EventHandler<ReceiveMessageSignalEventArgs> ReceiveMessageSignal;
         public static event EventHandler<ReceiveDeleteMessageSignalEventArgs> ReceiveDeleteMessageSignal;
         public static event EventHandler<ReceiveEditMessageSignalEventArgs> ReceiveEditMessageSignal;
         public static event EventHandler<ReceiveNewChannelSignalEventArgs> ReceiveNewChannelSignal;
         public static event EventHandler<ReceiveKickUserSignalEventArgs> ReceiveKickUserSignal;
+        public static event EventHandler<ReceiveChangeUserRoleSignalEventArgs> ReceiveChangeUserRoleSignal;
         public static async Task EstablishAsync() {
             if(HubConnection != null) {
                 await HubConnection.StopAsync();
@@ -34,6 +35,7 @@ namespace Discord.Equipments {
             RegisterOnReceiveEditMessageSignal();
             RegisterOnReceiveNewChannelSignal();
             RegisterOnReceiveKickUserSignal();
+            RegisterOnReceiveChangeUserRoleSignal();
             await HubConnection.StartAsync();
             await HubConnection.InvokeAsync("GetConnectionIdAsync");
         }
@@ -72,12 +74,10 @@ namespace Discord.Equipments {
             await HubConnection.InvokeAsync("ExitChannelAsync", channelId);
         }
         public static async Task SendKickUserSignalAsync(int userId, int serverId) {
-            try {
-                await HubConnection.InvokeAsync("KickUserAsync", userId, serverId);
-            }
-            catch(Exception ex) {
-                int a = 10;
-            }
+            await HubConnection.InvokeAsync("KickUserAsync", userId, serverId);
+        }
+        public static async Task SendChangeUserRoleAsync(int userId, int serverId, int newRoleId) {
+            await HubConnection.InvokeAsync("ChangeUserRole", userId, serverId, newRoleId);
         }
         public static void RegisterOnReceiveChannelConcurrentConflictSignal() {
             HubConnection.On<string, string>("ReceiveChannelConcurrentConflictSignal", (conflictCode, conflictMessage) => {
@@ -86,32 +86,49 @@ namespace Discord.Equipments {
         }
         private static void RegisterOnReceiveConnectionIdSignal() {
             HubConnection.On<string>("ReceiveConnectionIdSignal", (connectionId) => {
-                HubManager.connectionId = connectionId;
+                ConnectionId = connectionId;
             });
         }
         private static void RegisterOnReceiveMessageSignal() {
             HubConnection.On<string, int, string>("ReceiveMessageSignal", (connectionId, userId, jsonMessage) => {
-                ReceiveMessageSignal?.Invoke(HubConnection, new ReceiveMessageSignalEventArgs(connectionId, userId, jsonMessage));
+                Application.Current.Dispatcher.Invoke(() => {
+                    ReceiveMessageSignal?.Invoke(HubConnection, new ReceiveMessageSignalEventArgs(connectionId, userId, jsonMessage));
+                });
             });
         }
         private static void RegisterOnReceiveDeleleMessageSignal() {
-            HubConnection.On<int>("ReceiveDeleteMessageSignal", (messageId) => {
-                ReceiveDeleteMessageSignal?.Invoke(HubConnection, new ReceiveDeleteMessageSignalEventArgs(messageId));
+            HubConnection.On<int>("ReceiveDeleteMessageSignal", async (messageId) => {
+                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                    ReceiveDeleteMessageSignal?.Invoke(HubConnection, new ReceiveDeleteMessageSignalEventArgs(messageId));
+                }));
             });
         }
         private static void RegisterOnReceiveEditMessageSignal() {
-            HubConnection.On<int, string>("ReceiveEditMessageSignal", (messageId, newContent) => {
-                ReceiveEditMessageSignal?.Invoke(HubConnection, new ReceiveEditMessageSignalEventArgs(messageId, newContent));
+            HubConnection.On<int, string>("ReceiveEditMessageSignal", async (messageId, newContent) => {
+                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                    ReceiveEditMessageSignal?.Invoke(HubConnection, new ReceiveEditMessageSignalEventArgs(messageId, newContent));
+                }));
             });
         }
         private static void RegisterOnReceiveNewChannelSignal() {
-            HubConnection.On<string, string>("ReceiveNewChannelSignal", (connectionId, jsonChannel) => {
-                ReceiveNewChannelSignal?.Invoke(HubConnection, new ReceiveNewChannelSignalEventArgs(jsonChannel));
+            HubConnection.On<string, string>("ReceiveNewChannelSignal", async (connectionId, jsonChannel) => {
+                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                    ReceiveNewChannelSignal?.Invoke(HubConnection, new ReceiveNewChannelSignalEventArgs(jsonChannel));
+                }));
             });
         }
         private static void RegisterOnReceiveKickUserSignal() {
             HubConnection.On<int, int, int>("ReceiveKickUserSignal", (serverId, userId, roleId) => {
-                ReceiveKickUserSignal?.Invoke(HubConnection, new ReceiveKickUserSignalEventArgs(serverId, userId, roleId));
+                Application.Current.Dispatcher.Invoke(() => {
+                    ReceiveKickUserSignal?.Invoke(HubConnection, new ReceiveKickUserSignalEventArgs(serverId, userId, roleId));
+                });
+            });
+        }
+        private static void RegisterOnReceiveChangeUserRoleSignal() {
+            HubConnection.On<int, int, int>("ReceiveChangeUserRoleSignal", (userId, oldRoleId, newRoleId) => {
+                Application.Current.Dispatcher.Invoke(() => {
+                    ReceiveChangeUserRoleSignal?.Invoke(HubConnection, new ReceiveChangeUserRoleSignalEventArgs(userId, oldRoleId, newRoleId));
+                });
             });
         }
         public class ReceiveChannelConcurrentConflictSignalEventArgs : EventArgs {
@@ -163,6 +180,16 @@ namespace Discord.Equipments {
                 ServerId = serverId;
                 UserId = userId;
                 RoleId = roleId;
+            }
+        }
+        public class ReceiveChangeUserRoleSignalEventArgs : EventArgs {
+            public int UserId { get; }
+            public int OldRoleId { get; }
+            public int NewRoleId { get; }
+            public ReceiveChangeUserRoleSignalEventArgs(int userId, int oldRoleId, int newRoleId) {
+                UserId = userId;
+                OldRoleId = oldRoleId;
+                NewRoleId = newRoleId;
             }
         }
     }

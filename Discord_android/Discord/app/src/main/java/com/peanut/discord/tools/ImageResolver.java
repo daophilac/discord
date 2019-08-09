@@ -18,6 +18,9 @@ public class ImageResolver {
     private static HashMap<String, Bitmap> mapFilePathBitmap = new HashMap<>();
     private static SingleWorker singleWorker = new SingleWorker();
     public static void downloadUserImage(String imageName, OnFinishListener onFinishListener) {
+        if(imageName == null){
+            return;
+        }
         singleWorker.execute(() -> {
             String imagePath = Data.makeUserImageFilePath(imageName);
             if(mapFilePathBitmap.containsKey(imagePath)){

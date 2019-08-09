@@ -7,9 +7,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="UserSettingPage">
-    <Grid Background="{DynamicResource UserProfileMainFrame_Background}">
+    <Grid Background="{DynamicResource Light3_Background}">
         <DockPanel x:Name="DockPanelMain" x:FieldModifier="private">
-            <DockPanel x:Name="DockPanelNavigation" x:FieldModifier="private" LastChildFill="False" Width="200px" DockPanel.Dock="Left" Background="{DynamicResource UserProfileNavigation_Background}">
+            <DockPanel x:Name="DockPanelNavigation" x:FieldModifier="private" LastChildFill="False" Width="200px" DockPanel.Dock="Left" >
                 <Label Content="USER SETTINGS" DockPanel.Dock="Top" Foreground="#FFB4B6BA" FontWeight="Bold"/>
                 <Button x:Name="ButtonMyAccount" x:FieldModifier="private" Content="My Account" FontWeight="Bold" FontSize="14" Foreground="#FFB4B6BA" Background="Transparent" BorderBrush="Transparent" DockPanel.Dock="Top" HorizontalContentAlignment="Left" Click="ButtonMyAccount_Click" />
                 <Button x:Name="ButtonLogOut" x:FieldModifier="private" Content="LOG OUT" FontWeight="Bold" FontSize="14" Foreground="Red"  Background="Transparent" BorderBrush="Transparent" DockPanel.Dock="Top" HorizontalContentAlignment="Left" Click="ButtonLogOut_Click" />
@@ -17,7 +17,7 @@
             <DockPanel Width="100" DockPanel.Dock="Right" LastChildFill="False">
                 <Button x:Name="ButtonEsc" x:FieldModifier="private" Content="ESC" DockPanel.Dock="Top" Click="ButtonEsc_Click" />
             </DockPanel>
-            <Frame x:Name="MainFrame" x:FieldModifier="private" Margin="25, 0, 0, 0" Background="{DynamicResource UserProfileMainFrame_Background}" />
+            <Frame x:Name="MainFrame" x:FieldModifier="private" Margin="25, 0, 0, 0" />
         </DockPanel>
     </Grid>
 </Page>

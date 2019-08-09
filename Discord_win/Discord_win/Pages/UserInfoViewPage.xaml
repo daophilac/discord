@@ -8,7 +8,7 @@
       d:DesignHeight="150" d:DesignWidth="600"
       Title="UserViewPage" Loaded="Page_Loaded">
 
-    <Grid Background="{DynamicResource UserInfoViewPage_Background}">
+    <Grid Background="{DynamicResource Light3_Background}">
         <DockPanel x:Name="DockPanelMain" x:FieldModifier="private">
             <DockPanel x:Name="DockPanelImage" x:FieldModifier="private" Width="150" DockPanel.Dock="Left">
                 <Image x:Name="UserImage" Width="100" Height="100" />
@@ -17,10 +17,10 @@
                 <Button x:Name="ButtonEdit" x:FieldModifier="private" Content="Edit" Background="#FF7289DA" Foreground="#FFF8F9FC" FontWeight="Bold" Width="50" Height="30" DockPanel.Dock="Top" Margin="0,20" Click="ButtonEdit_Click"/>
             </DockPanel>
             <DockPanel LastChildFill="False">
-                <Label Content="USERNAME" Foreground="{DynamicResource Dark1_Foregound}" FontWeight="Bold" DockPanel.Dock="Top"/>
-                <Label x:Name="LabelUserName" x:FieldModifier="private" DockPanel.Dock="Top" FontSize="13" Foreground="{DynamicResource Dark2_Foregound}" />
-                <Label Content="EMAIL" Foreground="{DynamicResource Dark1_Foregound}" FontWeight="Bold" DockPanel.Dock="Top"/>
-                <Label x:Name="LabelEmail" x:FieldModifier="private" DockPanel.Dock="Top" FontSize="13" Foreground="{DynamicResource Dark2_Foregound}" />
+                <Label Content="USERNAME" Foreground="{DynamicResource Light1_Foregound}" FontWeight="Bold" DockPanel.Dock="Top"/>
+                <Label x:Name="LabelUserName" x:FieldModifier="private" DockPanel.Dock="Top" FontSize="13" Foreground="{DynamicResource Light2_Foregound}" />
+                <Label Content="EMAIL" Foreground="{DynamicResource Light1_Foregound}" FontWeight="Bold" DockPanel.Dock="Top"/>
+                <Label x:Name="LabelEmail" x:FieldModifier="private" DockPanel.Dock="Top" FontSize="13" Foreground="{DynamicResource Light2_Foregound}" />
             </DockPanel>
         </DockPanel>
     </Grid>

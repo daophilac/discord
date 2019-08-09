@@ -63,7 +63,7 @@ namespace API {
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
             app.UseSignalR(routes => {
-                routes.MapHub<ChatHub>("/chathub");
+                routes.MapHub<ChatHub>("/ChatHub");
             });
         }
     }

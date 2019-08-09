@@ -14,6 +14,9 @@ namespace Discord.Tools {
         private static HashSet<string> SetDownloadingImage { get; } = new HashSet<string>();
         private static Dictionary<string, List<TaskCompletionSource<bool>>> Queue { get; } = new Dictionary<string, List<TaskCompletionSource<bool>>>();
         public static async Task DownloadUserImageAsync(string imageName, Action<BitmapImage> actionResult) {
+            if(imageName == null) {
+                return;
+            }
             string imagePath = FileSystem.MakeUserImageFilePath(imageName);
             // The file is being downloaded
             if (SetDownloadingImage.Contains(imagePath)) {

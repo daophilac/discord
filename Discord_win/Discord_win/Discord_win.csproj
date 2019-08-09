@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6C6C3A3B-168B-4E27-A6E4-153EC3E7DF64}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Discord_win</RootNamespace>
     <AssemblyName>Discord_win</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -33,6 +33,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Connections.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -143,6 +146,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialog\AssignRoleDialog.xaml.cs">
+      <DependentUpon>AssignRoleDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\CreateChannelDialog.xaml.cs">
       <DependentUpon>CreateChannelDialog.xaml</DependentUpon>
     </Compile>
@@ -151,6 +157,9 @@
     </Compile>
     <Compile Include="Dialog\CreateServerDialog.xaml.cs">
       <DependentUpon>CreateServerDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\InvitePeopleDialog.xaml.cs">
+      <DependentUpon>InvitePeopleDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\JoinServerDialog.xaml.cs">
       <DependentUpon>JoinServerDialog.xaml</DependentUpon>
@@ -172,9 +181,6 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Pages\SignUpPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\UserInfoEditPage.xaml.cs">
       <DependentUpon>UserInfoEditPage.xaml</DependentUpon>
@@ -202,6 +208,10 @@
     <Compile Include="ViewModels\UserConfirmPasswordVM.cs" />
     <Compile Include="ViewModels\UserLoginVM.cs" />
     <Compile Include="ViewModels\UserUpdateProfileVM.cs" />
+    <Page Include="Dialog\AssignRoleDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialog\CreateChannelDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -211,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialog\CreateServerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\InvitePeopleDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -239,10 +253,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SignUpPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\TestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -275,6 +285,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Localizable\Notification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UiDecoration\InterfaceLight.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

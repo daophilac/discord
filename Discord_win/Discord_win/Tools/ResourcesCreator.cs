@@ -50,16 +50,23 @@ namespace Discord.Tools {
             return JsonConvert.DeserializeObject<ICollection<Message>>(result);
         }
         public static async Task<Server> GetServerByInstantInviteAsync(string instantInvite) {
-            string requestUrl = Route.InstantInvite.BuildGetServer(Inventory.CurrentUser.UserId, instantInvite);
+            string requestUrl = Route.InstantInvite.BuildGetServerUrl(Inventory.CurrentUser.UserId, instantInvite);
             apiCaller.SetProperties(HttpMethod.Get, requestUrl);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             if (!httpResponseMessage.IsSuccessStatusCode) {
                 return null;
             }
-            else {
-                string result = await httpResponseMessage.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<Server>(result);
+            string result = await httpResponseMessage.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Server>(result);
+        }
+        public static async Task<string> GetInstantInviteByServerAsync(int serverId) {
+            string requestUrl = Route.InstantInvite.BuildGetByServerUrl(serverId);
+            apiCaller.SetProperties(HttpMethod.Get, requestUrl);
+            HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
+            if (!httpResponseMessage.IsSuccessStatusCode) {
+                return null;
             }
+            return await httpResponseMessage.Content.ReadAsStringAsync();
         }
         public static async Task<Server> CreateServerAsync(string serverName) {
             string requestUrl = Route.Server.UrlAdd;
@@ -74,6 +81,13 @@ namespace Discord.Tools {
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             string result = await httpResponseMessage.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Role>(result);
+        }
+        public static async Task<ChannelPermission> GetChannelPermissionAsync(int channelId, int roleId) {
+            string requestUrl = Route.ChannelPermission.BuildGetUrl(channelId, roleId);
+            apiCaller.SetProperties(HttpMethod.Get, requestUrl);
+            HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
+            string result = await httpResponseMessage.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ChannelPermission>(result);
         }
     }
 }

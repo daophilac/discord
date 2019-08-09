@@ -18,7 +18,6 @@ using System.Windows.Controls;
 
 namespace Discord.Managers {
     public class ServerManager {
-        private ImageDownloader FileDownloader { get; set; }
         private DockPanel DockPanelServer { get; set; }
         private Grid GridServerButton { get; set; }
         private Button ButtonCreateOrJoinServer { get; set; }
@@ -31,11 +30,7 @@ namespace Discord.Managers {
         private JoinServerDialog JoinServerDialog { get; set; }
         public event EventHandler<ServerButtonClickArgs> ServerButtonClick;
         public event EventHandler<ServerChangedArgs> ServerChanged;
-        //private Button buttonTestCancelDownload;
-        //private Button buttonPause;
-        //private Button buttonResume;
         public ServerManager(DockPanel dockPanelServer, Grid gridServerButton, Button buttonCreateOrJoinServer) {
-            FileDownloader = new ImageDownloader(FileSystem.UserDirectory);
             DockPanelServer = dockPanelServer;
             GridServerButton = gridServerButton;
             ButtonCreateOrJoinServer = buttonCreateOrJoinServer;
@@ -44,29 +39,12 @@ namespace Discord.Managers {
             CreateServerDialog = new CreateServerDialog();
             JoinServerDialog = new JoinServerDialog();
             CreateOrJoinServerDialog = new CreateOrJoinServerDialog(CreateServerDialog, JoinServerDialog);
-            //this.buttonTestCancelDownload = buttonTestCancelDownload;
-            //this.buttonPause = buttonPause;
-            //this.buttonResume = buttonResume;
         }
         public async Task EstablishAsync() {
             ButtonCreateOrJoinServer.Click += ButtonCreateOrJoinServer_Click;
             CreateServerDialog.RequestCreateServer += CreateServerDialog_RequestCreateServer;
             JoinServerDialog.JoinServer += JoinServerDialog_JoinServer;
-            //buttonTestCancelDownload.Click += ButtonTestCancelDownload_Click;
-            //buttonPause.Click += ButtonPause_Click;
-            //buttonResume.Click += ButtonResume_Click;
             await RetrieveListServerAsync();
-            //DownloadUserImages();
-        }
-
-        private void ButtonResume_Click(object sender, RoutedEventArgs e) {
-        }
-
-        private void ButtonPause_Click(object sender, RoutedEventArgs e) {
-        }
-
-        private void ButtonTestCancelDownload_Click(object sender, RoutedEventArgs e) {
-            //CancelAllDownloadTasks();
         }
 
         public void TearDown() {
@@ -74,7 +52,19 @@ namespace Discord.Managers {
             CreateServerDialog.RequestCreateServer -= CreateServerDialog_RequestCreateServer;
             JoinServerDialog.JoinServer -= JoinServerDialog_JoinServer;
         }
-
+        public void RemoveServer(int serverId) {
+            Server server = ListServer.Where(s => s.ServerId == serverId).FirstOrDefault();
+            if(server == null) {
+                return;
+            }
+            Button button = ButtonServers.Where(bs => bs.Value == server).FirstOrDefault().Key;
+            ListServer.Remove(server);
+            ButtonServers.Remove(button);
+            DockPanelServerButton.Children.Remove(button);
+        }
+        public void EnterFirstServer() {
+            ButtonServers.ElementAt(0).Key.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        }
         private void JoinServerDialog_JoinServer(object sender, JoinServerArgs e) {
             if (ButtonServers.Where(server => server.Value.ServerId == e.Server.ServerId).FirstOrDefault().Value != null) {
                 MessageBox.Show("You are already in this server: " + e.Server.ServerName);
@@ -87,17 +77,19 @@ namespace Discord.Managers {
 
         private async void CreateServerDialog_RequestCreateServer(object sender, RequestCreateServerArgs e) {
             Server server = await ResourcesCreator.CreateServerAsync(e.ServerName);
+            Inventory.ListServer.Add(server);
             CreateServerButton(server);
         }
         private void ButtonCreateOrJoinServer_Click(object sender, RoutedEventArgs e) {
-            //createOrJoinServerDialog.Activate();
-            //createOrJoinServerDialog.ShowDialog();
+            CreateOrJoinServerDialog.Activate();
+            CreateOrJoinServerDialog.ShowDialog();
         }
 
         private async Task RetrieveListServerAsync() {
             ListServer = await ResourcesCreator.GetListServerAsync(Inventory.CurrentUser.UserId);
             Inventory.SetListServer(ListServer);
             AttachListButton();
+            EnterFirstServer();
         }
         private void AttachListButton() {
             GridServerButton.Children.Clear();

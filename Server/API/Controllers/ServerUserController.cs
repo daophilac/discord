@@ -9,7 +9,7 @@ using API.Models;
 
 namespace API.Controllers
 {
-    [Route("api/serveruser")]
+    [Route("api/ServerUser")]
     [ApiController]
     public class ServerUserController : ControllerBase
     {
@@ -20,15 +20,13 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpDelete]
-        [Route("leaveserver/{userId}/{serverId}")]
+        [HttpDelete, Route("LeaveServer/{userId}/{serverId}")]
         public ActionResult LeaveServer(int userId, int serverId) {
             ServerUser serverUser = _context.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).First();
             _context.ServerUser.Remove(serverUser);
             _context.SaveChanges();
             return Ok();
         }
-
 
 
 

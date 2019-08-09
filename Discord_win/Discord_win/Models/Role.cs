@@ -15,9 +15,22 @@ namespace Discord.Models {
         public bool Kick { get; set; }
         public bool ModifyChannel { get; set; }
         public bool ModifyRole { get; set; }
+        public bool ChangeUserRole { get; set; }
         public int ServerId { get; set; }
 
         public Server Server { get; set; }
         public ICollection<ChannelPermission> ChannelPermissions { get; set; }
+        public static bool operator <(Role a, Role b) {
+            return a.RoleLevel < b.RoleLevel;
+        }
+        public static bool operator <=(Role a, Role b) {
+            return a.RoleLevel <= b.RoleLevel;
+        }
+        public static bool operator >(Role a, Role b) {
+            return a.RoleLevel > b.RoleLevel;
+        }
+        public static bool operator >=(Role a, Role b) {
+            return a.RoleLevel >= b.RoleLevel;
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace API.Models {
             modelBuilder.Entity<User>().HasAlternateKey(k => k.Email).HasName("UK_User_Email");
             modelBuilder.Entity<Channel>().HasAlternateKey(c => new { c.ServerId, c.ChannelName }).HasName("UK_Channel_Server_Name");
             modelBuilder.Entity<Role>().HasAlternateKey(r => new { r.ServerId, r.RoleLevel }).HasName("UK_Role_ServerId_RoleLevel");
-            modelBuilder.Entity<ServerUser>().HasAlternateKey(su => new { su.ServerId, su.UserId, su.RoleId }).HasName("UK_ServerUser_ServerId_UserId_RoleId");
+            modelBuilder.Entity<ServerUser>().HasIndex(su => new { su.ServerId, su.UserId, su.RoleId }).IsUnique(true);
             modelBuilder.Entity<ServerUser>().HasKey(su => new { su.ServerId, su.UserId });
             modelBuilder.Entity<ChannelPermission>().HasKey(clp => new { clp.ChannelId, clp.RoleId });
             modelBuilder.Entity<Message>().HasOne(m => m.User).WithMany("Messages").OnDelete(DeleteBehavior.Restrict);
@@ -207,10 +207,10 @@ namespace API.Models {
         }
         private void SeedInstantInvite() {
             ModelBuilder.Entity<InstantInvite>().HasData(
-                new InstantInvite { Link = "1", ServerId = 1, StillValid = true, NerverExpired = true },
-                new InstantInvite { Link = "2", ServerId = 2, StillValid = true, NerverExpired = true },
-                new InstantInvite { Link = "3", ServerId = 3, StillValid = true, NerverExpired = true },
-                new InstantInvite { Link = "4", ServerId = 4, StillValid = true, NerverExpired = true }
+                new InstantInvite { Link = "e4912f82-d290-40e6-a23d-08d0ce1b50ab", ServerId = 1, StillValid = true, NerverExpired = true },
+                new InstantInvite { Link = "648d7e41-75f9-48b8-8bb2-ccf1ffa74245", ServerId = 2, StillValid = true, NerverExpired = true },
+                new InstantInvite { Link = "15f0529f-53b9-46b9-8bb6-8d8d863eb167", ServerId = 3, StillValid = true, NerverExpired = true },
+                new InstantInvite { Link = "5766df3a-3e31-4c1c-b50c-bc887efd4626", ServerId = 4, StillValid = true, NerverExpired = true }
             );
         }
     }

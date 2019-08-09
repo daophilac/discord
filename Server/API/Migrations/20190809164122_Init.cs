@@ -76,7 +76,7 @@ namespace API.Migrations
                 name: "InstantInvite",
                 columns: table => new
                 {
-                    Link = table.Column<string>(type: "VARCHAR(10)", nullable: false),
+                    Link = table.Column<string>(type: "VARCHAR(50)", nullable: false),
                     ServerId = table.Column<int>(nullable: false),
                     StillValid = table.Column<bool>(nullable: false),
                     NerverExpired = table.Column<bool>(nullable: false)
@@ -186,7 +186,6 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServerUser", x => new { x.ServerId, x.UserId });
-                    table.UniqueConstraint("UK_ServerUser_ServerId_UserId_RoleId", x => new { x.ServerId, x.UserId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_ServerUser_Role_RoleId",
                         column: x => x.RoleId,
@@ -250,10 +249,10 @@ namespace API.Migrations
                 columns: new[] { "Link", "NerverExpired", "ServerId", "StillValid" },
                 values: new object[,]
                 {
-                    { "1", true, 1, true },
-                    { "2", true, 2, true },
-                    { "3", true, 3, true },
-                    { "4", true, 4, true }
+                    { "e4912f82-d290-40e6-a23d-08d0ce1b50ab", true, 1, true },
+                    { "648d7e41-75f9-48b8-8bb2-ccf1ffa74245", true, 2, true },
+                    { "15f0529f-53b9-46b9-8bb6-8d8d863eb167", true, 3, true },
+                    { "5766df3a-3e31-4c1c-b50c-bc887efd4626", true, 4, true }
                 });
 
             migrationBuilder.InsertData(
@@ -401,6 +400,12 @@ namespace API.Migrations
                 name: "IX_ServerUser_UserId",
                 table: "ServerUser",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServerUser_ServerId_UserId_RoleId",
+                table: "ServerUser",
+                columns: new[] { "ServerId", "UserId", "RoleId" },
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

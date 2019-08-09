@@ -10,6 +10,7 @@ using Discord.Dialog;
 using Discord.Equipments;
 using Discord.Models;
 using Discord.Tools;
+using Discord_win.Dialog;
 
 namespace Discord.Managers {
     public class ChannelManager {
@@ -28,68 +29,100 @@ namespace Discord.Managers {
             get => labelUsername;
             set => labelUsername = value ?? throw new ArgumentNullException("LabelUsername", "LabelUsername cannot be null.");
         }
-        private Button buttonCreateChannel;
-        private Button ButtonCreateChannel {
-            get => buttonCreateChannel;
-            set => buttonCreateChannel = value ?? throw new ArgumentNullException("ButtonCreateChannel", "ButtonCreateChannel cannot be null.");
+        private Label labelServerName;
+        private Label LabelServerName {
+            get => labelServerName;
+            set => labelServerName = value ?? throw new ArgumentNullException("LabelServerName", "LabelServerName cannot be null.");
         }
         private DockPanel DockPanelChannelButton { get; set; }
+        private Button ButtonCurrentChannel { get; set; }
         private ICollection<Channel> ListChannel { get; set; }
         private Dictionary<Button, Channel> ButtonChannels { get; set; }
+        private MenuItem MenuItemInvite { get; set; }
+        private MenuItem MenuItemCreateChannel { get; set; }
         private CreateChannelDialog CreateChannelDialog { get; set; }
+        private InvitePeopleDialog InvitePeopleDialog { get; set; }
         public event EventHandler<ChannelButtonClickArgs> ChannelButtonClick;
         public event EventHandler<ChannelChangedArgs> ChannelChanged;
-        public ChannelManager(DockPanel dockPanelChannel, Grid gridChannelContent, Label labelUsername, Button buttonCreateChannel) {
+        public ChannelManager(DockPanel dockPanelChannel, Grid gridChannelContent, Label labelUsername, Label labelServerName) {
             DockPanelChannel = dockPanelChannel;
             GridChannelContent = gridChannelContent;
             LabelUsername = labelUsername;
-            ButtonCreateChannel = buttonCreateChannel;
+            LabelServerName = labelServerName;
             ButtonChannels = new Dictionary<Button, Channel>();
             CreateChannelDialog = new CreateChannelDialog();
+            InvitePeopleDialog = new InvitePeopleDialog();
         }
         public void Establish() {
-            ThrowExceptions();
+            LabelUsername.Content = Inventory.CurrentUser.UserName;
+            ContextMenu contextMenu = LabelServerName.ContextMenu;
+            MenuItemInvite = contextMenu.Items[0] as MenuItem;
+            MenuItemCreateChannel = contextMenu.Items[1] as MenuItem;
+
             HubManager.ReceiveChannelConcurrentConflictSignal += HubManager_ReceiveChannelConcurrenctConflictSignal;
             HubManager.ReceiveNewChannelSignal += HubManager_ReceiveNewChannelSignal;
             CreateChannelDialog.RequestCreateChannel += CreateChannelDialog_RequestCreateChannel;
-            buttonCreateChannel.Click += ButtonCreateChannel_Click;
-            labelUsername.Content = Inventory.CurrentUser.UserName;
+            LabelServerName.MouseUp += LabelServerName_MouseUp;
+            MenuItemInvite.Click += MenuItemInvite_Click;
+            MenuItemCreateChannel.Click += MenuItemCreateChannel_Click;
         }
+
         public void TearDown() {
             HubManager.ReceiveChannelConcurrentConflictSignal -= HubManager_ReceiveChannelConcurrenctConflictSignal;
             HubManager.ReceiveNewChannelSignal -= HubManager_ReceiveNewChannelSignal;
             CreateChannelDialog.RequestCreateChannel -= CreateChannelDialog_RequestCreateChannel;
-            buttonCreateChannel.Click -= ButtonCreateChannel_Click;
+            LabelServerName.MouseUp -= LabelServerName_MouseUp;
+            MenuItemInvite.Click -= MenuItemInvite_Click;
+            MenuItemCreateChannel.Click -= MenuItemCreateChannel_Click;
+        }
+        public void ClearContent() {
+            GridChannelContent.Children.Clear();
+            LabelServerName.Visibility = Visibility.Hidden;
+        }
+        public void EnterFirstChannel() {
+            ButtonChannels.ElementAt(0).Key.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
 
-        private void ButtonCreateChannel_Click(object sender, RoutedEventArgs e) {
+        private void MenuItemCreateChannel_Click(object sender, RoutedEventArgs e) {
             CreateChannelDialog.Activate();
             CreateChannelDialog.ShowDialog();
+        }
+
+        private async void MenuItemInvite_Click(object sender, RoutedEventArgs e) {
+            string instantInvite = await ResourcesCreator.GetInstantInviteByServerAsync(Inventory.CurrentServer.ServerId);
+            InvitePeopleDialog.Activate(instantInvite);
+        }
+
+        private void LabelServerName_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            LabelServerName.ContextMenu.IsOpen = true;
         }
 
         private void HubManager_ReceiveChannelConcurrenctConflictSignal(object sender, HubManager.ReceiveChannelConcurrentConflictSignalEventArgs e) {
             MessageBox.Show(e.ConflictMessage);
         }
 
-        private void CreateChannelDialog_RequestCreateChannel(object sender, RequestCreateChannelArgs e) {
-            HubManager.SendCreateChannelSignalAsync(e.ChannelName);
+        private async void CreateChannelDialog_RequestCreateChannel(object sender, RequestCreateChannelArgs e) {
+            await HubManager.SendCreateChannelSignalAsync(e.ChannelName);
         }
 
         private void HubManager_ReceiveNewChannelSignal(object sender, HubManager.ReceiveNewChannelSignalEventArgs e) {
-            Application.Current.Dispatcher.Invoke(() => {
-                Button button = CreateChannelButton(e.Channel.ChannelName);
-                DockPanel.SetDock(button, Dock.Top);
-                ButtonChannels.Add(button, e.Channel);
-                DockPanelChannelButton.Children.Add(button);
-            });
+            Inventory.ChannelsInCurrentServer.Add(e.Channel);
+            Button button = CreateChannelButton(e.Channel.ChannelName);
+            DockPanel.SetDock(button, Dock.Top);
+            ButtonChannels.Add(button, e.Channel);
+            DockPanelChannelButton.Children.Add(button);
         }
 
         public async void ChangeServer(Server previousServer, Server nowServer) {
+            ButtonChannels.Clear();
+            LabelServerName.Content = nowServer.ServerName;
+            LabelServerName.Visibility = Visibility.Visible;
             await RetrieveListChannel(nowServer.ServerId);
             ActivateOrDeactivateChannelCreation();
+            EnterFirstChannel();
         }
         public void ActivateOrDeactivateChannelCreation() {
-            buttonCreateChannel.Visibility = Inventory.UserRoleInCurrentServer.ModifyChannel ? Visibility.Visible : Visibility.Hidden;
+            MenuItemCreateChannel.IsEnabled = Inventory.UserRoleInCurrentServer.ModifyChannel;
         }
         private async Task RetrieveListChannel(int serverId) {
             ListChannel = await ResourcesCreator.GetListChannelAsync(serverId);
@@ -113,33 +146,40 @@ namespace Discord.Managers {
             button.Content = content;
             button.Margin = new Thickness(5, 5, 5, 5);
             button.FontSize = 20;
-            button.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
             button.HorizontalAlignment = HorizontalAlignment.Left;
-            button.Background = new SolidColorBrush(Color.FromArgb(0x00, 0x00, 0, 0));
+            button.Background = Brushes.Transparent;
+            button.BorderBrush = Brushes.Transparent;
             button.Click += ChannelButton_Click;
             return button;
         }
         private void ChannelButton_Click(object sender, RoutedEventArgs e) {
-            Channel selectedChannel = ButtonChannels[(Button)sender];
-            ChannelButtonClick?.Invoke(this, new ChannelButtonClickArgs() { Channel = selectedChannel });
+            Button clickedButton = sender as Button;
+            Channel selectedChannel = ButtonChannels[clickedButton];
+            ChannelButtonClick?.Invoke(this, new ChannelButtonClickArgs(selectedChannel));
             if(Inventory.CurrentChannel != selectedChannel) {
                 Channel previousChannel = Inventory.CurrentChannel;
                 Inventory.SetCurrentChannel(selectedChannel);
-                ChannelChanged?.Invoke(this, new ChannelChangedArgs() { Previous = previousChannel, Now = selectedChannel });
-            }
-        }
-
-        private void ThrowExceptions() {
-            if (dockPanelChannel == null) {
-                throw new ArgumentNullException("dockPanelChannel cannot be null");
+                if(previousChannel != null) {
+                    ButtonCurrentChannel.Background = Brushes.Transparent;
+                }
+                ButtonCurrentChannel = clickedButton;
+                ButtonCurrentChannel.Background = Brushes.Aqua;
+                ChannelChanged?.Invoke(this, new ChannelChangedArgs(previousChannel, selectedChannel));
             }
         }
         public class ChannelButtonClickArgs : EventArgs {
-            public Channel Channel { get; set; }
+            public Channel Channel { get; }
+            public ChannelButtonClickArgs(Channel channel) {
+                Channel = channel;
+            }
         }
         public class ChannelChangedArgs : EventArgs {
-            public Channel Previous { get; set; }
-            public Channel Now { get; set; }
+            public Channel Previous { get; }
+            public Channel Now { get; }
+            public ChannelChangedArgs(Channel previous, Channel now) {
+                Previous = previous;
+                Now = now;
+            }
         }
     }
 }

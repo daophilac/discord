@@ -9,7 +9,7 @@ using API.Models;
 
 namespace API.Controllers
 {
-    [Route("api/instantinvite")]
+    [Route("api/InstantInvite")]
     [ApiController]
     public class InstantInviteController : ControllerBase
     {
@@ -27,9 +27,8 @@ namespace API.Controllers
             return await _context.InstantInvite.ToListAsync();
         }
 
-        [HttpGet]
-        [Route("getserver/{userId}/{link}")]
-        public ActionResult<Server> getServerByLink(int userId, string link) {
+        [HttpGet, Route("GetServer/{userId}/{link}")]
+        public ActionResult<Server> GetServerByLink(int userId, string link) {
             InstantInvite instantInvite = _context.InstantInvite.Where(ii => ii.Link == link).FirstOrDefault();
             if(instantInvite != null) {
                 Server result = _context.Server.Where(s => s.ServerId == instantInvite.ServerId).First();
@@ -45,6 +44,14 @@ namespace API.Controllers
                 return Ok(result);
             }
             return NotFound();
+        }
+        [HttpGet, Route("GetByServer/{serverId}")]
+        public async Task<IActionResult> GetByServerAsync(int serverId) {
+            InstantInvite instantInvite = await _context.InstantInvite.Where(ii => ii.ServerId == serverId).FirstOrDefaultAsync();
+            if(instantInvite == null) {
+                return NotFound();
+            }
+            return Ok(instantInvite.Link);
         }
 
         // GET: api/InstantInvite/5

@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
+using API.ViewModels;
 
 namespace API.Controllers
 {
-    [Route("api/role")]
+    [Route("api/Role")]
     [ApiController]
     public class RoleController : ControllerBase
     {
@@ -19,18 +20,31 @@ namespace API.Controllers
         {
             _context = context;
         }
-        [HttpGet, Route("getbyserver/{serverId}")]
+        [HttpGet, Route("GetByServer/{serverId}")]
         public async Task<ActionResult<IEnumerable<Role>>> GetByServer(int serverId) {
-            return await _context.Role.Where(r => r.ServerId == serverId).OrderByDescending(r => r.RoleLevel).ToListAsync();
+            return await _context.Role.Where(r => r.ServerId == serverId).ToListAsync();
         }
-        [HttpGet, Route("getuserroleinserver/{userId}/{serverId}")]
-        public IActionResult GetUserRoleInServer(int userId, int serverId) {
-            Role role = _context.ServerUser
+        [HttpGet, Route("GetUserRoleInServer/{userId}/{serverId}")]
+        public async Task<IActionResult> GetUserRoleInServer(int userId, int serverId) {
+            Role role = (await _context.ServerUser
                 .Where(su => su.UserId == userId && su.ServerId == serverId)
                 .Include("Role")
-                .FirstOrDefaultAsync()
-                .Result.Role;
+                .FirstOrDefaultAsync())
+                .Role;
             return Ok(role);
+        }
+        [HttpPost, Route("ChangeUserRole")]
+        public async Task<IActionResult> ChangeUserRole(ChangeUserRoleViewModel model) {
+            if(model == null) {
+                return BadRequest();
+            }
+            ServerUser serverUser = await _context.ServerUser.Where(su => su.ServerId == model.ServerId && su.UserId == model.UserId).FirstOrDefaultAsync();
+            if(serverUser == null) {
+                return NotFound(model);
+            }
+            serverUser.RoleId = model.NewRoleId;
+            await _context.SaveChangesAsync();
+            return Ok(serverUser);
         }
 
         // GET: api/Role

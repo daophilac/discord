@@ -9,9 +9,9 @@
       Title="UserProfilePage">
 
     <Grid>
-        <DockPanel x:Name="DockPanelMain" x:FieldModifier="private" Background="{DynamicResource Dark3_Background}">
+        <DockPanel x:Name="DockPanelMain" x:FieldModifier="private" Background="{DynamicResource Light3_Background}">
             <DockPanel LastChildFill="False">
-                <Label Content="MY ACCOUNT" DockPanel.Dock="Top" Foreground="#FFB4B6BA" FontWeight="Bold" />
+                <Label Content="MY ACCOUNT" DockPanel.Dock="Top" Foreground="{DynamicResource Light2_Foregound}" FontWeight="Bold" />
                 <Frame x:Name="FrameUserInfo" x:FieldModifier="private" DockPanel.Dock="Top" Navigating="FrameUserInfo_Navigating" />
             </DockPanel>
         </DockPanel>

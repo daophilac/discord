@@ -44,6 +44,7 @@ namespace Discord.Managers {
             set => buttonCancelEdit = value ?? throw new ArgumentNullException("ButtonCancelEdit", "ButtonCancelEdit cannot be null.");
         }
         private DockPanel DockPanelMessageComponent { get; set; }
+        private ChannelPermission ChannelPermission { get; set; }
         private ICollection<Message> ListMessage { get; set; }
         private bool IsEditing { get; set; }
         private Message EditingMessage { get; set; }
@@ -59,82 +60,91 @@ namespace Discord.Managers {
             HubManager.ReceiveMessageSignal += HubManager_ReceiveMessageSignal;
             HubManager.ReceiveDeleteMessageSignal += HubManager_ReceiveDeleteMessageSignal;
             HubManager.ReceiveEditMessageSignal += HubManager_ReceiveEditMessageSignal;
-            textBoxType.KeyDown += TextBoxType_KeyDown;
-            buttonSend.Click += ButtonSend_Click;
-            buttonCancelEdit.Click += ButtonCancelEdit_Click;
+            TextBoxType.KeyDown += TextBoxType_KeyDown;
+            ButtonSend.Click += ButtonSend_Click;
+            ButtonCancelEdit.Click += ButtonCancelEdit_Click;
         }
 
         private void HubManager_ReceiveEditMessageSignal(object sender, HubManager.ReceiveEditMessageSignalEventArgs e) {
-            Application.Current.Dispatcher.Invoke(() => {
-                MessageComponent messageComponent = MessageComponent.GetByMessageId(e.MessageId);
-                if (messageComponent.Message.UserId == Inventory.CurrentUser.UserId) {
-                    textBoxType.Text = "";
-                    buttonCancelEdit.Visibility = Visibility.Hidden;
-                    IsEditing = false;
-                    EditingMessage = null;
-                }
-                messageComponent.UpdateContent(e.NewContent);
-            });
+            MessageComponent messageComponent = MessageComponent.GetByMessageId(e.MessageId);
+            if (messageComponent.Message.UserId == Inventory.CurrentUser.UserId) {
+                TextBoxType.Text = "";
+                ButtonCancelEdit.Visibility = Visibility.Hidden;
+                IsEditing = false;
+                EditingMessage = null;
+            }
+            messageComponent.UpdateContent(e.NewContent);
         }
 
         private void ButtonCancelEdit_Click(object sender, RoutedEventArgs e) {
             IsEditing = false;
             EditingMessage = null;
-            textBoxType.Text = "";
-            buttonCancelEdit.Visibility = Visibility.Hidden;
+            TextBoxType.Text = "";
+            ButtonCancelEdit.Visibility = Visibility.Hidden;
         }
 
         private void HubManager_ReceiveDeleteMessageSignal(object sender, HubManager.ReceiveDeleteMessageSignalEventArgs e) {
-            Application.Current.Dispatcher.Invoke(() => {
-                MessageComponent messageComponent = MessageComponent.GetAndRemoveByMessageId(e.MessageId);
-                if(messageComponent != null) {
-                    DockPanelMessageComponent.Children.Remove(messageComponent);
-                }
-            });
+            MessageComponent messageComponent = MessageComponent.GetAndRemoveByMessageId(e.MessageId);
+            if (messageComponent != null) {
+                Inventory.MessagesInCurrentChannel.Remove(messageComponent.Message);
+                DockPanelMessageComponent.Children.Remove(messageComponent);
+            }
         }
 
         public void TearDown() {
             MessageComponent.TearDown();
             HubManager.ReceiveMessageSignal -= HubManager_ReceiveMessageSignal;
             HubManager.ReceiveDeleteMessageSignal -= HubManager_ReceiveDeleteMessageSignal;
-            textBoxType.KeyDown -= TextBoxType_KeyDown;
-            buttonSend.Click -= ButtonSend_Click;
+            TextBoxType.KeyDown -= TextBoxType_KeyDown;
+            ButtonSend.Click -= ButtonSend_Click;
         }
         public void ClearContent() {
-            gridMessage.Children.Clear();
+            GridMessage.Children.Clear();
             MessageComponent.TearDown();
         }
         private async void TextBoxType_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if (e.Key == System.Windows.Input.Key.Enter) {
                 e.Handled = true;
-                await HubManager.SendMessageAsync(textBoxType.Text);
+                ButtonSend.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
         }
 
         private async void ButtonSend_Click(object sender, RoutedEventArgs e) {
             if (IsEditing) {
-                await HubManager.SendEditMessageSignalAsync(EditingMessage.MessageId, textBoxType.Text);
+                await HubManager.SendEditMessageSignalAsync(EditingMessage.MessageId, TextBoxType.Text);
                 EditingMessage = null;
             }
             else {
-                await HubManager.SendMessageAsync(textBoxType.Text);
+                string content = TextBoxType.Text.Trim();
+                if(content == "") {
+                    return;
+                }
+                await HubManager.SendMessageAsync(TextBoxType.Text);
             }
             IsEditing = false;
         }
 
-        public async void ChangeChannel(Channel previousChannel, Channel nowChannel) {
-            await RetrieveListMessage(nowChannel.ChannelId);
+        public async Task ChangeChannelAsync(Channel previousChannel, Channel nowChannel) {
+            await ResolveChannelPermissionAsync();
+            await RetrieveListMessageAsync(nowChannel.ChannelId);
         }
-        private async Task RetrieveListMessage(int channelId) {
+        private async Task ResolveChannelPermissionAsync() {
+            ChannelPermission = await ResourcesCreator.GetChannelPermissionAsync(Inventory.CurrentChannel.ChannelId, Inventory.UserRoleInCurrentServer.RoleId);
+            Inventory.SetChannelPermissionInCurrentChannel(ChannelPermission);
+            TextBoxType.Text = ChannelPermission.SendMessage ? "" : "You don't have permission to chat in this channel.";
+            TextBoxType.IsEnabled = ChannelPermission.SendMessage;
+            ButtonSend.IsEnabled = ChannelPermission.SendMessage;
+        }
+        private async Task RetrieveListMessageAsync(int channelId) {
             ListMessage = await ResourcesCreator.GetListMessageAsync(channelId);
             Inventory.SetMessagesInCurrentChannel(ListMessage);
-            AttachMessages();
+            await AttachMessagesAsync();
         }
-        private async void AttachMessages() {
+        private async Task AttachMessagesAsync() {
             ClearContent();
             MessageComponent.ReInitialize();
             DockPanelMessageComponent = new DockPanel() { LastChildFill = false };
-            gridMessage.Children.Add(DockPanelMessageComponent);
+            GridMessage.Children.Add(DockPanelMessageComponent);
             for (int i = 0; i < ListMessage.Count; i++) {
                 MessageComponent messageComponent = new MessageComponent(ListMessage.ElementAt(i), Inventory.CurrentUser);
                 await messageComponent.MakeComponentAsync();
@@ -145,26 +155,24 @@ namespace Discord.Managers {
             }
         }
         private async void HubManager_ReceiveMessageSignal(object sender, HubManager.ReceiveMessageSignalEventArgs e) {
-            await Application.Current.Dispatcher.BeginInvoke((Action)(async () => {
-                Message receivedMessage = JsonConvert.DeserializeObject<Message>(e.jsonMessage);
-                ListMessage.Add(receivedMessage);
-                MessageComponent messageComponent = new MessageComponent(receivedMessage, Inventory.CurrentUser);
-                await messageComponent.MakeComponentAsync();
-                messageComponent.DeleteMessage += MessageComponent_DeleteMessage;
-                messageComponent.EditMessage += MessageComponent_EditMessage;
-                DockPanel.SetDock(messageComponent, Dock.Top);
-                DockPanelMessageComponent.Children.Add(messageComponent);
-                if (HubManager.connectionId == e.connectionId) {
-                    textBoxType.Text = "";
-                }
-            }));
+            Message receivedMessage = JsonConvert.DeserializeObject<Message>(e.jsonMessage);
+            ListMessage.Add(receivedMessage);
+            MessageComponent messageComponent = new MessageComponent(receivedMessage, Inventory.CurrentUser);
+            await messageComponent.MakeComponentAsync();
+            messageComponent.DeleteMessage += MessageComponent_DeleteMessage;
+            messageComponent.EditMessage += MessageComponent_EditMessage;
+            DockPanel.SetDock(messageComponent, Dock.Top);
+            DockPanelMessageComponent.Children.Add(messageComponent);
+            if (HubManager.ConnectionId == e.connectionId) {
+                TextBoxType.Text = "";
+            }
         }
 
         private void MessageComponent_EditMessage(object sender, MessageComponent.EditMessageEventArgs e) {
             IsEditing = true;
             EditingMessage = e.MessageComponent.Message;
-            textBoxType.Text = EditingMessage.Content;
-            buttonCancelEdit.Visibility = Visibility.Visible;
+            TextBoxType.Text = EditingMessage.Content;
+            ButtonCancelEdit.Visibility = Visibility.Visible;
         }
 
         private async void MessageComponent_DeleteMessage(object sender, MessageComponent.DeleteMessageEventArgs e) {
@@ -229,9 +237,8 @@ namespace Discord.Managers {
                     eventTrigger.RoutedEvent = Button.ClickEvent;
                     //
                     buttonMessageMenu.Content = "x";
-                    buttonMessageMenu.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-                    buttonMessageMenu.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-                    buttonMessageMenu.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
+                    buttonMessageMenu.BorderBrush = Brushes.Transparent;
+                    buttonMessageMenu.Background = Brushes.Transparent;
                     buttonMessageMenu.ContextMenu = contextMenu;
                     buttonMessageMenu.Triggers.Add(eventTrigger);
                     //
@@ -256,7 +263,6 @@ namespace Discord.Managers {
             internal void MakeTextBlock() {
                 TextBlock.Text = Message.User.UserName + ": " + Message.Content;
                 TextBlock.FontSize = 15;
-                TextBlock.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
                 TextBlock.TextWrapping = TextWrapping.Wrap;
                 TextBlock.HorizontalAlignment = HorizontalAlignment.Left;
             }
@@ -279,14 +285,14 @@ namespace Discord.Managers {
                     PairMessageComponent.Remove(messageId);
                 }
             }
-            internal class DeleteMessageEventArgs : EventArgs {
-                public MessageComponent MessageComponent { get; private set; }
+            public class DeleteMessageEventArgs : EventArgs {
+                public MessageComponent MessageComponent { get; }
                 public DeleteMessageEventArgs(MessageComponent messageComponent) {
                     MessageComponent = messageComponent;
                 }
             }
-            internal class EditMessageEventArgs : EventArgs {
-                public MessageComponent MessageComponent { get; private set; }
+            public class EditMessageEventArgs : EventArgs {
+                public MessageComponent MessageComponent { get; }
                 public EditMessageEventArgs(MessageComponent messageComponent) {
                     MessageComponent = messageComponent;
                 }

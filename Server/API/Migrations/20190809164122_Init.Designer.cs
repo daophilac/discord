@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MainDatabase))]
-    [Migration("20190808152608_Init")]
+    [Migration("20190809164122_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -538,7 +538,7 @@ namespace API.Migrations
                 {
                     b.Property<string>("Link")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("VARCHAR(10)");
+                        .HasColumnType("VARCHAR(50)");
 
                     b.Property<bool>("NerverExpired");
 
@@ -556,28 +556,28 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Link = "1",
+                            Link = "e4912f82-d290-40e6-a23d-08d0ce1b50ab",
                             NerverExpired = true,
                             ServerId = 1,
                             StillValid = true
                         },
                         new
                         {
-                            Link = "2",
+                            Link = "648d7e41-75f9-48b8-8bb2-ccf1ffa74245",
                             NerverExpired = true,
                             ServerId = 2,
                             StillValid = true
                         },
                         new
                         {
-                            Link = "3",
+                            Link = "15f0529f-53b9-46b9-8bb6-8d8d863eb167",
                             NerverExpired = true,
                             ServerId = 3,
                             StillValid = true
                         },
                         new
                         {
-                            Link = "4",
+                            Link = "5766df3a-3e31-4c1c-b50c-bc887efd4626",
                             NerverExpired = true,
                             ServerId = 4,
                             StillValid = true
@@ -986,12 +986,12 @@ namespace API.Migrations
 
                     b.HasKey("ServerId", "UserId");
 
-                    b.HasAlternateKey("ServerId", "UserId", "RoleId")
-                        .HasName("UK_ServerUser_ServerId_UserId_RoleId");
-
                     b.HasIndex("RoleId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("ServerId", "UserId", "RoleId")
+                        .IsUnique();
 
                     b.ToTable("ServerUser");
 
