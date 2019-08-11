@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 
 import com.peanut.discord.R;
 
-public class NavigationButton extends android.support.v7.widget.AppCompatImageButton {
+public class NavigationButton extends androidx.appcompat.widget.AppCompatImageButton {
     public NavigationButton(Context context) {
         super(context);
     }

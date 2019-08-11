@@ -11,4 +11,19 @@
     <string name="enter_an_instant_invite">Enter an Instant Invite</string>
     <string name="instant_invite_does_not_exist">That instant invite link you have typed does not exist.</string>
     <string name="leave_server">Leave server</string>
+    <string name="sign_up">Sign up</string>
+    <string name="ok">OK</string>
+    <string name="log_out_confirm">Log out?</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="password_cannot_be_empty">Password cannot be empty</string>
+    <string name="password_confirmation_does_not_match">Password confirmation does not match</string>
+    <string name="user_name">User name (nick name)</string>
+    <string name="user_name_cannot_be_empty">User name cannot be empty</string>
+    <string name="first_and_last_name_are_empty">First name and last name can\'t be both empty</string>
+    <string name="copy_text">Copy Text</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

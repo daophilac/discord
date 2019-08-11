@@ -3,11 +3,9 @@ package com.peanut.discord;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,16 +38,14 @@ public class CreateOrJoinServerDialogFragment extends DialogFragment {
         buttonCreateServer.setOnClickListener(v -> {
             getDialog().dismiss();
             Intent intent = new Intent(getContext(), CreateServerActivity.class);
-            intent.putExtra("currentUserId", Inventory.currentUser.getUserName());
+            intent.putExtra("currentUserId", Inventory.currentUser.getUserId());
             startActivity(intent);
         });
         buttonJoinServer.setOnClickListener(v ->{
             getDialog().dismiss();
             Intent intent = new Intent(getContext(), JoinServerActivity.class);
-            intent.putExtra("currentUserId", Inventory.currentUser.getUserName());
+            intent.putExtra("currentUserId", Inventory.currentUser.getUserId());
             startActivity(intent);
-//            drawerLayout.closeDrawer(Gravity.START);
-//            getFragmentManager().beginTransaction().add(R.id.drawer_layout, new JoinServerFragment()).addToBackStack(null).commit();
         });
         return view;
     }

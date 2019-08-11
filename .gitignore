@@ -2,7 +2,10 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/dotnet RESTful/.vs
+.gradle
+.idea
+/build
+/intermediates
 /.vs
 /Discord_win/.vs/Discord_win/v15
 /Discord_win/ConsoleApp1/bin/Debug/netcoreapp2.2
@@ -13,7 +16,7 @@
 /Discord_win/WpfApp1
 /Discord_win/Discord_win/bin/Release
 /Discord_win/Discord_win/obj/Release
-/DotNETRESTAPI/.vs
-/DotNETRESTAPI/API/bin/Debug/netcoreapp2.2
-/DotNETRESTAPI/API/obj
-/DotNETRESTAPI/API/bin/Release/netcoreapp2.2
+/Server/.vs
+/Server/API/bin/Debug/netcoreapp2.2
+/Server/API/obj
+/Server/API/bin/Release/netcoreapp2.2

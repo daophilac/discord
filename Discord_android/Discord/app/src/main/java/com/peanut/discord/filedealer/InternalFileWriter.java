@@ -18,7 +18,6 @@ public class InternalFileWriter {
     private static final String CONFIGURATION_SEPARATOR_IS_NULL = "Configuration separator cannot be null. Did you forget to call the method setConfigurationSeparator?";
     private static final String SEPARATOR_IS_CONTAINED_IN_KEY = "Separator cannot be contained in key. Key: %s, separator: %s.";
     private static final String SIZE_OF_LIST_OF_KEYS_AND_VALUES_DOES_NOT_MATCH = "The size of list of keys and values must match. Keys size: %d, values size: %d.";
-//    private static final String LISTS_SIZE_DOES_NOT_MATCH = "The size of list of keys, values and separators must match. Keys size: %d, values size: %d, separators size: %d.";
     private Context context;
     private String parentDirectory;
     private String fileName;

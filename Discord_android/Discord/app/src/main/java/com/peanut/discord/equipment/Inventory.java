@@ -9,8 +9,10 @@ import com.peanut.discord.tools.JsonConverter;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Inventory implements ServerAdapterListener, ChannelAdapterListener {
-    private static List<InventoryListener> listInventoryListener = new ArrayList<>();
+public final class Inventory {
+    private static List<OnUserSelectServerListener> onUserSelectServerListeners;
+    private static List<OnUserSelectChannelListener> onUserSelectChannelListeners;
+    private static List<OnUserLongClickMessageListener> onUserLongClickMessageListeners;
     public static Server currentServer;
     public static Channel currentChannel;
     public static User currentUser;
@@ -23,22 +25,47 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
     private static ServerAdapter serverAdapter;
     private static ChannelAdapter channelAdapter;
     private static MessageAdapter messageAdapter;
-
-    private static final Inventory inventory = new Inventory();
     private Inventory(){
 
     }
     public static void prepare(){
+        onUserSelectServerListeners = new ArrayList<>();
+        onUserSelectChannelListeners = new ArrayList<>();
+        onUserLongClickMessageListeners = new ArrayList<>();
         jsonConverter = new JsonConverter();
-        serverAdapter = new ServerAdapter(inventory);
-        channelAdapter = new ChannelAdapter(inventory);
+        serverAdapter = new ServerAdapter(server -> {
+            if(currentServer != null){
+                HubManager.exitServer(currentServer.getServerId());
+            }
+            HubManager.enterServer(server.getServerId());
+            currentServer = server;
+            for(OnUserSelectServerListener l : onUserSelectServerListeners){
+                l.onSelectServer(server);
+            }
+        });
+        channelAdapter = new ChannelAdapter(channel -> {
+            for(OnUserSelectChannelListener l : onUserSelectChannelListeners){
+                l.onSelectChannel(channel);
+            }
+        });
         messageAdapter = new MessageAdapter();
         serverListener = serverAdapter;
         channelListener = channelAdapter;
         messageListener = messageAdapter;
+        messageAdapter.setOnMessageLongClickListener(message -> {
+            for(OnUserLongClickMessageListener l : onUserLongClickMessageListeners){
+                l.onLongClickMessage(message);
+            }
+        });
     }
-    public static void registerListener(InventoryListener inventoryListener){
-        listInventoryListener.add(inventoryListener);
+    public static void registerOnUserSelectServerListener(OnUserSelectServerListener onUserSelectServerListener){
+        onUserSelectServerListeners.add(onUserSelectServerListener);
+    }
+    public static void registerOnUserSelectChannelListener(OnUserSelectChannelListener onUserSelectChannelListener){
+        onUserSelectChannelListeners.add(onUserSelectChannelListener);
+    }
+    public static void registerOnUserLongClickMessageListener(OnUserLongClickMessageListener onUserLongClickMessageListener){
+        onUserLongClickMessageListeners.add(onUserLongClickMessageListener);
     }
 //    public void storeCurrentServer(Server server){
 //        this.currentServer = server;
@@ -93,6 +120,12 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
     public static void storeListChannel(String json){
         channelListener.onAddListChannel(jsonConverter.toListChannel(json));
     }
+    public static void addChannel(Channel channel){
+        channelListener.onAddChannel(channel);
+    }
+    public static void addChannel(String jsonChannel){
+        channelListener.onAddChannel(jsonConverter.toChannel(jsonChannel));
+    }
 //    public List<Channel> loadListChannel(){
 //        return this.channelAdapter.getListChannel();
 //    }
@@ -124,21 +157,6 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
         return messageAdapter;
     }
 
-    @Override
-    public void onSelectServer(Server server) {
-        currentServer = server;
-        for(InventoryListener il : listInventoryListener){
-            il.onSelectServer(server);
-        }
-    }
-
-    @Override
-    public void onSelectChannel(Channel channel) {
-        for(InventoryListener il : listInventoryListener){
-            il.onSelectChannel(channel);
-        }
-    }
-
 
 
 
@@ -149,6 +167,7 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
     }
     public interface ChannelListener {
         void onAddListChannel(List<Channel> listChannel);
+        void onAddChannel(Channel channel);
         void onLeaveServer();
     }
     public interface MessageListener {
@@ -156,8 +175,13 @@ public final class Inventory implements ServerAdapterListener, ChannelAdapterLis
         void onAddMessage(Message message);
         void onLeaveServer();
     }
-    public interface InventoryListener{
+    public interface OnUserSelectServerListener{
         void onSelectServer(Server server);
+    }
+    public interface OnUserSelectChannelListener{
         void onSelectChannel(Channel channel);
+    }
+    public interface OnUserLongClickMessageListener{
+        void onLongClickMessage(Message message);
     }
 }

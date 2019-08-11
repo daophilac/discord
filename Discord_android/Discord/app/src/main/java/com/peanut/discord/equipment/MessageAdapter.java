@@ -1,34 +1,39 @@
 package com.peanut.discord.equipment;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.peanut.androidlib.common.worker.UIWorker;
+import com.peanut.discord.MainActivity;
 import com.peanut.discord.R;
 import com.peanut.discord.models.Message;
+import com.peanut.discord.tools.ImageResolver;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> implements Inventory.MessageListener {
     private Handler handlerAddMessage;
     private List<Message> listMessage;
-    //private HashMap<File, >
+    private OnMessageLongClickListener onMessageLongClickListener;
+    private UIWorker uiWorker;
     public MessageAdapter(){
         this.listMessage = new ArrayList<>();
         this.handlerAddMessage = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(android.os.Message msg) {
-                notifyItemInserted(listMessage.size()- 1);
+                notifyItemInserted(listMessage.size() - 1);
             }
         };
+        uiWorker = new UIWorker();
     }
 
     @Override
@@ -58,11 +63,26 @@ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder messageViewHolder, int i) { Message message = this.listMessage.get(i);
-        messageViewHolder.textViewMessage.setText(message.getContent());
+    public void onBindViewHolder(@NonNull MessageViewHolder messageViewHolder, int i) {
+        Message message = this.listMessage.get(i);
+        messageViewHolder.textViewMessage.setText(message.getUser().getUserName() + ": " + message.getContent());
         messageViewHolder.textViewTime.setText(message.getSimpleTime());
+        ImageResolver.downloadUserImage(message.getUser().getImageName(), b -> {
+            uiWorker.execute(() -> {
+                Bitmap bitmap = Bitmap.createScaledBitmap(b, 128, 128, false);
+                messageViewHolder.imageViewAvatar.setImageBitmap(bitmap);
+            });
+        });
+        messageViewHolder.textViewMessage.setOnLongClickListener(v -> {
+            if(onMessageLongClickListener != null){
+                onMessageLongClickListener.onLongClick(message);
+            }
+            return true;
+        });
     }
-
+    public void setOnMessageLongClickListener(OnMessageLongClickListener onMessageLongClickListener) {
+        this.onMessageLongClickListener = onMessageLongClickListener;
+    }
     @Override
     public int getItemCount() {
         return this.listMessage.size();
@@ -82,5 +102,8 @@ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHold
             this.textViewMessage = itemView.findViewById(R.id.text_view_message);
             this.textViewTime = itemView.findViewById(R.id.text_view_time);
         }
+    }
+    public interface OnMessageLongClickListener {
+        void onLongClick(Message message);
     }
 }

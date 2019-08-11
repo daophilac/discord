@@ -4,8 +4,8 @@ package com.peanut.discord.tools;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.widget.Toast;
 
 public final class PermissionInquirer {
@@ -22,7 +22,7 @@ public final class PermissionInquirer {
     public void askPermission(String permission, int permissionCode, String hasNotBeenGrantedMessage){
         // Here, this.context is the current context
         if(ContextCompat.checkSelfPermission(this.context, permission) != PackageManager.PERMISSION_GRANTED){
-            // Permission is not granted
+            // ServerPermission is not granted
             // Should we show an explanation?
             if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) this.context, permission)){
                 // Show an explanation to the user *asynchronously* -- don't block // TODO:

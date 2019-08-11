@@ -6,16 +6,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Discord_win.Models {
+namespace Discord.Models {
     public class Role {
-        [Key]
         public int RoleId { get; set; }
-        public string Name { get; set; }
+        public int RoleLevel { get; set; }
+        public bool MainRole { get; set; }
+        public string RoleName { get; set; }
+        public bool Kick { get; set; }
+        public bool ModifyChannel { get; set; }
+        public bool ModifyRole { get; set; }
+        public bool ChangeUserRole { get; set; }
         public int ServerId { get; set; }
 
-
-        [ForeignKey("ServerID")]
         public Server Server { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<ChannelPermission> ChannelPermissions { get; set; }
+        public static bool operator <(Role a, Role b) {
+            return a.RoleLevel < b.RoleLevel;
+        }
+        public static bool operator <=(Role a, Role b) {
+            return a.RoleLevel <= b.RoleLevel;
+        }
+        public static bool operator >(Role a, Role b) {
+            return a.RoleLevel > b.RoleLevel;
+        }
+        public static bool operator >=(Role a, Role b) {
+            return a.RoleLevel >= b.RoleLevel;
+        }
     }
 }

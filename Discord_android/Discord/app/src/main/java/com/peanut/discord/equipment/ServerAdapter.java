@@ -1,7 +1,10 @@
 package com.peanut.discord.equipment;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +19,16 @@ import java.util.List;
 class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder> implements Inventory.ServerListener {
     private List<Server> listServer;
     private ServerAdapterListener serverAdapterListener;
+    private Handler handler;
     ServerAdapter(ServerAdapterListener serverAdapterListener){
         this.listServer = new ArrayList<>();
         this.serverAdapterListener = serverAdapterListener;
+        this.handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                notifyItemInserted(listServer.size() - 1);
+            }
+        };
     }
 
     @Override
@@ -30,7 +40,7 @@ class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder>
     @Override
     public void onAddServer(Server server) {
         this.listServer.add(server);
-        notifyItemInserted(this.listServer.size() - 1);
+        handler.sendEmptyMessage(0);
     }
 
     @Override
@@ -51,7 +61,7 @@ class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder>
     public void onBindViewHolder(@NonNull ServerViewHolder serverViewHolder, int i) {
         Server server = this.listServer.get(i);
         Button button = serverViewHolder.button;
-        button.setText(server.getName());
+        button.setText(server.getServerName());
         button.setOnClickListener(v -> this.serverAdapterListener.onSelectServer(server));
     }
     @Override

@@ -4,17 +4,7 @@
             "outputFile": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v16\\values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\2609dad201db1b77a1c1de67ca0e3750\\res\\values-v16\\values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\e115a11f0e95e153bffe4bab7bee20a6\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -30,6 +20,16 @@
                         "endLines": "6",
                         "endColumns": "12",
                         "endOffsets": "289"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\64a8526901103ce4196532efa07e3d36\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
                     }
                 }
             ]

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Discord_win.Tools {
+namespace Discord.Tools {
     class FileDealer {
         private StreamWriter streamWriter;
         private StreamReader streamReader;
@@ -147,6 +147,7 @@ namespace Discord_win.Tools {
             try {
                 this.streamReader.Close();
             }
+            catch (Exception) { }
             finally {
 
             }

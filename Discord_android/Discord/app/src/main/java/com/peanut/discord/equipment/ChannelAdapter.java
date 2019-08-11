@@ -1,7 +1,10 @@
 package com.peanut.discord.equipment;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +19,28 @@ import java.util.List;
 class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelViewHolder> implements Inventory.ChannelListener {
     private List<Channel> listChannel;
     private ChannelAdapterListener channelAdapterListener;
+    private Handler handler;
     ChannelAdapter(ChannelAdapterListener channelAdapterListener){
         this.listChannel = new ArrayList<>();
         this.channelAdapterListener = channelAdapterListener;
+        handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                notifyItemInserted(listChannel.size() - 1);
+            }
+        };
     }
 
     @Override
     public void onAddListChannel(List<Channel> listChannel) {
         this.listChannel = listChannel;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAddChannel(Channel channel) {
+        this.listChannel.add(channel);
+        handler.sendEmptyMessage(0);
     }
 
     @Override
@@ -45,7 +61,7 @@ class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelViewHold
     public void onBindViewHolder(@NonNull ChannelViewHolder channelViewHolder, int i) {
         Channel channel = this.listChannel.get(i);
         TextView textView = channelViewHolder.textView;
-        textView.setText(channel.getName());
+        textView.setText(channel.getChannelName());
         textView.setOnClickListener(v -> this.channelAdapterListener.onSelectChannel(channel));
     }
 
