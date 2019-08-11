@@ -6,6 +6,7 @@ namespace API.Models {
     public class MainDatabase : DbContext {
         private ModelBuilder ModelBuilder { get; set; }
         public MainDatabase(DbContextOptions<MainDatabase> options) : base(options) {
+            
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer("Server=MYPC;Database=DISCORD;Trusted_Connection=True;");
@@ -22,16 +23,19 @@ namespace API.Models {
         public DbSet<User> User { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             ModelBuilder = modelBuilder;
-            modelBuilder.Entity<User>().HasAlternateKey(k => k.Email).HasName("UK_User_Email");
-            modelBuilder.Entity<Channel>().HasAlternateKey(c => new { c.ServerId, c.ChannelName }).HasName("UK_Channel_Server_Name");
-            modelBuilder.Entity<Role>().HasAlternateKey(r => new { r.ServerId, r.RoleLevel }).HasName("UK_Role_ServerId_RoleLevel");
-            modelBuilder.Entity<ServerUser>().HasIndex(su => new { su.ServerId, su.UserId, su.RoleId }).IsUnique(true);
             modelBuilder.Entity<ServerUser>().HasKey(su => new { su.ServerId, su.UserId });
             modelBuilder.Entity<ChannelPermission>().HasKey(clp => new { clp.ChannelId, clp.RoleId });
+
+            modelBuilder.Entity<User>().HasIndex(k => k.Email).IsUnique(true);
+            modelBuilder.Entity<Role>().HasIndex(r => new { r.ServerId, r.RoleLevel }).IsUnique(true);
+            modelBuilder.Entity<Channel>().HasIndex(c => new { c.ServerId, c.ChannelName }).IsUnique(true);
+            modelBuilder.Entity<ServerUser>().HasIndex(su => new { su.ServerId, su.UserId, su.RoleId }).IsUnique(true);
+
             modelBuilder.Entity<Message>().HasOne(m => m.User).WithMany("Messages").OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<ChannelPermission>().HasOne(cp => cp.Role).WithMany("ChannelPermissions").OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<ServerUser>().HasOne(su => su.Server).WithMany("ServerUsers").OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ServerUser>().HasOne(su => su.User).WithMany("ServerUsers").OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ServerUser>().HasOne(su => su.Server).WithMany("ServerUsers").OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ChannelPermission>().HasOne(cp => cp.Role).WithMany("ChannelPermissions").OnDelete(DeleteBehavior.Restrict);
+
             SeedUser();
             SeedServer();
             SeedChannel();
@@ -43,18 +47,19 @@ namespace API.Models {
         }
         private void SeedUser() {
             ModelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, Email = "daophilac@gmail.com", Password = "123", UserName = "peanut", FirstName = "Đào Phi", LastName = "Lạc", Gender = Gender.Male, ImageName = "user_1.png" },
-                new User { UserId = 2, Email = "daophilac1@gmail.com", Password = "123", UserName = "peanut", FirstName = "Đào Phi", LastName = "Lạc", Gender = Gender.Male, ImageName = "user_2.png" },
-                new User { UserId = 3, Email = "lucknight@gmail.com", Password = "123", UserName = "lucknight", FirstName = "luck", LastName = "night", Gender = Gender.Male, ImageName = "user_3.png" },
-                new User { UserId = 4, Email = "eddie@gmail.com", Password = "123", UserName = "eddie", FirstName = "ed", LastName = "die", Gender = Gender.Male, ImageName = "user_4.png" }
+                new User { UserId = 1, Email = "daophilac@gmail.com", Password = "123", UserName = "peanut", ImageName = "user_1.png" },
+                new User { UserId = 2, Email = "adol@gmail.com", Password = "123", UserName = "adol", ImageName = "user_2.png" },
+                new User { UserId = 3, Email = "lucknight@gmail.com", Password = "123", UserName = "lucknight", ImageName = "user_3.png" },
+                new User { UserId = 4, Email = "eddie@gmail.com", Password = "123", UserName = "eddie", ImageName = "user_4.png" },
+                new User { UserId = 5, Email = "test@gmail.com", Password = "123", UserName = "test" }
             );
         }
         private void SeedServer() {
             ModelBuilder.Entity<Server>().HasData(
-                new Server { ServerId = 1, ServerName = "Final Fantasy", ImageUrl = "server_1.png", AdminId = 1, DefaultRoleId = 2 },
-                new Server { ServerId = 2, ServerName = "Ys", ImageUrl = "server_2.png", AdminId = 1, DefaultRoleId = 4 },
-                new Server { ServerId = 3, ServerName = "Maiden", ImageUrl = "server_3.png", AdminId = 2, DefaultRoleId = 6 },
-                new Server { ServerId = 4, ServerName = "TSFH", ImageUrl = null, AdminId = 2, DefaultRoleId = 8 }
+                new Server { ServerId = 1, ServerName = "Final Fantasy", ImageName = "server_1.png", AdminId = 1, DefaultRoleId = 2 },
+                new Server { ServerId = 2, ServerName = "Ys", ImageName = "server_2.png", AdminId = 1, DefaultRoleId = 4 },
+                new Server { ServerId = 3, ServerName = "Maiden", ImageName = "server_3.png", AdminId = 2, DefaultRoleId = 6 },
+                new Server { ServerId = 4, ServerName = "TSFH", ImageName = null, AdminId = 2, DefaultRoleId = 8 }
             );
         }
         private void SeedChannel() {
@@ -80,17 +85,17 @@ namespace API.Models {
                 new Role { RoleId = 6, RoleLevel = 0, MainRole = true, RoleName = "Member", ServerId = 3, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
                 new Role { RoleId = 7, RoleLevel = 1000, MainRole = true, RoleName = "Admin", ServerId = 4, Kick = true, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
                 new Role { RoleId = 8, RoleLevel = 0, MainRole = true, RoleName = "Member", ServerId = 4, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
-                new Role { RoleId = 9, RoleLevel = 999, MainRole = false, RoleName = "Knight", ServerId = 1, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
-                new Role { RoleId = 10, RoleLevel = 998, MainRole = false, RoleName = "Thief", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
-                new Role { RoleId = 11, RoleLevel = 997, MainRole = false, RoleName = "White Wizard", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
-                new Role { RoleId = 12, RoleLevel = 996, MainRole = false, RoleName = "Black Wizard", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
-                new Role { RoleId = 13, RoleLevel = 999, MainRole = false, RoleName = "Adol", ServerId = 2, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
-                new Role { RoleId = 14, RoleLevel = 998, MainRole = false, RoleName = "Dogi", ServerId = 2, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
-                new Role { RoleId = 15, RoleLevel = 997, MainRole = false, RoleName = "Aisha", ServerId = 2, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
-                new Role { RoleId = 16, RoleLevel = 999, MainRole = false, RoleName = "New Admin", ServerId = 3, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
-                new Role { RoleId = 17, RoleLevel = 998, MainRole = false, RoleName = "Artist", ServerId = 3, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
-                new Role { RoleId = 18, RoleLevel = 997, MainRole = false, RoleName = "Folk", ServerId = 3, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
-                new Role { RoleId = 19, RoleLevel = 999, MainRole = false, RoleName = "Musician", ServerId = 4, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true }
+                new Role { RoleId = 9, RoleLevel = 900, MainRole = false, RoleName = "Knight", ServerId = 1, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 10, RoleLevel = 800, MainRole = false, RoleName = "Thief", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 11, RoleLevel = 700, MainRole = false, RoleName = "White Wizard", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 12, RoleLevel = 699, MainRole = false, RoleName = "Black Wizard", ServerId = 1, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 13, RoleLevel = 900, MainRole = false, RoleName = "Adol", ServerId = 2, Kick = true, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 14, RoleLevel = 800, MainRole = false, RoleName = "Dogi", ServerId = 2, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 15, RoleLevel = 700, MainRole = false, RoleName = "Aisha", ServerId = 2, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 16, RoleLevel = 900, MainRole = false, RoleName = "New Admin", ServerId = 3, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true },
+                new Role { RoleId = 17, RoleLevel = 800, MainRole = false, RoleName = "Artist", ServerId = 3, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 18, RoleLevel = 700, MainRole = false, RoleName = "Folk", ServerId = 3, Kick = false, ModifyChannel = false, ModifyRole = false, ChangeUserRole = false },
+                new Role { RoleId = 19, RoleLevel = 500, MainRole = false, RoleName = "Musician", ServerId = 4, Kick = false, ModifyChannel = true, ModifyRole = true, ChangeUserRole = true }
             );
         }
         private void SeedChannelPermission() {

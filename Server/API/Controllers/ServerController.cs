@@ -41,27 +41,55 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("Add")]
-        public ActionResult<Server> Add(Server serverFromClient) {
-            context.Server.Add(serverFromClient);
+        public async Task<IActionResult> Add(Server serverFromClient) {
+            await context.Server.AddAsync(serverFromClient);
+            await context.SaveChangesAsync();
+            Role roleAdmin = await CreateMainRole(serverFromClient);
+            ServerUser serverUser = new ServerUser {
+                ServerId = serverFromClient.ServerId,
+                UserId = serverFromClient.AdminId,
+                RoleId = roleAdmin.RoleId
+            };
+            await context.ServerUser.AddAsync(serverUser);
             context.SaveChanges();
-            serverFromClient = context.Server.Last();
-            ServerUser serverUser = new ServerUser();
-            serverUser.ServerId = serverFromClient.ServerId;
-            serverUser.UserId = serverFromClient.AdminId;
-            context.ServerUser.Add(serverUser);
-            context.SaveChanges();
-            InstantInvite instantInvite = new InstantInvite();
-
-            //TODO
-            instantInvite.ServerId = serverFromClient.ServerId;
-            instantInvite.Link = Guid.NewGuid().ToString();
-            instantInvite.NerverExpired = true;
-            context.InstantInvite.Add(instantInvite);
-            context.SaveChanges();
-
+            InstantInvite instantInvite = new InstantInvite {
+                //TODO
+                ServerId = serverFromClient.ServerId,
+                Link = Guid.NewGuid().ToString(),
+                NerverExpired = true
+            };
+            await context.InstantInvite.AddAsync(instantInvite);
+            await context.SaveChangesAsync();
             return Ok(serverFromClient);
         }
-
+        private async Task<Role> CreateMainRole(Server server) {
+            Role roleAdmin = new Role {
+                ServerId = server.ServerId,
+                RoleLevel = 1000,
+                MainRole = true,
+                RoleName = "Admin",
+                Kick = true,
+                ModifyChannel = true,
+                ModifyRole = true,
+                ChangeUserRole = true
+            };
+            Role roleMember = new Role {
+                ServerId = server.ServerId,
+                RoleLevel = 0,
+                MainRole = true,
+                RoleName = "Member",
+                Kick = false,
+                ModifyChannel = false,
+                ModifyRole = false,
+                ChangeUserRole = false
+            };
+            await context.Role.AddAsync(roleAdmin);
+            await context.Role.AddAsync(roleMember);
+            await context.SaveChangesAsync();
+            server.DefaultRoleId = roleMember.RoleId;
+            await context.SaveChangesAsync();
+            return roleAdmin;
+        }
 
 
 

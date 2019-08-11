@@ -40,11 +40,6 @@ public class SignUpFragment extends Fragment {
     private EditText editTextPassword;
     private EditText editTextConfirmPassword;
     private EditText editTextUserName;
-    private EditText editTextFirstName;
-    private EditText editTextLastName;
-    private RadioButton radioButtonMale;
-    private RadioButton radioButtonFemale;
-    private User.Gender gender;
 
     @Override
     public void onAttach(Context context) {
@@ -64,10 +59,6 @@ public class SignUpFragment extends Fragment {
         editTextPassword = view.findViewById(R.id.edit_text_password);
         editTextConfirmPassword = view.findViewById(R.id.edit_text_confirm_password);
         editTextUserName = view.findViewById(R.id.edit_text_user_name);
-        editTextFirstName = view.findViewById(R.id.edit_text_first_name);
-        editTextLastName = view.findViewById(R.id.edit_text_last_name);
-        radioButtonMale = view.findViewById(R.id.radio_button_male);
-        radioButtonFemale = view.findViewById(R.id.radio_button_female);
 
         backButton.setOnClickListener(v -> getFragmentManager().popBackStack());
         buttonOk.setOnClickListener(v -> {
@@ -88,22 +79,11 @@ public class SignUpFragment extends Fragment {
                     Toast.makeText(context, context.getText(R.string.user_name_cannot_be_empty), Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(editTextFirstName.getText().toString().equals("") && editTextLastName.getText().toString().equals("")){
-                    Toast.makeText(context, context.getText(R.string.first_and_last_name_are_empty), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(radioButtonMale.isChecked()){
-                    gender = User.Gender.Male;
-                }
-                else{
-                    gender = User.Gender.Female;
-                }
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
                 String userName = editTextUserName.getText().toString();
-                String firstName = editTextFirstName.getText().toString();
-                String lastName = editTextLastName.getText().toString();
-                String json = jsonBuilder.buildUserJson(email, password, userName, firstName, lastName, gender);
+                User user  = new User(email, null, password, userName);
+                String json = MainActivity.gson.toJson(user);
                 apiCaller.setProperties(APICaller.RequestMethod.POST, Route.User.urlSignUp, json);
                 apiCaller.setOnSuccessListener((connection, response) -> {
                     Intent intent = new Intent(context, MainActivity.class);

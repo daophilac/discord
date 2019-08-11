@@ -33,8 +33,8 @@ namespace API.Migrations
 
                     b.HasKey("ChannelId");
 
-                    b.HasAlternateKey("ServerId", "ChannelName")
-                        .HasName("UK_Channel_Server_Name");
+                    b.HasIndex("ServerId", "ChannelName")
+                        .IsUnique();
 
                     b.ToTable("Channel");
 
@@ -681,8 +681,8 @@ namespace API.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.HasAlternateKey("ServerId", "RoleLevel")
-                        .HasName("UK_Role_ServerId_RoleLevel");
+                    b.HasIndex("ServerId", "RoleLevel")
+                        .IsUnique();
 
                     b.ToTable("Role");
 
@@ -791,7 +791,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = true,
                             ModifyRole = true,
-                            RoleLevel = 999,
+                            RoleLevel = 900,
                             RoleName = "Knight",
                             ServerId = 1
                         },
@@ -803,7 +803,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = false,
                             ModifyRole = false,
-                            RoleLevel = 998,
+                            RoleLevel = 800,
                             RoleName = "Thief",
                             ServerId = 1
                         },
@@ -815,7 +815,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = false,
                             ModifyRole = false,
-                            RoleLevel = 997,
+                            RoleLevel = 700,
                             RoleName = "White Wizard",
                             ServerId = 1
                         },
@@ -827,7 +827,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = false,
                             ModifyRole = false,
-                            RoleLevel = 996,
+                            RoleLevel = 699,
                             RoleName = "Black Wizard",
                             ServerId = 1
                         },
@@ -835,11 +835,11 @@ namespace API.Migrations
                         {
                             RoleId = 13,
                             ChangeUserRole = true,
-                            Kick = false,
+                            Kick = true,
                             MainRole = false,
                             ModifyChannel = true,
                             ModifyRole = true,
-                            RoleLevel = 999,
+                            RoleLevel = 900,
                             RoleName = "Adol",
                             ServerId = 2
                         },
@@ -851,7 +851,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = false,
                             ModifyRole = false,
-                            RoleLevel = 998,
+                            RoleLevel = 800,
                             RoleName = "Dogi",
                             ServerId = 2
                         },
@@ -863,7 +863,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = false,
                             ModifyRole = false,
-                            RoleLevel = 997,
+                            RoleLevel = 700,
                             RoleName = "Aisha",
                             ServerId = 2
                         },
@@ -875,7 +875,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = true,
                             ModifyRole = true,
-                            RoleLevel = 999,
+                            RoleLevel = 900,
                             RoleName = "New Admin",
                             ServerId = 3
                         },
@@ -887,7 +887,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = false,
                             ModifyRole = false,
-                            RoleLevel = 998,
+                            RoleLevel = 800,
                             RoleName = "Artist",
                             ServerId = 3
                         },
@@ -899,7 +899,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = false,
                             ModifyRole = false,
-                            RoleLevel = 997,
+                            RoleLevel = 700,
                             RoleName = "Folk",
                             ServerId = 3
                         },
@@ -911,7 +911,7 @@ namespace API.Migrations
                             MainRole = false,
                             ModifyChannel = true,
                             ModifyRole = true,
-                            RoleLevel = 999,
+                            RoleLevel = 500,
                             RoleName = "Musician",
                             ServerId = 4
                         });
@@ -927,7 +927,7 @@ namespace API.Migrations
 
                     b.Property<int?>("DefaultRoleId");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("ImageName")
                         .HasMaxLength(254);
 
                     b.Property<string>("ServerName")
@@ -946,7 +946,7 @@ namespace API.Migrations
                             ServerId = 1,
                             AdminId = 1,
                             DefaultRoleId = 2,
-                            ImageUrl = "server_1.png",
+                            ImageName = "server_1.png",
                             ServerName = "Final Fantasy"
                         },
                         new
@@ -954,7 +954,7 @@ namespace API.Migrations
                             ServerId = 2,
                             AdminId = 1,
                             DefaultRoleId = 4,
-                            ImageUrl = "server_2.png",
+                            ImageName = "server_2.png",
                             ServerName = "Ys"
                         },
                         new
@@ -962,7 +962,7 @@ namespace API.Migrations
                             ServerId = 3,
                             AdminId = 2,
                             DefaultRoleId = 6,
-                            ImageUrl = "server_3.png",
+                            ImageName = "server_3.png",
                             ServerName = "Maiden"
                         },
                         new
@@ -1072,16 +1072,8 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(254)");
 
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(30);
-
-                    b.Property<int>("Gender");
-
                     b.Property<string>("ImageName")
                         .HasMaxLength(254);
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(30);
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -1096,8 +1088,8 @@ namespace API.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasAlternateKey("Email")
-                        .HasName("UK_User_Email");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("User");
 
@@ -1106,32 +1098,23 @@ namespace API.Migrations
                         {
                             UserId = 1,
                             Email = "daophilac@gmail.com",
-                            FirstName = "Đào Phi",
-                            Gender = 0,
                             ImageName = "user_1.png",
-                            LastName = "Lạc",
                             Password = "123",
                             UserName = "peanut"
                         },
                         new
                         {
                             UserId = 2,
-                            Email = "daophilac1@gmail.com",
-                            FirstName = "Đào Phi",
-                            Gender = 0,
+                            Email = "adol@gmail.com",
                             ImageName = "user_2.png",
-                            LastName = "Lạc",
                             Password = "123",
-                            UserName = "peanut"
+                            UserName = "adol"
                         },
                         new
                         {
                             UserId = 3,
                             Email = "lucknight@gmail.com",
-                            FirstName = "luck",
-                            Gender = 0,
                             ImageName = "user_3.png",
-                            LastName = "night",
                             Password = "123",
                             UserName = "lucknight"
                         },
@@ -1139,12 +1122,16 @@ namespace API.Migrations
                         {
                             UserId = 4,
                             Email = "eddie@gmail.com",
-                            FirstName = "ed",
-                            Gender = 0,
                             ImageName = "user_4.png",
-                            LastName = "die",
                             Password = "123",
                             UserName = "eddie"
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            Email = "test@gmail.com",
+                            Password = "123",
+                            UserName = "test"
                         });
                 });
 

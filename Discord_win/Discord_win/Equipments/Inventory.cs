@@ -61,16 +61,16 @@ namespace Discord {
         public static void SetChannelsInCurrentServer(string json) {
             ChannelsInCurrentServer = JsonConvert.DeserializeObject<ICollection<Channel>>(json);
         }
-        public static ICollection<Role> rolesInCurrentServer;
-        public static ICollection<Role> RolesInCurrentServer {
+        public static IList<Role> rolesInCurrentServer;
+        public static IList<Role> RolesInCurrentServer {
             get => rolesInCurrentServer;
             set => rolesInCurrentServer = value?.OrderByDescending(r => r.RoleLevel).ToList();
         }
-        public static void SetRolesInCurrentServer(ICollection<Role> rolesInCurrentServer) {
+        public static void SetRolesInCurrentServer(IList<Role> rolesInCurrentServer) {
             RolesInCurrentServer = rolesInCurrentServer;
         }
         public static void SetRolesInCurrentServer(string json) {
-            RolesInCurrentServer = JsonConvert.DeserializeObject<ICollection<Role>>(json);
+            RolesInCurrentServer = JsonConvert.DeserializeObject<IList<Role>>(json);
         }
         public static ICollection<User> UsersInCurrentServer { get; private set; }
         public static void SetUsersInCurrentServer(ICollection<User> usersInCurrentServer) {
@@ -86,6 +86,16 @@ namespace Discord {
         public static void SetMessagesInCurrentChannel(string json) {
             MessagesInCurrentChannel = JsonConvert.DeserializeObject<ICollection<Message>>(json);
         }
+        public static void RemoveServer(int serverId) {
+            Server server = ListServer.Where(s => s.ServerId == serverId).FirstOrDefault();
+            if(server == null) {
+                return;
+            }
+            ListServer.Remove(server);
+            if(server == CurrentServer) {
+                CurrentServer = null;
+            }
+        }
         public static void Clear() {
             CurrentUser = null;
             CurrentServer = null;
@@ -95,6 +105,9 @@ namespace Discord {
             RolesInCurrentServer = null;
             UsersInCurrentServer = null;
             MessagesInCurrentChannel = null;
+        }
+        public static void ClearCurrentServer() {
+            CurrentServer = null;
         }
         public static void ClearCurrentChannel() {
             CurrentChannel = null;

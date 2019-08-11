@@ -18,6 +18,7 @@ import com.peanut.discord.resources.Data;
 import com.peanut.discord.resources.Route;
 import com.peanut.discord.tools.APICaller;
 import com.peanut.discord.tools.JsonBuilder;
+import com.peanut.discord.viewmodels.UserLoginViewModel;
 
 import java.io.IOException;
 
@@ -54,7 +55,8 @@ public class LoginActivity extends AppCompatActivity {
             email = internalFileReader.readConfiguration("email");
             password = internalFileReader.readConfiguration("password");
             internalFileReader.close();
-            String json = jsonBuilder.buildLoginJson(email, password);
+            UserLoginViewModel userLoginViewModel = new UserLoginViewModel(email, password);
+            String json = MainActivity.gson.toJson(userLoginViewModel);
             apiCaller.setProperties(APICaller.RequestMethod.POST, Route.User.urlLogin, json);
             apiCaller.setOnSuccessListener((connection, response) -> {
                 Intent intent = new Intent(this, MainActivity.class);
@@ -103,7 +105,8 @@ public class LoginActivity extends AppCompatActivity {
     private void login (){
         email = editTextEmail.getText().toString();
         password = editTextPassword.getText().toString();
-        String json = jsonBuilder.buildLoginJson(email, password);
+        UserLoginViewModel userLoginViewModel = new UserLoginViewModel(email, password);
+        String json = MainActivity.gson.toJson(userLoginViewModel);
         apiCaller.setProperties(APICaller.RequestMethod.POST, Route.User.urlLogin, json);
         apiCaller.setOnSuccessListener((connection, response) -> {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

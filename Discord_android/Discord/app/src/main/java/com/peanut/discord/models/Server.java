@@ -6,7 +6,7 @@ import java.util.List;
 public class Server {
     private int serverId;
     private String serverName;
-    private String imageUrl;
+    private String imageName;
     private int defaultRoleId;
     private int adminId;
     private Role DefaultRole;
@@ -27,11 +27,11 @@ public class Server {
     public void setServerName(String serverName) {
         this.serverName = serverName;
     }
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageName() {
+        return imageName;
     }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
     public int getDefaultRoleId() {
         return defaultRoleId;
@@ -84,5 +84,12 @@ public class Server {
     @Override
     public boolean equals(@Nullable Object obj) {
         return ((Server)obj).serverId == serverId;
+    }
+    public Server(){
+
+    }
+    public Server(int adminId, String serverName){
+        setAdminId(adminId);
+        setServerName(serverName);
     }
 }

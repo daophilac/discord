@@ -73,24 +73,13 @@ namespace Discord.Pages {
                 MessageBox.Show("Username cannot contain unicode characters");
                 return;
             }
-            if (TextBoxFirstName.Text == "" && TextBoxLastName.Text == "") {
-                MessageBox.Show("First name and last name cannot be both empty");
-                return;
-            }
             string email = TextBoxEmail.Text;
             string password = PasswordBox.Password;
-            //string userName = TextBoxUsername.Text;
-            //string firstName = TextBoxFirstName.Text;
-            //string lastName = TextBoxLastName.Text;
             User user = new User {
                 Email = TextBoxEmail.Text,
                 Password = PasswordBox.Password,
-                UserName = TextBoxUsername.Text,
-                FirstName = TextBoxFirstName.Text,
-                LastName = TextBoxLastName.Text,
-                Gender = (bool) RadioButtonMale.IsChecked ? Gender.Male : Gender.Female
+                UserName = TextBoxUsername.Text
             };
-            //string outgoingJson = JsonBuilder.BuildUserJson(email, password, userName, firstName, lastName, gender);
             string requestUrl = Route.User.UrlSignUp;
             apiCaller.SetProperties(HttpMethod.Post, requestUrl, user);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();

@@ -35,12 +35,12 @@ namespace Discord.Tools {
             string result = await httpResponseMessage.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ICollection<User>>(result);
         }
-        public static async Task<ICollection<Role>> GetListRoleAsync(int serverId) {
+        public static async Task<IList<Role>> GetListRoleAsync(int serverId) {
             string requestUrl = Route.Role.BuildGetByServerUrl(serverId);
             apiCaller.SetProperties(HttpMethod.Get, requestUrl);
             HttpResponseMessage httpResponseMessage = await apiCaller.SendRequestAsync();
             string result = await httpResponseMessage.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ICollection<Role>>(result);
+            return JsonConvert.DeserializeObject<IList<Role>>(result);
         }
         public static async Task<ICollection<Message>> GetListMessageAsync(int channelId) {
             string requestUrl = Route.Message.BuildGetByChannelUrl(channelId);

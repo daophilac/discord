@@ -6,9 +6,6 @@ public class User {
     private String phone;
     private String password;
     private String userName;
-    private String firstName;
-    private String lastName;
-    private Gender gender;
     private String imageName;
     public int getUserId() {
         return userId;
@@ -40,38 +37,19 @@ public class User {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public Gender getGender() {
-        return gender;
-    }
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
     public String getImageName() {
         return imageName;
     }
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
-    public enum Gender{
-        Male(0), Female(1), Unknown(2);
-        private final int value;
-        Gender(int value){
-            this.value = value;
-        }
-        public int getValue() {
-            return value;
-        }
+    public User(){
+
+    }
+    public User(String email, String phone, String password, String userName){
+        setEmail(email);
+        setPhone(phone);
+        setPassword(password);
+        setUserName(userName);
     }
 }

@@ -12,62 +12,62 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class JsonBuilder {
-    private String buildJsonFromHashMap(HashMap<String, String> parameters){
-        StringBuilder resultJSON = new StringBuilder();
-        Iterator iterator = parameters.entrySet().iterator();
-        Map.Entry pair;
-        resultJSON.append("{");
-        while (iterator.hasNext()) {
-            pair = (Map.Entry) iterator.next();
-            resultJSON.append("\"");
-            resultJSON.append(pair.getKey());
-            resultJSON.append("\"");
-            resultJSON.append(":");
-            resultJSON.append("\"");
-            resultJSON.append(pair.getValue());
-            resultJSON.append("\"");
-            resultJSON.append(",");
-        }
-        resultJSON.deleteCharAt(resultJSON.length() - 1);
-        resultJSON.append("}");
-        return resultJSON.toString();
-    }
-    public String buildLoginJson(String email, String password){
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("email", email);
-        parameters.put("password", password);
-        return buildJsonFromHashMap(parameters);
-    }
-//    public String buildMessageJson(Channel currentChannel, User currentUser, String content){
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateTimePattern, MainActivity.locale);
-//        Date time = new Date(System.currentTimeMillis());
+//    private String buildJsonFromHashMap(HashMap<String, String> parameters){
+//        StringBuilder resultJSON = new StringBuilder();
+//        Iterator iterator = parameters.entrySet().iterator();
+//        Map.Entry pair;
+//        resultJSON.append("{");
+//        while (iterator.hasNext()) {
+//            pair = (Map.Entry) iterator.next();
+//            resultJSON.append("\"");
+//            resultJSON.append(pair.getKey());
+//            resultJSON.append("\"");
+//            resultJSON.append(":");
+//            resultJSON.append("\"");
+//            resultJSON.append(pair.getValue());
+//            resultJSON.append("\"");
+//            resultJSON.append(",");
+//        }
+//        resultJSON.deleteCharAt(resultJSON.length() - 1);
+//        resultJSON.append("}");
+//        return resultJSON.toString();
+//    }
+//    public String buildLoginJson(String email, String password){
 //        HashMap<String, String> parameters = new HashMap<>();
-//        parameters.put("channelId", String.valueOf(currentChannel.getChannelId()));
-//        parameters.put("userId", String.valueOf(currentUser.getUserId()));
-//        parameters.put("content", content);
-//        parameters.put("time", simpleDateFormat.format(time));
+//        parameters.put("email", email);
+//        parameters.put("password", password);
 //        return buildJsonFromHashMap(parameters);
 //    }
-    public String buildServerJson(int userId, String name){
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("adminId", String.valueOf(userId));
-        parameters.put("name", name);
-        return buildJsonFromHashMap(parameters);
-    }
-    public String buildUserJson(String email, String password, String userName, String firstName, String lastName, User.Gender gender){
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("email", email);
-        parameters.put("password", password);
-        parameters.put("userName", userName);
-        parameters.put("firstName", firstName);
-        parameters.put("lastName", lastName);
-        parameters.put("gender", String.valueOf(gender.getValue()));
-        return buildJsonFromHashMap(parameters);
-    }
-    public String buildChannelJson(String name, int serverId){
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("name", name);
-        parameters.put("serverId", String.valueOf(serverId));
-        return buildJsonFromHashMap(parameters);
-    }
+////    public String buildMessageJson(Channel currentChannel, User currentUser, String content){
+////        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateTimePattern, MainActivity.locale);
+////        Date time = new Date(System.currentTimeMillis());
+////        HashMap<String, String> parameters = new HashMap<>();
+////        parameters.put("channelId", String.valueOf(currentChannel.getChannelId()));
+////        parameters.put("userId", String.valueOf(currentUser.getUserId()));
+////        parameters.put("content", content);
+////        parameters.put("time", simpleDateFormat.format(time));
+////        return buildJsonFromHashMap(parameters);
+////    }
+//    public String buildServerJson(int userId, String name){
+//        HashMap<String, String> parameters = new HashMap<>();
+//        parameters.put("adminId", String.valueOf(userId));
+//        parameters.put("name", name);
+//        return buildJsonFromHashMap(parameters);
+//    }
+//    public String buildUserJson(String email, String password, String userName, String firstName, String lastName, User.Gender gender){
+//        HashMap<String, String> parameters = new HashMap<>();
+//        parameters.put("email", email);
+//        parameters.put("password", password);
+//        parameters.put("userName", userName);
+//        parameters.put("firstName", firstName);
+//        parameters.put("lastName", lastName);
+//        parameters.put("gender", String.valueOf(gender.getValue()));
+//        return buildJsonFromHashMap(parameters);
+//    }
+//    public String buildChannelJson(String name, int serverId){
+//        HashMap<String, String> parameters = new HashMap<>();
+//        parameters.put("name", name);
+//        parameters.put("serverId", String.valueOf(serverId));
+//        return buildJsonFromHashMap(parameters);
+//    }
 }

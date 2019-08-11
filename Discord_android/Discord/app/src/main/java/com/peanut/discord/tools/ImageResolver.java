@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory;
 
 import com.peanut.androidlib.common.client.Downloader;
 import com.peanut.androidlib.common.worker.SingleWorker;
+import com.peanut.discord.MainActivity;
 import com.peanut.discord.resources.Data;
 
 import java.io.File;
@@ -69,7 +70,7 @@ public class ImageResolver {
                     downloader.start();
                 }
                 else{
-                    if(mapFilePathBitmap.containsKey(imagePath)){
+                    if(!mapFilePathBitmap.containsKey(imagePath)){
                         mapFilePathBitmap.put(imagePath, makeBitmapFromLocalFile(imagePath));
                     }
                     if(onFinishListener != null){

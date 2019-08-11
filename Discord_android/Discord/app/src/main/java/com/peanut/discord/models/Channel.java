@@ -43,4 +43,11 @@ public class Channel {
     public void setChannelPermissions(List<ChannelPermission> channelPermissions) {
         this.channelPermissions = channelPermissions;
     }
+    public Channel(){
+
+    }
+    public Channel(String channelName, int serverId){
+        setChannelName(channelName);
+        setServerId(serverId);
+    }
 }

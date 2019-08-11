@@ -20,30 +20,31 @@ namespace Discord.Dialog {
     /// Interaction logic for JoinServerDialog.xaml
     /// </summary>
     public partial class JoinServerDialog : Window {
-        public event EventHandler<JoinServerArgs> JoinServer;
+        public event EventHandler<RequestJoinServerArgs> RequestJoinServer;
         public JoinServerDialog() {
             InitializeComponent();
         }
 
         private async void ButtonJoin_Click(object sender, RoutedEventArgs e) {
-            APICaller apiCaller = new APICaller();
-            if (textBoxInstantInvite.Text != "") {
-                Server server = await ResourcesCreator.GetServerByInstantInviteAsync(textBoxInstantInvite.Text);
+            if (TextBoxInstantInvite.Text != "") {
+                Server server = await ResourcesCreator.GetServerByInstantInviteAsync(TextBoxInstantInvite.Text);
                 if(server == null) {
                     MessageBox.Show("The instant invite you have typed doesn't exist.");
                 }
                 else {
-                    JoinServer?.Invoke(this, new JoinServerArgs() { Server = server });
+                    RequestJoinServer?.Invoke(this, new RequestJoinServerArgs() { Server = server });
                 }
             }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             e.Cancel = true;
+            TextBoxInstantInvite.Text = "";
             Visibility = Visibility.Hidden;
+
         }
     }
-    public class JoinServerArgs : EventArgs {
+    public class RequestJoinServerArgs : EventArgs {
         public Server Server { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace API.Models {
         [MaxLength(50), Required]
         public string ServerName { get; set; }
         [MaxLength(254)]
-        public string ImageUrl { get; set; }
+        public string ImageName { get; set; }
         public int? DefaultRoleId { get; set; }
         [Required]
         public int AdminId { get; set; }
@@ -29,7 +29,7 @@ namespace API.Models {
             return new Server {
                 ServerId = serverToClone.ServerId,
                 ServerName = serverToClone.ServerName,
-                ImageUrl = serverToClone.ImageUrl,
+                ImageName = serverToClone.ImageName,
                 AdminId = serverToClone.AdminId,
                 Admin = serverToClone.Admin,
                 InstantInvite = serverToClone.InstantInvite,

@@ -65,6 +65,14 @@ namespace Discord.Managers {
             ButtonCancelEdit.Click += ButtonCancelEdit_Click;
         }
 
+        public void TearDown() {
+            MessageComponent.TearDown();
+            HubManager.ReceiveMessageSignal -= HubManager_ReceiveMessageSignal;
+            HubManager.ReceiveDeleteMessageSignal -= HubManager_ReceiveDeleteMessageSignal;
+            TextBoxType.KeyDown -= TextBoxType_KeyDown;
+            ButtonSend.Click -= ButtonSend_Click;
+        }
+
         private void HubManager_ReceiveEditMessageSignal(object sender, HubManager.ReceiveEditMessageSignalEventArgs e) {
             MessageComponent messageComponent = MessageComponent.GetByMessageId(e.MessageId);
             if (messageComponent.Message.UserId == Inventory.CurrentUser.UserId) {
@@ -90,19 +98,11 @@ namespace Discord.Managers {
                 DockPanelMessageComponent.Children.Remove(messageComponent);
             }
         }
-
-        public void TearDown() {
-            MessageComponent.TearDown();
-            HubManager.ReceiveMessageSignal -= HubManager_ReceiveMessageSignal;
-            HubManager.ReceiveDeleteMessageSignal -= HubManager_ReceiveDeleteMessageSignal;
-            TextBoxType.KeyDown -= TextBoxType_KeyDown;
-            ButtonSend.Click -= ButtonSend_Click;
-        }
         public void ClearContent() {
             GridMessage.Children.Clear();
             MessageComponent.TearDown();
         }
-        private async void TextBoxType_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
+        private void TextBoxType_KeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
             if (e.Key == System.Windows.Input.Key.Enter) {
                 e.Handled = true;
                 ButtonSend.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));

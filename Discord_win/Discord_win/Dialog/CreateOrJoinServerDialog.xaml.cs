@@ -17,24 +17,24 @@ namespace Discord.Dialog {
     /// Interaction logic for CreateOrJoinServerDialog.xaml
     /// </summary>
     public partial class CreateOrJoinServerDialog : Window {
-        private CreateServerDialog createServerDialog;
-        private JoinServerDialog joinServerDialog;
+        private CreateServerDialog CreateServerDialog { get; set; }
+        private JoinServerDialog JoinServerDialog { get; set; }
         public CreateOrJoinServerDialog(CreateServerDialog createServerDialog, JoinServerDialog joinServerDialog) {
             InitializeComponent();
-            this.createServerDialog = createServerDialog;
-            this.joinServerDialog = joinServerDialog;
+            CreateServerDialog = createServerDialog;
+            JoinServerDialog = joinServerDialog;
         }
 
         private void ButtonCreateServer_Click(object sender, RoutedEventArgs e) {
-            this.Close();
-            createServerDialog.Activate();
-            createServerDialog.ShowDialog();
+            Close();
+            CreateServerDialog.Activate();
+            CreateServerDialog.ShowDialog();
         }
 
         private void ButtonJoinServer_Click(object sender, RoutedEventArgs e) {
-            this.Close();
-            joinServerDialog.Activate();
-            joinServerDialog.ShowDialog();
+            Close();
+            JoinServerDialog.Activate();
+            JoinServerDialog.ShowDialog();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {

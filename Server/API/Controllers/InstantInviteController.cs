@@ -28,19 +28,20 @@ namespace API.Controllers
         }
 
         [HttpGet, Route("GetServer/{userId}/{link}")]
-        public ActionResult<Server> GetServerByLink(int userId, string link) {
-            InstantInvite instantInvite = _context.InstantInvite.Where(ii => ii.Link == link).FirstOrDefault();
+        public async Task<IActionResult> GetServerByLink(int userId, string link) {
+            InstantInvite instantInvite = await _context.InstantInvite.Where(ii => ii.Link == link).FirstOrDefaultAsync();
             if(instantInvite != null) {
                 Server result = _context.Server.Where(s => s.ServerId == instantInvite.ServerId).First();
-                ServerUser serverUser = _context.ServerUser.Where(su => su.ServerId == result.ServerId && su.UserId == userId).FirstOrDefault();
-                if(serverUser == null) {
-                    serverUser = new ServerUser();
-                    serverUser.ServerId = result.ServerId;
-                    serverUser.UserId = userId;
-                    serverUser.RoleId = (int)result.DefaultRoleId;
-                    _context.ServerUser.Add(serverUser);
-                    _context.SaveChanges();
-                }
+
+                //ServerUser serverUser = _context.ServerUser.Where(su => su.ServerId == result.ServerId && su.UserId == userId).FirstOrDefault();
+                //if(serverUser == null) {
+                //    serverUser = new ServerUser();
+                //    serverUser.ServerId = result.ServerId;
+                //    serverUser.UserId = userId;
+                //    serverUser.RoleId = (int)result.DefaultRoleId;
+                //    _context.ServerUser.Add(serverUser);
+                //    _context.SaveChanges();
+                //}
                 return Ok(result);
             }
             return NotFound();

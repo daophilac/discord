@@ -48,9 +48,44 @@ namespace API.Hubs {
                 return;
             }
             await mainDatabase.Channel.AddAsync(channel);
+            IEnumerable<Role> roles = await mainDatabase.Role.Where(r => r.ServerId == channel.ServerId).ToListAsync();
+            foreach (Role role in roles) {
+                await mainDatabase.ChannelPermission.AddAsync(new ChannelPermission {
+                    ChannelId = channel.ChannelId,
+                    RoleId = role.RoleId,
+                    ViewMessage = false,
+                    React = false,
+                    SendMessage = false,
+                    SendImage = false
+                });
+            }
             await mainDatabase.SaveChangesAsync();
             jsonChannel = JsonConvert.SerializeObject(channel);
             await Clients.Group(MakeServerGroupId(channel.ServerId)).SendAsync("ReceiveNewChannelSignal", Context.ConnectionId, jsonChannel);
+        }
+        public async Task CreateRoleAsync(string jsonRole) {
+            Role role = JsonConvert.DeserializeObject<Role>(jsonRole);
+            Role duplicatedRole = await mainDatabase.Role.Where(r => r.ServerId == role.ServerId && r.RoleLevel == role.RoleLevel).FirstOrDefaultAsync();
+            if(duplicatedRole != null) {
+                await Clients.Caller.SendAsync("ReceiveRoleConcurrentConflictSignal", "There is already a role with the same role level in this server");
+                return;
+            }
+            await mainDatabase.Role.AddAsync(role);
+            await mainDatabase.SaveChangesAsync();
+            IEnumerable<Channel> channelsInServer = await mainDatabase.Channel.Where(c => c.ServerId == role.ServerId).ToListAsync();
+            foreach (Channel channel in channelsInServer) {
+                await mainDatabase.ChannelPermission.AddAsync(new ChannelPermission {
+                    ChannelId = channel.ChannelId,
+                    RoleId = role.RoleId,
+                    ViewMessage = false,
+                    React = false,
+                    SendMessage = false,
+                    SendImage = false
+                });
+            }
+            await mainDatabase.SaveChangesAsync();
+            jsonRole = JsonConvert.SerializeObject(role);
+            await Clients.Group(MakeServerGroupId(role.ServerId)).SendAsync("ReceiveNewRoleSignal", Context.ConnectionId, jsonRole);
         }
 
         /// <summary>
@@ -90,12 +125,32 @@ namespace API.Hubs {
         public async Task ExitServerAsync(int serverId) {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeServerGroupId(serverId));
         }
-        public async Task LeaveServerAsync(int userId, int serverId) {
+        public async Task JoinServer(int userId, int serverId) {
+            ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
+            Server server = await mainDatabase.Server.FindAsync(serverId);
+            User user = await mainDatabase.User.FindAsync(userId);
+            if (serverUser == null) {
+                serverUser = new ServerUser {
+                    Server = server,
+                    User = user,
+                    RoleId = (int)server.DefaultRoleId
+                };
+                await mainDatabase.ServerUser.AddAsync(serverUser);
+                await mainDatabase.SaveChangesAsync();
+            }
+
+            string jsonServer = JsonConvert.SerializeObject(server);
+            string jsonUser = JsonConvert.SerializeObject(user);
+            await Clients.Caller.SendAsync("ReceiveJoinServerSignal", jsonServer);
+            await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveNewUserJoinServerSignal", jsonUser, (int)server.DefaultRoleId);
+        }
+        public async Task LeaveServerAsync(int serverId, int userId) {
             ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
             mainDatabase.ServerUser.Remove(serverUser);
             await mainDatabase.SaveChangesAsync();
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, serverId.ToString());
-            await Clients.Group(MakeServerGroupId(serverId)).SendAsync("ReceiveLeaveServerSignal", userId, serverId);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeServerGroupId(serverId));
+            await Clients.Caller.SendAsync("ReceiveLeaveServerSignal", serverId);
+            await Clients.Group(MakeServerGroupId(serverId)).SendAsync("ReceiveOtherUserLeaveServerSignal", userId, serverUser.RoleId);
         }
         public async Task ReceiveMessageAsync(string json) {
             Message message = JsonConvert.DeserializeObject<Message>(json);

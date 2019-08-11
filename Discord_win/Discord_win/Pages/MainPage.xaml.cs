@@ -35,7 +35,7 @@ namespace Discord.Pages {
         private async Task InitializeGlobalVariableAsync() {
             ServerManager = new ServerManager(DockPanelServer, GridServerButton, ButtonCreateOrJoinServer);
             ChannelManager = new ChannelManager(DockPanelChannel, GridChannelContent, LabelUsername, LabelServerName);
-            RoleManager = new RoleManager(DockPanelRole);
+            RoleManager = new RoleManager(DockPanelRoleContent, ButtonCreateRole);
             MessageManager = new MessageManager(DockPanelMessage, GridMessage, TextBoxType, ButtonSend, ButtonCancelEdit);
             UserManager = new UserManager(ButtonUserSetting);
             await HubManager.EstablishAsync();

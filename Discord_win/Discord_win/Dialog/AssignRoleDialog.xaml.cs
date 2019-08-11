@@ -44,7 +44,7 @@ namespace Discord_win.Dialog {
                 if(userRole == role) {
                     radioButton.IsChecked = true;
                 }
-                radioButton.Click += (o, e) => { RadioButtonSelected = radioButton; };
+                radioButton.Checked += (o, e) => { RadioButtonSelected = radioButton; };
                 RadioButtonRoles.Add(radioButton, role);
                 DockPanel.SetDock(radioButton, Dock.Top);
                 DockPanelRole.Children.Add(radioButton);

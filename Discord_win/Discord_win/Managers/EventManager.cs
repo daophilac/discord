@@ -30,6 +30,7 @@ namespace Discord.Managers {
             MessageManager.Establish();
             UserManager.Establish();
             RegisterMemberEvent();
+            ServerManager.EnterFirstServer();
         }
         public static async Task TearDownAsync() {
             ServerManager.TearDown();
@@ -47,35 +48,60 @@ namespace Discord.Managers {
             UnregisterMemberEvent();
         }
         private static void RegisterMemberEvent() {
+            HubManager.ReceiveLeaveServerSignal += HubManager_ReceiveLeaveServerSignal;
+            HubManager.ReceiveJoinServerSignal += HubManager_ReceiveJoinServerSignal;
             ServerManager.ServerButtonClick += ServerManager_ServerButtonClick;
             ServerManager.ServerChanged += ServerManager_ServerChanged;
             ChannelManager.ChannelButtonClick += ChannelManager_ChannelButtonClick;
             ChannelManager.ChannelChanged += ChannelManager_ChannelChanged;
+            RoleManager.ReceiveNewUserJoinServer += RoleManager_ReceiveNewUserJoinServer;
             RoleManager.Kicked += RoleManager_Kicked;
             RoleManager.ChangeUserRole += RoleManager_ChangeUserRole;
             UserManager.LogOut += UserManager_LogOut;
         }
 
         private static void UnregisterMemberEvent() {
+            HubManager.ReceiveLeaveServerSignal -= HubManager_ReceiveLeaveServerSignal;
+            HubManager.ReceiveJoinServerSignal -= HubManager_ReceiveJoinServerSignal;
             ServerManager.ServerButtonClick -= ServerManager_ServerButtonClick;
             ServerManager.ServerChanged -= ServerManager_ServerChanged;
             ChannelManager.ChannelButtonClick -= ChannelManager_ChannelButtonClick;
             ChannelManager.ChannelChanged -= ChannelManager_ChannelChanged;
+            RoleManager.ReceiveNewUserJoinServer -= RoleManager_ReceiveNewUserJoinServer;
             RoleManager.Kicked -= RoleManager_Kicked;
             RoleManager.ChangeUserRole -= RoleManager_ChangeUserRole;
             UserManager.LogOut -= UserManager_LogOut;
+        }
+
+        private static void HubManager_ReceiveJoinServerSignal(object sender, HubManager.ReceiveJoinServerSignalEventArgs e) {
+            ServerManager.InsertServer(e.Server);
+        }
+
+        private static async void HubManager_ReceiveLeaveServerSignal(object sender, HubManager.ReceiveLeaveServerSignalEventArgs e) {
+            await LeaveServer(e.ServerId);
+        }
+        private static async Task LeaveServer(int serverId) {
+            await HubManager.SendExitServerSignalAsync(serverId);
+            await HubManager.SendExitChannelSignalAsync(Inventory.CurrentChannel.ChannelId);
+            //User group
+            MessageManager.ClearContent();
+            ChannelManager.ClearContent();
+            RoleManager.ClearContent();
+            ServerManager.RemoveServer(serverId);
+            Inventory.ClearCurrentServer();
+        }
+        private static void RoleManager_ReceiveNewUserJoinServer(object sender, RoleManager.ReceiveNewUserJoinServerEventArgs e) {
+            Inventory.UsersInCurrentServer.Add(e.User);
         }
 
         private static async void RoleManager_ChangeUserRole(object sender, RoleManager.ChangeUserRoleEventArgs e) {
             await HubManager.SendChangeUserRoleAsync(e.User.UserId, Inventory.CurrentServer.ServerId, e.NewRole.RoleId);
         }
 
-        private static void RoleManager_Kicked(object sender, RoleManager.KickedEventArgs e) {
+        private static async void RoleManager_Kicked(object sender, RoleManager.KickedEventArgs e) {
             ServerManager.RemoveServer(e.ServerId);
             if (e.ServerId == Inventory.CurrentServer.ServerId) {
-                ChannelManager.ClearContent();
-                MessageManager.ClearContent();
-                RoleManager.ClearContent();
+                await LeaveServer(e.ServerId);
                 MessageBox.Show("You were kicked out from this server!");
             }
         }
@@ -98,10 +124,12 @@ namespace Discord.Managers {
             //Do nothing here
         }
 
-        private static async void ServerManager_ServerChanged(object sender, ServerChangedArgs e) {
+        private static async void ServerManager_ServerChanged(object sender, ServerManager.ServerChangedArgs e) {
+            Role userRoleInCurrentServer = await ResourcesCreator.GetUserRoleInCurrentServerAsync(Inventory.CurrentUser.UserId, e.Now.ServerId);
+            Inventory.SetUserRoleInCurrentServer(userRoleInCurrentServer);
             if (Inventory.CurrentChannel != null) {
                 await HubManager.SendExitChannelSignalAsync(Inventory.CurrentChannel.ChannelId);
-                Inventory.ClearCurrentChannel();
+                Inventory.ClearCurrentChannel();// ????
             }
             if(e.Previous != null) {
                 await HubManager.SendExitServerSignalAsync(e.Previous.ServerId);
@@ -112,7 +140,7 @@ namespace Discord.Managers {
             ChannelManager.ChangeServer(e.Previous, e.Now);
         }
 
-        private static void ServerManager_ServerButtonClick(object sender, ServerButtonClickArgs e) {
+        private static void ServerManager_ServerButtonClick(object sender, ServerManager.ServerButtonClickArgs e) {
             //Do nothing here
         }
     }

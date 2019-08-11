@@ -3,8 +3,8 @@ public final class Route {
     public static final String protocol = "http";
     public static final String serverIP = "192.168.2.113";
     public static final String serverName = "/sv";
-    public static final String baseUrl = protocol + "://" + serverIP + serverName;
-    //    public static final String baseUrl = "http://10.0.2.2:55555";
+//    public static final String baseUrl = protocol + "://" + serverIP + serverName;
+    public static final String baseUrl = "http://10.0.2.2:55555";
     public static final class ChatHub {
         private static final String routePrefix = "/ChatHub";
         public static final String urlChatHub = baseUrl + routePrefix;

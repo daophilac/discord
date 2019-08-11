@@ -13,52 +13,124 @@ using System.Windows.Media;
 
 namespace Discord.Managers {
     public class RoleManager {
-        private DockPanel dockPanelRole;
-        private DockPanel DockPanelRole {
-            get => dockPanelRole;
-            set => dockPanelRole = value ?? throw new ArgumentNullException("DockPanelRole", "DockPanelRole cannot be null.");
+        private DockPanel dockPanelRoleContent;
+        private DockPanel DockPanelRoleContent {
+            get => dockPanelRoleContent;
+            set => dockPanelRoleContent = value ?? throw new ArgumentNullException("DockPanelRoleContent", "DockPanelRoleContent cannot be null.");
+        }
+        private Button buttonCreateRole;
+        private Button ButtonCreateRole {
+            get => buttonCreateRole;
+            set => buttonCreateRole = value ?? throw new ArgumentNullException("ButtonCreateRole", "ButtonCreateRole cannot be null.");
         }
         private ICollection<User> ListUser { get; set; }
-        private ICollection<Role> listRole;
-        private ICollection<Role> ListRole {
+        private IList<Role> listRole;
+        private IList<Role> ListRole {
             get => listRole;
             set => listRole = value.OrderByDescending(r => r.RoleLevel).ToList();
         }
-        private ICollection<RoleComponent> RoleComponents { get; set; }
+        private IList<RoleComponent> RoleComponents { get; set; }
         private AssignRoleDialog AssignRoleDialog { get; set; }
+        private CreateRoleDialog CreateRoleDialog { get; set; }
         public event EventHandler<KickedEventArgs> Kicked;
         public event EventHandler<ChangeUserRoleEventArgs> ChangeUserRole;
-        public RoleManager(DockPanel dockPanelRole) {
-            DockPanelRole = dockPanelRole;
+        public event EventHandler<ReceiveNewUserJoinServerEventArgs> ReceiveNewUserJoinServer;
+        public RoleManager(DockPanel dockPanelRoleContent, Button buttonCreateRole) {
+            DockPanelRoleContent = dockPanelRoleContent;
+            ButtonCreateRole = buttonCreateRole;
         }
         public void Establish() {
-            RoleComponents = new HashSet<RoleComponent>();
+            RoleComponents = new List<RoleComponent>();
             AssignRoleDialog = new AssignRoleDialog();
-            AssignRoleDialog.ChangeUserRole += AssignRoleDialog_ChangeUserRole;
+            CreateRoleDialog = new CreateRoleDialog();
+            HubManager.ReceiveNewUserJoinServerSignal += HubManager_ReceiveNewUserJoinServerSignal;
+            HubManager.ReceiveOtherUserLeaveServerSignal += HubManager_ReceiveOtherUserLeaveServerSignal;
             HubManager.ReceiveKickUserSignal += HubManager_ReceiveKickUserSignal;
             HubManager.ReceiveChangeUserRoleSignal += HubManager_ReceiveChangeUserRoleSignal;
+            HubManager.ReceiveNewRoleSignal += HubManager_ReceiveNewRoleSignal;
+            AssignRoleDialog.ChangeUserRole += AssignRoleDialog_ChangeUserRole;
+            CreateRoleDialog.RequestCreateRole += CreateRoleDialog_RequestCreateRole;
+            ButtonCreateRole.Click += ButtonCreateRole_Click;
         }
-
 
 
         public void TearDown() {
+            HubManager.ReceiveNewUserJoinServerSignal -= HubManager_ReceiveNewUserJoinServerSignal;
+            HubManager.ReceiveOtherUserLeaveServerSignal -= HubManager_ReceiveOtherUserLeaveServerSignal;
             HubManager.ReceiveKickUserSignal -= HubManager_ReceiveKickUserSignal;
             HubManager.ReceiveChangeUserRoleSignal -= HubManager_ReceiveChangeUserRoleSignal;
+            HubManager.ReceiveNewRoleSignal -= HubManager_ReceiveNewRoleSignal;
+            AssignRoleDialog.ChangeUserRole -= AssignRoleDialog_ChangeUserRole;
+            CreateRoleDialog.RequestCreateRole -= CreateRoleDialog_RequestCreateRole;
+            ButtonCreateRole.Click -= ButtonCreateRole_Click;
             RoleComponents = null;
             AssignRoleDialog = null;
+            CreateRoleDialog = null;
         }
         public void ClearContent() {
-            DockPanelRole.Children.Clear();
+            DockPanelRoleContent.Children.Clear();
+        }
+
+
+        private async void CreateRoleDialog_RequestCreateRole(object sender, CreateRoleDialog.RequestCreateRoleEventArgs e) {
+            e.RequestedRole.MainRole = false;
+            e.RequestedRole.ServerId = Inventory.CurrentServer.ServerId;
+            await HubManager.SendCreateRoleSignalAsync(e.RequestedRole);
+        }
+        private void ButtonCreateRole_Click(object sender, RoutedEventArgs e) {
+            CreateRoleDialog.Activate(Inventory.UserRoleInCurrentServer);
+        }
+        private void HubManager_ReceiveNewRoleSignal(object sender, HubManager.ReceiveNewRoleSignalEventArgs e) {
+            AddRole(e.Role);
+        }
+        private void HubManager_ReceiveOtherUserLeaveServerSignal(object sender, HubManager.ReceiveOtherUserLeaveServerSignalEventArgs e) {
+            RemoveUser(e.UserId, e.RoleId);
+        }
+
+        private void HubManager_ReceiveNewUserJoinServerSignal(object sender, HubManager.ReceiveNewUserJoinServerSignalEventArgs e) {
+            AddUser(e.User, e.RoleId);
+            ReceiveNewUserJoinServer?.Invoke(this, new ReceiveNewUserJoinServerEventArgs(e.User, e.RoleId));
+        }
+        private void AddRole(Role role) {
+            for (int i = 0; i < ListRole.Count; i++) {
+                if(role > ListRole.ElementAt(i)) {
+                    ListRole.Insert(i, role);
+                    break;
+                }
+            }
+            CreateRoleComponent(role);
+        }
+        private void AddUser(User user, int roleId) {
+            ListUser.Add(user);
+            RoleComponent roleComponent = RoleComponents.Where(r => r.Role.RoleId == roleId).FirstOrDefault();
+            RoleComponent.DockPanelContainer.Row row = roleComponent.InsertRow(user);
+            RegisterRowContextMenuEvents(row);
+        }
+        private void RemoveUser(int userId, int roleId) {
+            User user = ListUser.Where(u => u.UserId == userId).FirstOrDefault();
+            if(user == null) {
+                return;
+            }
+            RoleComponent roleComponent = RoleComponents.Where(r => r.Role.RoleId == roleId).FirstOrDefault();
+            roleComponent.RemoveRow(userId);
         }
 
         private void HubManager_ReceiveChangeUserRoleSignal(object sender, HubManager.ReceiveChangeUserRoleSignalEventArgs e) {
             User user = ListUser.Where(u => u.UserId == e.UserId).FirstOrDefault();
+            Role newRole = ListRole.Where(r => r.RoleId == e.NewRoleId).FirstOrDefault();
             RoleComponent roleComponentRemove = RoleComponents.Where(r => r.Role.RoleId == e.OldRoleId).FirstOrDefault();
             RoleComponent roleComponentInsert = RoleComponents.Where(r => r.Role.RoleId == e.NewRoleId).FirstOrDefault();
             roleComponentRemove.Container.RemoveRow(user.UserId);
             RoleComponent.DockPanelContainer.Row row = roleComponentInsert.Container.InsertRow(user);
             RegisterRowContextMenuEvents(row);
+            if(user == Inventory.CurrentUser) {
+                Inventory.SetUserRoleInCurrentServer(newRole);
+                foreach (RoleComponent roleComponent in RoleComponents) {
+                    roleComponent.UpdateRowsMenuItemEnable();
+                }
+            }
         }
+
         private void RegisterRowContextMenuEvents(RoleComponent.DockPanelContainer.Row row) {
             if(row == null) {
                 return;
@@ -83,8 +155,12 @@ namespace Discord.Managers {
         }
 
         public async void ChangeServer(Server previousServer, Server nowServer) {
+            ActivateOrDeactivateRoleCreation();
             await RetrieveListUser(nowServer);
             await RetrieveListRole(nowServer);
+        }
+        private void ActivateOrDeactivateRoleCreation() {
+            buttonCreateRole.Visibility = Inventory.UserRoleInCurrentServer.ModifyRole ? Visibility.Visible : Visibility.Hidden;
         }
         private async Task RetrieveListUser(Server server) {
             ListUser = await ResourcesCreator.GetListUserAsync(server.ServerId);
@@ -96,16 +172,21 @@ namespace Discord.Managers {
             AttachListRoleComponent();
         }
         private void AttachListRoleComponent() {
-            DockPanelRole.Children.Clear();
+            DockPanelRoleContent.Children.Clear();
             foreach (Role role in ListRole) {
-                RoleComponent roleComponent = new RoleComponent(role);
-                RoleComponents.Add(roleComponent);
-                DockPanel.SetDock(roleComponent, Dock.Top);
-                DockPanelRole.Children.Add(roleComponent);
+                RoleComponent roleComponent = CreateRoleComponent(role);
                 foreach (RoleComponent.DockPanelContainer.Row row in roleComponent.Container.Rows) {
                     RegisterRowContextMenuEvents(row);
                 }
             }
+        }
+        private RoleComponent CreateRoleComponent(Role role) {
+            RoleComponent roleComponent = new RoleComponent(role);
+            DockPanel.SetDock(roleComponent, Dock.Top);
+            int index = ListRole.IndexOf(role);
+            RoleComponents.Insert(index, roleComponent);
+            DockPanelRoleContent.Children.Insert(index, roleComponent);
+            return roleComponent;
         }
 
         private async void Row_KickUser(object sender, RoleComponent.DockPanelContainer.Row.KickUserEventArgs e) {
@@ -116,6 +197,14 @@ namespace Discord.Managers {
 
         private void Row_ChangeUserRole(object sender, RoleComponent.DockPanelContainer.Row.ChangeUserRoleEventArgs e) {
             AssignRoleDialog.Activate(Inventory.UserRoleInCurrentServer, e.User, e.Role, ListRole);
+        }
+        public class ReceiveNewUserJoinServerEventArgs : EventArgs {
+            public User User { get; }
+            public int RoleId { get; }
+            public ReceiveNewUserJoinServerEventArgs(User user, int roleId) {
+                User = user;
+                RoleId = roleId;
+            }
         }
         public class KickedEventArgs : EventArgs {
             public int ServerId { get; }
@@ -134,16 +223,26 @@ namespace Discord.Managers {
 
         private class RoleComponent : DockPanel {
             internal Role Role { get; set; }
-            internal IEnumerable<User> UsersWithRole { get; private set; }
+            internal ICollection<User> UsersWithRole { get; private set; }
             internal DockPanelContainer Container { get; private set; }
             internal RoleComponent(Role role) {
                 LastChildFill = false;
                 Role = role;
                 // TODO: not optimized yet
-                UsersWithRole = Inventory.UsersInCurrentServer.Where(u => u.ServerUsers.Any(su => su.RoleId == role.RoleId));
+                UsersWithRole = Inventory.UsersInCurrentServer.Where(u => u.ServerUsers.Any(su => su.RoleId == role.RoleId)).ToList();
                 Container = new DockPanelContainer(Role, UsersWithRole);
                 SetDock(Container, Dock.Top);
                 Children.Add(Container);
+            }
+            internal DockPanelContainer.Row InsertRow(User user) {
+                UsersWithRole.Add(user);
+                return Container.InsertRow(user);
+            }
+            internal void RemoveRow(int userId) {
+                Container.RemoveRow(userId);
+            }
+            internal void UpdateRowsMenuItemEnable() {
+                Container.UpdateRowsMenuItemEnable();
             }
             internal class DockPanelContainer : DockPanel {
                 private Role Role { get; set; }
@@ -167,9 +266,18 @@ namespace Discord.Managers {
                         SetDock(row, Dock.Top);
                         Children.Add(row);
                     }
+                    UpdateRowsMenuItemEnable();
+                }
+                internal void UpdateRowsMenuItemEnable() {
+                    foreach (Row row in Rows) {
+                        row.ActivateOrDeactivateMenuItems();
+                    }
                 }
                 internal void RemoveRow(int userId) {
                     Row row = Rows.Where(r => r.User.UserId == userId).FirstOrDefault();
+                    if(row == null) {
+                        return;
+                    }
                     Rows.Remove(row);
                     Children.Remove(row);
                 }
@@ -221,7 +329,6 @@ namespace Discord.Managers {
                         MenuItemKick.Click += (o, e) => { KickUser?.Invoke(this, new KickUserEventArgs(User)); };
                         MenuItemChangeRole.Click += (o, e) => { ChangeUserRole?.Invoke(this, new ChangeUserRoleEventArgs(User, Role)); };
                         LabelUserName.MouseUp += (o, e) => { LabelUserName.ContextMenu.IsOpen = true; };
-                        ActivateOrDeactivateMenuItems();
                         Application.Current.Dispatcher.Invoke(async () => {
                             await ImageResolver.DownloadUserImageAsync(user.ImageName, bitmap => {
                                 ImageAvatar.Source = bitmap;

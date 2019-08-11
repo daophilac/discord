@@ -1,4 +1,5 @@
 ﻿using Discord.Dialog;
+using Discord.Equipments;
 using Discord.Models;
 using Discord.Resources.Static;
 using Discord.Tools;
@@ -43,14 +44,14 @@ namespace Discord.Managers {
         public async Task EstablishAsync() {
             ButtonCreateOrJoinServer.Click += ButtonCreateOrJoinServer_Click;
             CreateServerDialog.RequestCreateServer += CreateServerDialog_RequestCreateServer;
-            JoinServerDialog.JoinServer += JoinServerDialog_JoinServer;
+            JoinServerDialog.RequestJoinServer += JoinServerDialog_RequestJoinServer;
             await RetrieveListServerAsync();
         }
 
         public void TearDown() {
             ButtonCreateOrJoinServer.Click -= ButtonCreateOrJoinServer_Click;
             CreateServerDialog.RequestCreateServer -= CreateServerDialog_RequestCreateServer;
-            JoinServerDialog.JoinServer -= JoinServerDialog_JoinServer;
+            JoinServerDialog.RequestJoinServer -= JoinServerDialog_RequestJoinServer;
         }
         public void RemoveServer(int serverId) {
             Server server = ListServer.Where(s => s.ServerId == serverId).FirstOrDefault();
@@ -62,22 +63,36 @@ namespace Discord.Managers {
             ButtonServers.Remove(button);
             DockPanelServerButton.Children.Remove(button);
         }
+        public void InsertServer(Server server) {
+            Button button = CreateServerButton(server);
+            ListServer.Add(server);
+            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        }
         public void EnterFirstServer() {
+            if (ButtonServers.Count == 0) {
+                return;
+            }
             ButtonServers.ElementAt(0).Key.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
-        private void JoinServerDialog_JoinServer(object sender, JoinServerArgs e) {
-            if (ButtonServers.Where(server => server.Value.ServerId == e.Server.ServerId).FirstOrDefault().Value != null) {
+        public void EnterServer(int serverId) {
+            Button button = ButtonServers.Where(s => s.Value.ServerId == serverId).FirstOrDefault().Key;
+            if(button == null) {
+                return;
+            }
+            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        }
+        private async void JoinServerDialog_RequestJoinServer(object sender, RequestJoinServerArgs e) {
+            if (Inventory.ListServer.Contains(e.Server)) {
                 MessageBox.Show("You are already in this server: " + e.Server.ServerName);
             }
             else {
-                CreateServerButton(e.Server);
+                await HubManager.SendJoinServerSignalAsync(Inventory.CurrentUser.UserId, e.Server.ServerId);
                 JoinServerDialog.Close();
             }
         }
-
         private async void CreateServerDialog_RequestCreateServer(object sender, RequestCreateServerArgs e) {
             Server server = await ResourcesCreator.CreateServerAsync(e.ServerName);
-            Inventory.ListServer.Add(server);
+            ListServer.Add(server);
             CreateServerButton(server);
         }
         private void ButtonCreateOrJoinServer_Click(object sender, RoutedEventArgs e) {
@@ -89,7 +104,6 @@ namespace Discord.Managers {
             ListServer = await ResourcesCreator.GetListServerAsync(Inventory.CurrentUser.UserId);
             Inventory.SetListServer(ListServer);
             AttachListButton();
-            EnterFirstServer();
         }
         private void AttachListButton() {
             GridServerButton.Children.Clear();
@@ -100,34 +114,41 @@ namespace Discord.Managers {
             }
         }
 
-        private void CreateServerButton(Server server, int height = 40) {
-            Button button = new Button();
-            button.Content = server.ServerName;
-            button.Height = height;
-            button.Margin = new Thickness(5, 5, 5, 5);
+        private Button CreateServerButton(Server server, int height = 40) {
+            Button button = new Button {
+                Content = server.ServerName,
+                Height = height,
+                Margin = new Thickness(5, 5, 5, 5)
+            };
             button.Click += ServerButton_Click;
             ButtonServers.Add(button, server);
             DockPanel.SetDock(button, Dock.Top);
             DockPanelServerButton.Children.Add(button);
+            return button;
         }
-        private async void ServerButton_Click(object sender, RoutedEventArgs e) {
+        private void ServerButton_Click(object sender, RoutedEventArgs e) {
             Server selectedServer = ButtonServers[(Button)sender];
-            ServerButtonClick?.Invoke(this, new ServerButtonClickArgs() { Server = selectedServer });
+            ServerButtonClick?.Invoke(this, new ServerButtonClickArgs(selectedServer));
             if (Inventory.CurrentServer != selectedServer) {
                 Server previousServer = Inventory.CurrentServer;
-                Role userRoleInCurrentServer = await ResourcesCreator.GetUserRoleInCurrentServerAsync(Inventory.CurrentUser.UserId, selectedServer.ServerId);
                 Inventory.SetCurrentServer(selectedServer);
-                Inventory.SetUserRoleInCurrentServer(userRoleInCurrentServer);
-                ServerChanged?.Invoke(this, new ServerChangedArgs() { Previous = previousServer, Now = selectedServer });
+                ServerChanged?.Invoke(this, new ServerChangedArgs(previousServer, selectedServer));
             }
         }
-    }
 
-    public class ServerButtonClickArgs : EventArgs {
-        public Server Server { get; set; }
-    }
-    public class ServerChangedArgs : EventArgs {
-        public Server Previous { get; set; }
-        public Server Now { get; set; }
+        public class ServerButtonClickArgs : EventArgs {
+            public Server Server { get; }
+            public ServerButtonClickArgs(Server server) {
+                Server = server;
+            }
+        }
+        public class ServerChangedArgs : EventArgs {
+            public Server Previous { get;  }
+            public Server Now { get; }
+            public ServerChangedArgs(Server previous, Server now) {
+                Previous = previous;
+                Now = now;
+            }
+        }
     }
 }

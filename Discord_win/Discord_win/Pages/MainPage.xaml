@@ -8,13 +8,6 @@
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="1000"
       Title="MainPage">
-    <!--<Page.Resources>
-        <ContextMenu x:Key="ContextMenuA">
-            <MenuItem x:Name="MenuItemInvite" Header="Invite people"/>
-            <MenuItem x:Name="MenuItemCreateChannel" Header="Create channel"/>
-        </ContextMenu>
-    </Page.Resources>-->
-
     <Grid Background="{DynamicResource Light3_Background}">
         <DockPanel x:Name="DockPanelMain" x:FieldModifier="private">
             <DockPanel x:Name="DockPanelServer" Width="80" VerticalAlignment="Stretch" x:FieldModifier="private" Background="{DynamicResource Light1_Background}">
@@ -33,6 +26,7 @@
                             <ContextMenu x:Key="ContextMenuServerManagement">
                                 <MenuItem x:Name="MenuItemInvite" Header="Invite people" />
                                 <MenuItem x:Name="MenuItemCreateChannel" Header="Create channel" />
+                                <MenuItem x:Name="MenuItemLeaveServer" Header="Leave server" />
                             </ContextMenu>
                         </Label.Resources>
                     </Label>
@@ -45,7 +39,12 @@
                 <Grid x:Name="GridChannelContent" x:FieldModifier="private">
                 </Grid>
             </DockPanel>
-            <DockPanel x:Name="DockPanelRole" x:FieldModifier="private" LastChildFill="False" DockPanel.Dock="Right" Width="240" Background="{DynamicResource Light2_Background}"/>
+            <DockPanel DockPanel.Dock="Right" Width="240" Background="{DynamicResource Light2_Background}">
+                <Grid x:Name="GridRoleHeader" DockPanel.Dock="Top" Height="30">
+                    <Button x:Name="ButtonCreateRole" x:FieldModifier="private" Content="+" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                </Grid>
+                <DockPanel x:Name="DockPanelRoleContent" x:FieldModifier="private"/>
+            </DockPanel>
             <DockPanel DockPanel.Dock="Bottom" Height="60">
                 <Grid Margin="40, 0, 40, 0">
                     <DockPanel Height="40" VerticalAlignment="Bottom">

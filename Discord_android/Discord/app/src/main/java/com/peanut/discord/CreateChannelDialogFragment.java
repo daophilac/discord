@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.peanut.discord.equipment.HubManager;
 import com.peanut.discord.equipment.Inventory;
+import com.peanut.discord.models.Channel;
 import com.peanut.discord.tools.JsonBuilder;
 
 public class CreateChannelDialogFragment extends DialogFragment {
@@ -42,8 +43,10 @@ public class CreateChannelDialogFragment extends DialogFragment {
         editTextChannelName = view.findViewById(R.id.edit_text_channel_name);
         buttonOk = view.findViewById(R.id.button_ok);
         buttonOk.setOnClickListener(v -> {
-            if(!editTextChannelName.getText().toString().equals("")){
-                String json = jsonBuilder.buildChannelJson(editTextChannelName.getText().toString(), Inventory.currentServer.getServerId());
+            String channelName = editTextChannelName.getText().toString().trim();
+            if(!channelName.equals("")){
+                Channel channel = new Channel(channelName, Inventory.currentServer.getServerId());
+                String json = MainActivity.gson.toJson(channel);
                 HubManager.createChannel(Inventory.currentServer.getServerId(), json);
                 dismiss();
             }
