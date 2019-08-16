@@ -22,7 +22,7 @@ namespace Discord_win.Dialog {
         private Dictionary<RadioButton, Role> RadioButtonRoles;
         private RadioButton RadioButtonSelected;
         private User UserToChange { get; set; }
-        public event EventHandler<ChangeUserRoleEventArgs> ChangeUserRole;
+        public event EventHandler<RequestChangeUserRoleEventArgs> ChangeUserRole;
         
         public AssignRoleDialog() {
             InitializeComponent();
@@ -33,7 +33,7 @@ namespace Discord_win.Dialog {
             RadioButtonRoles = new Dictionary<RadioButton, Role>();
             LabelUserName.Content = $"{UserToChange.UserName} - {userRole.RoleName}";
             foreach (Role role in roles) {
-                if(currentUserRole <= role) {
+                if(!currentUserRole.HigherThan(role)) {
                     continue;
                 }
                 RadioButton radioButton = new RadioButton {
@@ -54,7 +54,7 @@ namespace Discord_win.Dialog {
         }
 
         private void ButtonOk_Click(object sender, RoutedEventArgs e) {
-            ChangeUserRole?.Invoke(this, new ChangeUserRoleEventArgs(UserToChange, RadioButtonRoles[RadioButtonSelected]));
+            ChangeUserRole?.Invoke(this, new RequestChangeUserRoleEventArgs(UserToChange, RadioButtonRoles[RadioButtonSelected]));
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e) {

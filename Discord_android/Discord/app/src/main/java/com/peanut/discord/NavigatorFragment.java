@@ -1,7 +1,6 @@
 package com.peanut.discord;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,9 @@ import com.peanut.discord.customview.ChannelRecyclerView;
 import com.peanut.discord.customview.MoreButton;
 import com.peanut.discord.customview.ServerRecyclerView;
 import com.peanut.discord.customview.UserSettingButton;
+import com.peanut.discord.equipment.ChannelAdapter;
 import com.peanut.discord.equipment.Inventory;
+import com.peanut.discord.equipment.ServerAdapter;
 import com.peanut.discord.interfaces.NavigatorListener;
 import com.peanut.discord.models.Server;
 import com.peanut.discord.resources.Route;
@@ -30,7 +31,7 @@ public class NavigatorFragment extends Fragment {
     private APICaller apiCaller;
     private ServerRecyclerView serverRecyclerView;
     private ChannelRecyclerView channelRecyclerView;
-    private AddServerButton addServerButton;
+    public AddServerButton addServerButton;
     private MoreButton moreButton;
     private TextView textViewServerName;
     private ImageButton imageButtonAddChannel;
@@ -39,21 +40,27 @@ public class NavigatorFragment extends Fragment {
 
     private SwitchCompat switchCompatTest;
     private OnThemeChangeListener onThemeChangeListener;
+    private ServerAdapter serverAdapter;
+    private ChannelAdapter channelAdapter;
+    public NavigatorFragment(ServerAdapter serverAdapter, ChannelAdapter channelAdapter){
+        this.serverAdapter = serverAdapter;
+        this.channelAdapter = channelAdapter;
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Inventory.registerOnUserSelectServerListener(server -> {
-            textViewServerName.setText(Inventory.currentServer.getServerName());
-            apiGetListChannel(server);
-        });
-        Inventory.registerOnUserSelectChannelListener(channel -> {
-            if(Inventory.currentChannel != channel){
-                this.navigatorListener.onChannelChanged(Inventory.currentChannel, channel);
-                Inventory.currentChannel = channel;
-            }
-        });
-        navigatorListener = (NavigatorListener) context;
-        apiCaller = new APICaller();
+//        Inventory.registerOnUserSelectServerListener(server -> {
+//            textViewServerName.setText(Inventory.currentServer.getServerName());
+//            apiGetListChannel(server);
+//        });
+//        Inventory.registerOnUserSelectChannelListener(channel -> {
+//            if(Inventory.currentChannel != channel){
+//                this.navigatorListener.onChannelChanged(Inventory.currentChannel, channel);
+//                Inventory.currentChannel = channel;
+//            }
+//        });
+//        navigatorListener = (NavigatorListener) context;
+//        apiCaller = new APICaller();
     }
 
     @Nullable
@@ -73,12 +80,12 @@ public class NavigatorFragment extends Fragment {
             textViewServerName.setText(Inventory.currentServer.getServerName());
         }
         textViewUserName.setText(Inventory.currentUser.getUserName());
-        serverRecyclerView.setAdapter(Inventory.getServerAdapter());
+        serverRecyclerView.setAdapter(serverAdapter);
         serverRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        channelRecyclerView.setAdapter(Inventory.getChannelAdapter());
+        channelRecyclerView.setAdapter(channelAdapter);
         channelRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        addServerButton.setOnClickListener(v -> navigatorListener.onAddOrCreateServer());
+        //addServerButton.setOnClickListener(v -> navigatorListener.onAddOrCreateServer());
         imageButtonAddChannel.setOnClickListener(v -> {
             if(Inventory.currentServer.getAdminId() == Inventory.currentUser.getUserId()){
                 new CreateChannelDialogFragment().show(getFragmentManager(), null);
@@ -90,7 +97,7 @@ public class NavigatorFragment extends Fragment {
         userSettingButton.setOnClickListener(v -> {
             new LogOutConfirmDialogFragment().show(getFragmentManager(), null);
         });
-        apiGetListServer();
+//        apiGetListServer();
         switchCompatTest = view.findViewById(R.id.test_switch);
         switchCompatTest.setChecked(MainActivity.themeId == R.style.DarkAMOLED);
         switchCompatTest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -105,22 +112,23 @@ public class NavigatorFragment extends Fragment {
                 }
             }
         });
+        serverAdapter.setAddServerButton(addServerButton);
         return view;
     }
 
-    private void apiGetListServer() {
-        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.Server.buildGetByUserUrl(Inventory.currentUser.getUserId()));
-        apiCaller.setOnSuccessListener((connection, response) -> {
-            getActivity().runOnUiThread(() -> Inventory.storeListServer(response));
-        }).sendRequest();
-    }
-
-    private void apiGetListChannel(Server server) {
-        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.Channel.buildGetByServerUrl(server.getServerId()));
-        apiCaller.setOnSuccessListener((connection, response) -> {
-            getActivity().runOnUiThread(() -> Inventory.storeListChannel(response));
-        }).sendRequest();
-    }
+//    private void apiGetListServer() {
+//        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.Server.buildGetByUserUrl(Inventory.currentUser.getUserId()));
+//        apiCaller.setOnSuccessListener((connection, response) -> {
+//            getActivity().runOnUiThread(() -> Inventory.storeListServer(response));
+//        }).sendRequest();
+//    }
+//
+//    private void apiGetListChannel(Server server) {
+//        apiCaller.setProperties(APICaller.RequestMethod.GET, Route.Channel.buildGetByServerUrl(server.getServerId()));
+//        apiCaller.setOnSuccessListener((connection, response) -> {
+//            getActivity().runOnUiThread(() -> Inventory.storeListChannel(response));
+//        }).sendRequest();
+//    }
     public void setOnThemeChangeListener(OnThemeChangeListener onThemeChangeListener) {
         this.onThemeChangeListener = onThemeChangeListener;
     }

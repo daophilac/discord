@@ -1,0 +1,27 @@
+﻿<Window x:Class="Discord_win.Dialog.EditRoleDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Discord_win.Dialog"
+        mc:Ignorable="d"
+        Title="EditRoleDialog" Height="286" Width="370" Closing="Window_Closing">
+    <Grid>
+        <Label Content="Role name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="TextBoxRoleName" x:FieldModifier="private" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="256"/>
+        <Label Content="Role level" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="TextBoxRoleLevel" x:FieldModifier="private" MaxLength="3" HorizontalAlignment="Left" Height="23" Margin="81,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" KeyDown="TextBoxRoleLevel_KeyDown" TextChanged="TextBoxRoleLevel_TextChanged"/>
+        <Label x:Name="LabelRoleLevelThreshold" HorizontalAlignment="Left" Margin="206,42,0,0" VerticalAlignment="Top"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="146" Margin="10,69,0,0" VerticalAlignment="Top" Width="327">
+            <Grid>
+                <Label Content="Permission" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <CheckBox x:Name="CheckBoxKick" x:FieldModifier="private" Content="Kick" HorizontalAlignment="Left" Margin="10,22,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckBoxModifyChannel" x:FieldModifier="private" Content="Modify channel" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckBoxModifyRole" x:FieldModifier="private" Content="Modify role" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" />
+                <CheckBox x:Name="CheckBoxChangeUserRole" x:FieldModifier="private" Content="Change user role" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" />
+            </Grid>
+        </Border>
+        <Button x:Name="ButtonOk" x:FieldModifier="private" Content="OK" HorizontalAlignment="Left" Margin="262,220,0,0" VerticalAlignment="Top" Width="75" Click="ButtonOk_Click"/>
+        <Button x:Name="ButtonCancel" x:FieldModifier="private" Content="Cancel" HorizontalAlignment="Left" Margin="182,220,0,0" VerticalAlignment="Top" Width="75" Click="ButtonCancel_Click"/>
+    </Grid>
+</Window>

@@ -60,15 +60,9 @@ public class Message {
     public Message(){
 
     }
-    public Message(int channelId, int userId, String content, boolean setCurrentTime){
-        this.channelId = channelId;
-        this.userId = userId;
-        this.content = content;
-        if(setCurrentTime){
-            setCurrentTime();
-        }
-    }
-    public void setCurrentTime(){
-        time = new Date(System.currentTimeMillis());
+    public Message(int channelId, int userId, String content){
+        setChannelId(channelId);
+        setUserId(userId);
+        setContent(content);
     }
 }

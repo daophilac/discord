@@ -51,7 +51,11 @@ namespace API.Models {
                 new User { UserId = 2, Email = "adol@gmail.com", Password = "123", UserName = "adol", ImageName = "user_2.png" },
                 new User { UserId = 3, Email = "lucknight@gmail.com", Password = "123", UserName = "lucknight", ImageName = "user_3.png" },
                 new User { UserId = 4, Email = "eddie@gmail.com", Password = "123", UserName = "eddie", ImageName = "user_4.png" },
-                new User { UserId = 5, Email = "test@gmail.com", Password = "123", UserName = "test" }
+                new User { UserId = 5, Email = "locke@gmail.com", Password = "123", UserName = "lock", ImageName = "user_5.png" },
+                new User { UserId = 6, Email = "terra@gmail.com", Password = "123", UserName = "terra", ImageName = "user_6.png" },
+                new User { UserId = 7, Email = "celes@gmail.com", Password = "123", UserName = "celes", ImageName = "user_7.png" },
+                new User { UserId = 8, Email = "aeris@gmail.com", Password = "123", UserName = "aeris", ImageName = "user_8.jpg" },
+                new User { UserId = 9, Email = "test@gmail.com", Password = "123", UserName = "test" }
             );
         }
         private void SeedServer() {
@@ -188,13 +192,18 @@ namespace API.Models {
             // TODO: The RoleId is not complicated enough
             ModelBuilder.Entity<ServerUser>().HasData(
                 new ServerUser { ServerId = 1, UserId = 1, RoleId = 1 },
-                new ServerUser { ServerId = 2, UserId = 1, RoleId = 3 },
-                new ServerUser { ServerId = 3, UserId = 2, RoleId = 5 },
                 new ServerUser { ServerId = 1, UserId = 2, RoleId = 9 },
                 new ServerUser { ServerId = 1, UserId = 3, RoleId = 9 },
+                new ServerUser { ServerId = 1, UserId = 5, RoleId = 10 },
+                new ServerUser { ServerId = 1, UserId = 6, RoleId = 11 },
+                new ServerUser { ServerId = 1, UserId = 7, RoleId = 12 },
+                new ServerUser { ServerId = 1, UserId = 8, RoleId = 11 },
+                //
+                new ServerUser { ServerId = 2, UserId = 1, RoleId = 3 },
                 new ServerUser { ServerId = 2, UserId = 2, RoleId = 13 },
                 new ServerUser { ServerId = 2, UserId = 3, RoleId = 13 },
                 new ServerUser { ServerId = 2, UserId = 4, RoleId = 15 },
+                new ServerUser { ServerId = 3, UserId = 2, RoleId = 5 },
                 new ServerUser { ServerId = 3, UserId = 1, RoleId = 16 },
                 new ServerUser { ServerId = 3, UserId = 4, RoleId = 16 },
                 new ServerUser { ServerId = 4, UserId = 2, RoleId = 7 }

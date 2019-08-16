@@ -2,6 +2,7 @@ package com.peanut.discord;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +31,7 @@ public class LogOutConfirmDialogFragment extends DialogFragment {
         View view = MainActivity.themeInflater.inflate(R.layout.dialog_log_out_confirm, container, false);
         buttonOk = view.findViewById(R.id.button_ok);
         buttonOk.setOnClickListener(v -> {
-            Data.clearData(getContext());
+            Data.clearData();
             getActivity().finish();
             Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);

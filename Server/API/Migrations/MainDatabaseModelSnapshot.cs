@@ -1002,18 +1002,6 @@ namespace API.Migrations
                         },
                         new
                         {
-                            ServerId = 2,
-                            UserId = 1,
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            ServerId = 3,
-                            UserId = 2,
-                            RoleId = 5
-                        },
-                        new
-                        {
                             ServerId = 1,
                             UserId = 2,
                             RoleId = 9
@@ -1023,6 +1011,36 @@ namespace API.Migrations
                             ServerId = 1,
                             UserId = 3,
                             RoleId = 9
+                        },
+                        new
+                        {
+                            ServerId = 1,
+                            UserId = 5,
+                            RoleId = 10
+                        },
+                        new
+                        {
+                            ServerId = 1,
+                            UserId = 6,
+                            RoleId = 11
+                        },
+                        new
+                        {
+                            ServerId = 1,
+                            UserId = 7,
+                            RoleId = 12
+                        },
+                        new
+                        {
+                            ServerId = 1,
+                            UserId = 8,
+                            RoleId = 11
+                        },
+                        new
+                        {
+                            ServerId = 2,
+                            UserId = 1,
+                            RoleId = 3
                         },
                         new
                         {
@@ -1041,6 +1059,12 @@ namespace API.Migrations
                             ServerId = 2,
                             UserId = 4,
                             RoleId = 15
+                        },
+                        new
+                        {
+                            ServerId = 3,
+                            UserId = 2,
+                            RoleId = 5
                         },
                         new
                         {
@@ -1129,6 +1153,38 @@ namespace API.Migrations
                         new
                         {
                             UserId = 5,
+                            Email = "locke@gmail.com",
+                            ImageName = "user_5.png",
+                            Password = "123",
+                            UserName = "lock"
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            Email = "terra@gmail.com",
+                            ImageName = "user_6.png",
+                            Password = "123",
+                            UserName = "terra"
+                        },
+                        new
+                        {
+                            UserId = 7,
+                            Email = "celes@gmail.com",
+                            ImageName = "user_7.png",
+                            Password = "123",
+                            UserName = "celes"
+                        },
+                        new
+                        {
+                            UserId = 8,
+                            Email = "aeris@gmail.com",
+                            ImageName = "user_8.jpg",
+                            Password = "123",
+                            UserName = "aeris"
+                        },
+                        new
+                        {
+                            UserId = 9,
                             Email = "test@gmail.com",
                             Password = "123",
                             UserName = "test"

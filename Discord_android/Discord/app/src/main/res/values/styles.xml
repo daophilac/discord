@@ -31,6 +31,7 @@
         <item name="copyImageStyle">@style/DarkAMOLED.CopyImage</item>
         <item name="editImageStyle">@style/DarkAMOLED.EditImage</item>
         <item name="deleteImageStyle">@style/DarkAMOLED.DeleteImage</item>
+        <item name="userImageStyle">@style/DarkAMOLED.UserImage</item>
     </style>
     <style name="Light" parent="Theme.AppCompat.NoActionBar">
         <!--Light-->
@@ -51,6 +52,7 @@
         <item name="copyImageStyle">@style/Light.CopyImage</item>
         <item name="editImageStyle">@style/Light.EditImage</item>
         <item name="deleteImageStyle">@style/Light.DeleteImage</item>
+        <item name="userImageStyle">@style/Light.UserImage</item>
     </style>
 
 
@@ -114,6 +116,9 @@
     <style name="DarkAMOLED.DeleteImage" >
         <item name="android:src">@drawable/ic_delete_white_24dp</item>
     </style>
+    <style name="DarkAMOLED.UserImage" >
+        <item name="android:src">@drawable/ic_user_white_24dp</item>
+    </style>
 
 
     <style name="Light.TextView">
@@ -174,5 +179,8 @@
     </style>
     <style name="Light.DeleteImage" >
         <item name="android:src">@drawable/ic_delete_black_24dp</item>
+    </style>
+    <style name="Light.UserImage" >
+        <item name="android:src">@drawable/ic_user_black_24dp</item>
     </style>
 </resources>

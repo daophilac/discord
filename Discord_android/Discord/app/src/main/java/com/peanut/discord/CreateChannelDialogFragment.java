@@ -47,10 +47,11 @@ public class CreateChannelDialogFragment extends DialogFragment {
             if(!channelName.equals("")){
                 Channel channel = new Channel(channelName, Inventory.currentServer.getServerId());
                 String json = MainActivity.gson.toJson(channel);
-                HubManager.createChannel(Inventory.currentServer.getServerId(), json);
+//                HubManager.Channel.createChannel(Inventory.currentServer.getServerId(), json);
                 dismiss();
             }
         });
         return view;
     }
+
 }

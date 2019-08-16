@@ -47,12 +47,12 @@ namespace Discord {
         public static void SetChannelPermissionInCurrentChannel(string json) {
             ChannelPermissionInCurrentChannel = JsonConvert.DeserializeObject<ChannelPermission>(json);
         }
-        public static ICollection<Server> ListServer { get; private set; }
-        public static void SetListServer(ICollection<Server> listServer) {
-            ListServer = listServer;
+        public static ICollection<Server> Servers { get; private set; }
+        public static void SetServers(ICollection<Server> servers) {
+            Servers = servers;
         }
-        public static void SetListServer(string json) {
-            ListServer = JsonConvert.DeserializeObject<ICollection<Server>>(json);
+        public static void SetServers(string json) {
+            Servers = JsonConvert.DeserializeObject<ICollection<Server>>(json);
         }
         public static ICollection<Channel> ChannelsInCurrentServer { get; private set; }
         public static void SetChannelsInCurrentServer(ICollection<Channel> channelsInCurrentServer) {
@@ -87,11 +87,11 @@ namespace Discord {
             MessagesInCurrentChannel = JsonConvert.DeserializeObject<ICollection<Message>>(json);
         }
         public static void RemoveServer(int serverId) {
-            Server server = ListServer.Where(s => s.ServerId == serverId).FirstOrDefault();
+            Server server = Servers.Where(s => s.ServerId == serverId).FirstOrDefault();
             if(server == null) {
                 return;
             }
-            ListServer.Remove(server);
+            Servers.Remove(server);
             if(server == CurrentServer) {
                 CurrentServer = null;
             }
@@ -100,7 +100,7 @@ namespace Discord {
             CurrentUser = null;
             CurrentServer = null;
             CurrentChannel = null;
-            ListServer = null;
+            Servers = null;
             ChannelsInCurrentServer = null;
             RolesInCurrentServer = null;
             UsersInCurrentServer = null;
@@ -112,5 +112,22 @@ namespace Discord {
         public static void ClearCurrentChannel() {
             CurrentChannel = null;
         }
+        public static void ClearUserRoleInCurrentServer() {
+            UserRoleInCurrentServer = null;
+        }
+        public static class Cleaner {
+            public static void ClearOnExitServer() {
+                CurrentServer = null;
+                UserRoleInCurrentServer = null;
+                UsersInCurrentServer = null;
+                ChannelsInCurrentServer = null;
+                RolesInCurrentServer = null;
+            }
+            public static void ClearOnExitChannel() {
+                CurrentChannel = null;
+                MessagesInCurrentChannel = null;
+            }
+        }
+        //public static void 
     }
 }

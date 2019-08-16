@@ -24,7 +24,6 @@ namespace Discord.Managers {
         private Button ButtonCreateOrJoinServer { get; set; }
 
         private DockPanel DockPanelServerButton { get; set; }
-        private ICollection<Server> ListServer { get; set; }
         private Dictionary<Button, Server> ButtonServers { get; set; }
         private CreateOrJoinServerDialog CreateOrJoinServerDialog { get; set; }
         private CreateServerDialog CreateServerDialog { get; set; }
@@ -41,11 +40,10 @@ namespace Discord.Managers {
             JoinServerDialog = new JoinServerDialog();
             CreateOrJoinServerDialog = new CreateOrJoinServerDialog(CreateServerDialog, JoinServerDialog);
         }
-        public async Task EstablishAsync() {
+        public void Establish() {
             ButtonCreateOrJoinServer.Click += ButtonCreateOrJoinServer_Click;
             CreateServerDialog.RequestCreateServer += CreateServerDialog_RequestCreateServer;
             JoinServerDialog.RequestJoinServer += JoinServerDialog_RequestJoinServer;
-            await RetrieveListServerAsync();
         }
 
         public void TearDown() {
@@ -54,18 +52,12 @@ namespace Discord.Managers {
             JoinServerDialog.RequestJoinServer -= JoinServerDialog_RequestJoinServer;
         }
         public void RemoveServer(int serverId) {
-            Server server = ListServer.Where(s => s.ServerId == serverId).FirstOrDefault();
-            if(server == null) {
-                return;
-            }
-            Button button = ButtonServers.Where(bs => bs.Value == server).FirstOrDefault().Key;
-            ListServer.Remove(server);
+            Button button = ButtonServers.Where(bs => bs.Value.ServerId == serverId).FirstOrDefault().Key;
             ButtonServers.Remove(button);
             DockPanelServerButton.Children.Remove(button);
         }
-        public void InsertServer(Server server) {
+        public void AddServer(Server server) {
             Button button = CreateServerButton(server);
-            ListServer.Add(server);
             button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
         public void EnterFirstServer() {
@@ -82,35 +74,29 @@ namespace Discord.Managers {
             button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
         private async void JoinServerDialog_RequestJoinServer(object sender, RequestJoinServerArgs e) {
-            if (Inventory.ListServer.Contains(e.Server)) {
+            if (Inventory.Servers.Contains(e.Server)) {
                 MessageBox.Show("You are already in this server: " + e.Server.ServerName);
             }
             else {
-                await HubManager.SendJoinServerSignalAsync(Inventory.CurrentUser.UserId, e.Server.ServerId);
+                await HubManager.Server.SendJoinServerSignalAsync(Inventory.CurrentUser.UserId, e.Server.ServerId);
                 JoinServerDialog.Close();
             }
         }
         private async void CreateServerDialog_RequestCreateServer(object sender, RequestCreateServerArgs e) {
-            Server server = await ResourcesCreator.CreateServerAsync(e.ServerName);
-            ListServer.Add(server);
-            CreateServerButton(server);
+            //Server server = await ResourcesCreator.CreateServerAsync(e.ServerName);
+            //ListServer.Add(server);
+            //CreateServerButton(server);
         }
         private void ButtonCreateOrJoinServer_Click(object sender, RoutedEventArgs e) {
             CreateOrJoinServerDialog.Activate();
             CreateOrJoinServerDialog.ShowDialog();
         }
-
-        private async Task RetrieveListServerAsync() {
-            ListServer = await ResourcesCreator.GetListServerAsync(Inventory.CurrentUser.UserId);
-            Inventory.SetListServer(ListServer);
-            AttachListButton();
-        }
-        private void AttachListButton() {
+        public void CreateListButton() {
             GridServerButton.Children.Clear();
             DockPanelServerButton = new DockPanel() { LastChildFill = false };
             GridServerButton.Children.Add(DockPanelServerButton);
-            for (int i = 0; i < ListServer.Count; i++) {
-                CreateServerButton(ListServer.ElementAt(i));
+            for (int i = 0; i < Inventory.Servers.Count; i++) {
+                CreateServerButton(Inventory.Servers.ElementAt(i));
             }
         }
 
@@ -131,8 +117,7 @@ namespace Discord.Managers {
             ServerButtonClick?.Invoke(this, new ServerButtonClickArgs(selectedServer));
             if (Inventory.CurrentServer != selectedServer) {
                 Server previousServer = Inventory.CurrentServer;
-                Inventory.SetCurrentServer(selectedServer);
-                ServerChanged?.Invoke(this, new ServerChangedArgs(previousServer, selectedServer));
+                ServerChanged?.Invoke(this, new ServerChangedArgs(Inventory.CurrentServer, selectedServer));
             }
         }
 

@@ -19,40 +19,11 @@ namespace Discord.Models {
 
         public ICollection<Message> Messages { get; set; }
         public ICollection<ServerUser> ServerUsers { get; set; }
-        public override bool Equals(object obj) {
-            if(obj is User) {
-                return UserId == ((User)obj).UserId;
-            }
-            return false;
-        }
-        public override int GetHashCode() {
-            return UserId.GetHashCode();
-        }
-        public static bool operator ==(User a, User b) {
-            object oa = a as object;
-            object ob = b as object;
-            if (oa == null && ob == null) {
-                return true;
-            }
-            else if (oa != null && ob != null) {
-                return a.UserId == b.UserId;
-            }
-            else {
+        public bool SameAs(User user) {
+            if(user == null) {
                 return false;
             }
-        }
-        public static bool operator !=(User a, User b) {
-            object oa = a as object;
-            object ob = b as object;
-            if (oa == null && ob == null) {
-                return false;
-            }
-            else if (oa != null && ob != null) {
-                return a.UserId != b.UserId;
-            }
-            else {
-                return true;
-            }
+            return UserId == user.UserId;
         }
     }
 }

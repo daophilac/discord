@@ -1,57 +1,59 @@
 package com.peanut.discord.equipment;
-
 import android.graphics.Bitmap;
-import android.os.Handler;
-import android.os.Looper;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.peanut.androidlib.common.worker.UIWorker;
-import com.peanut.discord.MainActivity;
 import com.peanut.discord.R;
+import com.peanut.discord.customview.SendMessageButton;
+import com.peanut.discord.models.Channel;
 import com.peanut.discord.models.Message;
+import com.peanut.discord.models.User;
 import com.peanut.discord.tools.ImageResolver;
 
-import java.util.ArrayList;
-import java.util.List;
-
-class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> implements Inventory.MessageListener {
-    private Handler handlerAddMessage;
-    private List<Message> listMessage;
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+    private EditText editTextType;
+    private SendMessageButton sendMessageButton;
     private OnMessageLongClickListener onMessageLongClickListener;
     private UIWorker uiWorker;
-    public MessageAdapter(){
-        this.listMessage = new ArrayList<>();
-        this.handlerAddMessage = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(android.os.Message msg) {
-                notifyItemInserted(listMessage.size() - 1);
-            }
-        };
+    public MessageAdapter(EditText editTextType, SendMessageButton sendMessageButton){
+        this.editTextType = editTextType;
+        this.sendMessageButton = sendMessageButton;
+    }
+    public void establish(){
         uiWorker = new UIWorker();
+        sendMessageButton.setOnClickListener(v -> {
+            if(Inventory.currentChannel == null){
+                return;
+            }
+            String content = editTextType.getText().toString().trim();
+            if(!content.equals("")){
+                User currentUser = Inventory.currentUser;
+                Channel currentChannel = Inventory.currentChannel;
+                Message message = new Message(currentChannel.getChannelId(), currentUser.getUserId(), content);
+                HubManager.Message.sendMessage(message);
+            }
+        });
     }
-
-    @Override
-    public void onAddListMessage(List<Message> listMessage) {
-        this.listMessage = listMessage;
+    public void tearDown(){
+        uiWorker = null;
+    }
+    void changeChannel(Channel previous, Channel now){
         notifyDataSetChanged();
     }
-
-    @Override
-    public void onLeaveServer() {
-        this.listMessage.clear();
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public void onAddMessage(Message message) {
-        this.listMessage.add(message);
-        this.handlerAddMessage.sendEmptyMessage(0);
+    void addMessage(Message message){
+        notifyItemInserted(Inventory.getMessagesInCurrentChannel().size() - 1);
+        if(Inventory.currentUser.sameAs(message.getUser())){
+            editTextType.setText("");
+        }
     }
 
     @NonNull
@@ -64,7 +66,7 @@ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder messageViewHolder, int i) {
-        Message message = this.listMessage.get(i);
+        Message message = Inventory.getMessagesInCurrentChannel().get(i);
         messageViewHolder.textViewMessage.setText(message.getUser().getUserName() + ": " + message.getContent());
         messageViewHolder.textViewTime.setText(message.getSimpleTime());
         ImageResolver.downloadUserImage(message.getUser().getImageName(), b -> {
@@ -85,12 +87,12 @@ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHold
     }
     @Override
     public int getItemCount() {
-        return this.listMessage.size();
+        if(Inventory.getMessagesInCurrentChannel() == null){
+            return 0;
+        }
+        return Inventory.getMessagesInCurrentChannel().size();
     }
 
-    public List<Message> getListMessage() {
-        return listMessage;
-    }
 
     class MessageViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageViewAvatar;

@@ -61,9 +61,10 @@ public final class Data {
         internalFileWriter.writeConfiguration("password", password);
         internalFileWriter.close();
     }
-    public static void clearData(Context context){
+    public static void clearData(){
         try {
-            FileUtils.deleteDirectory(new File(context.getFilesDir().getAbsolutePath() + "/" + USER_FOLDER_NAME));
+            String a = APPLICATION_DIRECTORY;
+            FileUtils.deleteDirectory(new File(APPLICATION_DIRECTORY));
         } catch (IOException e) {
             e.printStackTrace();
         }

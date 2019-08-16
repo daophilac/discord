@@ -52,4 +52,10 @@ public class User {
         setPassword(password);
         setUserName(userName);
     }
+    public boolean sameAs(User user){
+        if(user == null){
+            return false;
+        }
+        return getUserId() == user.getUserId();
+    }
 }

@@ -36,4 +36,7 @@
     <declare-styleable name="DeleteImage">
         <attr name="deleteImageStyle" format="reference"/>
     </declare-styleable>
+    <declare-styleable name="UserImage">
+        <attr name="userImageStyle" format="reference"/>
+    </declare-styleable>
 </resources>

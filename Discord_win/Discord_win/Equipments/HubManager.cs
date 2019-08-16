@@ -13,342 +13,311 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 
 namespace Discord.Equipments {
-    class HubManager {
-        private HubConnection MyHubConnection { get; set; }
-        public void RegisterEvent() {
-            // Mở kết nối đến server
-            // Ta chỉ mở kết nối một lần duy nhất trong toàn bộ chương trình
-            HubConnection = new HubConnectionBuilder().WithUrl("http://localhost:4444").Build();
-            HubConnection.StartAsync();
-
-            // Đăng ký lắng nghe sự kiện ReceiveMessage từ server với một tham số kiểu chuỗi
-            Action<string> actionMessage = new Action<string>(GetMessage);
-            HubConnection.On<string>("ReceiveMessage", actionMessage);
-
-            // Đăng ký lắng nghe sự kiện ABC từ server với 2 tham số
-            // một tham số kiểu int và một tham số kiểu string
-            // Lần này ta viết kiểu hàm vô danh
-            HubConnection.On<int, string>("ABC", (aNumber, aString) => {
-                Console.WriteLine("I just got something from the server," +
-                    "a number and a string. They are: " + aNumber + " and " + aString);
-            });
-        }
-        private void GetMessage(string message) {
-            Console.WriteLine("Hey! I just got a message");
-        }
-        public void BroadcastMessageToAllUsers(string message) {
-            // Gọi tới phương thức BroadcastMessage phía server
-            // và truyền vào một tham số kiểu string
-            HubConnection.InvokeAsync("BroadcastMessage", message); 
-        }
-
-
-
-
-
-
-        public static string ConnectionId { get; private set; }
+    public static class HubManager {
         private static HubConnection HubConnection { get; set; }
-        public static event EventHandler<ReceiveChannelConcurrentConflictSignalEventArgs> ReceiveChannelConcurrentConflictSignal;
-        public static event EventHandler<ReceiveRoleConcurrentConflictSignalEventArgs> ReceiveRoleConcurrentConflictSignal;
-        public static event EventHandler<ReceiveJoinServerSignalEventArgs> ReceiveJoinServerSignal;
-        public static event EventHandler<ReceiveNewUserJoinServerSignalEventArgs> ReceiveNewUserJoinServerSignal;
-        public static event EventHandler<ReceiveOtherUserLeaveServerSignalEventArgs> ReceiveOtherUserLeaveServerSignal;
-        public static event EventHandler<ReceiveLeaveServerSignalEventArgs> ReceiveLeaveServerSignal;
-        public static event EventHandler<ReceiveMessageSignalEventArgs> ReceiveMessageSignal;
-        public static event EventHandler<ReceiveDeleteMessageSignalEventArgs> ReceiveDeleteMessageSignal;
-        public static event EventHandler<ReceiveEditMessageSignalEventArgs> ReceiveEditMessageSignal;
-        public static event EventHandler<ReceiveNewChannelSignalEventArgs> ReceiveNewChannelSignal;
-        public static event EventHandler<ReceiveNewRoleSignalEventArgs> ReceiveNewRoleSignal;
-        public static event EventHandler<ReceiveKickUserSignalEventArgs> ReceiveKickUserSignal;
-        public static event EventHandler<ReceiveChangeUserRoleSignalEventArgs> ReceiveChangeUserRoleSignal;
+        public static class Server {
+            public static event EventHandler<DetectJoinServerSignalEventArgs> DetectJoinServerSignal;
+            public static event EventHandler<DetectLeaveServerSignalEventArgs> DetectLeaveServerSignal;
+            internal static void Establish() {
+                RegisterOnDetectJoinServerSignal();
+                RegisterOnDetectLeaveServerSignal();
+            }
+            public static async Task SendEnterServerSignalAsync(int serverId) {
+                await HubConnection.InvokeAsync("EnterServerAsync", serverId);
+            }
+            public static async Task SendExitServerSignalAsync(int serverId) {
+                await HubConnection.InvokeAsync("ExitServerAsync", serverId);
+            }
+            public static async Task SendJoinServerSignalAsync(int userId, int serverId) {
+                await HubConnection.InvokeAsync("JoinServerAsync", userId, serverId);
+            }
+            public static async Task SendLeaveServerSignalAsync(int userId, int serverId) {
+                await HubConnection.InvokeAsync("LeaveServerAsync", userId, serverId);
+            }
+            private static void RegisterOnDetectJoinServerSignal() {
+                HubConnection.On<string>("DetectJoinServerSignal", async (jsonServer) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        Models.Server server = JsonConvert.DeserializeObject<Models.Server>(jsonServer);
+                        DetectJoinServerSignal?.Invoke(HubConnection, new DetectJoinServerSignalEventArgs(server));
+                    }));
+                });
+            }
+            public static void RegisterOnDetectLeaveServerSignal() {
+                HubConnection.On<int>("DetectLeaveServerSignal", async (serverId) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        DetectLeaveServerSignal?.Invoke(HubConnection, new DetectLeaveServerSignalEventArgs(serverId));
+                    }));
+                });
+            }
+            public class DetectJoinServerSignalEventArgs : EventArgs {
+                public Models.Server Server { get; }
+                public DetectJoinServerSignalEventArgs(Models.Server server) {
+                    Server = server;
+                }
+            }
+            public class DetectLeaveServerSignalEventArgs : EventArgs {
+                public int ServerId { get; }
+                public DetectLeaveServerSignalEventArgs(int serverId) {
+                    ServerId = serverId;
+                }
+            }
+        }
+        public static class Channel {
+            public static event EventHandler<DetectNewChannelSignalEventArgs> DetectNewChannelSignal;
+            public static event EventHandler<DetectChannelConcurrentConflictSignalEventArgs> DetectChannelConcurrentConflictSignal;
+            internal static void Establish() {
+                RegisterOnDetectNewChannelSignal();
+                RegisterOnDetectChannelConcurrentConflictSignal();
+            }
+            public static async Task SendEnterChannelSignalAsync(int channelId) {
+                await HubConnection.InvokeAsync("EnterChannelAsync", channelId);
+            }
+            public static async Task SendExitChannelSignalAsync(int channelId) {
+                await HubConnection.InvokeAsync("ExitChannelAsync", channelId);
+            }
+            public static async Task SendCreateChannelSignalAsync(Models.Channel channel) {
+                string json = JsonConvert.SerializeObject(channel);
+                await HubConnection.InvokeAsync("CreateChannelAsync", json);
+            }
+            private static void RegisterOnDetectNewChannelSignal() {
+                HubConnection.On<string>("DetectNewChannelSignal", async (jsonChannel) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        DetectNewChannelSignal?.Invoke(HubConnection, new DetectNewChannelSignalEventArgs(jsonChannel));
+                    }));
+                });
+            }
+            public static void RegisterOnDetectChannelConcurrentConflictSignal() {
+                HubConnection.On<string>("DetectChannelConcurrentConflictSignal", (message) => {
+                    DetectChannelConcurrentConflictSignal?.Invoke(HubConnection, new DetectChannelConcurrentConflictSignalEventArgs(message));
+                });
+            }
+            public class DetectNewChannelSignalEventArgs : EventArgs {
+                public Models.Channel Channel { get; }
+                public DetectNewChannelSignalEventArgs(Models.Channel channel) {
+                    Channel = channel;
+                }
+                public DetectNewChannelSignalEventArgs(string json) {
+                    Channel = JsonConvert.DeserializeObject<Models.Channel>(json);
+                }
+            }
+            public class DetectChannelConcurrentConflictSignalEventArgs : EventArgs {
+                public string Message { get; }
+                public DetectChannelConcurrentConflictSignalEventArgs(string conflictMessage) {
+                    Message = conflictMessage;
+                }
+            }
+        }
+        public static class Role {
+            public static event EventHandler<DetectNewRoleSignalEventArgs> DetectNewRoleSignal;
+            public static event EventHandler<DetectEditRoleSignalEventArgs> DetectEditRoleSignal;
+            public static event EventHandler<DetectChangeUserRoleSignalEventArgs> DetectChangeUserRoleSignal;
+            public static event EventHandler<DetectNewUserJoinServerSignalEventArgs> DetectNewUserJoinServerSignal;
+            public static event EventHandler<DetectOtherUserLeaveServerSignalEventArgs> DetectOtherUserLeaveServerSignal;
+            public static event EventHandler<DetectKickUserSignalEventArgs> DetectKickUserSignal;
+            public static event EventHandler<DetectRoleConcurrentConflictSignalEventArgs> DetectRoleConcurrentConflictSignal;
+            internal static void Establish() {
+                RegisterOnDetectNewRoleSignal();
+                RegisterOnDetectEditRoleSignal();
+                RegisterOnDetectChangeUserRoleSignal();
+                RegisterOnDetectNewUserJoinServerSignal();
+                RegisterOnDetectOtherUserLeaveServerSignal();
+                RegisterOnDetectKickUserSignal();
+                RegisterOnDetectRoleConcurrentConflictSignal();
+            }
+            public static async Task SendCreateRoleSignalAsync(Models.Role role) {
+                string json = JsonConvert.SerializeObject(role);
+                await HubConnection.InvokeAsync("CreateRoleAsync", json);
+            }
+            public static async Task SendEditRoleSignalAsync(Models.Role role) {
+                string json = JsonConvert.SerializeObject(role);
+                await HubConnection.InvokeAsync("EditRoleAsync", json);
+            }
+            public static async Task SendChangeUserRoleAsync(int userId, int serverId, int newRoleId) {
+                await HubConnection.InvokeAsync("ChangeUserRole", userId, serverId, newRoleId);
+            }
+            public static async Task SendKickUserSignalAsync(int userId, int serverId) {
+                await HubConnection.InvokeAsync("KickUserAsync", userId, serverId);
+            }
+            private static void RegisterOnDetectNewRoleSignal() {
+                HubConnection.On<string, string>("DetectNewRoleSignal", async (connectionId, jsonRole) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        Models.Role role = JsonConvert.DeserializeObject<Models.Role>(jsonRole);
+                        DetectNewRoleSignal?.Invoke(HubConnection, new DetectNewRoleSignalEventArgs(role));
+                    }));
+                });
+            }
+            private static void RegisterOnDetectEditRoleSignal() {
+                HubConnection.On<string>("DetectEditRoleSignal", async (jsonRole) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        Models.Role editedRole = JsonConvert.DeserializeObject<Models.Role>(jsonRole);
+                        DetectEditRoleSignal?.Invoke(HubConnection, new DetectEditRoleSignalEventArgs(editedRole));
+                    }));
+                });
+            }
+            private static void RegisterOnDetectChangeUserRoleSignal() {
+                HubConnection.On<int, int, int>("DetectChangeUserRoleSignal", (userId, oldRoleId, newRoleId) => {
+                    Application.Current.Dispatcher.Invoke(() => {
+                        DetectChangeUserRoleSignal?.Invoke(HubConnection, new DetectChangeUserRoleSignalEventArgs(userId, oldRoleId, newRoleId));
+                    });
+                });
+            }
+            private static void RegisterOnDetectNewUserJoinServerSignal() {
+                HubConnection.On<string, int>("DetectNewUserJoinServerSignal", async (jsonUser, roleId) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        Models.User user = JsonConvert.DeserializeObject<Models.User>(jsonUser);
+                        DetectNewUserJoinServerSignal?.Invoke(HubConnection, new DetectNewUserJoinServerSignalEventArgs(user, roleId));
+                    }));
+                });
+            }
+            public static void RegisterOnDetectOtherUserLeaveServerSignal() {
+                HubConnection.On<int, int>("DetectOtherUserLeaveServerSignal", async (userId, roleId) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        DetectOtherUserLeaveServerSignal?.Invoke(HubConnection, new DetectOtherUserLeaveServerSignalEventArgs(userId, roleId));
+                    }));
+                });
+            }
+            private static void RegisterOnDetectKickUserSignal() {
+                HubConnection.On<int, int, int>("DetectKickUserSignal", (serverId, userId, roleId) => {
+                    Application.Current.Dispatcher.Invoke(() => {
+                        DetectKickUserSignal?.Invoke(HubConnection, new DetectKickUserSignalEventArgs(serverId, userId, roleId));
+                    });
+                });
+            }
+            public static void RegisterOnDetectRoleConcurrentConflictSignal() {
+                HubConnection.On<string>("DetectRoleConcurrentConflictSignal", (message) => {
+                    DetectRoleConcurrentConflictSignal?.Invoke(HubConnection, new DetectRoleConcurrentConflictSignalEventArgs(message));
+                });
+            }
+            public class DetectNewRoleSignalEventArgs : EventArgs {
+                public Models.Role Role { get; }
+                public DetectNewRoleSignalEventArgs(Models.Role role) {
+                    Role = role;
+                }
+            }
+            public class DetectEditRoleSignalEventArgs : EventArgs {
+                public Models.Role EditedRole { get; }
+                public DetectEditRoleSignalEventArgs(Models.Role editedRole) {
+                    EditedRole = editedRole;
+                }
+            }
+            public class DetectChangeUserRoleSignalEventArgs : EventArgs {
+                public int UserId { get; }
+                public int OldRoleId { get; }
+                public int NewRoleId { get; }
+                public DetectChangeUserRoleSignalEventArgs(int userId, int oldRoleId, int newRoleId) {
+                    UserId = userId;
+                    OldRoleId = oldRoleId;
+                    NewRoleId = newRoleId;
+                }
+            }
+            public class DetectNewUserJoinServerSignalEventArgs : EventArgs {
+                public User User { get; }
+                public int RoleId { get; }
+                public DetectNewUserJoinServerSignalEventArgs(User user, int roleId) {
+                    User = user;
+                    RoleId = roleId;
+                }
+            }
+            public class DetectOtherUserLeaveServerSignalEventArgs : EventArgs {
+                public int UserId { get; }
+                public int RoleId { get; }
+                public DetectOtherUserLeaveServerSignalEventArgs(int userId, int roleId) {
+                    UserId = userId;
+                    RoleId = roleId;
+                }
+            }
+            public class DetectKickUserSignalEventArgs : EventArgs {
+                public int ServerId { get; }
+                public int UserId { get; }
+                public int RoleId { get; }
+                public DetectKickUserSignalEventArgs(int serverId, int userId, int roleId) {
+                    ServerId = serverId;
+                    UserId = userId;
+                    RoleId = roleId;
+                }
+            }
+            public class DetectRoleConcurrentConflictSignalEventArgs : EventArgs {
+                public string Message { get; }
+                public DetectRoleConcurrentConflictSignalEventArgs(string message) {
+                    Message = message;
+                }
+            }
+        }
+        public static class Message {
+            public static event EventHandler<DetectNewMessageSignalEventArgs> DetectNewMessageSignal;
+            public static event EventHandler<DetectEditMessageSignalEventArgs> DetectEditMessageSignal;
+            public static event EventHandler<DetectDeleteMessageSignalEventArgs> DetectDeleteMessageSignal;
+            internal static void Establish() {
+                RegisterOnDetectNewMessageSignal();
+                RegisterOnDetectEditMessageSignal();
+                RegisterOnDetectDeleteMessageSignal();
+            }
+            public static async Task SendMessageAsync(Models.Message message) {
+                if (message == null) {
+                    return;
+                }
+                string json = JsonConvert.SerializeObject(message);
+                await HubConnection.InvokeAsync("ReceiveMessageAsync", json);
+            }
+            public static async Task SendEditMessageSignalAsync(int messageId, string content) {
+                await HubConnection.InvokeAsync("EditMessageAsync", messageId, content);
+            }
+            public static async Task SendDeleteMessageSignalAsync(int channelId, int messageId) {
+                await HubConnection.InvokeAsync("DeleteMessageAsync", channelId, messageId);
+            }
+            private static void RegisterOnDetectNewMessageSignal() {
+                HubConnection.On<string>("DetectNewMessageSignal", (jsonMessage) => {
+                    Application.Current.Dispatcher.Invoke(() => {
+                        Models.Message message = JsonConvert.DeserializeObject<Models.Message>(jsonMessage);
+                        DetectNewMessageSignal?.Invoke(HubConnection, new DetectNewMessageSignalEventArgs(message));
+                    });
+                });
+            }
+            private static void RegisterOnDetectEditMessageSignal() {
+                HubConnection.On<int, string>("DetectEditMessageSignal", async (messageId, newContent) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        DetectEditMessageSignal?.Invoke(HubConnection, new DetectEditMessageSignalEventArgs(messageId, newContent));
+                    }));
+                });
+            }
+            private static void RegisterOnDetectDeleteMessageSignal() {
+                HubConnection.On<int>("DetectDeleteMessageSignal", async (messageId) => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        DetectDeleteMessageSignal?.Invoke(HubConnection, new DetectDeleteMessageSignalEventArgs(messageId));
+                    }));
+                });
+            }
+            public class DetectNewMessageSignalEventArgs : EventArgs {
+                public Models.Message Message { get; }
+                public DetectNewMessageSignalEventArgs(Models.Message message) {
+                    Message = message;
+                }
+            }
+            public class DetectEditMessageSignalEventArgs : EventArgs {
+                public int MessageId { get; }
+                public string NewContent { get; }
+                public DetectEditMessageSignalEventArgs(int messageId, string newContent) {
+                    MessageId = messageId;
+                    NewContent = newContent;
+                }
+            }
+            public class DetectDeleteMessageSignalEventArgs : EventArgs {
+                public int MessageId { get; }
+                public DetectDeleteMessageSignalEventArgs(int messageId) {
+                    MessageId = messageId;
+                }
+            }
+        }
         public static async Task EstablishAsync() {
             if(HubConnection != null) {
                 await HubConnection.StopAsync();
             }
             HubConnection = new HubConnectionBuilder().WithUrl(Route.ChatHub.UrlChatHub).Build();
-            RegisterOnReceiveChannelConcurrentConflictSignal();
-            RegisterOnReceiveRoleConcurrentConflictSignal();
-            RegisterOnReceiveConnectionIdSignal();
-            RegisterOnReceiveJoinServerSignal();
-            RegisterOnReceiveNewUserJoinServerSignal();
-            RegisterOnReceiveOtherUserLeaveServerSignal();
-            RegisterOnReceiveLeaveServerSignal();
-            RegisterOnReceiveMessageSignal();
-            RegisterOnReceiveDeleleMessageSignal();
-            RegisterOnReceiveEditMessageSignal();
-            RegisterOnReceiveNewChannelSignal();
-            RegisterOnReceiveNewRoleSignal();
-            RegisterOnReceiveKickUserSignal();
-            RegisterOnReceiveChangeUserRoleSignal();
+            Server.Establish();
+            Channel.Establish();
+            Role.Establish();
+            Message.Establish();
             await HubConnection.StartAsync();
-            await HubConnection.InvokeAsync("GetConnectionIdAsync");
-        }
-        public static async Task SendJoinServerSignalAsync(int userId, int serverId) {
-            await HubConnection.InvokeAsync("JoinServer", userId, serverId);
-        }
-        public static async Task SendMessageAsync(string content) {
-            if (Inventory.CurrentChannel == null) {
-                return;
-            }
-            Message message = new Message(Inventory.CurrentChannel.ChannelId, Inventory.CurrentUser.UserId, content);
-            string json = JsonConvert.SerializeObject(message);
-            await HubConnection.InvokeAsync("ReceiveMessageAsync", json);
-        }
-        public static async Task SendEditMessageSignalAsync(int messageId, string content) {
-            await HubConnection.InvokeAsync("EditMessageAsync", messageId, content);
-        }
-        public static async Task SendDeleteMessageSignalAsync(int channelId, int messageId) {
-            // Gửi tín hiệu người dùng xóa tin nhắn lên server
-            await HubConnection.InvokeAsync("DeleteMessageAsync", channelId, messageId);
-        }
-        public static async Task SendEnterServerSignalAsync(int serverId) {
-            await HubConnection.InvokeAsync("EnterServerAsync", serverId);
-        }
-        public static async Task SendExitServerSignalAsync(int serverId) {
-            await HubConnection.InvokeAsync("ExitServerAsync", serverId);
-        }
-        public static async Task SendLeaveServerSignalAsync(int serverId, int userId) {
-            await HubConnection.InvokeAsync("LeaveServerAsync", serverId, userId);
-        }
-        public static async Task SendCreateChannelSignalAsync(Channel channel) {
-            string json = JsonConvert.SerializeObject(channel);
-            await HubConnection.InvokeAsync("CreateChannelAsync", json);
-        }
-        public static async Task SendCreateRoleSignalAsync(Role role) {
-            string json = JsonConvert.SerializeObject(role);
-            await HubConnection.InvokeAsync("CreateRoleAsync", json);
-        }
-        public static async Task SendEnterChannelSignalAsync(int channelId) {
-            await HubConnection.InvokeAsync("EnterChannelAsync", channelId);
-        }
-        public static async Task SendExitChannelSignalAsync(int channelId) {
-            await HubConnection.InvokeAsync("ExitChannelAsync", channelId);
-        }
-        public static async Task SendKickUserSignalAsync(int userId, int serverId) {
-            await HubConnection.InvokeAsync("KickUserAsync", userId, serverId);
-        }
-        public static async Task SendChangeUserRoleAsync(int userId, int serverId, int newRoleId) {
-            await HubConnection.InvokeAsync("ChangeUserRole", userId, serverId, newRoleId);
-        }
-        public static void RegisterOnReceiveChannelConcurrentConflictSignal() {
-            HubConnection.On<string, string>("ReceiveChannelConcurrentConflictSignal", (conflictCode, conflictMessage) => {
-                ReceiveChannelConcurrentConflictSignal?.Invoke(HubConnection, new ReceiveChannelConcurrentConflictSignalEventArgs(conflictCode, conflictMessage));
-            });
-        }
-        public static void RegisterOnReceiveRoleConcurrentConflictSignal() {
-            HubConnection.On<string>("ReceiveRoleConcurrentConflictSignal", (message) => {
-                ReceiveRoleConcurrentConflictSignal?.Invoke(HubConnection, new ReceiveRoleConcurrentConflictSignalEventArgs(message));
-            });
-        }
-        private static void RegisterOnReceiveConnectionIdSignal() {
-            HubConnection.On<string>("ReceiveConnectionIdSignal", (connectionId) => {
-                ConnectionId = connectionId;
-            });
-        }
-        private static void RegisterOnReceiveJoinServerSignal() {
-            HubConnection.On<string>("ReceiveJoinServerSignal", async (jsonServer) => {
-                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
-                    Server server = JsonConvert.DeserializeObject<Server>(jsonServer);
-                    ReceiveJoinServerSignal?.Invoke(HubConnection, new ReceiveJoinServerSignalEventArgs(server));
-                }));
-            });
-        }
-        private static void RegisterOnReceiveNewUserJoinServerSignal() {
-            HubConnection.On<string, int>("ReceiveNewUserJoinServerSignal", async (jsonUser, roleId) => {
-                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
-                    User user = JsonConvert.DeserializeObject<User>(jsonUser);
-                    ReceiveNewUserJoinServerSignal?.Invoke(HubConnection, new ReceiveNewUserJoinServerSignalEventArgs(user, roleId));
-                }));
-            });
-        }
-        public static void RegisterOnReceiveOtherUserLeaveServerSignal() {
-            HubConnection.On<int, int>("ReceiveOtherUserLeaveServerSignal", async (userId, roleId) => {
-                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
-                    ReceiveOtherUserLeaveServerSignal?.Invoke(HubConnection, new ReceiveOtherUserLeaveServerSignalEventArgs(userId, roleId));
-                }));
-            });
-        }
-        public static void RegisterOnReceiveLeaveServerSignal() {
-            HubConnection.On<int>("ReceiveLeaveServerSignal", async (serverId) => {
-                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
-                    ReceiveLeaveServerSignal?.Invoke(HubConnection, new ReceiveLeaveServerSignalEventArgs(serverId));
-                }));
-            });
-        }
-        private static void RegisterOnReceiveMessageSignal() {
-            HubConnection.On<string, int, string>("ReceiveMessageSignal", (connectionId, userId, jsonMessage) => {
-                Application.Current.Dispatcher.Invoke(() => {
-                    ReceiveMessageSignal?.Invoke(HubConnection, new ReceiveMessageSignalEventArgs(connectionId, userId, jsonMessage));
-                });
-            });
-        }
-        private static void RegisterOnReceiveDeleleMessageSignal() {
-            // Đăng ký lắng nghe sự kiện xóa tin nhắn
-            HubConnection.On<int>("ReceiveDeleteMessageSignal", async (messageId) => {
-                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
-                    // Không thực hiện logic gì cả mà chỉ phát động sự kiện ReceiveDeleteMessageSignal.
-                    // Những thành phần khác trong chương trình ví dụ như MessageManager có thể đăng ký
-                    // sự kiện này và nó mới chính là người thực hiện các logic liên quan đến xóa tin nhắn.
-                    ReceiveDeleteMessageSignal?.Invoke(HubConnection, new ReceiveDeleteMessageSignalEventArgs(messageId));
-                }));
-            });
-        }
-        private static void RegisterOnReceiveEditMessageSignal() {
-            HubConnection.On<int, string>("ReceiveEditMessageSignal", async (messageId, newContent) => {
-                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
-                    ReceiveEditMessageSignal?.Invoke(HubConnection, new ReceiveEditMessageSignalEventArgs(messageId, newContent));
-                }));
-            });
-        }
-        private static void RegisterOnReceiveNewChannelSignal() {
-            HubConnection.On<string, string>("ReceiveNewChannelSignal", async (connectionId, jsonChannel) => {
-                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
-                    ReceiveNewChannelSignal?.Invoke(HubConnection, new ReceiveNewChannelSignalEventArgs(jsonChannel));
-                }));
-            });
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        private static void RegisterOnReceiveNewRoleSignal() {
-            HubConnection.On<string, string>("ReceiveNewRoleSignal", async (connectionId, jsonRole) => {
-                await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
-                    Role role = JsonConvert.DeserializeObject<Role>(jsonRole);
-                    ReceiveNewRoleSignal?.Invoke(HubConnection, new ReceiveNewRoleSignalEventArgs(role));
-                }));
-            });
-        }
-        private static void RegisterOnReceiveKickUserSignal() {
-            HubConnection.On<int, int, int>("ReceiveKickUserSignal", (serverId, userId, roleId) => {
-                Application.Current.Dispatcher.Invoke(() => {
-                    ReceiveKickUserSignal?.Invoke(HubConnection, new ReceiveKickUserSignalEventArgs(serverId, userId, roleId));
-                });
-            });
-        }
-        private static void RegisterOnReceiveChangeUserRoleSignal() {
-            HubConnection.On<int, int, int>("ReceiveChangeUserRoleSignal", (userId, oldRoleId, newRoleId) => {
-                Application.Current.Dispatcher.Invoke(() => {
-                    ReceiveChangeUserRoleSignal?.Invoke(HubConnection, new ReceiveChangeUserRoleSignalEventArgs(userId, oldRoleId, newRoleId));
-                });
-            });
-        }
-        public class ReceiveChannelConcurrentConflictSignalEventArgs : EventArgs {
-            public string ConflictCode { get; }
-            public string ConflictMessage { get; }
-            public ReceiveChannelConcurrentConflictSignalEventArgs(string conflictCode, string conflictMessage) {
-                ConflictCode = conflictCode;
-                ConflictMessage = conflictMessage;
-            }
-        }
-        public class ReceiveRoleConcurrentConflictSignalEventArgs : EventArgs {
-            public string Message { get; }
-            public ReceiveRoleConcurrentConflictSignalEventArgs(string message) {
-                Message = message;
-            }
-        }
-        public class ReceiveJoinServerSignalEventArgs : EventArgs {
-            public Server Server { get; }
-            public ReceiveJoinServerSignalEventArgs(Server server) {
-                Server = server;
-            }
-        }
-        public class ReceiveNewUserJoinServerSignalEventArgs : EventArgs {
-            public User User { get; }
-            public int RoleId { get; }
-            public ReceiveNewUserJoinServerSignalEventArgs(User user, int roleId) {
-                User = user;
-                RoleId = roleId;
-            }
-        }
-        public class ReceiveOtherUserLeaveServerSignalEventArgs : EventArgs {
-            public int UserId { get; }
-            public int RoleId { get; }
-            public ReceiveOtherUserLeaveServerSignalEventArgs(int userId, int roleId) {
-                UserId = userId;
-                RoleId = roleId;
-            }
-        }
-        public class ReceiveLeaveServerSignalEventArgs : EventArgs {
-            public int ServerId { get; }
-            public ReceiveLeaveServerSignalEventArgs(int serverId) {
-                ServerId = serverId;
-            }
-        }
-        public class ReceiveNewChannelSignalEventArgs : EventArgs {
-            public Channel Channel { get; }
-            public ReceiveNewChannelSignalEventArgs(Channel channel) {
-                Channel = channel;
-            }
-            public ReceiveNewChannelSignalEventArgs(string json) {
-                Channel = JsonConvert.DeserializeObject<Channel>(json);
-            }
-        }
-        public class ReceiveNewRoleSignalEventArgs : EventArgs {
-            public Role Role { get; }
-            public ReceiveNewRoleSignalEventArgs(Role role) {
-                Role = role;
-            }
-        }
-        public class ReceiveMessageSignalEventArgs : EventArgs {
-            public readonly string connectionId;
-            public readonly int userId;
-            public readonly string jsonMessage;
-            public ReceiveMessageSignalEventArgs(string connectionId, int userId, string jsonMessage) {
-                this.connectionId = connectionId;
-                this.userId = userId;
-                this.jsonMessage = jsonMessage;
-            }
-        }
-        public class ReceiveDeleteMessageSignalEventArgs : EventArgs {
-            public int MessageId { get; private set; }
-            public ReceiveDeleteMessageSignalEventArgs(int messageId) {
-                MessageId = messageId;
-            }
-        }
-        public class ReceiveEditMessageSignalEventArgs : EventArgs {
-            public int MessageId { get; private set; }
-            public string NewContent { get; private set; }
-            public ReceiveEditMessageSignalEventArgs(int messageId, string newContent) {
-                MessageId = messageId;
-                NewContent = newContent;
-            }
-        }
-        public class ReceiveKickUserSignalEventArgs : EventArgs {
-            public int ServerId { get; }
-            public int UserId { get; }
-            public int RoleId { get; }
-            public ReceiveKickUserSignalEventArgs(int serverId, int userId, int roleId) {
-                ServerId = serverId;
-                UserId = userId;
-                RoleId = roleId;
-            }
-        }
-        public class ReceiveChangeUserRoleSignalEventArgs : EventArgs {
-            public int UserId { get; }
-            public int OldRoleId { get; }
-            public int NewRoleId { get; }
-            public ReceiveChangeUserRoleSignalEventArgs(int userId, int oldRoleId, int newRoleId) {
-                UserId = userId;
-                OldRoleId = oldRoleId;
-                NewRoleId = newRoleId;
-            }
         }
     }
 }

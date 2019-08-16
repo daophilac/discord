@@ -1,52 +1,47 @@
 package com.peanut.discord.equipment;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.peanut.discord.CreateOrJoinServerDialogFragment;
+import com.peanut.discord.MainActivity;
 import com.peanut.discord.R;
+import com.peanut.discord.customview.AddServerButton;
 import com.peanut.discord.models.Server;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder> implements Inventory.ServerListener {
-    private List<Server> listServer;
-    private ServerAdapterListener serverAdapterListener;
-    private Handler handler;
-    ServerAdapter(ServerAdapterListener serverAdapterListener){
-        this.listServer = new ArrayList<>();
-        this.serverAdapterListener = serverAdapterListener;
-        this.handler = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(Message msg) {
-                notifyItemInserted(listServer.size() - 1);
-            }
-        };
+public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder> {
+    private FragmentManager fragmentManager;
+    private AddServerButton addServerButton;
+    private CreateOrJoinServerDialogFragment createOrJoinServerDialogFragment;
+    private List<OnServerButtonClickedListener> onServerButtonClickedListeners;
+    private List<OnServerChangedListener> onServerChangedListeners;
+    public ServerAdapter(FragmentManager fragmentManager){
+        this.fragmentManager = fragmentManager;
     }
+    public void establish(){
+        createOrJoinServerDialogFragment = new CreateOrJoinServerDialogFragment();
+        onServerButtonClickedListeners = new ArrayList<>();
+        onServerChangedListeners = new ArrayList<>();
 
-    @Override
-    public void onAddListServer(List<Server> listServer) {
-        this.listServer = listServer;
-        notifyDataSetChanged();
+
     }
-
-    @Override
-    public void onAddServer(Server server) {
-        this.listServer.add(server);
-        handler.sendEmptyMessage(0);
+    public void setAddServerButton(AddServerButton addServerButton) {
+        this.addServerButton = addServerButton;
+        addServerButton.setOnClickListener(v -> {
+            createOrJoinServerDialogFragment.show(fragmentManager, MainActivity.LOG_TAG);
+        });
     }
-
-    @Override
-    public void onLeaveServer(Server server) {
-        this.listServer.remove(server);
-        notifyItemRemoved(this.listServer.size());
+    public void tearDown(){
+        onServerButtonClickedListeners = null;
+        onServerChangedListeners = null;
     }
 
     @NonNull
@@ -59,18 +54,23 @@ class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull ServerViewHolder serverViewHolder, int i) {
-        Server server = this.listServer.get(i);
+        Server server = Inventory.getServers().get(i);
         Button button = serverViewHolder.button;
         button.setText(server.getServerName());
-        button.setOnClickListener(v -> this.serverAdapterListener.onSelectServer(server));
+        button.setOnClickListener(v -> {
+            if(server != Inventory.currentServer){
+                for(OnServerChangedListener listener : onServerChangedListeners){
+                    listener.onServerChanged(Inventory.currentServer, server);
+                }
+            }
+        });
     }
     @Override
     public int getItemCount() {
-        return this.listServer.size();
-    }
-
-    List<Server> getListServer() {
-        return listServer;
+        if(Inventory.getServers() == null){
+            return 0;
+        }
+        return Inventory.getServers().size();
     }
 
     class ServerViewHolder extends RecyclerView.ViewHolder{
@@ -79,5 +79,35 @@ class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder>
             super(itemView);
             this.button = itemView.findViewById(R.id.button_server);
         }
+    }
+    boolean registerOnServerButtonClickedListener(OnServerButtonClickedListener listener){
+        if(listener == null){
+            return false;
+        }
+        return onServerButtonClickedListeners.add(listener);
+    }
+    boolean registerOnServerChangedListener(OnServerChangedListener listener){
+        if(listener == null){
+            return false;
+        }
+        return onServerChangedListeners.add(listener);
+    }
+    boolean unregisterOnServerButtonClickedListener(OnServerButtonClickedListener listener){
+        if(listener == null){
+            return false;
+        }
+        return onServerButtonClickedListeners.remove(listener);
+    }
+    boolean unregisterOnServerChangedListener(OnServerChangedListener listener){
+        if(listener == null){
+            return false;
+        }
+        return onServerChangedListeners.remove(listener);
+    }
+    interface OnServerButtonClickedListener{
+        void onServerButtonClicked(Server server);
+    }
+    interface OnServerChangedListener{
+        void onServerChanged(Server previous, Server now);
     }
 }

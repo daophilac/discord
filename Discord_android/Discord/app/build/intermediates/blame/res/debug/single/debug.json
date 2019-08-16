@@ -24,24 +24,28 @@
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-hdpi-v4\\abc_menu_hardkey_panel_mtrl_mult.9.png"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_activity_chooser_view.xml.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\layout\\abc_activity_chooser_view.xml"
-    },
-    {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_textfield_activated_mtrl_alpha.9.png.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xxhdpi-v4\\abc_textfield_activated_mtrl_alpha.9.png"
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_checkbox_checked_to_unchecked_mtrl_animation.xml.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\btn_checkbox_checked_to_unchecked_mtrl_animation.xml"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_menu_paste_mtrl_am_alpha.png.flat",
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-hdpi-v4\\abc_ic_menu_paste_mtrl_am_alpha.png"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_checkbox_checked_to_unchecked_mtrl_animation.xml.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\btn_checkbox_checked_to_unchecked_mtrl_animation.xml"
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_textfield_activated_mtrl_alpha.9.png.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xxhdpi-v4\\abc_textfield_activated_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_activity_chooser_view.xml.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\layout\\abc_activity_chooser_view.xml"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_radio_on_to_off_mtrl_animation.xml.flat",
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\btn_radio_on_to_off_mtrl_animation.xml"
+    },
+    {
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_user_white_24dp.xml.flat",
+        "source": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\src\\main\\res\\drawable\\ic_user_white_24dp.xml"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_abc_textfield_search_material.xml.flat",
@@ -144,12 +148,12 @@
         "source": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\src\\main\\res\\layout\\activity_main.xml"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_ic_star_half_black_36dp.png.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xxxhdpi-v4\\abc_ic_star_half_black_36dp.png"
-    },
-    {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_create_channel.xml.flat",
         "source": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\src\\main\\res\\layout\\dialog_create_channel.xml"
+    },
+    {
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_ic_star_half_black_36dp.png.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xxxhdpi-v4\\abc_ic_star_half_black_36dp.png"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_abc_item_background_holo_dark.xml.flat",
@@ -188,12 +192,12 @@
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\a45c2c25c357bd3275b244f522928a1a\\res\\layout\\design_layout_snackbar_include.xml"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_scrubber_control_to_pressed_mtrl_000.png.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-hdpi-v4\\abc_scrubber_control_to_pressed_mtrl_000.png"
-    },
-    {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_abc_spinner_textfield_background_material.xml.flat",
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\abc_spinner_textfield_background_material.xml"
+    },
+    {
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_scrubber_control_to_pressed_mtrl_000.png.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-hdpi-v4\\abc_scrubber_control_to_pressed_mtrl_000.png"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_textfield_search_activated_mtrl_alpha.9.png.flat",
@@ -236,16 +240,16 @@
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\a45c2c25c357bd3275b244f522928a1a\\res\\layout\\design_navigation_item.xml"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_btn_switch_to_on_mtrl_00012.9.png.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xhdpi-v4\\abc_btn_switch_to_on_mtrl_00012.9.png"
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_checkbox_unchecked_mtrl.xml.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\btn_checkbox_unchecked_mtrl.xml"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\anim_btn_radio_to_on_mtrl_dot_group_animation.xml.flat",
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\anim\\btn_radio_to_on_mtrl_dot_group_animation.xml"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_checkbox_unchecked_mtrl.xml.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\btn_checkbox_unchecked_mtrl.xml"
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_btn_switch_to_on_mtrl_00012.9.png.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xhdpi-v4\\abc_btn_switch_to_on_mtrl_00012.9.png"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13_mtrl_layout_snackbar.xml.flat",
@@ -268,12 +272,12 @@
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-ldrtl-xhdpi-v17\\abc_ic_menu_copy_mtrl_am_alpha.png"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_scrubber_primary_mtrl_alpha.9.png.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-mdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
-    },
-    {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_checkbox_checked_mtrl.xml.flat",
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\btn_checkbox_checked_mtrl.xml"
+    },
+    {
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_scrubber_primary_mtrl_alpha.9.png.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-mdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
@@ -284,24 +288,24 @@
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\a45c2c25c357bd3275b244f522928a1a\\res\\color-v23\\design_tint_password_toggle.xml"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_radio_off_mtrl.xml.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\btn_radio_off_mtrl.xml"
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_ic_star_half_black_48dp.png.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xxxhdpi-v4\\abc_ic_star_half_black_48dp.png"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_expanded_menu_layout.xml.flat",
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\layout\\abc_expanded_menu_layout.xml"
     },
     {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_ic_star_half_black_48dp.png.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xxxhdpi-v4\\abc_ic_star_half_black_48dp.png"
-    },
-    {
-        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_notification_bg_low.xml.flat",
-        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\64a8526901103ce4196532efa07e3d36\\res\\drawable\\notification_bg_low.xml"
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btn_radio_off_mtrl.xml.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable\\btn_radio_off_mtrl.xml"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_ic_star_half_black_36dp.png.flat",
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-xhdpi-v4\\abc_ic_star_half_black_36dp.png"
+    },
+    {
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_notification_bg_low.xml.flat",
+        "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\64a8526901103ce4196532efa07e3d36\\res\\drawable\\notification_bg_low.xml"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_activity_chooser_view_list_item.xml.flat",
@@ -1562,6 +1566,10 @@
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldrtl-xxxhdpi-v17_abc_ic_menu_copy_mtrl_am_alpha.png.flat",
         "source": "C:\\Users\\Dao Phi Lac\\.gradle\\caches\\transforms-2\\files-2.1\\65a796f16807e151d5158620d8685c8e\\res\\drawable-ldrtl-xxxhdpi-v17\\abc_ic_menu_copy_mtrl_am_alpha.png"
+    },
+    {
+        "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_user_black_24dp.xml.flat",
+        "source": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\src\\main\\res\\drawable\\ic_user_black_24dp.xml"
     },
     {
         "merged": "D:\\Desktop\\repos\\discord\\Discord_android\\Discord\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldrtl-xxhdpi-v17_abc_ic_menu_cut_mtrl_alpha.png.flat",

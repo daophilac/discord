@@ -17,5 +17,11 @@ namespace Discord.Models {
             UserId = userId;
             Content = content;
         }
+        public bool SameAs(Message message) {
+            if(message == null) {
+                return false;
+            }
+            return MessageId == message.MessageId;
+        }
     }
 }

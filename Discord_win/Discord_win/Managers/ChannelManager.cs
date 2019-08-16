@@ -17,27 +17,30 @@ namespace Discord.Managers {
         private DockPanel dockPanelChannel;
         private DockPanel DockPanelChannel {
             get => dockPanelChannel;
-            set => dockPanelChannel = value ?? throw new ArgumentNullException("DockPanelChannel", "DockPanelChannel cannot be null.");
+            set => dockPanelChannel = value ??
+                throw new ArgumentNullException("DockPanelChannel", "DockPanelChannel cannot be null.");
         }
         private Grid gridChannelContent;
         private Grid GridChannelContent {
             get => gridChannelContent;
-            set => gridChannelContent = value ?? throw new ArgumentNullException("GridChannelContent", "GridChannelContent cannot be null.");
+            set => gridChannelContent = value ??
+                throw new ArgumentNullException("GridChannelContent", "GridChannelContent cannot be null.");
         }
         private Label labelUsername;
         private Label LabelUsername {
             get => labelUsername;
-            set => labelUsername = value ?? throw new ArgumentNullException("LabelUsername", "LabelUsername cannot be null.");
+            set => labelUsername = value ??
+                throw new ArgumentNullException("LabelUsername", "LabelUsername cannot be null.");
         }
         private Label labelServerName;
         private Label LabelServerName {
             get => labelServerName;
-            set => labelServerName = value ?? throw new ArgumentNullException("LabelServerName", "LabelServerName cannot be null.");
+            set => labelServerName = value ??
+                throw new ArgumentNullException("LabelServerName", "LabelServerName cannot be null.");
         }
         private Server CurrentServer { get; set; }
         private DockPanel DockPanelChannelButton { get; set; }
         private Button ButtonCurrentChannel { get; set; }
-        private ICollection<Channel> ListChannel { get; set; }
         private Dictionary<Button, Channel> ButtonChannels { get; set; }
         private MenuItem MenuItemInvite { get; set; }
         private MenuItem MenuItemCreateChannel { get; set; }
@@ -55,30 +58,35 @@ namespace Discord.Managers {
             CreateChannelDialog = new CreateChannelDialog();
             InvitePeopleDialog = new InvitePeopleDialog();
         }
+
+        public void TearDown() {
+            CreateChannelDialog.RequestCreateChannel -= CreateChannelDialog_RequestCreateChannel;
+            LabelServerName.MouseUp -= LabelServerName_MouseUp;
+            MenuItemInvite.Click -= MenuItemInvite_Click;
+            MenuItemCreateChannel.Click -= MenuItemCreateChannel_Click;
+            MenuItemLeaveServer.Click -= MenuItemLeaveServer_Click;
+        }
         public void Establish() {
             LabelUsername.Content = Inventory.CurrentUser.UserName;
             ContextMenu contextMenu = LabelServerName.ContextMenu;
             MenuItemInvite = contextMenu.Items[0] as MenuItem;
             MenuItemCreateChannel = contextMenu.Items[1] as MenuItem;
             MenuItemLeaveServer = contextMenu.Items[2] as MenuItem;
-
-            HubManager.ReceiveChannelConcurrentConflictSignal += HubManager_ReceiveChannelConcurrentConflictSignal;
-            HubManager.ReceiveNewChannelSignal += HubManager_ReceiveNewChannelSignal;
+            
             CreateChannelDialog.RequestCreateChannel += CreateChannelDialog_RequestCreateChannel;
             LabelServerName.MouseUp += LabelServerName_MouseUp;
             MenuItemInvite.Click += MenuItemInvite_Click;
             MenuItemCreateChannel.Click += MenuItemCreateChannel_Click;
             MenuItemLeaveServer.Click += MenuItemLeaveServer_Click;
         }
-
-        public void TearDown() {
-            HubManager.ReceiveChannelConcurrentConflictSignal -= HubManager_ReceiveChannelConcurrentConflictSignal;
-            HubManager.ReceiveNewChannelSignal -= HubManager_ReceiveNewChannelSignal;
-            CreateChannelDialog.RequestCreateChannel -= CreateChannelDialog_RequestCreateChannel;
-            LabelServerName.MouseUp -= LabelServerName_MouseUp;
-            MenuItemInvite.Click -= MenuItemInvite_Click;
-            MenuItemCreateChannel.Click -= MenuItemCreateChannel_Click;
-            MenuItemLeaveServer.Click -= MenuItemLeaveServer_Click;
+        public void AddChannel(Channel channel) {
+            Button button = CreateChannelButton(channel.ChannelName);
+            DockPanel.SetDock(button, Dock.Top);
+            ButtonChannels.Add(button, channel);
+            DockPanelChannelButton.Children.Add(button);
+        }
+        public void ShowError(string message) {
+            MessageBox.Show(message);
         }
         public void ClearContent() {
             GridChannelContent.Children.Clear();
@@ -92,8 +100,11 @@ namespace Discord.Managers {
         }
 
         private async void MenuItemLeaveServer_Click(object sender, RoutedEventArgs e) {
-            if(MessageBox.Show("Leave server?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
-                await HubManager.SendLeaveServerSignalAsync(CurrentServer.ServerId, Inventory.CurrentUser.UserId);
+            MessageBoxResult result = MessageBox.Show("Leave server?", "", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) {
+                int userId = Inventory.CurrentUser.UserId;
+                int serverId = CurrentServer.ServerId;
+                await HubManager.Server.SendLeaveServerSignalAsync(userId, serverId);
             }
         }
 
@@ -103,7 +114,8 @@ namespace Discord.Managers {
         }
 
         private async void MenuItemInvite_Click(object sender, RoutedEventArgs e) {
-            string instantInvite = await ResourcesCreator.GetInstantInviteByServerAsync(Inventory.CurrentServer.ServerId);
+            int serverId = Inventory.CurrentServer.ServerId;
+            string instantInvite = await ResourcesCreator.GetInstantInviteByServerAsync(serverId);
             InvitePeopleDialog.Activate(instantInvite);
         }
 
@@ -111,52 +123,34 @@ namespace Discord.Managers {
             LabelServerName.ContextMenu.IsOpen = true;
         }
 
-        private void HubManager_ReceiveChannelConcurrentConflictSignal(object sender, HubManager.ReceiveChannelConcurrentConflictSignalEventArgs e) {
-            MessageBox.Show(e.ConflictMessage);
-        }
-
         private async void CreateChannelDialog_RequestCreateChannel(object sender, RequestCreateChannelArgs e) {
-            await HubManager.SendCreateChannelSignalAsync(new Channel {
+            await HubManager.Channel.SendCreateChannelSignalAsync(new Channel {
                 ChannelName = e.ChannelName,
                 ServerId = Inventory.CurrentServer.ServerId
             });
         }
 
-        private void HubManager_ReceiveNewChannelSignal(object sender, HubManager.ReceiveNewChannelSignalEventArgs e) {
-            Inventory.ChannelsInCurrentServer.Add(e.Channel);
-            Button button = CreateChannelButton(e.Channel.ChannelName);
-            DockPanel.SetDock(button, Dock.Top);
-            ButtonChannels.Add(button, e.Channel);
-            DockPanelChannelButton.Children.Add(button);
-        }
-
-        public async void ChangeServer(Server previousServer, Server nowServer) {
+        public void ChangeServer(Server previousServer, Server nowServer) {
             CurrentServer = nowServer;
             ButtonChannels.Clear();
             LabelServerName.Content = nowServer.ServerName;
             LabelServerName.Visibility = Visibility.Visible;
-            await RetrieveListChannel(nowServer.ServerId);
-            ActivateOrDeactivateOperations();
+            AttachButtons();
+            MenuItemsActivate();
             EnterFirstChannel();
         }
-        public void ActivateOrDeactivateOperations() {
+        public void MenuItemsActivate() {
             MenuItemCreateChannel.IsEnabled = Inventory.UserRoleInCurrentServer.ModifyChannel;
             MenuItemLeaveServer.IsEnabled = Inventory.CurrentUser.UserId != CurrentServer.AdminId;
-        }
-        private async Task RetrieveListChannel(int serverId) {
-            ListChannel = await ResourcesCreator.GetListChannelAsync(serverId);
-            Inventory.SetChannelsInCurrentServer(ListChannel);
-            AttachButtons();
         }
         private void AttachButtons() {
             GridChannelContent.Children.Clear();
             DockPanelChannelButton = new DockPanel() { LastChildFill = false };
             GridChannelContent.Children.Add(DockPanelChannelButton);
-            Inventory.SetChannelsInCurrentServer(ListChannel);
-            for (int i = 0; i < ListChannel.Count; i++) {
-                Button button = CreateChannelButton(ListChannel.ElementAt(i).ChannelName);
+            for (int i = 0; i < Inventory.ChannelsInCurrentServer.Count; i++) {
+                Button button = CreateChannelButton(Inventory.ChannelsInCurrentServer.ElementAt(i).ChannelName);
                 DockPanel.SetDock(button, Dock.Top);
-                ButtonChannels.Add(button, ListChannel.ElementAt(i));
+                ButtonChannels.Add(button, Inventory.ChannelsInCurrentServer.ElementAt(i));
                 DockPanelChannelButton.Children.Add(button);
             }
         }

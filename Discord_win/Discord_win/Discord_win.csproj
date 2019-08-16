@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6C6C3A3B-168B-4E27-A6E4-153EC3E7DF64}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>Discord_win</RootNamespace>
     <AssemblyName>Discord_win</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -166,6 +166,9 @@
     <Compile Include="Dialog\CreateServerDialog.xaml.cs">
       <DependentUpon>CreateServerDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialog\EditRoleDialog.xaml.cs">
+      <DependentUpon>EditRoleDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\InvitePeopleDialog.xaml.cs">
       <DependentUpon>InvitePeopleDialog.xaml</DependentUpon>
     </Compile>
@@ -233,6 +236,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialog\CreateServerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\EditRoleDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

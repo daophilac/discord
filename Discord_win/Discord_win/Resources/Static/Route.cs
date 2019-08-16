@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Discord.Resources.Static {
     static class Route {
         public static readonly string Protocol = "http";
-        public static readonly string DomainName = "192.168.2.101";
+        public static readonly string DomainName = "192.168.43.72";
         public static readonly string ServerName = "/sv";
         //public static readonly string BaseUrl = Protocol + "://" + DomainName + ServerName;
         public static readonly string BaseUrl = "http://127.0.0.1:55555";

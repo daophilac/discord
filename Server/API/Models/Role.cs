@@ -26,5 +26,14 @@ namespace API.Models {
         [JsonIgnore]
         public Server Server { get; set; }
         public ICollection<ChannelPermission> ChannelPermissions { get; set; }
+        public bool SameServerWith(Role role) {
+            return ServerId == role.ServerId;
+        }
+        public bool SameInServer(Role role) {
+            return ServerId == role.ServerId && RoleLevel == role.RoleLevel;
+        }
+        public bool SameLevelWith(Role role) {
+            return RoleLevel == role.RoleLevel;
+        }
     }
 }

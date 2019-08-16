@@ -1,10 +1,10 @@
 package com.peanut.discord.resources;
 public final class Route {
     public static final String protocol = "http";
-    public static final String serverIP = "192.168.2.113";
+    public static final String serverIP = "192.168.43.72";
     public static final String serverName = "/sv";
-//    public static final String baseUrl = protocol + "://" + serverIP + serverName;
-    public static final String baseUrl = "http://10.0.2.2:55555";
+    public static final String baseUrl = protocol + "://" + serverIP + serverName;
+//    public static final String baseUrl = "http://10.0.2.2:55555";
     public static final class ChatHub {
         private static final String routePrefix = "/ChatHub";
         public static final String urlChatHub = baseUrl + routePrefix;
@@ -15,8 +15,12 @@ public final class Route {
         private static final String routeSignUp = "/SignUp";
         private static final String routeDownloadImage = "/DownloadImage/%s";
         private static final String routeUploadImage = "/UploadImage/%d";
+        private static final String routeGetByServer = "/GetByServer/%d";
         public static final String urlLogin = routePrefix + routeLogin;
         public static final String urlSignUp = routePrefix + routeSignUp;
+        public static String buildGetByServerUrl(int serverId){
+            return routePrefix.concat(String.format(routeGetByServer, serverId));
+        }
         public static String buildDownloadImageUrl(String imageName) {
             return routePrefix.concat(String.format(routeDownloadImage, imageName));
         }

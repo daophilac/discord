@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Discord.Models {
     public class Role {
+        public readonly int HighestRoleLevel = 1000;
+        public bool IsHighestLevel { get => RoleLevel == HighestRoleLevel; }
         public int RoleId { get; set; }
         public int RoleLevel { get; set; }
         public bool MainRole { get; set; }
@@ -20,17 +22,28 @@ namespace Discord.Models {
 
         public Server Server { get; set; }
         public ICollection<ChannelPermission> ChannelPermissions { get; set; }
-        public static bool operator <(Role a, Role b) {
-            return a.RoleLevel < b.RoleLevel;
+        public void AssignPropertiesFrom(Role source) {
+            RoleLevel = source.RoleLevel;
+            RoleName = source.RoleName;
+            Kick = source.Kick;
+            ModifyChannel = source.ModifyChannel;
+            ModifyRole = source.ModifyRole;
+            ChangeUserRole = source.ChangeUserRole;
         }
-        public static bool operator <=(Role a, Role b) {
-            return a.RoleLevel <= b.RoleLevel;
+        public bool SameAs(Role role) {
+            if(role == null) {
+                return false;
+            }
+            return RoleId == role.RoleId;
         }
-        public static bool operator >(Role a, Role b) {
-            return a.RoleLevel > b.RoleLevel;
+        public bool LowerThan(Role role) {
+            return RoleLevel < role.RoleLevel;
         }
-        public static bool operator >=(Role a, Role b) {
-            return a.RoleLevel >= b.RoleLevel;
+        public bool HigherThan(Role role) {
+            return RoleLevel > role.RoleLevel;
+        }
+        public bool EqualLevel(Role role) {
+            return RoleLevel == role.RoleLevel;
         }
     }
 }
