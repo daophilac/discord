@@ -6,8 +6,8 @@ public class Role {
     private boolean mainRole;
     private String roleName;
     private boolean kick;
-    private boolean modifyChannel;
-    private boolean modifyRole;
+    private boolean manageChannel;
+    private boolean manageRole;
     private boolean changeUserRole;
     private int serverId;
     private Server server;
@@ -42,17 +42,17 @@ public class Role {
     public void setKick(boolean kick) {
         this.kick = kick;
     }
-    public boolean isModifyChannel() {
-        return modifyChannel;
+    public boolean isManageChannel() {
+        return manageChannel;
     }
-    public void setModifyChannel(boolean modifyChannel) {
-        this.modifyChannel = modifyChannel;
+    public void setManageChannel(boolean manageChannel) {
+        this.manageChannel = manageChannel;
     }
-    public boolean isModifyRole() {
-        return modifyRole;
+    public boolean isManageRole() {
+        return manageRole;
     }
-    public void setModifyRole(boolean modifyRole) {
-        this.modifyRole = modifyRole;
+    public void setManageRole(boolean manageRole) {
+        this.manageRole = manageRole;
     }
     public boolean isChangeUserRole() {
         return changeUserRole;

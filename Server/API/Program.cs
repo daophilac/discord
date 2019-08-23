@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Resources;
 using System.Threading.Tasks;
 using API.Hubs;
 using API.Models;
@@ -29,8 +28,9 @@ namespace API {
             mainDatabase = new MainDatabase(new DbContextOptions<MainDatabase>());
             chatHub = new ChatHub();
         }
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>();
+                .UseStartup<Startup>();
     }
 }

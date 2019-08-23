@@ -1,0 +1,32 @@
+﻿<Page x:Class="Discord.Pages.UserInfoEditPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Discord.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="400" d:DesignWidth="600"
+      Title="UserInfoEditPage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+
+    <Grid Background="{DynamicResource Light2_Background}">
+        <DockPanel x:Name="DockPanelMain" x:FieldModifier="private">
+            <DockPanel Height="70" DockPanel.Dock="Bottom" LastChildFill="False">
+                <Button x:Name="ButtonSave" x:FieldModifier="private" Content="Save" Height="30" Width="50" DockPanel.Dock="Right" FontWeight="Bold" Foreground="White" Background="#FF43B581" Click="ButtonSave_Click"/>
+                <Button x:Name="ButtonCancel" x:FieldModifier="private" Content="Cancel" Height="30" Width="60" DockPanel.Dock="Right" FontWeight="Bold" Background="Transparent" BorderBrush="Transparent" Click="ButtonCancel_Click" MouseEnter="ButtonCancel_MouseEnter" MouseLeave="ButtonCancel_MouseLeave"/>
+            </DockPanel>
+            <DockPanel Width="150" DockPanel.Dock="Left" LastChildFill="False">
+                <Image x:Name="UserImage" x:FieldModifier="private" Height="100" Width="100" Margin="25" DockPanel.Dock="Top"/>
+                <Button x:Name="ButtonUpload" x:FieldModifier="private" Content="Upload" DockPanel.Dock="Top" FontWeight="Bold" Foreground="{DynamicResource Light2_Foregound}" Background="Transparent" BorderBrush="Transparent" Click="ButtonUpload_Click"/>
+                <Button x:Name="ButtonRemove" x:FieldModifier="private" Content="Remove" DockPanel.Dock="Top" FontWeight="Bold" Foreground="{DynamicResource Light2_Foregound}" Background="Transparent" BorderBrush="Transparent"/>
+            </DockPanel>
+            <DockPanel LastChildFill="False" Margin="0,0,25,0">
+                <Label Content="USERNAME" DockPanel.Dock="Top" FontWeight="Bold" Foreground="{DynamicResource Light2_Foregound}"/>
+                <TextBox x:Name="TextBoxUserName" x:FieldModifier="private" Height="30" DockPanel.Dock="Top" VerticalContentAlignment="Center" Background="Transparent" Foreground="{DynamicResource Light2_Foregound}"/>
+                <Label Content="EMAIL" DockPanel.Dock="Top" FontWeight="Bold" Foreground="{DynamicResource Light2_Foregound}"/>
+                <TextBox x:Name="TextBoxEmail" x:FieldModifier="private" Height="30" DockPanel.Dock="Top" VerticalContentAlignment="Center" Background="Transparent" Foreground="{DynamicResource Light2_Foregound}"/>
+                <Label Content="Current Password" DockPanel.Dock="Top" FontWeight="Bold" Foreground="{DynamicResource Light2_Foregound}"/>
+                <PasswordBox x:Name="PasswordBox" x:FieldModifier="private" Height="30" DockPanel.Dock="Top" VerticalContentAlignment="Center" Background="Transparent" Foreground="{DynamicResource Light2_Foregound}"/>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Page>

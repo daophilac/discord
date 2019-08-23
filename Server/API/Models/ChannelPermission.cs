@@ -16,5 +16,15 @@ namespace API.Models {
         
         public Channel Channel { get; set; }
         public Role Role { get; set; }
+        public bool SameAs(ChannelPermission channelPermission) {
+            return ChannelId == channelPermission.ChannelId &&
+                RoleId == channelPermission.RoleId;
+        }
+        public void UpdateFrom(ChannelPermission source) {
+            ViewMessage = source.ViewMessage;
+            React = source.React;
+            SendMessage = source.SendMessage;
+            SendImage = source.SendImage;
+        }
     }
 }

@@ -54,6 +54,17 @@ namespace API.Hubs {
             jsonChannel = JsonConvert.SerializeObject(channel);
             await Clients.Group(MakeServerGroupId(channel.ServerId)).SendAsync("DetectNewChannelSignal", jsonChannel);
         }
+        public async Task EditChannelInfoAsync(string jsonChannel) {
+            Channel channelClient = JsonConvert.DeserializeObject<Channel>(jsonChannel);
+            Channel channelDb = await mainDatabase.Channel.FindAsync(channelClient.ChannelId);
+            if(channelDb == null) {
+                await Clients.Caller.SendAsync("DetectChannelConcurrentConflictSignal", "This channel doesn't exist anymore.");
+                return;
+            }
+            channelDb.UpdateInfo(channelClient);
+            await mainDatabase.SaveChangesAsync();
+            await Clients.Group(MakeServerGroupId(channelDb.ServerId)).SendAsync("DetectEditChannelInfoSignal", jsonChannel);
+        }
         public async Task CreateRoleAsync(string jsonRole) {
             Role role = JsonConvert.DeserializeObject<Role>(jsonRole);
             Role duplicatedRole = await mainDatabase.Role.Where(r => r.ServerId == role.ServerId && r.RoleLevel == role.RoleLevel).FirstOrDefaultAsync();
@@ -96,12 +107,34 @@ namespace API.Hubs {
             roleFromDatabase.RoleName = editedRole.RoleName;
             roleFromDatabase.RoleLevel = editedRole.RoleLevel;
             roleFromDatabase.Kick = editedRole.Kick;
-            roleFromDatabase.ModifyChannel = editedRole.ModifyChannel;
-            roleFromDatabase.ModifyRole = editedRole.ModifyRole;
+            roleFromDatabase.ManageChannel = editedRole.ManageChannel;
+            roleFromDatabase.ManageRole = editedRole.ManageRole;
             roleFromDatabase.ChangeUserRole = editedRole.ChangeUserRole;
             await mainDatabase.SaveChangesAsync();
             jsonRole = JsonConvert.SerializeObject(roleFromDatabase);
             await Clients.Group(MakeServerGroupId(roleFromDatabase.ServerId)).SendAsync("DetectEditRoleSignal", jsonRole);
+        }
+        public async Task MoveUserAsync(int oldRoleId, int newRoleId) {
+            if(oldRoleId == newRoleId) {
+                return;
+            }
+            Role oldRole = await mainDatabase.Role.FindAsync(oldRoleId);
+            if(oldRole == null) {
+                await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The old role doesn't exist anymore.");
+                return;
+            }
+            Role newRole = await mainDatabase.Role.FindAsync(newRoleId);
+            if (newRole == null) {
+                await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The new role doesn't exist anymore.");
+                return;
+            }
+            IQueryable<ServerUser> serverUsers = mainDatabase.ServerUser
+                .Where(s => s.ServerId == oldRole.ServerId && s.RoleId == oldRoleId);
+            foreach (ServerUser serverUser in serverUsers) {
+                serverUser.RoleId = newRoleId;
+            }
+            await mainDatabase.SaveChangesAsync();
+            await Clients.Group(MakeServerGroupId(oldRole.ServerId)).SendAsync("DetectMoveUserSignal", oldRoleId, newRoleId);
         }
 
         /// <summary>
@@ -201,7 +234,30 @@ namespace API.Hubs {
             await mainDatabase.SaveChangesAsync();
             await Clients.Group(MakeServerGroupId(serverId)).SendAsync("DetectKickUserSignal", serverId, userId, serverUser.RoleId);
         }
-        public async Task ChangeUserRole(int userId, int serverId, int newRoleId) {
+        public async Task UpdateChannelPermissionAsync(string json) {
+            ChannelPermission cpClient = JsonConvert.DeserializeObject<ChannelPermission>(json);
+            ChannelPermission cpDb = await mainDatabase.ChannelPermission.Where(c => c.SameAs(cpClient)).FirstOrDefaultAsync();
+            if(cpDb == null) {
+                await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The channel or permission don't exist anymore.");
+                return;
+            }
+            cpDb.UpdateFrom(cpClient);
+            await mainDatabase.SaveChangesAsync();
+            await Clients.Group(MakeChannelGroupId(cpDb.ChannelId)).SendAsync("DetectUpdateChannelPermissionSignal", json);
+        }
+        public async Task DeleteRoleAsync(int roleId) {
+            Role role = await mainDatabase.Role.FindAsync(roleId);
+            if(role == null) {
+                await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The role doesn't exist anymore.");
+                return;
+            }
+            ChannelPermission[] channelPermissions = await mainDatabase.ChannelPermission.Where(c => c.RoleId == roleId).ToArrayAsync();
+            mainDatabase.RemoveRange(channelPermissions);
+            mainDatabase.Remove(role);
+            await mainDatabase.SaveChangesAsync();
+            await Clients.Group(MakeServerGroupId(role.ServerId)).SendAsync("DetectDeleteRoleSignal", roleId);
+        }
+        public async Task ChangeUserRoleAsync(int userId, int serverId, int newRoleId) {
             ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.ServerId == serverId && su.UserId == userId).FirstOrDefaultAsync();
             if (serverUser == null) {
                 return;
