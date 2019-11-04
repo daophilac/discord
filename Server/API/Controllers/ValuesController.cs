@@ -11,11 +11,10 @@ namespace API.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase {
-        MainDatabase context = new MainDatabase(new DbContextOptions<MainDatabase>());
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get() {
-            string path = Directory.GetCurrentDirectory();
+            //var a = _test.Find(book => true).ToList();
             return new string[] { "value1", "value2" };
         }
 

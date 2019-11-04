@@ -15,6 +15,27 @@ using System.Windows.Threading;
 namespace Discord.Equipments {
     public static class HubManager {
         private static HubConnection HubConnection { get; set; }
+        public static class User {
+            public static event EventHandler DetectViolationSignal;
+            internal static void Establish() {
+                RegisterOnDetectViolationSignal();
+            }
+            public static async Task SendEnterUserGroupAsync(int userId) {
+                await HubConnection.InvokeAsync("EnterUserGroup", userId).ConfigureAwait(false);
+            }
+            public static async Task SendExitUserGroupAsync(int userId) {
+                await HubConnection.InvokeAsync("ExitUserGroup", userId).ConfigureAwait(false);
+            }
+
+            private static void RegisterOnDetectViolationSignal() {
+                HubConnection.On("DetectViolationSignal", async () => {
+                    await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
+                        DetectViolationSignal?.Invoke(HubConnection, EventArgs.Empty);
+                    }));
+                });
+            }
+            
+        }
         public static class Server {
             public static event EventHandler<DetectJoinServerSignalEventArgs> DetectJoinServerSignal;
             public static event EventHandler<DetectLeaveServerSignalEventArgs> DetectLeaveServerSignal;
@@ -227,7 +248,7 @@ namespace Discord.Equipments {
             }
             private static void RegisterOnDetectNewUserJoinServerSignal() {
                 HubConnection.On<string, int>("DetectNewUserJoinServerSignal", async (jsonUser, roleId) => {
-                    User user = JsonConvert.DeserializeObject<User>(jsonUser);
+                    Models.User user = JsonConvert.DeserializeObject<Models.User>(jsonUser);
                     await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
                         DetectNewUserJoinServerSignal?.Invoke(HubConnection, new DetectNewUserJoinServerSignalEventArgs(user, roleId));
                     }));
@@ -289,9 +310,9 @@ namespace Discord.Equipments {
                 }
             }
             public class DetectNewUserJoinServerSignalEventArgs : EventArgs {
-                public User User { get; }
+                public Models.User User { get; }
                 public int RoleId { get; }
-                public DetectNewUserJoinServerSignalEventArgs(User user, int roleId) {
+                public DetectNewUserJoinServerSignalEventArgs(Models.User user, int roleId) {
                     User = user;
                     RoleId = roleId;
                 }
@@ -337,11 +358,11 @@ namespace Discord.Equipments {
                 string json = JsonConvert.SerializeObject(message);
                 await HubConnection.InvokeAsync("ReceiveMessageAsync", json);
             }
-            public static async Task SendEditMessageSignalAsync(int messageId, string content) {
+            public static async Task SendEditMessageSignalAsync(string messageId, string content) {
                 await HubConnection.InvokeAsync("EditMessageAsync", messageId, content);
             }
-            public static async Task SendDeleteMessageSignalAsync(int channelId, int messageId) {
-                await HubConnection.InvokeAsync("DeleteMessageAsync", channelId, messageId);
+            public static async Task SendDeleteMessageSignalAsync(string messageId) {
+                await HubConnection.InvokeAsync("DeleteMessageAsync", messageId);
             }
             private static void RegisterOnDetectNewMessageSignal() {
                 HubConnection.On<string>("DetectNewMessageSignal", (jsonMessage) => {
@@ -352,14 +373,14 @@ namespace Discord.Equipments {
                 });
             }
             private static void RegisterOnDetectEditMessageSignal() {
-                HubConnection.On<int, string>("DetectEditMessageSignal", async (messageId, newContent) => {
+                HubConnection.On<string, string>("DetectEditMessageSignal", async (messageId, newContent) => {
                     await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
                         DetectEditMessageSignal?.Invoke(HubConnection, new DetectEditMessageSignalEventArgs(messageId, newContent));
                     }));
                 });
             }
             private static void RegisterOnDetectDeleteMessageSignal() {
-                HubConnection.On<int>("DetectDeleteMessageSignal", async (messageId) => {
+                HubConnection.On<string>("DetectDeleteMessageSignal", async (messageId) => {
                     await Application.Current.Dispatcher.BeginInvoke((Action)(() => {
                         DetectDeleteMessageSignal?.Invoke(HubConnection, new DetectDeleteMessageSignalEventArgs(messageId));
                     }));
@@ -372,30 +393,32 @@ namespace Discord.Equipments {
                 }
             }
             public class DetectEditMessageSignalEventArgs : EventArgs {
-                public int MessageId { get; }
+                public string MessageId { get; }
                 public string NewContent { get; }
-                public DetectEditMessageSignalEventArgs(int messageId, string newContent) {
+                public DetectEditMessageSignalEventArgs(string messageId, string newContent) {
                     MessageId = messageId;
                     NewContent = newContent;
                 }
             }
             public class DetectDeleteMessageSignalEventArgs : EventArgs {
-                public int MessageId { get; }
-                public DetectDeleteMessageSignalEventArgs(int messageId) {
+                public string MessageId { get; }
+                public DetectDeleteMessageSignalEventArgs(string messageId) {
                     MessageId = messageId;
                 }
             }
         }
         public static async Task EstablishAsync() {
-            if(HubConnection != null) {
-                await HubConnection.StopAsync();
+            if (HubConnection != null) {
+                await HubConnection.StopAsync().ConfigureAwait(false);
             }
             HubConnection = new HubConnectionBuilder().WithUrl(Route.ChatHub.UrlChatHub).Build();
+            User.Establish();
             Server.Establish();
             Channel.Establish();
             Role.Establish();
             Message.Establish();
-            await HubConnection.StartAsync();
+            await HubConnection.StartAsync().ConfigureAwait(false);
+            await User.SendEnterUserGroupAsync(Inventory.CurrentUser.UserId).ConfigureAwait(false);
         }
     }
 }

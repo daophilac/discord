@@ -9,8 +9,8 @@ namespace Discord.Resources.Static {
         public static readonly string Protocol = "http";
         public static readonly string DomainName = "192.168.43.72";
         public static readonly string ServerName = "/sv";
-        public static readonly string BaseUrl = Protocol + "://" + DomainName + ServerName;
-        //public static readonly string BaseUrl = "http://127.0.0.1:4444";
+        //public static readonly string BaseUrl = Protocol + "://" + DomainName + ServerName;
+        public static readonly string BaseUrl = "http://127.0.0.1:4444";
         public static class ChatHub {
             private static readonly string RouteChatHub = "/ChatHub";
             public static readonly string UrlChatHub = BaseUrl + RouteChatHub;

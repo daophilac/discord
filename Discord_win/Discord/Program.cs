@@ -52,7 +52,7 @@ namespace Discord {
             ExceptionFileNotFound = Application.Current.FindResource("ExceptionFileNotFound").ToString();
 
             //
-            loginPage = new LoginPage("a");
+            loginPage = new LoginPage();
             mainPage = new MainPage();
             userSettingPage = new UserSettingPage();
         }

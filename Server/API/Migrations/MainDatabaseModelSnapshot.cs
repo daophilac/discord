@@ -582,79 +582,6 @@ namespace API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("API.Models.Message", b =>
-                {
-                    b.Property<int>("MessageId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ChannelId");
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("Time");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("MessageId");
-
-                    b.HasIndex("ChannelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Message");
-
-                    b.HasData(
-                        new
-                        {
-                            MessageId = 1,
-                            ChannelId = 1,
-                            Content = "This is the first message in final fantasy",
-                            Time = new DateTime(2019, 1, 1, 0, 0, 0, 1, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            MessageId = 2,
-                            ChannelId = 1,
-                            Content = "And this is the second message in final fantasy",
-                            Time = new DateTime(2019, 1, 2, 0, 0, 1, 245, DateTimeKind.Unspecified),
-                            UserId = 2
-                        },
-                        new
-                        {
-                            MessageId = 3,
-                            ChannelId = 1,
-                            Content = "AAAAAAAAAA",
-                            Time = new DateTime(2019, 1, 2, 0, 0, 2, 368, DateTimeKind.Unspecified),
-                            UserId = 3
-                        },
-                        new
-                        {
-                            MessageId = 4,
-                            ChannelId = 2,
-                            Content = "Another channel in final fantasy",
-                            Time = new DateTime(2019, 1, 2, 0, 0, 1, 123, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            MessageId = 5,
-                            ChannelId = 2,
-                            Content = "BBBBBBBBBBBBBB",
-                            Time = new DateTime(2019, 1, 2, 0, 0, 2, 899, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            MessageId = 6,
-                            ChannelId = 2,
-                            Content = "Hi there",
-                            Time = new DateTime(2019, 1, 2, 0, 0, 3, 543, DateTimeKind.Unspecified),
-                            UserId = 2
-                        });
-                });
-
             modelBuilder.Entity("API.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -1110,6 +1037,8 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(50)");
 
+                    b.Property<int>("ViolationId");
+
                     b.HasKey("UserId");
 
                     b.HasIndex("Email")
@@ -1124,7 +1053,8 @@ namespace API.Migrations
                             Email = "daophilac@gmail.com",
                             ImageName = "user_1.png",
                             Password = "123",
-                            UserName = "peanut"
+                            UserName = "peanut",
+                            ViolationId = 0
                         },
                         new
                         {
@@ -1132,7 +1062,8 @@ namespace API.Migrations
                             Email = "adol@gmail.com",
                             ImageName = "user_2.png",
                             Password = "123",
-                            UserName = "adol"
+                            UserName = "adol",
+                            ViolationId = 0
                         },
                         new
                         {
@@ -1140,7 +1071,8 @@ namespace API.Migrations
                             Email = "lucknight@gmail.com",
                             ImageName = "user_3.png",
                             Password = "123",
-                            UserName = "lucknight"
+                            UserName = "lucknight",
+                            ViolationId = 0
                         },
                         new
                         {
@@ -1148,7 +1080,8 @@ namespace API.Migrations
                             Email = "eddie@gmail.com",
                             ImageName = "user_4.png",
                             Password = "123",
-                            UserName = "eddie"
+                            UserName = "eddie",
+                            ViolationId = 0
                         },
                         new
                         {
@@ -1156,7 +1089,8 @@ namespace API.Migrations
                             Email = "locke@gmail.com",
                             ImageName = "user_5.png",
                             Password = "123",
-                            UserName = "lock"
+                            UserName = "lock",
+                            ViolationId = 0
                         },
                         new
                         {
@@ -1164,7 +1098,8 @@ namespace API.Migrations
                             Email = "terra@gmail.com",
                             ImageName = "user_6.png",
                             Password = "123",
-                            UserName = "terra"
+                            UserName = "terra",
+                            ViolationId = 0
                         },
                         new
                         {
@@ -1172,7 +1107,8 @@ namespace API.Migrations
                             Email = "celes@gmail.com",
                             ImageName = "user_7.png",
                             Password = "123",
-                            UserName = "celes"
+                            UserName = "celes",
+                            ViolationId = 0
                         },
                         new
                         {
@@ -1180,15 +1116,40 @@ namespace API.Migrations
                             Email = "aeris@gmail.com",
                             ImageName = "user_8.jpg",
                             Password = "123",
-                            UserName = "aeris"
+                            UserName = "aeris",
+                            ViolationId = 0
                         },
                         new
                         {
                             UserId = 9,
                             Email = "test@gmail.com",
                             Password = "123",
-                            UserName = "test"
+                            UserName = "test",
+                            ViolationId = 0
                         });
+                });
+
+            modelBuilder.Entity("API.Models.Violation", b =>
+                {
+                    b.Property<int>("ViolationId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message");
+
+                    b.Property<DateTime?>("TimeEnd");
+
+                    b.Property<DateTime?>("TimeStart");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<bool>("Warned");
+
+                    b.HasKey("ViolationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Violation");
                 });
 
             modelBuilder.Entity("API.Models.Channel", b =>
@@ -1218,19 +1179,6 @@ namespace API.Migrations
                         .WithOne("InstantInvite")
                         .HasForeignKey("API.Models.InstantInvite", "ServerId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("API.Models.Message", b =>
-                {
-                    b.HasOne("API.Models.Channel", "Channel")
-                        .WithMany("Messages")
-                        .HasForeignKey("ChannelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.User", "User")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("API.Models.Role", b =>
@@ -1265,6 +1213,14 @@ namespace API.Migrations
                         .WithMany("ServerUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("API.Models.Violation", b =>
+                {
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("Violations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

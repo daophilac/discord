@@ -128,6 +128,5 @@ namespace Discord {
                 MessagesInCurrentChannel = null;
             }
         }
-        //public static void 
     }
 }

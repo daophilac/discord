@@ -1,12 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 
 namespace API.Models {
     public class MainDatabase : DbContext {
         private ModelBuilder ModelBuilder { get; set; }
-        public MainDatabase(DbContextOptions<MainDatabase> options) : base(options) {
-            
+        private IMongoCollection<Message> MessageCollection { get; }
+        public MainDatabase(DbContextOptions<MainDatabase> options, IMongoContext mongoContext) : base(options) {
+            Contract.Requires(mongoContext != null);
+            MessageCollection = mongoContext.Messages;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer("Server=MYPC;Database=DISCORD;Trusted_Connection=True;");
@@ -16,12 +21,13 @@ namespace API.Models {
         public DbSet<Channel> Channel { get; set; }
         public DbSet<ChannelPermission> ChannelPermission { get; set; }
         public DbSet<InstantInvite> InstantInvite { get; set; }
-        public DbSet<Message> Message { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<Server> Server { get; set; }
         public DbSet<ServerUser> ServerUser { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Violation> Violation { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            Contract.Requires(modelBuilder != null);
             ModelBuilder = modelBuilder;
             modelBuilder.Entity<ServerUser>().HasKey(su => new { su.ServerId, su.UserId });
             modelBuilder.Entity<ChannelPermission>().HasKey(clp => new { clp.ChannelId, clp.RoleId });
@@ -31,30 +37,40 @@ namespace API.Models {
             modelBuilder.Entity<Channel>().HasIndex(c => new { c.ServerId, c.ChannelName }).IsUnique(true);
             modelBuilder.Entity<ServerUser>().HasIndex(su => new { su.ServerId, su.UserId, su.RoleId }).IsUnique(true);
 
-            modelBuilder.Entity<Message>().HasOne(m => m.User).WithMany("Messages").OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ServerUser>().HasOne(su => su.User).WithMany("ServerUsers").OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ServerUser>().HasOne(su => su.Server).WithMany("ServerUsers").OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ChannelPermission>().HasOne(cp => cp.Role).WithMany("ChannelPermissions").OnDelete(DeleteBehavior.Restrict);
 
-            SeedUser();
-            SeedServer();
-            SeedChannel();
-            SeedRole();
-            SeedServerUser();
-            SeedChannelPermission();
             SeedMessage();
-            SeedInstantInvite();
+            //SeedUser();
+            //SeedServer();
+            //SeedChannel();
+            //SeedRole();
+            //SeedServerUser();
+            //SeedChannelPermission();
+            //SeedInstantInvite();
+        }
+        private void SeedMessage() {
+            MessageCollection.DeleteMany(m => true);
+            MessageCollection.InsertMany(new List<Message> {
+                        new Message { ChannelId = 1, UserId = 1, Content = "This is the first message in final fantasy", Delete = false, Violation = false, Time = DateTime.ParseExact("2019-01-01 00:00:00.001", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
+                        new Message { ChannelId = 1, UserId = 2, Content = "And this is the second message in final fantasy", Delete = false, Violation = false, Time = DateTime.ParseExact("2019-01-02 00:00:01.245", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
+                        new Message { ChannelId = 1, UserId = 3, Content = "AAAAAAAAAA", Delete = false, Violation = false, Time = DateTime.ParseExact("2019-01-02 00:00:02.368", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
+                        new Message { ChannelId = 2, UserId = 1, Content = "Another channel in final fantasy", Delete = false, Violation = false, Time = DateTime.ParseExact("2019-01-02 00:00:01.123", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
+                        new Message { ChannelId = 2, UserId = 1, Content = "BBBBBBBBBBBBBB", Delete = false, Violation = false, Time = DateTime.ParseExact("2019-01-02 00:00:02.899", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
+                        new Message { ChannelId = 2, UserId = 2, Content = "Hi there", Delete = false, Violation = false, Time = DateTime.ParseExact("2019-01-02 00:00:03.543", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) }
+            });
         }
         private void SeedUser() {
             ModelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, Email = "daophilac@gmail.com", Password = "123", UserName = "peanut", ImageName = "user_1.png" },
-                new User { UserId = 2, Email = "adol@gmail.com", Password = "123", UserName = "adol", ImageName = "user_2.png" },
-                new User { UserId = 3, Email = "lucknight@gmail.com", Password = "123", UserName = "lucknight", ImageName = "user_3.png" },
-                new User { UserId = 4, Email = "eddie@gmail.com", Password = "123", UserName = "eddie", ImageName = "user_4.png" },
-                new User { UserId = 5, Email = "locke@gmail.com", Password = "123", UserName = "lock", ImageName = "user_5.png" },
-                new User { UserId = 6, Email = "terra@gmail.com", Password = "123", UserName = "terra", ImageName = "user_6.png" },
-                new User { UserId = 7, Email = "celes@gmail.com", Password = "123", UserName = "celes", ImageName = "user_7.png" },
-                new User { UserId = 8, Email = "aeris@gmail.com", Password = "123", UserName = "aeris", ImageName = "user_8.jpg" },
+                new User { UserId = 1, Email = "daophilac@gmail.com", Password = "123", UserName = "peanut", ImageName = "user_1.png", ViolationId = 0 },
+                new User { UserId = 2, Email = "adol@gmail.com", Password = "123", UserName = "adol", ImageName = "user_2.png", ViolationId = 0 },
+                new User { UserId = 3, Email = "lucknight@gmail.com", Password = "123", UserName = "lucknight", ImageName = "user_3.png", ViolationId = 0 },
+                new User { UserId = 4, Email = "eddie@gmail.com", Password = "123", UserName = "eddie", ImageName = "user_4.png", ViolationId = 0 },
+                new User { UserId = 5, Email = "locke@gmail.com", Password = "123", UserName = "lock", ImageName = "user_5.png", ViolationId = 0 },
+                new User { UserId = 6, Email = "terra@gmail.com", Password = "123", UserName = "terra", ImageName = "user_6.png", ViolationId = 0 },
+                new User { UserId = 7, Email = "celes@gmail.com", Password = "123", UserName = "celes", ImageName = "user_7.png", ViolationId = 0 },
+                new User { UserId = 8, Email = "aeris@gmail.com", Password = "123", UserName = "aeris", ImageName = "user_8.jpg", ViolationId = 0 },
                 new User { UserId = 9, Email = "test@gmail.com", Password = "123", UserName = "test" }
             );
         }
@@ -207,16 +223,6 @@ namespace API.Models {
                 new ServerUser { ServerId = 3, UserId = 1, RoleId = 16 },
                 new ServerUser { ServerId = 3, UserId = 4, RoleId = 16 },
                 new ServerUser { ServerId = 4, UserId = 2, RoleId = 7 }
-            );
-        }
-        private void SeedMessage() {
-            ModelBuilder.Entity<Message>().HasData(
-                new Message { MessageId = 1, ChannelId = 1, UserId = 1, Content = "This is the first message in final fantasy", Time = DateTime.ParseExact("2019-01-01 00:00:00.001", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
-                new Message { MessageId = 2, ChannelId = 1, UserId = 2, Content = "And this is the second message in final fantasy", Time = DateTime.ParseExact("2019-01-02 00:00:01.245", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
-                new Message { MessageId = 3, ChannelId = 1, UserId = 3, Content = "AAAAAAAAAA", Time = DateTime.ParseExact("2019-01-02 00:00:02.368", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
-                new Message { MessageId = 4, ChannelId = 2, UserId = 1, Content = "Another channel in final fantasy", Time = DateTime.ParseExact("2019-01-02 00:00:01.123", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
-                new Message { MessageId = 5, ChannelId = 2, UserId = 1, Content = "BBBBBBBBBBBBBB", Time = DateTime.ParseExact("2019-01-02 00:00:02.899", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) },
-                new Message { MessageId = 6, ChannelId = 2, UserId = 2, Content = "Hi there", Time = DateTime.ParseExact("2019-01-02 00:00:03.543", "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture) }
             );
         }
         private void SeedInstantInvite() {

@@ -8,11 +8,14 @@ using API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Peanut.Server;
 
 namespace API {
     public class Startup {
@@ -30,7 +33,11 @@ namespace API {
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
+            services.Configure<MessageDatabaseSettings>(Configuration.GetSection(nameof(MessageDatabaseSettings)));
+            services.AddSingleton<IMessageDatabaseSettings>(sp => sp.GetRequiredService<IOptions<MessageDatabaseSettings>>().Value);
+            services.AddSingleton<IMongoContext, MongoContext>();
             services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine("D:/Desktop/repos/discord/Server/API/Data", "Images/User")));
+            services.AddSingleton<FileProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -73,6 +73,7 @@ namespace Discord.Managers {
             HubManager.Message.DetectNewMessageSignal -= Message_DetectNewMessageSignal;
             HubManager.Message.DetectEditMessageSignal -= Message_DetectEditMessageSignal;
             HubManager.Message.DetectDeleteMessageSignal -= Message_DetectDeleteMessageSignal;
+            HubManager.User.DetectViolationSignal -= User_DetectViolationSignal;
             ServerManager.ServerButtonClick -= ServerManager_ServerButtonClick;
             ServerManager.ServerChanged -= ServerManager_ServerChanged;
             ChannelManager.ChannelButtonClicked -= ChannelManager_ChannelButtonClicked;
@@ -100,12 +101,18 @@ namespace Discord.Managers {
             HubManager.Message.DetectNewMessageSignal += Message_DetectNewMessageSignal;
             HubManager.Message.DetectEditMessageSignal += Message_DetectEditMessageSignal;
             HubManager.Message.DetectDeleteMessageSignal += Message_DetectDeleteMessageSignal;
+            HubManager.User.DetectViolationSignal += User_DetectViolationSignal;
             ServerManager.ServerButtonClick += ServerManager_ServerButtonClick;
             ServerManager.ServerChanged += ServerManager_ServerChanged;
             ChannelManager.ChannelButtonClicked += ChannelManager_ChannelButtonClicked;
             ChannelManager.ChannelChanged += ChannelManager_ChannelChanged;
             RoleManager.RequestChangeUserRole += RoleManager_RequestChangeUserRole;
             UserManager.LogOut += UserManager_LogOut;
+        }
+
+        private static void User_DetectViolationSignal(object sender, EventArgs e) {
+            MessageBox.Show("You are temporarily blocked due to vialting our terms of use.");
+            UserManager_LogOut(sender, e);
         }
 
         private static void Role_DetectDeleteRoleSignal(object sender, HubManager.Role.DetectDeleteRoleSignalEventArgs e) {
@@ -155,7 +162,7 @@ namespace Discord.Managers {
         private static async void Role_DetectKickUserSignal(object sender, HubManager.Role.DetectKickUserSignalEventArgs e) {
             if (e.UserId == Inventory.CurrentUser.UserId) {
                 if (e.ServerId == Inventory.CurrentServer.ServerId) {
-                    await LeaveServer(e.ServerId);
+                    await LeaveServerAsync(e.ServerId);
                     MessageBox.Show("You were kicked out from this server!");
                 }
             }
@@ -221,9 +228,9 @@ namespace Discord.Managers {
         }
 
         private static async void Server_DetectLeaveServerSignal(object sender, HubManager.Server.DetectLeaveServerSignalEventArgs e) {
-            await LeaveServer(e.ServerId);
+            await LeaveServerAsync(e.ServerId).ConfigureAwait(false);
         }
-        private static async Task LeaveServer(int serverId) {
+        private static async Task LeaveServerAsync(int serverId) {
             await HubManager.Server.SendExitServerSignalAsync(serverId);
             await HubManager.Channel.SendExitChannelSignalAsync(Inventory.CurrentChannel.ChannelId);
             Inventory.Servers.Remove(Inventory.Servers.Where(s => s.ServerId == serverId).FirstOrDefault());
@@ -238,10 +245,11 @@ namespace Discord.Managers {
         }
 
         private static async void RoleManager_RequestChangeUserRole(object sender, RoleManager.RequestChangeUserRoleEventArgs e) {
-            await HubManager.Role.SendChangeUserRoleAsync(e.User.UserId, Inventory.CurrentServer.ServerId, e.NewRole.RoleId);
+            await HubManager.Role.SendChangeUserRoleAsync(e.User.UserId, Inventory.CurrentServer.ServerId, e.NewRole.RoleId).ConfigureAwait(false);
         }
 
         private static async void UserManager_LogOut(object sender, EventArgs e) {
+            await HubManager.User.SendExitUserGroupAsync(Inventory.CurrentUser.UserId);
             Downloader.CancelAllAndDeleteFiles();
             FileSystem.ClearData();
             await Program.mainWindow.RestartAsync();

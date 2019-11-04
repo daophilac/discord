@@ -21,27 +21,27 @@ namespace Discord.Managers {
         private DockPanel dockPanelMessage;
         private DockPanel DockPanelMessage {
             get => dockPanelMessage;
-            set => dockPanelMessage = value ?? throw new ArgumentNullException("DockPanelMessage", "DockPanelMessage cannot be null.");
+            set => dockPanelMessage = value ?? throw new ArgumentNullException("DockPanelMessage");
         }
         private Grid gridMessage;
         private Grid GridMessage {
             get => gridMessage;
-            set => gridMessage = value ?? throw new ArgumentNullException("GridMessage", "GridMessage cannot be null.");
+            set => gridMessage = value ?? throw new ArgumentNullException("GridMessage");
         }
         private TextBox textBoxType;
         private TextBox TextBoxType {
             get => textBoxType;
-            set => textBoxType = value ?? throw new ArgumentNullException("TextBoxType", "TextBoxType cannot be null.");
+            set => textBoxType = value ?? throw new ArgumentNullException("TextBoxType");
         }
         private Button buttonSend;
         private Button ButtonSend {
             get => buttonSend;
-            set => buttonSend = value ?? throw new ArgumentNullException("ButtonSend", "ButtonSend cannot be null.");
+            set => buttonSend = value ?? throw new ArgumentNullException("ButtonSend");
         }
         private Button buttonCancelEdit;
         private Button ButtonCancelEdit {
             get => buttonCancelEdit;
-            set => buttonCancelEdit = value ?? throw new ArgumentNullException("ButtonCancelEdit", "ButtonCancelEdit cannot be null.");
+            set => buttonCancelEdit = value ?? throw new ArgumentNullException("ButtonCancelEdit");
         }
         private DockPanel DockPanelMessageComponent { get; set; }
         private bool IsEditing { get; set; }
@@ -65,14 +65,14 @@ namespace Discord.Managers {
             ButtonSend.Click += ButtonSend_Click;
             ButtonCancelEdit.Click += ButtonCancelEdit_Click;
         }
-        public void DeleteMessage(int messageId) {
+        public void DeleteMessage(string messageId) {
             MessageComponent messageComponent = MessageComponent.GetAndRemoveByMessageId(messageId);
             if (messageComponent != null) {
                 Inventory.MessagesInCurrentChannel.Remove(messageComponent.Message);
                 DockPanelMessageComponent.Children.Remove(messageComponent);
             }
         }
-        public void EditMessage(int messageId, string newContent) {
+        public void EditMessage(string messageId, string newContent) {
             MessageComponent messageComponent = MessageComponent.GetByMessageId(messageId);
             if (messageComponent.Message.UserId == Inventory.CurrentUser.UserId) {
                 TextBoxType.Text = "";
@@ -162,11 +162,11 @@ namespace Discord.Managers {
         }
 
         private async void MessageComponent_DeleteMessage(object sender, MessageComponent.DeleteMessageEventArgs e) {
-            await HubManager.Message.SendDeleteMessageSignalAsync(Inventory.CurrentChannel.ChannelId, e.MessageComponent.Message.MessageId);
+            await HubManager.Message.SendDeleteMessageSignalAsync(e.MessageComponent.Message.MessageId);
         }
 
         private class MessageComponent : DockPanel {
-            private static Dictionary<int, MessageComponent> PairMessageComponent { get; set; }
+            private static Dictionary<string, MessageComponent> PairMessageComponent { get; set; }
             private Image Image { get; } = new Image();
             private TextBlock TextBlock { get; } = new TextBlock();
             private Button ButtonMore { get; } = new Button();
@@ -186,13 +186,13 @@ namespace Discord.Managers {
                 Children.Add(ButtonMore);
             }
             static internal void Establish() {
-                PairMessageComponent = new Dictionary<int, MessageComponent>();
+                PairMessageComponent = new Dictionary<string, MessageComponent>();
             }
             static internal void TearDown() {
                 PairMessageComponent = null;
             }
             static internal void ReInitialize() {
-                PairMessageComponent = new Dictionary<int, MessageComponent>();
+                PairMessageComponent = new Dictionary<string, MessageComponent>();
             }
             internal void UpdateContent(string content) {
                 Message.Content = content;
@@ -260,13 +260,13 @@ namespace Discord.Managers {
                 TextBlock.TextWrapping = TextWrapping.Wrap;
                 TextBlock.HorizontalAlignment = HorizontalAlignment.Left;
             }
-            internal static MessageComponent GetByMessageId(int messageId) {
+            internal static MessageComponent GetByMessageId(string messageId) {
                 if (PairMessageComponent.ContainsKey(messageId)) {
                     return PairMessageComponent[messageId];
                 }
                 return null;
             }
-            internal static MessageComponent GetAndRemoveByMessageId(int messageId) {
+            internal static MessageComponent GetAndRemoveByMessageId(string messageId) {
                 if (PairMessageComponent.ContainsKey(messageId)) {
                     MessageComponent messageComponent = PairMessageComponent[messageId];
                     PairMessageComponent.Remove(messageId);
@@ -274,7 +274,7 @@ namespace Discord.Managers {
                 }
                 return null;
             }
-            internal static void RemoveFromDictionary(int messageId) {
+            internal static void RemoveFromDictionary(string messageId) {
                 if (PairMessageComponent.ContainsKey(messageId)) {
                     PairMessageComponent.Remove(messageId);
                 }

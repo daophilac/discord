@@ -2,7 +2,7 @@
 
 namespace Discord.Models {
     public class Message {
-        public int MessageId { get; set; }
+        public string MessageId { get; set; }
         public int ChannelId { get; set; }
         public int UserId { get; set; }
         public string Content { get; set; }

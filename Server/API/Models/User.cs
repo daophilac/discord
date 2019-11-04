@@ -19,9 +19,11 @@ namespace API.Models {
         public string UserName { get; set; }
         [MaxLength(254)]
         public string ImageName { get; set; }
+        public int ViolationId { get; set; }
 
-        [JsonIgnore]
-        public ICollection<Message> Messages { get; set; }
+        //[JsonIgnore]
+        //public ICollection<Message> Messages { get; set; }
+        public ICollection<Violation> Violations { get; set; }
         public ICollection<ServerUser> ServerUsers { get; set; }
 
         public static User Clone(User userToCopy) {
@@ -31,8 +33,8 @@ namespace API.Models {
                 Password = userToCopy.Password,
                 UserName = userToCopy.UserName,
                 ImageName = userToCopy.ImageName,
-                ServerUsers = userToCopy.ServerUsers,
-                Messages = userToCopy.Messages,
+                ServerUsers = userToCopy.ServerUsers
+                //Messages = userToCopy.Messages,
             };
         }
     }

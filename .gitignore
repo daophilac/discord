@@ -4,19 +4,10 @@
 
 .gradle
 .idea
-/build
-/intermediates
-/.vs
-/Discord_win/.vs/Discord_win/v15
-/Discord_win/ConsoleApp1/bin/Debug/netcoreapp2.2
-/Discord_win/ConsoleApp1/obj
-/Discord_win/WPF/obj
-/Discord_win/Discord_win/obj/Debug
-/Discord_win/Discord_win/bin/Debug
-/Discord_win/WpfApp1
-/Discord_win/Discord_win/bin/Release
-/Discord_win/Discord_win/obj/Release
-/Server/.vs
-/Server/API/bin/Debug/netcoreapp2.2
-/Server/API/obj
-/Server/API/bin/Release/netcoreapp2.2
+**/build
+**/intermediates
+**/.vs
+**/packages
+**/bin
+**/obj
+**/journal

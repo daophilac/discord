@@ -16,8 +16,8 @@ namespace API.Models {
         public int ServerId { get; set; }
 
         public Server Server { get; set; }
-        [JsonIgnore]
-        public ICollection<Message> Messages { get; set; }
+        //[JsonIgnore]
+        //public ICollection<Message> Messages { get; set; }
         public ICollection<ChannelPermission> ChannelLevelPermissions { get; set; }
         public void UpdateInfo(Channel source) {
             ChannelName = source.ChannelName;

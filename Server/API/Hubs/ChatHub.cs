@@ -1,6 +1,8 @@
 ﻿using API.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -12,12 +14,119 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace API.Hubs {
-    public class ChatHub : Hub{
-        private MainDatabase mainDatabase;
-        public ChatHub() {
-            mainDatabase = Program.mainDatabase;
+    public enum MonitorState {
+        Ready, WaitingResponse, Busy
+    }
+    public class ChatHub : Hub {
+        private MainDatabase Database { get; }
+        private IMongoCollection<Message> MessageCollection { get; }
+        private static Dictionary<string, string> ConnCate { get; } = new Dictionary<string, string>();
+        private static Dictionary<string, Dictionary<string, MonitorState>> CateConnState { get; } = new Dictionary<string, Dictionary<string, MonitorState>>();
+        public ChatHub(MainDatabase mainDatabase, IMongoContext mongoContext) {
+            Database = mainDatabase;
+            MessageCollection = mongoContext.Messages;
         }
-
+        public async Task MarkViolation(string messageId) {
+            Message message = await DeleteMessageAsync(messageId);
+            User user = await Database.User.FindAsync(message.UserId);
+            Violation violation = new Violation {
+                Warned = false,
+                TimeStart = DateTime.Now,
+                TimeEnd = DateTime.Now.AddSeconds(30),
+                User = user
+            };
+            await Database.Violation.AddAsync(violation);
+            await Database.SaveChangesAsync();
+            message.Violation = true;
+            user.ViolationId = violation.ViolationId;
+            await Database.SaveChangesAsync();
+            await Clients.Group(MakeUserGroupId(user.UserId)).SendAsync("DetectViolationSignal");
+        }
+        public void JoinMonitorGroup(string category) {
+            //await Groups.AddToGroupAsync(Context.ConnectionId, category);
+            ConnCate.Add(Context.ConnectionId, category);
+            if (!CateConnState.ContainsKey(category)) {
+                CateConnState.Add(category, new Dictionary<string, MonitorState>());
+            }
+            Dictionary<string, MonitorState> connStates = CateConnState[category];
+            connStates.Add(Context.ConnectionId, MonitorState.Ready);
+        }
+        public void MonitorReady() {
+            string category = ConnCate[Context.ConnectionId];
+            Dictionary<string, MonitorState> connStates = CateConnState[category];
+            connStates[Context.ConnectionId] = MonitorState.Ready;
+        }
+        public void MonitorBusy() {
+            string category = ConnCate[Context.ConnectionId];
+            Dictionary<string, MonitorState> connStates = CateConnState[category];
+            connStates[Context.ConnectionId] = MonitorState.Busy;
+        }
+        private string DetermineAvailableMonitor(string category) {
+            List<string> readyConns = new List<string>();
+            List<string> busyConns = new List<string>();
+            List<string> waitingConns = new List<string>();
+            Dictionary<string, MonitorState> connStates = CateConnState[category];
+            foreach (var kv in connStates) {
+                switch (kv.Value) {
+                    case MonitorState.Ready:
+                        readyConns.Add(kv.Key);
+                        break;
+                    case MonitorState.Busy:
+                        busyConns.Add(kv.Key);
+                        break;
+                    case MonitorState.WaitingResponse:
+                        waitingConns.Add(kv.Key);
+                        break;
+                }
+            }
+            Random random = new Random();
+            int i;
+            if(readyConns.Count != 0) {
+                i = random.Next(0, readyConns.Count);
+                return readyConns.ElementAt(i);
+            }
+            if(busyConns.Count != 0) {
+                i = random.Next(0, busyConns.Count);
+                return busyConns.ElementAt(i);
+            }
+            i = random.Next(0, waitingConns.Count);
+            return waitingConns.ElementAt(i);
+        }
+        private async Task SendCheckMessage(Message message) {
+            string connectionId = DetermineAvailableMonitor(message.Category);
+            await Clients.Client(connectionId).SendAsync("DetectCheckMessageSignal", message.MessageId);
+            Dictionary<string, MonitorState> connStates = CateConnState[message.Category];
+            connStates[connectionId] = MonitorState.WaitingResponse;
+        }
+        public async Task ReceiveMessageAsync(string json) {
+            Message message = JsonConvert.DeserializeObject<Message>(json);
+            message.User = await Database.User.FindAsync(message.UserId);
+            message.Channel = await Database.Channel.FindAsync(message.ChannelId);
+            message.Time = DateTime.Now;
+            await MessageCollection.InsertOneAsync(message);
+            json = JsonConvert.SerializeObject(message);
+            await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync("DetectNewMessageSignal", json);
+            await SendCheckMessage(message);
+        }
+        public async Task<Message> DeleteMessageAsync(string messageId) {
+            Message message = await MessageCollection.FindOneAndUpdateAsync(
+                Builders<Message>.Filter.Eq(m => m.MessageId, messageId),
+                Builders<Message>.Update.Set(m => m.Delete, true));
+            if(message != null) {
+                await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync("DetectDeleteMessageSignal", messageId);
+                return message;
+            }
+            return null;
+        }
+        public async Task EditMessageAsync(string messageId, string content) {
+            Message message = await MessageCollection.FindOneAndUpdateAsync<Message>(
+                Builders<Message>.Filter.Eq(m => m.MessageId, messageId),
+                Builders<Message>.Update.Set(m => m.Content, content));
+            if (message != null) {
+                await Clients.Group(MakeChannelGroupId(message.ChannelId))
+                    .SendAsync("DetectEditMessageSignal", messageId, content);
+            }
+        }
         /// <summary>
         /// Create a channel inside a server.
         /// There is a client-side validation to check whether the requested channel is unique in the corresponding server,
@@ -33,15 +142,15 @@ namespace API.Hubs {
         /// <returns></returns>
         public async Task CreateChannelAsync(string jsonChannel) {
             Channel channel = JsonConvert.DeserializeObject<Channel>(jsonChannel);
-            Channel duplicatedChannel = await mainDatabase.Channel.Where(c => c.ChannelName == channel.ChannelName && c.ServerId == channel.ServerId).FirstOrDefaultAsync();
+            Channel duplicatedChannel = await Database.Channel.Where(c => c.ChannelName == channel.ChannelName && c.ServerId == channel.ServerId).FirstOrDefaultAsync();
             if(duplicatedChannel != null) {
                 await Clients.Caller.SendAsync("DetectChannelConcurrentConflictSignal", "There is already a channel has the same name in this server.");
                 return;
             }
-            await mainDatabase.Channel.AddAsync(channel);
-            IEnumerable<Role> roles = await mainDatabase.Role.Where(r => r.ServerId == channel.ServerId).ToListAsync();
+            await Database.Channel.AddAsync(channel);
+            IEnumerable<Role> roles = await Database.Role.Where(r => r.ServerId == channel.ServerId).ToListAsync();
             foreach (Role role in roles) {
-                await mainDatabase.ChannelPermission.AddAsync(new ChannelPermission {
+                await Database.ChannelPermission.AddAsync(new ChannelPermission {
                     ChannelId = channel.ChannelId,
                     RoleId = role.RoleId,
                     ViewMessage = true,
@@ -50,33 +159,33 @@ namespace API.Hubs {
                     SendImage = true
                 });
             }
-            await mainDatabase.SaveChangesAsync();
+            await Database.SaveChangesAsync();
             jsonChannel = JsonConvert.SerializeObject(channel);
             await Clients.Group(MakeServerGroupId(channel.ServerId)).SendAsync("DetectNewChannelSignal", jsonChannel);
         }
         public async Task EditChannelInfoAsync(string jsonChannel) {
             Channel channelClient = JsonConvert.DeserializeObject<Channel>(jsonChannel);
-            Channel channelDb = await mainDatabase.Channel.FindAsync(channelClient.ChannelId);
+            Channel channelDb = await Database.Channel.FindAsync(channelClient.ChannelId);
             if(channelDb == null) {
                 await Clients.Caller.SendAsync("DetectChannelConcurrentConflictSignal", "This channel doesn't exist anymore.");
                 return;
             }
             channelDb.UpdateInfo(channelClient);
-            await mainDatabase.SaveChangesAsync();
+            await Database.SaveChangesAsync();
             await Clients.Group(MakeServerGroupId(channelDb.ServerId)).SendAsync("DetectEditChannelInfoSignal", jsonChannel);
         }
         public async Task CreateRoleAsync(string jsonRole) {
             Role role = JsonConvert.DeserializeObject<Role>(jsonRole);
-            Role duplicatedRole = await mainDatabase.Role.Where(r => r.ServerId == role.ServerId && r.RoleLevel == role.RoleLevel).FirstOrDefaultAsync();
+            Role duplicatedRole = await Database.Role.Where(r => r.ServerId == role.ServerId && r.RoleLevel == role.RoleLevel).FirstOrDefaultAsync();
             if(duplicatedRole != null) {
                 await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "There is already a role with the same role level in this server.");
                 return;
             }
-            await mainDatabase.Role.AddAsync(role);
-            await mainDatabase.SaveChangesAsync();
-            IEnumerable<Channel> channelsInServer = await mainDatabase.Channel.Where(c => c.ServerId == role.ServerId).ToListAsync();
+            await Database.Role.AddAsync(role);
+            await Database.SaveChangesAsync();
+            IEnumerable<Channel> channelsInServer = await Database.Channel.Where(c => c.ServerId == role.ServerId).ToListAsync();
             foreach (Channel channel in channelsInServer) {
-                await mainDatabase.ChannelPermission.AddAsync(new ChannelPermission {
+                await Database.ChannelPermission.AddAsync(new ChannelPermission {
                     ChannelId = channel.ChannelId,
                     RoleId = role.RoleId,
                     ViewMessage = false,
@@ -85,20 +194,20 @@ namespace API.Hubs {
                     SendImage = false
                 });
             }
-            await mainDatabase.SaveChangesAsync();
+            await Database.SaveChangesAsync();
             jsonRole = JsonConvert.SerializeObject(role);
             await Clients.Group(MakeServerGroupId(role.ServerId)).SendAsync("DetectNewRoleSignal", Context.ConnectionId, jsonRole);
         }
         public async Task EditRoleAsync(string jsonRole) {
             Role editedRole = JsonConvert.DeserializeObject<Role>(jsonRole);
-            Role roleFromDatabase = await mainDatabase.Role.FindAsync(editedRole.RoleId);
+            Role roleFromDatabase = await Database.Role.FindAsync(editedRole.RoleId);
             if (roleFromDatabase == null) {
                 await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The requested role doesn't exist in the database.");
                 return;
             }
             if (!editedRole.SameLevelWith(roleFromDatabase)) {
                 editedRole.ServerId = roleFromDatabase.ServerId;
-                Role sameRoleInServer = await mainDatabase.Role.Where(r => r.SameInServer(editedRole)).FirstOrDefaultAsync();
+                Role sameRoleInServer = await Database.Role.Where(r => r.SameInServer(editedRole)).FirstOrDefaultAsync();
                 if (sameRoleInServer != null) {
                     await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "There is already a role with the same role level in this server.");
                     return;
@@ -110,7 +219,7 @@ namespace API.Hubs {
             roleFromDatabase.ManageChannel = editedRole.ManageChannel;
             roleFromDatabase.ManageRole = editedRole.ManageRole;
             roleFromDatabase.ChangeUserRole = editedRole.ChangeUserRole;
-            await mainDatabase.SaveChangesAsync();
+            await Database.SaveChangesAsync();
             jsonRole = JsonConvert.SerializeObject(roleFromDatabase);
             await Clients.Group(MakeServerGroupId(roleFromDatabase.ServerId)).SendAsync("DetectEditRoleSignal", jsonRole);
         }
@@ -118,25 +227,28 @@ namespace API.Hubs {
             if(oldRoleId == newRoleId) {
                 return;
             }
-            Role oldRole = await mainDatabase.Role.FindAsync(oldRoleId);
+            Role oldRole = await Database.Role.FindAsync(oldRoleId);
             if(oldRole == null) {
                 await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The old role doesn't exist anymore.");
                 return;
             }
-            Role newRole = await mainDatabase.Role.FindAsync(newRoleId);
+            Role newRole = await Database.Role.FindAsync(newRoleId);
             if (newRole == null) {
                 await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The new role doesn't exist anymore.");
                 return;
             }
-            IQueryable<ServerUser> serverUsers = mainDatabase.ServerUser
+            IQueryable<ServerUser> serverUsers = Database.ServerUser
                 .Where(s => s.ServerId == oldRole.ServerId && s.RoleId == oldRoleId);
             foreach (ServerUser serverUser in serverUsers) {
                 serverUser.RoleId = newRoleId;
             }
-            await mainDatabase.SaveChangesAsync();
+            await Database.SaveChangesAsync();
             await Clients.Group(MakeServerGroupId(oldRole.ServerId)).SendAsync("DetectMoveUserSignal", oldRoleId, newRoleId);
         }
 
+        private string MakeUserGroupId(int userId) {
+            return "user" + userId.ToString();
+        }
         /// <summary>
         /// Make a SignalR group id from a channelId.
         /// Because a channel and a server might have the same integer id,
@@ -160,6 +272,12 @@ namespace API.Hubs {
         private string MakeServerGroupId(int serverId) {
             return "server" + serverId.ToString();
         }
+        public async Task EnterUserGroup(int userId) {
+            await Groups.AddToGroupAsync(Context.ConnectionId, MakeUserGroupId(userId));
+        }
+        public async Task ExitUserGroup(int userId) {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeUserGroupId(userId));
+        }
         public async Task EnterChannelAsync(int channelId) {
             await Groups.AddToGroupAsync(Context.ConnectionId, MakeChannelGroupId(channelId));
         }
@@ -175,17 +293,17 @@ namespace API.Hubs {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeServerGroupId(serverId));
         }
         public async Task JoinServerAsync(int userId, int serverId) {
-            ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
-            Server server = await mainDatabase.Server.FindAsync(serverId);
-            User user = await mainDatabase.User.FindAsync(userId);
+            ServerUser serverUser = await Database.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
+            Server server = await Database.Server.FindAsync(serverId);
+            User user = await Database.User.FindAsync(userId);
             if (serverUser == null) {
                 serverUser = new ServerUser {
                     Server = server,
                     User = user,
                     RoleId = (int)server.DefaultRoleId
                 };
-                await mainDatabase.ServerUser.AddAsync(serverUser);
-                await mainDatabase.SaveChangesAsync();
+                await Database.ServerUser.AddAsync(serverUser);
+                await Database.SaveChangesAsync();
             }
 
             string jsonServer = JsonConvert.SerializeObject(server);
@@ -194,77 +312,51 @@ namespace API.Hubs {
             await Clients.AllExcept(Context.ConnectionId).SendAsync("DetectNewUserJoinServerSignal", jsonUser, (int)server.DefaultRoleId);
         }
         public async Task LeaveServerAsync(int userId, int serverId) {
-            ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
-            mainDatabase.ServerUser.Remove(serverUser);
-            await mainDatabase.SaveChangesAsync();
+            ServerUser serverUser = await Database.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
+            Database.ServerUser.Remove(serverUser);
+            await Database.SaveChangesAsync();
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, MakeServerGroupId(serverId));
             await Clients.Caller.SendAsync("DetectLeaveServerSignal", serverId);
             await Clients.Group(MakeServerGroupId(serverId)).SendAsync("DetectOtherUserLeaveServerSignal", userId, serverUser.RoleId);
         }
-        public async Task ReceiveMessageAsync(string json) {
-            Message message = JsonConvert.DeserializeObject<Message>(json);
-            message.User = await mainDatabase.User.FindAsync(message.UserId);
-            message.Channel = await mainDatabase.Channel.FindAsync(message.ChannelId);
-            message.Time = DateTime.Now;
-            await mainDatabase.Message.AddAsync(message);
-            await mainDatabase.SaveChangesAsync();
-            json = JsonConvert.SerializeObject(message);
-            await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync("DetectNewMessageSignal", json);
-        }
-        public async Task DeleteMessageAsync(int channelId, int messageId) {
-            Message message = await mainDatabase.Message.FindAsync(messageId);
-            if(message != null) {
-                mainDatabase.Message.Remove(message);//channel id?
-                await mainDatabase.SaveChangesAsync();
-            }
-            await Clients.Group(MakeChannelGroupId(channelId)).SendAsync("DetectDeleteMessageSignal", messageId);
-        }
-        public async Task EditMessageAsync(int messageId, string content) {
-            Message message = await mainDatabase.Message.FindAsync(messageId);
-            if(message == null) {
-                return;
-            }
-            message.Content = content;
-            await mainDatabase.SaveChangesAsync();
-            await Clients.Group(MakeChannelGroupId(message.ChannelId)).SendAsync("DetectEditMessageSignal", messageId, content);
-        }
+        
         public async Task KickUserAsync(int userId, int serverId) {
-            ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
-            mainDatabase.ServerUser.Remove(serverUser);
-            await mainDatabase.SaveChangesAsync();
+            ServerUser serverUser = await Database.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
+            Database.ServerUser.Remove(serverUser);
+            await Database.SaveChangesAsync();
             await Clients.Group(MakeServerGroupId(serverId)).SendAsync("DetectKickUserSignal", serverId, userId, serverUser.RoleId);
         }
         public async Task UpdateChannelPermissionAsync(string json) {
             ChannelPermission cpClient = JsonConvert.DeserializeObject<ChannelPermission>(json);
-            ChannelPermission cpDb = await mainDatabase.ChannelPermission.Where(c => c.SameAs(cpClient)).FirstOrDefaultAsync();
+            ChannelPermission cpDb = await Database.ChannelPermission.Where(c => c.SameAs(cpClient)).FirstOrDefaultAsync();
             if(cpDb == null) {
                 await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The channel or permission don't exist anymore.");
                 return;
             }
             cpDb.UpdateFrom(cpClient);
-            await mainDatabase.SaveChangesAsync();
+            await Database.SaveChangesAsync();
             await Clients.Group(MakeChannelGroupId(cpDb.ChannelId)).SendAsync("DetectUpdateChannelPermissionSignal", json);
         }
         public async Task DeleteRoleAsync(int roleId) {
-            Role role = await mainDatabase.Role.FindAsync(roleId);
+            Role role = await Database.Role.FindAsync(roleId);
             if(role == null) {
                 await Clients.Caller.SendAsync("DetectRoleConcurrentConflictSignal", "The role doesn't exist anymore.");
                 return;
             }
-            ChannelPermission[] channelPermissions = await mainDatabase.ChannelPermission.Where(c => c.RoleId == roleId).ToArrayAsync();
-            mainDatabase.RemoveRange(channelPermissions);
-            mainDatabase.Remove(role);
-            await mainDatabase.SaveChangesAsync();
+            ChannelPermission[] channelPermissions = await Database.ChannelPermission.Where(c => c.RoleId == roleId).ToArrayAsync();
+            Database.RemoveRange(channelPermissions);
+            Database.Remove(role);
+            await Database.SaveChangesAsync();
             await Clients.Group(MakeServerGroupId(role.ServerId)).SendAsync("DetectDeleteRoleSignal", roleId);
         }
         public async Task ChangeUserRoleAsync(int userId, int serverId, int newRoleId) {
-            ServerUser serverUser = await mainDatabase.ServerUser.Where(su => su.ServerId == serverId && su.UserId == userId).FirstOrDefaultAsync();
+            ServerUser serverUser = await Database.ServerUser.Where(su => su.ServerId == serverId && su.UserId == userId).FirstOrDefaultAsync();
             if (serverUser == null) {
                 return;
             }
             int oldRoleId = serverUser.RoleId;
             serverUser.RoleId = newRoleId;
-            await mainDatabase.SaveChangesAsync();
+            await Database.SaveChangesAsync();
             await Clients.Group(MakeServerGroupId(serverId)).SendAsync("DetectChangeUserRoleSignal", userId, oldRoleId, newRoleId);
         }
         private static class ConcurrenctError {
