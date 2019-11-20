@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monitor.Models {
+namespace Models {
     public class Message {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]

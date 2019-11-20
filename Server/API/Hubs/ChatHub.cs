@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using API.Extensions;
+using API.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
@@ -14,17 +15,45 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace API.Hubs {
-    public enum MonitorState {
+    internal enum MonitorState {
         Ready, WaitingResponse, Busy
     }
     public class ChatHub : Hub {
+        private static ColorConsoleWriter WriterNewConnection { get; } = new ColorConsoleWriter {
+            ForegroundColor = ConsoleColor.Magenta
+        };
+        private static ColorConsoleWriter WriterDisconnection { get; } = new ColorConsoleWriter {
+            ForegroundColor = ConsoleColor.Red
+        };
+        private static int ConnectionCount { get; set; } = 0;
         private MainDatabase Database { get; }
         private IMongoCollection<Message> MessageCollection { get; }
-        private static Dictionary<string, string> ConnCate { get; } = new Dictionary<string, string>();
-        private static Dictionary<string, Dictionary<string, MonitorState>> CateConnState { get; } = new Dictionary<string, Dictionary<string, MonitorState>>();
+        private static Dictionary<string, string> KVConnectionIdCategory { get; } = new Dictionary<string, string>();
+        private static Dictionary<string, Dictionary<string, MonitorState>> KVCategoryConnectionIdState { get; }
+            = new Dictionary<string, Dictionary<string, MonitorState>>();
+        private static CategoryClassifier.CategoryClassifier CategoryClassifier
+            = new CategoryClassifier.CategoryClassifier(new List<string> { "Sport", "Technology", "Law", "Economy", "ESport" });
         public ChatHub(MainDatabase mainDatabase, IMongoContext mongoContext) {
             Database = mainDatabase;
             MessageCollection = mongoContext.Messages;
+        }
+        public override Task OnConnectedAsync() {
+            WriterNewConnection.WriteLine($"New connection with ID {Context.ConnectionId}. Total: {++ConnectionCount}");
+            return base.OnConnectedAsync();
+        }
+        public override Task OnDisconnectedAsync(Exception exception) {
+            WriterDisconnection.WriteLine($"New DISCONNECTION with ID {Context.ConnectionId}. Total: {--ConnectionCount}");
+            DisconnectMonitor(Context.ConnectionId);
+            return base.OnDisconnectedAsync(exception);
+        }
+        private void DisconnectMonitor(string connectionId) {
+            if (!KVConnectionIdCategory.ContainsKey(connectionId)) {
+                return;
+            }
+            string categoryOfConnection = KVConnectionIdCategory[connectionId];
+            KVConnectionIdCategory.Remove(connectionId);
+            KVCategoryConnectionIdState[categoryOfConnection].Remove(connectionId);
+            WriterDisconnection.WriteLine($"That was a monitor with ID {connectionId}");
         }
         public async Task MarkViolation(string messageId) {
             Message message = await DeleteMessageAsync(messageId);
@@ -44,28 +73,28 @@ namespace API.Hubs {
         }
         public void JoinMonitorGroup(string category) {
             //await Groups.AddToGroupAsync(Context.ConnectionId, category);
-            ConnCate.Add(Context.ConnectionId, category);
-            if (!CateConnState.ContainsKey(category)) {
-                CateConnState.Add(category, new Dictionary<string, MonitorState>());
+            KVConnectionIdCategory.Add(Context.ConnectionId, category);
+            if (!KVCategoryConnectionIdState.ContainsKey(category)) {
+                KVCategoryConnectionIdState.Add(category, new Dictionary<string, MonitorState>());
             }
-            Dictionary<string, MonitorState> connStates = CateConnState[category];
+            Dictionary<string, MonitorState> connStates = KVCategoryConnectionIdState[category];
             connStates.Add(Context.ConnectionId, MonitorState.Ready);
         }
         public void MonitorReady() {
-            string category = ConnCate[Context.ConnectionId];
-            Dictionary<string, MonitorState> connStates = CateConnState[category];
+            string category = KVConnectionIdCategory[Context.ConnectionId];
+            Dictionary<string, MonitorState> connStates = KVCategoryConnectionIdState[category];
             connStates[Context.ConnectionId] = MonitorState.Ready;
         }
         public void MonitorBusy() {
-            string category = ConnCate[Context.ConnectionId];
-            Dictionary<string, MonitorState> connStates = CateConnState[category];
+            string category = KVConnectionIdCategory[Context.ConnectionId];
+            Dictionary<string, MonitorState> connStates = KVCategoryConnectionIdState[category];
             connStates[Context.ConnectionId] = MonitorState.Busy;
         }
-        private string DetermineAvailableMonitor(string category) {
+        private static string DetermineAvailableMonitor(string category) {
             List<string> readyConns = new List<string>();
             List<string> busyConns = new List<string>();
             List<string> waitingConns = new List<string>();
-            Dictionary<string, MonitorState> connStates = CateConnState[category];
+            Dictionary<string, MonitorState> connStates = KVCategoryConnectionIdState[category];
             foreach (var kv in connStates) {
                 switch (kv.Value) {
                     case MonitorState.Ready:
@@ -95,7 +124,7 @@ namespace API.Hubs {
         private async Task SendCheckMessage(Message message) {
             string connectionId = DetermineAvailableMonitor(message.Category);
             await Clients.Client(connectionId).SendAsync("DetectCheckMessageSignal", message.MessageId);
-            Dictionary<string, MonitorState> connStates = CateConnState[message.Category];
+            Dictionary<string, MonitorState> connStates = KVCategoryConnectionIdState[message.Category];
             connStates[connectionId] = MonitorState.WaitingResponse;
         }
         public async Task ReceiveMessageAsync(string json) {

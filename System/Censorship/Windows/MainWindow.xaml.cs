@@ -1,23 +1,16 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using Censorship.Tools;
+using Microsoft.AspNetCore.SignalR.Client;
+using Models;
 using MongoDB.Driver;
-using Monitor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Monitor {
+namespace Censorship.Windows {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -26,7 +19,7 @@ namespace Monitor {
         private IMongoDatabase mongoDatabase;
         private IMongoCollection<Message> messageCollection;
         private HubConnection hubConnection;
-        private string BaseUrl = "http://127.0.0.1:4444/chathub";
+        private string BaseUrl = "http://localhost:5000/chathub";
         private Message CurrentMessage { get; set; }
         private CustomTimer Timer { get; } = new CustomTimer(100) {
             NumInterval = 50
@@ -51,7 +44,7 @@ namespace Monitor {
             await hubConnection.InvokeAsync("JoinMonitorGroup", "Technology");
             hubConnection.On<string>("DetectCheckMessageSignal", async (messageId) => {
                 MessageQueue.Add(messageId);
-                if(Timer.State == CustomTimer.TimerState.Rest) {
+                if (Timer.State == CustomTimer.TimerState.Rest) {
                     await hubConnection.InvokeAsync("MonitorBusy");
                     await RetrieveMessageAsync();
                 }
@@ -61,7 +54,7 @@ namespace Monitor {
             Timer.Start();
             CBPause.Content = "Pause";
         }
-        
+
         private async void Timer_Elapsed(object sender, ElapsedEventArgs e) {
             await Dispatcher.BeginInvoke((Action)(() => {
                 CProgressBar.Value = Timer.CurrentNumInterval;
@@ -71,7 +64,7 @@ namespace Monitor {
             await Dispatcher.BeginInvoke((Action)(async () => {
                 CProgressBar.Value = 0;
                 ClearMessage();
-                if(MessageIndex == MessageQueue.Count) {
+                if (MessageIndex == MessageQueue.Count) {
                     await hubConnection.InvokeAsync("MonitorReady");
                 }
                 else {
@@ -100,17 +93,17 @@ namespace Monitor {
         }
 
         private void CBNext_Click(object sender, RoutedEventArgs e) {
-            if(Timer.State != CustomTimer.TimerState.Rest) {
+            if (Timer.State != CustomTimer.TimerState.Rest) {
                 Timer.Stop();
             }
         }
 
         private async void CBLatest_Click(object sender, RoutedEventArgs e) {
-            if(MessageQueue.Count == 0) {
+            if (MessageQueue.Count == 0) {
                 return;
             }
             MessageIndex = MessageQueue.Count - 1;
-            if(Timer.State == CustomTimer.TimerState.Rest) {
+            if (Timer.State == CustomTimer.TimerState.Rest) {
                 await RetrieveMessageAsync();
             }
             else {
@@ -119,7 +112,7 @@ namespace Monitor {
         }
 
         private void CBPause_Click(object sender, RoutedEventArgs e) {
-            if(Timer.State == CustomTimer.TimerState.Running) {
+            if (Timer.State == CustomTimer.TimerState.Running) {
                 Timer.Pause();
                 CBPause.Content = "Resume";
             }
@@ -130,19 +123,19 @@ namespace Monitor {
         }
 
         private void CBPrevious_Click(object sender, RoutedEventArgs e) {
-            if(Timer.State == CustomTimer.TimerState.Rest) {
+            if (Timer.State == CustomTimer.TimerState.Rest) {
                 return;
             }
             if (MessageQueue.Count == 0) {
                 return;
             }
-            if(MessageQueue.Count == 1) {
+            if (MessageQueue.Count == 1) {
                 MessageIndex = 0;
             }
-            else if(MessageIndex == 1){
+            else if (MessageIndex == 1) {
                 MessageIndex = 0;
             }
-            else if(MessageIndex > 1) {
+            else if (MessageIndex > 1) {
                 MessageIndex -= 2;
             }
             Timer.Stop();

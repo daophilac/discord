@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Peanut.Server;
@@ -29,10 +30,11 @@ namespace API {
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<MainDatabase>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MainConnectionString")));
-            services.AddSignalR();
-            services.AddMvc().AddJsonOptions(options => {
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            services.AddControllers();
+            services.AddMvc().AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
+            services.AddSignalR();
             services.Configure<MessageDatabaseSettings>(Configuration.GetSection(nameof(MessageDatabaseSettings)));
             services.AddSingleton<IMessageDatabaseSettings>(sp => sp.GetRequiredService<IOptions<MessageDatabaseSettings>>().Value);
             services.AddSingleton<IMongoContext, MongoContext>();
@@ -41,7 +43,7 @@ namespace API {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
@@ -49,9 +51,11 @@ namespace API {
                 app.UseHsts();
             }
             //app.UseHttpsRedirection();
-            app.UseMvc();
-            app.UseSignalR(routes => {
-                routes.MapHub<ChatHub>("/ChatHub");
+            app.UseAuthorization();
+            app.UseRouting();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chathub");
             });
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
                 ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver(),

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dictionary Matcher", "Dictionary Matcher\Dictionary Matcher.csproj", "{E3670280-7B40-47F2-924E-59621A1B7295}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTest", "XUnitTest\XUnitTest.csproj", "{1B016E5B-9DAF-48C5-A585-BB878CB28DFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3670280-7B40-47F2-924E-59621A1B7295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3670280-7B40-47F2-924E-59621A1B7295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3670280-7B40-47F2-924E-59621A1B7295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3670280-7B40-47F2-924E-59621A1B7295}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B016E5B-9DAF-48C5-A585-BB878CB28DFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B016E5B-9DAF-48C5-A585-BB878CB28DFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B016E5B-9DAF-48C5-A585-BB878CB28DFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B016E5B-9DAF-48C5-A585-BB878CB28DFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {198A7642-6FA3-4ED7-A971-1E6E5F360E9C}
+	EndGlobalSection
+EndGlobal

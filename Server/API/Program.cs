@@ -14,9 +14,7 @@ using Microsoft.Extensions.Logging;
 using Peanut.Server;
 
 namespace API {
-    public class Program {
-        //public static ChatHub chatHub;
-        //public static FileProvider fileProvider;
+    public static class Program {
         public static void Main(string[] args) {
             InitializeGlobalVariable();
             CreateWebHostBuilder(args).Build().Run();
