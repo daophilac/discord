@@ -5,6 +5,7 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -21,6 +22,8 @@ namespace Censorship.Windows {
         private HubConnection hubConnection;
         private string BaseUrl = "http://localhost:5000/chathub";
         private Message CurrentMessage { get; set; }
+        private ClientUser CurrentUser { get; set; }
+        private APICaller APICaller { get; } = new APICaller(HttpMethod.Get, "http://localhost:5000/api/user/GetUserById")
         private CustomTimer Timer { get; } = new CustomTimer(100) {
             NumInterval = 50
         };

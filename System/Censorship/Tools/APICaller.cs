@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
-namespace Discord.Tools {
-    public class APICaller {
+namespace Censorship.Tools {
+    class APICaller {
         public HttpMethod HttpMethod { get; set; }
         public string RequestUrl { get; set; }
         public object jsonObject;
@@ -38,7 +34,7 @@ namespace Discord.Tools {
             this.jsonObject = jsonObject;
         }
         public async Task<HttpResponseMessage> SendRequestAsync() {
-            if(HttpMethod == null) {
+            if (HttpMethod == null) {
                 throw new ArgumentNullException("HttpMethod");
             }
             if (RequestUrl == null) {
@@ -51,7 +47,7 @@ namespace Discord.Tools {
                 Method = HttpMethod,
                 RequestUri = new Uri(RequestUrl)
             };
-            if(HttpMethod == HttpMethod.Post) {
+            if (HttpMethod == HttpMethod.Post) {
                 httpRequestMessage.Content = new StringContent(JsonConvert.SerializeObject(jsonObject), Encoding.UTF8, "application/json");
             }
             return await HttpClient.SendAsync(httpRequestMessage);

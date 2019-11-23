@@ -38,7 +38,7 @@ namespace API {
             services.Configure<MessageDatabaseSettings>(Configuration.GetSection(nameof(MessageDatabaseSettings)));
             services.AddSingleton<IMessageDatabaseSettings>(sp => sp.GetRequiredService<IOptions<MessageDatabaseSettings>>().Value);
             services.AddSingleton<IMongoContext, MongoContext>();
-            services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine("D:/Desktop/repos/discord/Server/API/Data", "Images/User")));
+            services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Environment.CurrentDirectory, "Data/Images/User")));
             services.AddSingleton<FileProvider>();
         }
 

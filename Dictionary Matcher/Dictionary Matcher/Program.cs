@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace DictionaryMatcher {
     class Program {
         static async Task Main(string[] args) {
-            //CreateSummaryFileFromFeedFiles();
             TermDistributor termDistributor = new TermDistributor("D:/Desktop/dictionary.txt");
             await termDistributor.AddCategory("Sport").AddParagraphsFromFilesAsync(new string[] {
                 "D:/Desktop/feed/sport1.txt",
