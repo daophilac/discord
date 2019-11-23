@@ -12,12 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Peanut.Server;
+using Microsoft.Extensions.Hosting;
 
 namespace Server.Global {
     public static class Program {
         public static void Main(string[] args) {
             InitializeGlobalVariable();
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
         public static void InitializeGlobalVariable() {
             FileSystem.Establish();
@@ -26,8 +27,10 @@ namespace Server.Global {
             //chatHub = new ChatHub();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

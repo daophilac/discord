@@ -7,22 +7,16 @@
     <AssemblyName>Server</AssemblyName>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Data\**" />
-    <Compile Remove="mongo\**" />
-    <Content Remove="Data\**" />
-    <Content Remove="mongo\**" />
-    <EmbeddedResource Remove="Data\**" />
-    <EmbeddedResource Remove="mongo\**" />
-    <None Remove="Data\**" />
-    <None Remove="mongo\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
   </ItemGroup>
 

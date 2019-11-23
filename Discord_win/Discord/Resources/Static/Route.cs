@@ -8,10 +8,8 @@ namespace Discord.Resources.Static {
     static class Route {
         public static readonly string Protocol = "http";
         public static readonly string DomainName = "192.168.43.72";
-        public static readonly string ServerName = "/sv";
-        //public static readonly string BaseUrl = Protocol + "://" + DomainName + ServerName;
-        //public static readonly string BaseUrl = "http://127.0.0.1:4444";
-        public static readonly string BaseUrl = "https://localhost:5001";
+        public static readonly string ServerName = "/myserver";
+        public static readonly string BaseUrl = Protocol + "://" + DomainName + ServerName;
         public static class ChatHub {
             private static readonly string RouteChatHub = "/ChatHub";
             public static readonly string UrlChatHub = BaseUrl + RouteChatHub;
@@ -35,7 +33,11 @@ namespace Discord.Resources.Static {
             }
             public static string BuildDownloadImageUrl(string imageName) {
                 return RoutePrefix + string.Format(RouteDownloadImage, imageName);
-            }
+
+
+                //public static readonly string BaseUrl = "http://127.0.0.1:4444";
+        //public static readonly string BaseUrl = "https://localhost:5001";
+        }
             public static string BuildUploadImage(int userId) {
                 return RoutePrefix + string.Format(RouteUploadImage, userId);
             }

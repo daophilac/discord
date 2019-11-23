@@ -42,13 +42,13 @@ namespace Server.Models {
             modelBuilder.Entity<ChannelPermission>().HasOne(cp => cp.Role).WithMany("ChannelPermissions").OnDelete(DeleteBehavior.Restrict);
 
             SeedMessage();
-            //SeedUser();
-            //SeedServer();
-            //SeedChannel();
-            //SeedRole();
-            //SeedServerUser();
-            //SeedChannelPermission();
-            //SeedInstantInvite();
+            SeedUser();
+            SeedServer();
+            SeedChannel();
+            SeedRole();
+            SeedServerUser();
+            SeedChannelPermission();
+            SeedInstantInvite();
         }
         private void SeedMessage() {
             MessageCollection.DeleteMany(m => true);

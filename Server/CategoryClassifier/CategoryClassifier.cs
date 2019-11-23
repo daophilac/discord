@@ -60,7 +60,7 @@ namespace CategoryClassifier {
 
 
 
-            ExtractTermsWeightFromFile("D:/Desktop/repos/discord/Server/API/Data/term_dist.txt");
+            ExtractTermsWeightFromFile("D:/Desktop/repos/discord/Server/Server/Data/term_dist.txt");
             //var x = DetermineCategory("cầu thủ");
             //var x = DetermineCategory("Cựu thủ quân Barca sở hữu chuỗi 56 trận bất bại khi ra sân cho đội bóng từ năm 2010 đến năm 2012. Luôn cống hiến và chiến đấu không biết mệt mỏi, Puyol sở hữu những phẩm chất của trung vệ đẳng cấp thế giới.");
             var x = DetermineCategory("Cơ quan công an tỉnh Thái Bình đã bắt giữ khẩn cấp người chồng giết vợ rồi tẩm xăng đốt xác..");

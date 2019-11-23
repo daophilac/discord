@@ -9,13 +9,12 @@ namespace Server.Tools {
         public static readonly string ImageFolderName = "Images";
         public static readonly string UserImageFolderName = "User";
         public static readonly string ServerImageFolderName = "Server";
-        public static readonly string ApplicationDirectory = "D:/Desktop/repos/discord/Server/API/Data";
+        public static readonly string ApplicationDirectory = Path.Combine(Environment.CurrentDirectory, "Data");
         public static readonly string ImageDirectory = Path.Combine(ApplicationDirectory, ImageFolderName);
         public static readonly string UserImageDirectory = Path.Combine(ImageDirectory, UserImageFolderName);
         public static readonly string ServerImageDirectory = Path.Combine(ImageDirectory, ServerImageFolderName);
         public static void Establish() {
             CreateApplicationDirectories();
-            
         }
         private static void CreateApplicationDirectories() {
             if (!Directory.Exists(ImageDirectory)) {
