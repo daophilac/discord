@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace API.Models {
+namespace Server.Models {
     public class Message {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]

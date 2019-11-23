@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Models {
+namespace Server.Models {
     public class InstantInvite {
         [Key, Column(TypeName = "VARCHAR(50)")]
         public string Link { get; set; }

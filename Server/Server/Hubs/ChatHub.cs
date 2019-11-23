@@ -1,5 +1,5 @@
-﻿using API.Extensions;
-using API.Models;
+﻿using Server.Extensions;
+using Server.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
@@ -14,7 +14,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace API.Hubs {
+namespace Server.Hubs {
     internal enum MonitorState {
         Ready, WaitingResponse, Busy
     }

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using API.Models;
-using API.Hubs;
+using Server.Models;
+using Server.Hubs;
 using MongoDB.Driver;
 using System.Diagnostics.Contracts;
 
-namespace API.Controllers
+namespace Server.Controllers
 {
     [Route("api/Message")]
     [ApiController]

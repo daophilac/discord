@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace API.Models {
+namespace Server.Models {
     public class ChannelPermission {
         public int ChannelId { get; set; }
         public int RoleId { get; set; }

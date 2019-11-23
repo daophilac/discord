@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Models {
+namespace Server.Models {
     public class Violation {
         public int ViolationId { get; set; }
         public string Message { get; set; } = "Violate terms of use";

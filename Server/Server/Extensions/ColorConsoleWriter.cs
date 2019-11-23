@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Extensions {
+namespace Server.Extensions {
     class ColorConsoleWriter {
         private static ConsoleColor DefaultForegroundColor { get; } = ConsoleColor.Gray;
         private static ConsoleColor DefaultBackgroundColor { get; } = ConsoleColor.Black;

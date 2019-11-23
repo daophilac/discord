@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Hubs;
-using API.Models;
+using Server.Hubs;
+using Server.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +18,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Peanut.Server;
 
-namespace API {
+namespace Server {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;

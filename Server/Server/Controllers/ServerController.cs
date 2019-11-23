@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using API.Models;
+using Server.Models;
 using System.IO;
 
-namespace API.Controllers
+namespace Server.Controllers
 {
     [Route("api/Server")]
     [ApiController]
@@ -23,10 +23,10 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("GetByUser/{userId}")]
-        public async Task<ActionResult<IEnumerable<Server>>> GetByUser(int userId) {
+        public async Task<ActionResult<IEnumerable<Models.Server>>> GetByUser(int userId) {
             IQueryable<ServerUser> tempListServerUser = context.ServerUser.Where(su => su.UserId == userId).AsQueryable();
             List<Server> listServer = await context.Server.Where(s => tempListServerUser.Any(su => su.ServerId == s.ServerId)).Select(server => Server.Clone(server)).ToListAsync();
-            foreach (Server server in listServer) {
+            foreach (Models.Server server in listServer) {
                 User admin = await context.User.Where(u => u.UserId == server.AdminId).FirstOrDefaultAsync();
                 List<ServerUser> listServerUser = await context.ServerUser.Where(su => su.ServerId == server.ServerId).ToListAsync();
                 server.Admin = admin;
@@ -41,7 +41,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("Add")]
-        public async Task<IActionResult> Add(Server serverFromClient) {
+        public async Task<IActionResult> Add(Models.Server serverFromClient) {
             await context.Server.AddAsync(serverFromClient);
             await context.SaveChangesAsync();
             Role roleAdmin = await CreateMainRole(serverFromClient);
@@ -62,7 +62,7 @@ namespace API.Controllers
             await context.SaveChangesAsync();
             return Ok(serverFromClient);
         }
-        private async Task<Role> CreateMainRole(Server server) {
+        private async Task<Role> CreateMainRole(Models.Server server) {
             Role roleAdmin = new Role {
                 ServerId = server.ServerId,
                 RoleLevel = 1000,
@@ -99,13 +99,13 @@ namespace API.Controllers
 
        // GET: api/Server
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Server>>> GetServer() {
+        public async Task<ActionResult<IEnumerable<Models.Server>>> GetServer() {
             return await context.Server.ToListAsync();
         }
 
         // GET: api/Server/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Server>> GetServer(int id)
+        public async Task<ActionResult<Models.Server>> GetServer(int id)
         {
             var server = await context.Server.FindAsync(id);
 
@@ -119,7 +119,7 @@ namespace API.Controllers
 
         // PUT: api/Server/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutServer(int id, Server server)
+        public async Task<IActionResult> PutServer(int id, Models.Server server)
         {
             if (id != server.ServerId)
             {
@@ -149,7 +149,7 @@ namespace API.Controllers
 
         // POST: api/Server
         [HttpPost]
-        public async Task<ActionResult<Server>> PostServer(Server server)
+        public async Task<ActionResult<Models.Server>> PostServer(Models.Server server)
         {
             context.Server.Add(server);
             await context.SaveChangesAsync();
@@ -159,7 +159,7 @@ namespace API.Controllers
 
         // DELETE: api/Server/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Server>> DeleteServer(int id)
+        public async Task<ActionResult<Models.Server>> DeleteServer(int id)
         {
             var server = await context.Server.FindAsync(id);
             if (server == null)

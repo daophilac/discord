@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using API.Models;
+using Server.Models;
 using System.IO;
-using API.Tools;
+using Server.Tools;
 using System.Net.Http;
-using API.ViewModels;
+using Server.ViewModels;
 using Peanut.Server;
 
-namespace API.Controllers {
+namespace Server.Controllers {
     [Route("api/User")]
     [ApiController]
     public class UserController : ControllerBase {

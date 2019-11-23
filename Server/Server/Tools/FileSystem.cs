@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Tools {
+namespace Server.Tools {
     public static class FileSystem {
         public static readonly string ImageFolderName = "Images";
         public static readonly string UserImageFolderName = "User";

@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using API.Models;
-using API.ViewModels;
+using Server.Models;
+using Server.ViewModels;
 
-namespace API.Controllers
+namespace Server.Controllers
 {
     [Route("api/Role")]
     [ApiController]

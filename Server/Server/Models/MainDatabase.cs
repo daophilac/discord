@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 
-namespace API.Models {
+namespace Server.Models {
     public class MainDatabase : DbContext {
         private ModelBuilder ModelBuilder { get; set; }
         private IMongoCollection<Message> MessageCollection { get; }
