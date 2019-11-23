@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using m = Server.Models;
 
 namespace Server.Controllers
 {
@@ -31,7 +32,7 @@ namespace Server.Controllers
         public async Task<IActionResult> GetServerByLink(int userId, string link) {
             InstantInvite instantInvite = await _context.InstantInvite.Where(ii => ii.Link == link).FirstOrDefaultAsync();
             if(instantInvite != null) {
-                Server result = _context.Server.Where(s => s.ServerId == instantInvite.ServerId).First();
+                m::Server result = _context.Server.Where(s => s.ServerId == instantInvite.ServerId).First();
 
                 //ServerUser serverUser = _context.ServerUser.Where(su => su.ServerId == result.ServerId && su.UserId == userId).FirstOrDefault();
                 //if(serverUser == null) {

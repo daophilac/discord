@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
 using System.IO;
+using m = Server.Models;
 
 namespace Server.Controllers
 {
@@ -25,7 +26,7 @@ namespace Server.Controllers
         [Route("GetByUser/{userId}")]
         public async Task<ActionResult<IEnumerable<Models.Server>>> GetByUser(int userId) {
             IQueryable<ServerUser> tempListServerUser = context.ServerUser.Where(su => su.UserId == userId).AsQueryable();
-            List<Server> listServer = await context.Server.Where(s => tempListServerUser.Any(su => su.ServerId == s.ServerId)).Select(server => Server.Clone(server)).ToListAsync();
+            List<m::Server> listServer = await context.Server.Where(s => tempListServerUser.Any(su => su.ServerId == s.ServerId)).Select(server => m::Server.Clone(server)).ToListAsync();
             foreach (Models.Server server in listServer) {
                 User admin = await context.User.Where(u => u.UserId == server.AdminId).FirstOrDefaultAsync();
                 List<ServerUser> listServerUser = await context.ServerUser.Where(su => su.ServerId == server.ServerId).ToListAsync();

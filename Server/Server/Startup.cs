@@ -18,7 +18,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Peanut.Server;
 
-namespace Server {
+namespace Server.Global {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;

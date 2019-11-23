@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Peanut.Server;
 
-namespace Server {
+namespace Server.Global {
     public static class Program {
         public static void Main(string[] args) {
             InitializeGlobalVariable();

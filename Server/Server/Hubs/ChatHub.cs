@@ -13,6 +13,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using m = Server.Models;
 
 namespace Server.Hubs {
     internal enum MonitorState {
@@ -323,7 +324,7 @@ namespace Server.Hubs {
         }
         public async Task JoinServerAsync(int userId, int serverId) {
             ServerUser serverUser = await Database.ServerUser.Where(su => su.UserId == userId && su.ServerId == serverId).FirstOrDefaultAsync();
-            Server server = await Database.Server.FindAsync(serverId);
+            m::Server server = await Database.Server.FindAsync(serverId);
             User user = await Database.User.FindAsync(userId);
             if (serverUser == null) {
                 serverUser = new ServerUser {
